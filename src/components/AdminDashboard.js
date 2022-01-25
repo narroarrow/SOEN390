@@ -1,13 +1,30 @@
-import { Card, Container } from '@mui/material';
-import Button from '@mui/material/Button';
+import { Container, Button, CardHeader, Avatar, IconButton, Typography } from '@mui/material';
 import React from 'react';
 
 function AdminDashboard() {
   return (
   <div>
-      
-      <Card sx={{ maxWidth: 275 }}><h1>Admin Dashboard </h1></Card>
-      <Button variant="text">ADMIN Button</Button>
+    
+      <CardHeader
+        avatar={
+          <Avatar aria-label="">
+            
+          </Avatar>
+        }
+        action={
+          <IconButton aria-label="">
+            
+          </IconButton>
+        }
+        title="Admin Board"
+        subheader="Name of Admin"
+      />
+    <Container maxWidth="sm">
+    <Typography variant="body1" color="initial">This is my admin page</Typography> 
+    <Button variant="text">ADMIN Button</Button>
+    </Container>
+
+     
   </div>
   );
 }
