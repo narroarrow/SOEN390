@@ -4,11 +4,42 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { purple } from '@mui/material/colors';
+
+
+const theme = createTheme(
+{
+  palette: {
+    type: 'light',
+    primary: {
+      main: '#115e2a',
+    },
+    secondary: {
+      main: '#000000',
+    },
+    background: {
+      default: 'rgba(250,255,207,0.32)',
+      paper: '#e2e4ef',
+    },
+    text: {
+      primary: 'rgba(55,53,53,0.87)',
+    },
+  },
+  typography: {
+    h4: {
+      fontSize: '3rem',
+    },
+  },
+}
+);
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <ThemeProvider theme={theme}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ThemeProvider>,
   document.getElementById('root')
 );
 
