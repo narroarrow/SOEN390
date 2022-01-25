@@ -3,6 +3,7 @@ import Login from './components/Login'
 import Signup from './components/Signup';
 import AdminDashboard from './components/AdminDashboard';
 import { Switch, Route, Routes } from 'react-router-dom';
+import './App.css'
 
 function App() {
   return (
