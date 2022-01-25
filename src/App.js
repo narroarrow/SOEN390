@@ -7,13 +7,10 @@ function App() {
   return (
       <div className="App">
         <Header/>
-        {/* <Login/> */}
-        {/* <Routes> */}
-          <Route path='/login' component={Login} />
-          <Route path='/Signup' component={Signup} />
-        {/* </Routes> */}
-        
-        {/* <Signup/> */}
+        <Routes>
+          <Route path='/login' element={<Login/>} />
+          <Route path='/Signup' element={<Signup/>} />
+        </Routes>
       </div>
   );
 }
