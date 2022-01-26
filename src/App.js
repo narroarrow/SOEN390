@@ -6,6 +6,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Switch, Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
+import DoctorProfile from './components/DoctorProfile'
+import PatientProfile from './components/PatientProfile';
 
 
 function App() {
@@ -17,7 +19,10 @@ function App() {
         <Routes>
           <Route path='/login' element={<Login/>} />
           <Route path='/Signup' element={<Signup/>} />
-          <Route path='/AdminDashboard' element={<AdminDashboard/>} />
+          <Route path='/DoctorProfile' element={<DoctorProfile/>} />
+          <Route path='/AdminDashboard' element={<AdminDashboard/>}/>
+          <Route path='/PatientProfile' element={<PatientProfile/>}/>
+          
         </Routes>
       </div>
   );

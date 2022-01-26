@@ -11,8 +11,9 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import {Link} from '@mui/material';
 
-const pages = ['Login', 'Account Creation', 'Blog'];
+const pages = ['Login', 'Signup', 'AdminDashboard', 'DoctorProfile', 'PatientProfile'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
@@ -91,13 +92,15 @@ const ResponsiveAppBar = () => {
           >
             LOGO
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
-              >
+                href = {`/${page}`}
+                >
                 {page}
               </Button>
             ))}
