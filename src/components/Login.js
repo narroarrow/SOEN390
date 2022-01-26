@@ -1,52 +1,11 @@
-// import React from 'react';
-// import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
-// import TextField from '@mui/material/TextField';
-
-// import { Link } from "react-router-dom";
-
-// function Login() {
-//   return (
-//   <div>
-//       <h1>Login Page</h1>
-//       <p>Please log in your account</p>
-//       <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '25ch' },}}noValidateautoComplete="off">
-//         <TextField variant="filled" id="outlined-basic" label="Email"/>
-//         <br/>
-//         <TextField variant="filled" id="outlined-password-input" label="Password" type="password" autoComplete="current-password"/>
-//         <br/>
-        
-//         <Link to="/"><Button variant="contained">Login</Button></Link>
-//       </Box>
-      
-      
-//   </div>
-//   );
-// }
-
-
-// export default Login;
-
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
+import {Container, Typography, Box, Grid, Link, Checkbox, FormControlLabel, TextField, CssBaseline, Button, Avatar} from '@mui/material';
 
 function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -56,52 +15,18 @@ function Login() {
   return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+        <Box sx={{marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
+          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <LockOpenTwoToneIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color='primary'
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus/>
+            <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password"/>
+            <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me"/>
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
             <Grid container>

@@ -2,12 +2,14 @@ import Header from './components/Header'
 import Login from './components/Login'
 import Signup from './components/Signup';
 import AdminDashboard from './components/AdminDashboard';
+import CssBaseline from '@mui/material/CssBaseline';
 import { Switch, Route, Routes } from 'react-router-dom';
 
 
 function App() {
   return (
       <div className="App">
+        <CssBaseline />
         <Header/>
         <Routes>
           <Route path='/login' element={<Login/>} />

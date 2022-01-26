@@ -13,22 +13,34 @@ const theme = createTheme(
   palette: {
     type: 'light',
     primary: {
-      main: '#115e2a',
+      main: '#26495c',
+      contrastText: '#ffffff',
     },
     secondary: {
-      main: '#000000',
+      main: '#a84417',
     },
     background: {
-      default: 'rgba(250,255,207,0.32)',
-      paper: '#e2e4ef',
+      default: '#f7f9fc',
+      paper: '#fafafa',
     },
-    text: {
-      primary: 'rgba(55,53,53,0.87)',
+    error: {
+      main: '#ff1000',
     },
   },
   typography: {
-    h4: {
-      fontSize: '3rem',
+    h1: {
+      letterSpacing: '0em',
+      lineHeight: 1.2,
+    },
+    h2: {
+      letterSpacing: '0em',
+    },
+    button: {
+      fontSize: '1rem',
+    },
+    body1: {
+      fontWeight: 500,
+      fontSize: '1rem',
     },
   },
 }
