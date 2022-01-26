@@ -1,41 +1,54 @@
+import * as React from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Link from '@mui/material/Link';
 
-import React from "react";
-import {
-  Box,
-  Container,
-  Row,
-  Column,
-  FooterLink,
-  Heading,
-} from "./FooterStyles";
-  
-const Footer = () => {
+function Copyright() {
   return (
-    <Box>
-      <Container>
-        <Row>
-          <Column>
-            <Heading>About Us</Heading>
-            <FooterLink href="#">Aim</FooterLink>
-            <FooterLink href="#">Vision</FooterLink>
-          </Column>
-          <Column>
-            <Heading>Services</Heading>
-            <FooterLink href="#">EngCom</FooterLink>
-            <FooterLink href="#">Internships</FooterLink>
+    <Typography variant="body2" color="text.secondary">
+      {'Copyright © '}
+      <Link color="inherit" href='#'>
+        Github
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
-          </Column>
-          <Column>
-            <Heading>Contact Us</Heading>
-            <FooterLink href="#">Email</FooterLink>
-            <FooterLink href="#">GitHub</FooterLink>
-          </Column>
-        </Row>
-      </Container>
-      <p style={{ color: "white", 
-                   textAlign: "center", 
-                   }}>SOEN390 - Covid-19 Application is a school project for Concordia University and is not meant to be actually implemented. Released in 2022 (hopefully). </p>
+export default function StickyFooter() {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        textAlign: 'center'
+      }}
+    >
+      <CssBaseline />
+      
+      <Box
+        component="footer"
+        sx={{
+          py: 3,
+          px: 2,
+          mt: 'auto',
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'light'
+              ? theme.palette.grey[200]
+              : theme.palette.grey[800],
+        }}
+      >
+        <Container maxWidth="sm">
+          <Typography variant="body1">
+            COVID-19 Application :)
+          </Typography>
+          <Copyright />
+        </Container>
+      </Box>
     </Box>
   );
-};
-export default Footer;
+}

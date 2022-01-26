@@ -14,7 +14,7 @@ function App() {
   return (
       <div className="App">
         <CssBaseline />
-        <Footer/>
+        
         <Navbar/>
         <Routes>
           <Route path='/login' element={<Login/>} />
@@ -24,6 +24,7 @@ function App() {
           <Route path='/PatientProfile' element={<PatientProfile/>}/>
           
         </Routes>
+        <Footer/>
       </div>
   );
 }
