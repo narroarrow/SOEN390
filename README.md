@@ -38,7 +38,7 @@
 | 5   | Jeffrey Chan         | 40152579  |  JeffreyCHChan      | Backend Lead       |
 | 6   | Maxime Giroux        | 40157483  |  giroux2000         | Fullstack          |
 | 7   | Joeseph Mezzacappa   | 40134799  |  JosephMezza        | Scrum Master / B   |
-| 8   | James Gambino        | 40131946  |                     | Fullstack          |
+| 8   | James Gambino        | 40131946  |  JGambino00         | Fullstack          |
 | 9   | Jonathan Jong        | 40133041  |  jongjonathan       | Documentation / F  |
 
 F = Frontend B = Backend
