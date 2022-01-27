@@ -31,15 +31,17 @@
 
 | #   | Name                 | ID        | Github Username     | Role               |
 | --- | :------------------- | :-------- | :------------------ |:-------------------|
-| 1   | Maira                |           |                     |                    |
-| 2   | Eric Hanna           | 40113678  |  `leoenix`          |                    |
-| 3   | Michael Warner       | 40124302  |  `narroarrow`       | UI Lead / Frontend |
-| 4   | Alexandru Bara       |           |                     |                    |
-| 5   | Jeffery Chan         |           |                     |                    |
-| 6   | Maxime Giroux        |           |                     |                    |
-| 7   | Joeseph              |           |                     |                    |
-| 8   | James Gambino        |           |                     |                    |
-| 9   | Jon                  |           |                     |                    |
+| 1   | Maira Malhi          | 40128269  |  malhimaira         | Team Lead / Front  |
+| 2   | Eric Hanna           | 40113678  |  leoenix            | Database Management|
+| 3   | Michael Warner       | 40124302  |  narroarrow         | UI Lead / Frontend |
+| 4   | Alexandru Bara       | 40132235  |  alexbara2000       | Frontend Lead      |
+| 5   | Jeffrey Chan         | 40152579  |  JeffreyCHChan      | Backend Lead       |
+| 6   | Maxime Giroux        | 40157483  |  giroux2000         | Fullstack          |
+| 7   | Joeseph Mezzacappa   | 40134799  |  JosephMezza        | Scrum Master / B   |
+| 8   | James Gambino        | 40131946  |                     | Fullstack          |
+| 9   | Jonathan Jong        | 40133041  |  jongjonathan       | Documentation / F  |
+
+F = Frontend B = Backend
 
 
 
