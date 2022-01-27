@@ -1,4 +1,3 @@
-import Header from './components/Header'
 import Login from './components/Login'
 import Signup from './components/Signup';
 import AdminDashboard from './components/AdminDashboard';
@@ -8,6 +7,8 @@ import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import DoctorProfile from './components/DoctorProfile'
 import PatientProfile from './components/PatientProfile';
+
+
 
 
 function App() {
