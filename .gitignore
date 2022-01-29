@@ -2,5 +2,6 @@
 /node_modules
 /node_modules/.cache
 node_modules
-src/.DS_Store
+client/node_modules
+client/src/.DS_Store
 .DS_Store
