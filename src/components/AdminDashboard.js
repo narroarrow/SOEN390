@@ -1,5 +1,4 @@
-import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled } from '@mui/material';
 import React from 'react';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -116,7 +115,7 @@ function PatientProfile() {
             /></Item>
           </Grid>
           <Grid item xs={4}>
-            <Item3>
+            <Item>
               <CardHeader
                 avatar={
                   <Avatar aria-label="">
@@ -127,14 +126,13 @@ function PatientProfile() {
                   <IconButton aria-label=""></IconButton>
                 }
                 title="Patient 5 Profile "
-                subheader="Status: Action Required"
+                subheader="Status: Active"
               />
-            </Item3>
+            </Item>
           </Grid>
           <Grid item xs={4}>
-            <Item2 sx={{ color: 'grey' }}>
+            <Item2 >
               <CardHeader
-                sx={{ color: 'grey' }}
                 avatar={
                   <Avatar aria-label="">
                     P6
@@ -247,9 +245,8 @@ function PatientProfile() {
             </Item3>
           </Grid>
           <Grid item xs={4}>
-            <Item2 sx={{ color: 'grey' }}>
+            <Item2>
               <CardHeader
-                sx={{ color: 'grey' }}
                 avatar={
                   <Avatar aria-label="">
                     D6
