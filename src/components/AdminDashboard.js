@@ -1,5 +1,4 @@
 import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card } from '@mui/material';
-import { grey } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import React from 'react';
 
@@ -30,7 +29,6 @@ function PatientProfile() {
       <CardHeader
         avatar={
           <Avatar aria-label="">
-
           </Avatar>
         }
         action={
@@ -40,7 +38,7 @@ function PatientProfile() {
         subheader="Name of Admin"
       />
       <Container maxWidth="md" sx={{ pb: '2%' }}>
-      <Grid container spacing={2} >
+        <Grid container spacing={2} >
           <Grid item xs={11}>
             <Card container sx={{ marginBottom: '2%', padding: '2%' }}>
               <Typography variant="body1" color="initial" >
@@ -68,7 +66,6 @@ function PatientProfile() {
                 }
                 title="Patient 1 Profile "
                 subheader="Status: Active"
-
               />
             </Item>
           </Grid>
@@ -85,7 +82,6 @@ function PatientProfile() {
                 }
                 title="Patient 2 Profile "
                 subheader="Status: Active"
-
               />
             </Item>
           </Grid>
@@ -102,7 +98,6 @@ function PatientProfile() {
                 }
                 title="Patient 3 Profile "
                 subheader="Status: Active"
-
               />
             </Item>
           </Grid>
@@ -118,7 +113,6 @@ function PatientProfile() {
               }
               title="Patient 4 Profile "
               subheader="Status: Active"
-
             /></Item>
           </Grid>
           <Grid item xs={4}>
@@ -134,7 +128,6 @@ function PatientProfile() {
                 }
                 title="Patient 5 Profile "
                 subheader="Status: Action Required"
-
               />
             </Item3>
           </Grid>
@@ -152,7 +145,6 @@ function PatientProfile() {
                 }
                 title="Patient 6 Profile "
                 subheader="Status: Inactive"
-
               />
             </Item2>
           </Grid>
@@ -188,7 +180,6 @@ function PatientProfile() {
                 }
                 title="Doctor 1 Profile "
                 subheader="Status: Active"
-
               />
             </Item>
           </Grid>
@@ -205,7 +196,6 @@ function PatientProfile() {
                 }
                 title="Doctor 2 Profile "
                 subheader="Status: Active"
-
               />
             </Item>
           </Grid>
@@ -222,24 +212,23 @@ function PatientProfile() {
                 }
                 title="Doctor 3 Profile "
                 subheader="Status: Active"
-
               />
             </Item>
           </Grid>
           <Grid item xs={4}>
-            <Item><CardHeader
-              avatar={
-                <Avatar aria-label="">
-                  D4
-                </Avatar>
-              }
-              action={
-                <IconButton aria-label=""></IconButton>
-              }
-              title="Doctor 4 Profile "
-              subheader="Status: Active"
-
-            /></Item>
+            <Item>
+              <CardHeader
+                avatar={
+                  <Avatar aria-label="">
+                    D4
+                  </Avatar>
+                }
+                action={
+                  <IconButton aria-label=""></IconButton>
+                }
+                title="Doctor 4 Profile "
+                subheader="Status: Active" />
+            </Item>
           </Grid>
           <Grid item xs={4}>
             <Item3>
@@ -254,7 +243,6 @@ function PatientProfile() {
                 }
                 title="Doctor 5 Profile "
                 subheader="Status: Action Required"
-
               />
             </Item3>
           </Grid>
@@ -272,16 +260,12 @@ function PatientProfile() {
                 }
                 title="Doctor 6 Profile "
                 subheader="Status: Inactive"
-
               />
             </Item2>
           </Grid>
         </Grid>
       </Container>
-
     </div>
   );
 }
-
-
 export default PatientProfile;
