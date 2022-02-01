@@ -1,12 +1,12 @@
-import Login from './components/Login'
-import Signup from './components/Signup';
-import AdminDashboard from './components/AdminDashboard';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import AdminDashboard from './pages/AdminDashboard';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Switch, Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
-import DoctorProfile from './components/DoctorProfile'
-import PatientProfile from './components/PatientProfile';
+import DoctorProfile from './pages/DoctorProfile';
+import PatientProfile from './pages/PatientProfile';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
