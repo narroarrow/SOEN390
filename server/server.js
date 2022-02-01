@@ -2,8 +2,8 @@ const express = require('express')
 const app = express()
 const path = require('path');
 const bodyParser = require('body-parser')
-const db = require('../server/database')
-const mysql = require("mysql2");
+// const db = require('../server/database')
+// const mysql = require("mysql2");
 const cors = require('cors');
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
