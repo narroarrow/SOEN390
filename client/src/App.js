@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Switch, Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
-import DoctorProfile from './pages/DoctorProfile';
+import DoctorDashboard from './pages/DoctorDashboard';
 import PatientProfile from './pages/PatientProfile';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
@@ -57,7 +57,7 @@ useEffect(() => {secondTest()}, [])
         <Routes>
           <Route path='/login' element={<Login/>} />
           <Route path='/Signup' element={<Signup/>} />
-          <Route path='/DoctorProfile' element={<DoctorProfile/>} />
+          <Route path='/DoctorDashboard' element={<DoctorDashboard/>} />
           <Route path='/AdminDashboard' element={<AdminDashboard/>}/>
           <Route path='/PatientProfile' element={<PatientProfile/>}/>
           
