@@ -3,25 +3,25 @@
 
 
 ## Objective :trophy:
-
+This project involves building a COVID-19 Tracking App from the beginning to the end. When developing the project, several software and project management practices will be used allowing for organization of work and meeting the objectives and requirements of the application. 
 
 
 
 ## Description :pencil2:
+When the COVID-19 virus first appeared in 2019, there was an uncertainty of how it would affect the world. As the virus continuously spread and progressed into a pandemic, there was a limitation to how well the virus was tracked when it was caught and transmitted from one person to another. With this in mind, the development of a COVID-19 Tracking App was proposed for medical professionals and government health officials to keep track of those infected and document them as patients.
 
 
 
-
-## Core Features :point_down:
+<!-- ## Core Features :point_down:
 :one: &nbsp;  <br>
 :two: &nbsp;  <br>
 :three: &nbsp;  &nbsp; ✔️ <br>
-:four: &nbsp; 
+:four: &nbsp;  -->
 
 
 ## Progress :alarm_clock:
 
-- [ ]  Sprint 1
+- [ x ]  Sprint 1
 - [ ]  Sprint 2
 - [ ]  Sprint 3
 - [ ]  Sprint 4
