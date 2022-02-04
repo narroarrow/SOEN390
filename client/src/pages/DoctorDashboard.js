@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Avatar, IconButton, Button, Box, Grid, CardHeader,} from '@mui/material';
 
-function DoctorProfile() {
+function DoctorDashboard() {
   return (
     <div>
       <Box sx={{ padding: 5 }}>
@@ -42,4 +42,4 @@ function DoctorProfile() {
   );
 }
 
-export default DoctorProfile;
+export default DoctorDashboard;

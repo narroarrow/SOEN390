@@ -2,7 +2,7 @@ import * as React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Container, Box, Button, AppBar, Toolbar, IconButton, Typography, Menu, Avatar, Tooltip, MenuItem} from '@mui/material';
 
-const pages = ['Login', 'Signup', 'AdminDashboard', 'DoctorProfile', 'PatientProfile'];
+const pages = ['Login', 'Signup', 'AdminDashboard', 'DoctorDashboard', 'PatientProfile'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {

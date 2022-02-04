@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import DoctorProfile from '../pages/DoctorProfile';
+import DoctorDashboard from '../pages/DoctorDashboard';
 
-test('Renders the DoctorProfile component', () => {
-  render(<DoctorProfile />);
+test('Renders the DoctorDashboard component', () => {
+  render(<DoctorDashboard />);
 });
