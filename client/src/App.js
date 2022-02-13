@@ -2,6 +2,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AdminDashboard from './pages/AdminDashboard';
 import SymptomForm from './pages/SymptomForm';
+import DoctorViewingPatient from './pages/DoctorViewingPatient';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Switch, Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
@@ -62,6 +63,7 @@ useEffect(() => {secondTest()}, [])
           <Route path='/AdminDashboard' element={<AdminDashboard/>}/>
           <Route path='/PatientProfile' element={<PatientProfile/>}/>
           <Route path='/SymptomForm' element={<SymptomForm/>}/>
+          <Route path='/DoctorViewingPatient' element={<DoctorViewingPatient/>}/>
           
         </Routes>
         <Footer/>

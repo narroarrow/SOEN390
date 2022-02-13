@@ -38,25 +38,15 @@ function PatientProfile() {
     </Container>
 
     <Box sx={{padding:5}}>
-      
-    <Button sx={{mr:42}} variant="outlined" href="#outlined-buttons" >
-        EDIT INFO
-    </Button>
 
     <Button variant="outlined" href="#outlined-buttons" href="/SymptomForm">
-        SYMPTOM FORM
+        REQUEST SYMPTOM FORM
     </Button>
 
-    <Button sx={{ml:32}} variant="outlined" href="#outlined-buttons" >
-        BOOK APPOINTMENT
+    <Button sx={{ml: 65}} variant="outlined" href="#outlined-buttons" href="/SymptomForm">
+        VIEW PREVIOUS SYMPTOM FORMS
     </Button>
 
-    <br></br>
-
-
-    <Button sx={{mt:2, ml:53}} variant="outlined" href="#outlined-buttons" >
-        Edit CURRENT STATUS
-    </Button>
     </Box>
     </Container>
 
