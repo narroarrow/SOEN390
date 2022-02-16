@@ -1,6 +1,7 @@
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AdminDashboard from './pages/AdminDashboard';
+import EditPatientInfo from './pages/EditPatientInfo';
 import SymptomForm from './pages/SymptomForm';
 import DoctorViewingPatient from './pages/DoctorViewingPatient';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -64,6 +65,7 @@ useEffect(() => {secondTest()}, [])
           <Route path='/PatientProfile' element={<PatientProfile/>}/>
           <Route path='/SymptomForm' element={<SymptomForm/>}/>
           <Route path='/DoctorViewingPatient' element={<DoctorViewingPatient/>}/>
+          <Route path='/EditPatientInfo' element={<EditPatientInfo/>}/>
           
         </Routes>
         <Footer/>

@@ -1,6 +1,5 @@
 import React from 'react';
 import {Container, Box, Grid, CssBaseline, Button, Card, styled, Paper} from '@mui/material';
-import Axios from 'axios';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
