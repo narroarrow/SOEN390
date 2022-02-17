@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import DoctorDashboard from './pages/DoctorDashboard';
 import PatientProfile from './pages/PatientProfile';
+import DoctorPatientProfile from './pages/DoctorPatientProfile';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
@@ -58,6 +59,7 @@ useEffect(() => {secondTest()}, [])
           <Route path='/login' element={<Login/>} />
           <Route path='/Signup' element={<Signup/>} />
           <Route path='/DoctorDashboard' element={<DoctorDashboard/>} />
+          <Route path='/DoctorPatientProfile' element={<DoctorPatientProfile/>} />
           <Route path='/AdminDashboard' element={<AdminDashboard/>}/>
           <Route path='/PatientProfile' element={<PatientProfile/>}/>
           
