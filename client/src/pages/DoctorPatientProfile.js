@@ -5,7 +5,7 @@ import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
-function DoctorDashboard() {
+function DoctorPatientProfile() {
   return (
     <div>
       <Box sx={{ padding: 5 }}>
@@ -51,4 +51,4 @@ function DoctorDashboard() {
   );
 }
 
-export default DoctorDashboard;
+export default DoctorPatientProfile;
