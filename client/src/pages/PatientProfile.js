@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, map} from 'react';
 import {Container, Box, Grid, CssBaseline, Button, Card, styled, Paper} from '@mui/material';
 import Axios from 'axios';
 
@@ -22,27 +22,18 @@ const Item = styled(Paper)(({ theme }) => ({
 
  
 function PatientProfile() {
+    
+
+    const [patientData, setPatientData] = useState([]);
 
 
-    let patientData;
-    let patientFName = 3;
-    let patientLName;
-    let patientStatus;
-
-
-    //Anything we define below isnt defined when the page loads
-    window.addEventListener("load", function() {
-        Axios.get('http://localhost:8080/patientProfileData',{
-        //send the patient id here
-        }).then((response) => {
-            patientFName=response.data.FName;
-            console.log(response);
-        });
+   
+    Axios.get('http://localhost:8080/patientProfileData',{
+    //send the patient id here
+    }).then((response) => {
+        setPatientData(response.data);
+        console.log(response);
     });
-
-    // let patientFName = patientData.FName;
-    // let patientLName = patientData.LName;
-    // let patientStatus = patientData.Status;
 
   return (
             <div>
@@ -55,7 +46,11 @@ function PatientProfile() {
                 <Container>
                     <Grid container spacing={2}>
                     <Grid item xs={4}>
-                        <Item>Patient Name: ${patientFName}</Item>
+                        <Item>Patient Name: 
+                            {patientData.map((val, key) => {
+                              return " "+val.FName+" "+val.LName
+                            })}
+                        </Item>
                     </Grid>
                     <Grid item xs={4}>
                         <Item>Patient ID:</Item>
