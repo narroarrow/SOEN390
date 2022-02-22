@@ -1,52 +1,30 @@
 import Paper from '@mui/material/Paper'; import React from 'react'; import FormControlLabel from '@mui/material/FormControlLabel'; import FormControl from '@mui/material/FormControl'; import FormLabel from '@mui/material/FormLabel'; import Radio from '@mui/material/Radio'; import RadioGroup from '@mui/material/RadioGroup'; import { TextField } from '@mui/material'; import Button from '@mui/material/Button'; import Axios from 'axios'; import { useState } from "react";
 
-
+let submitSymptomForm = (event) =>{
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  const currentDate = new Date();
+  const timestamp = currentDate.getTime();
+   Axios.post('http://localhost:8080/createSymptomForm',{
+      //patientid: id
+      timestamp: Date.now(),
+      weight: data.get('weight'),
+      temperature: data.get('weight'),
+      breathing: data.get('breathing'),
+      chest: data.get('chest'),
+      fatigue: data.get('fatigue'),
+      smell: data.get('smell'),
+      fever: data.get('fever'),
+      cough: data.get('cough'),
+      taste: data.get('taste'),
+      symptoms: data.get('symptoms'),
+ }).then(()=>{
+   console.log("success");
+ });
+};
 
 
 function SymptomForm() {
-
-  // const [weight, setWeight] = useState(0);
-  // const [fever, setFever] = useState(0);
-  // const [cough, setCough] = useState(0);
-  // const [taste, setTaste] = useState(0);
-  // const [symptoms, setSymptoms] = useState("");
-
-  const submitSymptomForm = (event) =>{
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-     Axios.post('http://localhost:8080/createSymptomForm',{
-        weight: data.get('weight'),
-        fever: data.get('fever'),
-        cough: data.get('cough'),
-        taste: data.get('taste'),
-        symptoms: data.get('symptoms'),
-   }).then(()=>{
-     console.log("success");
-   });
-  };
-
-  
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   const submitredirect = 'PatientProfile'
-  //   console.log({
-  //     temperature: data.get('temperature'),
-  //     weight: data.get('weight'),
-  //     breathing: data.get('breathing'),
-  //     chest: data.get('chest'),
-  //     fatigue: data.get('fatigue'),
-  //     fever: data.get('fever'),
-  //     cough: data.get('cough'),
-  //     smell: data.get('smell'),
-  //     taste: data.get('taste'),
-  //     symptoms: data.get('symptoms')
-      
-
-  //   });
-  // };
-
 
   return (
     <div align="Center">
@@ -74,9 +52,7 @@ function SymptomForm() {
       </FormControl>
 
       <br></br>
- 
 
-    
       <FormControl>
         <FormLabel sx={{mb:3}}>
           Difficulty Breathing
@@ -136,13 +112,13 @@ function SymptomForm() {
     
       <FormControl>
 
-        <FormLabel id="chest-pain" sx={{mb:3}}>
+        <FormLabel id="chest" sx={{mb:3}}>
           Chest Pain
         </FormLabel>
 
         <RadioGroup
           row
-          aria-labelledby="chest-pain"
+          aria-labelledby="chest"
           name="chest"
           defaultValue="top"
           sx={{mb:5}}

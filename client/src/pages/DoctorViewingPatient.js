@@ -1,5 +1,6 @@
 import React from 'react';
 import {Container, Box, Grid, CssBaseline, Button, Card, styled, Paper} from '@mui/material';
+import Axios from 'axios';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -8,6 +9,14 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
     fontWeight: 'bold'
   }));
+
+  let doctorViewingPatientData = () => {
+    Axios.get('http://localhost:8080/doctorViewingPatientData',{
+        //send the patient id here
+    }).then((response) => {
+        console.log(response);
+    });
+};
 
 
 function PatientProfile() {

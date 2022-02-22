@@ -44,43 +44,23 @@ app.get('/api', (req, res) => {
 // })
 
 app.post("/createSymptomForm", (req,res) => {
-    // const temperature = req.body.temperature;
-    // const weight = req.body.weight;
-    // const breathing = req.body.breathing;
-    // const chest = req.body.chest;
-    // const fatigue = req.body.fatigue;
-    // const fever = req.body.fever;
-    // const cough = req.body.cough;
-    // const smell = req.body.smell;
-    // const taste = req.body.taste;
-    // const symptoms = req.body.symptoms;
-
-    // db.query(
-    //      "INSERT INTO 390db.healthinformation () VALUES (?,?,?,?,?,?,?,?,?,?)",
-    //      [temperature, weight, breathing, chest, fatigue, fever, cough, smell, taste, symptoms],
-    //      (err, results) =>{
-    //          if(err){
-    //              console.log(err);
-    //          }else{
-    //              res.send("Form Submitted!");
-    //          }
-    //      }
-    // );
-
-    const patientid = 1;
-    const symptom = "test";
-    const timestamp = "1970-01-01 00:00:01";
-    const weight = req.body.weight;
-    const age = 3;
-    const gender = "male";
-    const sneeze = req.body.fever;
-    const cough = req.body.cough;
-    const tastesense = req.body.taste;
-    const other = req.body.symptoms;
+    
+    let patientid = 1;
+    let timestamp = req.body.timestamp;
+    let weight = req.body.weight;
+    let temperature = req.body.temperature;
+    let breathing = req.body.breathing;
+    let chest_pain = req.body.chest;
+    let fatigue =req.body.fatigue;
+    let fever= req.body.fever;
+    let cough = req.body.cough;
+    let smell = req.body.smell;
+    let taste = req.body.taste;
+    let other = req.body.symptoms;
 
     db.query(
-        "INSERT INTO 390db.healthinformation (PatientID, Symptom, Timestamp, Weight, Age, Gender, Sneeze, Cough, TasteSense, Other) VALUES (?,?,?,?,?,?,?,?,?,?)",
-        [patientid, symptom, timestamp, weight, age, gender, sneeze, cough, tastesense, other],
+        "INSERT INTO 390db.healthinformation (PatientID, Timestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        [patientid, timestamp, weight, temperature, breathing, chest_pain, fatigue, fever, cough, smell, taste, other],
             (err, results) =>{
                 if(err){
                     console.log(err);
@@ -88,9 +68,31 @@ app.post("/createSymptomForm", (req,res) => {
                     res.send("Form Submitted!");
                 }
             }
-    )
-
+    );
 });
+
+app.get('/patientProfileData', (req, res) => {
+    //will need to use the patient ID in the query below
+    db.query("SELECT P.FName, P.LName, P.HealthInsurance, P.Status FROM patients P, doctors D WHERE P.id=1 AND D.id=P.doctorID", (err,result) => {
+        if(err) {
+            console.log(err);
+        }else{
+            res.send(result);
+        }
+    })
+})
+
+app.get('/doctorViewingPatientData', (req, res) => {
+    //will need patient and doctors id
+    //also need to see what it is that the doctor will see
+    db.query("SELECT P.FName, P.LName, ", (err,result) => {
+        if(err) {
+            console.log(err);
+        }else{
+            res.send(result);
+        }
+    })
+})
 
 // app.get('/*', function(req,res){
 //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
