@@ -47,5 +47,25 @@ app.get('/*', function(req,res){
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 })
 
+//getting the email and passowrd from the form
+app.post("/Login", (req,res) => {
+   
+    let email = req.body.email;
+    let password = req.body.password;
+    //check passwords and emails here then return request
+    console.log("Sucess!!");
+})
+
+//getting the email and passowrd from the form
+app.post("/Signup", (req,res) => {
+    
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
+    let email = req.body.email;
+    let password = req.body.password;
+    //Store passwords and emails here
+    console.log("Sucess!");
+})
+
 
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
