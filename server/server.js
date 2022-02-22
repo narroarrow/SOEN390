@@ -6,6 +6,8 @@ const bodyParser = require('body-parser')
 // const mysql = require("mysql2");
 const cors = require('cors');
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
@@ -42,6 +44,8 @@ app.get('/api', (req, res) => {
 //     })
 // })
 
+
+app.use(express.json())
 const posts = [
     {username: 'Jeff',
 title1:'Post 1'},
@@ -78,13 +82,34 @@ app.post('/users',async(req,res) => {// adding a user
 })
 
 
-app.get('/posts',(req, res) => {
-    res.json(posts)
+app.get('/posts',authenticateToken,(req, res) => {
+    req.user
+    res.json(posts.filter(post => post.username === req.user.name))
 })
 
-app.get('/login',(req,res) =>{
+app.post('/login',(req,res) =>{
     //authenticate the user
+    const username = req.body.username
+    const user = {name:username}
+    // console.log(req.body.username)
+// for some reason sign(user) has more 1.2.3 parts
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)//passes the object we want to serialize
+    res.json({accessToken:accessToken})
+        
 })
+
+function authenticateToken(req,res,next){
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if(token == null)return res.sendStatus(401)
+
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET, (err,user)=>{
+        if(err) return res.sendStatus(403)
+        req.user = user
+        next()
+    }
+    )
+}
 
 app.get('/*', function(req,res){
     res.sendFile(path.join(__dirname, '../client/public', 'index.html')); 
@@ -109,5 +134,6 @@ app.post('/users/login', async(req,res) =>{
     }
 }
 )
-//continue from https://youtu.be/mbsmsi7l3r4?t=339
+//https://youtu.be/mbsmsi7l3r4?t=871 to see how JWT are useful since they can be used at two different ports
+// continue from https://youtu.be/mbsmsi7l3r4?t=949 he explains that you can have an authorization server and a login sever separated and the use of refresh tokens
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
