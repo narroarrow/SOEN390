@@ -12,6 +12,7 @@ import DoctorDashboard from './pages/DoctorDashboard';
 import PatientProfile from './pages/PatientProfile';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import EditInfoForm from './pages/EditInfoForm';
 
 
 function App() {
@@ -63,9 +64,12 @@ useEffect(() => {secondTest()}, [])
           <Route path='/DoctorDashboard' element={<DoctorDashboard/>} />
           <Route path='/AdminDashboard' element={<AdminDashboard/>}/>
           <Route path='/PatientProfile' element={<PatientProfile/>}/>
+          <Route path='/EditInfoForm' element={<EditInfoForm/>}/>
           <Route path='/SymptomForm' element={<SymptomForm/>}/>
           <Route path='/DoctorViewingPatient' element={<DoctorViewingPatient/>}/>
           <Route path='/EditPatientInfo' element={<EditPatientInfo/>}/>
+
+          
           
         </Routes>
         <Footer/>

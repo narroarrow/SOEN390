@@ -44,9 +44,10 @@ function PatientProfile() {
                 <Card sx={{ maxWidth: 275, textAlign:'center'}}><h1>Patient Profile </h1></Card>
                 </Box>
                 <Container>
+                    Medical Information
                     <Grid container spacing={2}>
                     <Grid item xs={4}>
-                        <Item>Patient Name: 
+                        <Item>Name: 
                             {patientData.map((val, key) => {
                               return " "+val.FName+" "+val.LName
                             })}
@@ -56,18 +57,37 @@ function PatientProfile() {
                         <Item>Patient ID:</Item>
                     </Grid>
                     <Grid item xs={4}>
-                        <Item>Covid-19 Status:</Item>
+                        <Item>Doctor:</Item>
                     </Grid>
                     <br></br>
+                    
+                    </Grid>
+                </Container>
+                
+                <Container sx={{paddingTop: 5}}>
+                    General Patient Information
+                    <Grid container spacing={2}>
+                    
                     <Grid item xs={4}>
-                        <Item>Doctor:</Item>
+                        <Item>Birthdate:</Item>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Item>Health Insurance:</Item>
+                    </Grid>
+                    <br></br>
+
+                    <Grid item xs={4}>
+                        <Item>Phone number:</Item>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Item>Email Address:</Item>
                     </Grid>
                     </Grid>
                 </Container>
 
                 <Box sx={{padding:5}}>
                 
-                <Button sx={{mr:42}} variant="outlined" href="#outlined-buttons" >
+                <Button sx={{mr:42}} variant="outlined" href="/EditInfoForm" >
                     EDIT INFO
                 </Button>
 
@@ -82,7 +102,7 @@ function PatientProfile() {
                 <br></br>
 
 
-                <Button sx={{mt:2, ml:53}} variant="outlined" href="#outlined-buttons" >
+                <Button sx={{mt:2, ml:53}} variant="outlined" href="/SymptomForm" >
                     Edit CURRENT STATUS
                 </Button>
                 </Box>
