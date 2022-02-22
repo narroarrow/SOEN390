@@ -4,8 +4,18 @@ import FlagIcon from '@mui/icons-material/Flag';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import Axios from 'axios';
+import { useState } from "react";
 
 function DoctorPatientProfile() {
+  const [patientList, setPatientList] = useState([]);
+
+  const getPatients = () => {
+    Axios.get("http://localhost:8080/DoctorPatientProfile").then((response) => {
+      setPatientList(response.data)
+    });
+  };
+
   return (
     <div>
       <Box sx={{ padding: 5 }}>
@@ -16,30 +26,33 @@ function DoctorPatientProfile() {
         </h1>
       </Box>
       <Box sx={{ flexGrow: 1 }} textAlign='center'>
-        <Grid container spacing={5} columns={12}>
-          {Array.from(Array(12)).map((_, index) => ( //array value is the number of patients
-            <Grid item md={4} key={index}>
-              <button>
-                <CardHeader
-                  avatar={
-                    <Avatar aria-label="">
-                      P{index}
-                    </Avatar>
-                  }
-                  action={
-                    <IconButton aria-label=""></IconButton>
-                  }
-                  title="Name of Patient" //name of patient from db
-                  subheader="Status: Infected" //status of patient from db
-                />
-                <FlagIcon color = "secondary"/> {/* red flag (flagged) */}
-                {/* <FlagOutlinedIcon/>  */} {/* outlined flag (not flagged) */}
-                <VisibilityIcon/> {/* viewed icon */}
-                {/* <VisibilityOutlinedIcon/> */} {/* unviewed icon */}
+        <Grid container spacing={5} columns={12} onLoad={getPatients()}>
+          {patientList.map((val, key) =>{
+            let isFlagged = val.Flagged;
+            return (
+              <Grid item md={4} key={key}>
+                <button>
+                  <CardHeader
+                    avatar={
+                      <Avatar aria-label="">
+                        P{key}
+                      </Avatar>
+                    }
+                    action={
+                      <IconButton aria-label=""></IconButton>
+                    }
+                    title= {val.Fname + " " + val.Lname} //name of patient from db
+                    subheader= {val.Status} //status of patient from db
+                  />
+                  
+                  <VisibilityIcon/> {/* viewed icon */}
+                  {/* <VisibilityOutlinedIcon/> */} {/* unviewed icon */}
+                  {isFlagged ? (<FlagIcon color = "secondary"/>) : (<FlagOutlinedIcon/>)} {/* If a patient is flagged the flag icon will be red */}
 
-              </button>
-            </Grid>
-          ))}
+                </button>
+              </Grid>
+            );
+          })}
         </Grid>
       </Box>
       <Box sx={{ padding: 10 }}>

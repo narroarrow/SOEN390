@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 app.use(express.static('dist'));
+app.use(express.json());
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -24,10 +25,10 @@ app.use(function (req, res, next) {
 
 
 //below is a test server function
-app.get('/api', (req, res) => {
-    res.json({"users":["userOne", "userTwo", "userThree"]})
-
-})
+//app.get('/api', (req, res) => {
+//    res.json({"users":["userOne", "userTwo", "userThree"]})
+//
+//})
 
 // example of using DB query
 
@@ -42,10 +43,18 @@ app.get('/api', (req, res) => {
 // })
 
 
-
 // app.get('/*', function(req,res){
 //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // })
 
+app.get("/DoctorPatientProfile", (req, res) => {
+    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
 
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
