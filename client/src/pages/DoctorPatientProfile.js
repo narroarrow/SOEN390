@@ -71,7 +71,7 @@ function DoctorPatientProfile() {
             }
             return (
               <Grid item md={4} key={key}>
-                <button>
+                <button href="/DoctorViewingPatient">
                   <CardHeader
                     avatar={
                       <Avatar aria-label="">
