@@ -1,32 +1,19 @@
 # for authentication.js
-
-
-
-##
-
-POST http://localhost:9000/users
-Content-Type: application/json
-
-{
-    "name": "Jim",
-    "password": "password"
-}
 ###
-POST http://localhost:9000/users
-Content-Type: application/json
+GET http://localhost:8080/users
 
-{
-    "name": "Alex",
-    "password": "password12345"
-}
+### 
+POST http://localhost:8080/Signup
+
+
 
 ###
 POST http://localhost:9000/users
 Content-Type: application/json
 
 {
-    "name": "Jeff",
-    "password": "assword"
+    "name": "Maira",
+    "password": "Password9876"
 }
 ###
 
@@ -37,16 +24,16 @@ POST http://localhost:9000/users/login
 Content-Type: application/json
 
 {
-    "name": "Jeff",
-    "password": "assword"
+    "name": "Jim",
+    "password": "123"
 }
 ###
 POST http://localhost:9000/users/login
 Content-Type: application/json
 
 {
-    "name": "Jim",
-    "password": "password"
+    "name": "Maira",
+    "password": "Password9876"
 }
 
 ###
@@ -57,11 +44,32 @@ Content-Type: application/json
     "name": "Alex",
     "password": "password12345"
 }
+
+
+
+
+
+
+
+
+
+//new
+
 ###
-POST http://localhost:9000/users/login
-Content-Type: application/json
+GET http://localhost:9000/users
+
+###
+
+POST http://localhost:9000/users Content-Type: application/json
 
 {
-    "name": "Jeff",
-    "password": "assword"
+"name": "Kyle", "password": "password"
+}
+
+###
+
+POST http://localhost:9000/users/login Content-Type: application/json
+
+{
+"name": "Kyle", "password": "password"
 }

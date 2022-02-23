@@ -1,18 +1,14 @@
-require('dotenv').config()
-
 const express = require('express')
 const app = express()
-const jwt = require('jsonwebtoken')
 
 app.use(express.json())
 
 const path = require('path');
 const bodyParser = require('body-parser')
-// const db = require('../server/database')
-// const mysql = require("mysql2");
+const db = require('../server/database')
+const mysql = require("mysql2");
 const cors = require('cors');
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
@@ -40,15 +36,15 @@ app.get('/api', (req, res) => {
 
 // example of using DB query
 
-// app.get('/users', (req, res) => {
-//
-//     let state = `SELECT * FROM cloudscratch.tablescratch;`;
-//
-//     db.query(state, function(err, result) {
-//         console.log(result);
-//         res.send(result);
-//     })
-// })
+app.get('/users', (req, res) => {
+
+    let state = `SELECT * FROM 390db.users;`;
+
+    db.query(state, function(err, result) {
+        console.log(result);
+        res.send(result);
+    })
+})
 
 
 //https://youtu.be/mbsmsi7l3r4 start from 00:00
@@ -63,13 +59,40 @@ app.post("/Login", (req,res) => {
 })
 
 //getting the email and passowrd from the form
-app.post("/Signup", (req,res) => {
-    
-    let firstName = req.body.firstName;
-    let lastName = req.body.lastName;
-    let email = req.body.email;
-    let password = req.body.password;
+app.post("/Signup", async(req,res) => {
+    let counter = 1;
     //Store passwords and emails here
+    try{
+        let firstName = req.body.firstName;
+        let lastName = req.body.lastName;
+        let email = req.body.email;
+        let password = req.body.password;
+
+        const hashedPassword = await bcrypt.hash(password,10) // 10 is const salt = await bcrypt.genSalt()
+        const user = {firstName:firstName, lastName:lastName,email:email, password:hashedPassword}
+        //users.push(user) 
+        //above used for adding to array
+
+
+        state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (${counter}, ${firstName}, ${lastName}, ${email}, ${hashedPassword}, '1', '5146256619', 'Doctor');`;//figure out how to pass variables i created in 
+//SELECT * FROM 390db.admins;
+        console.log(state)
+        counter++;
+        db.query(state, function(err, result) {
+            res.sendStatus(201);
+        })
+        
+
+        //we should add a salt cplumn to the db, bcrypyt handles storing the salt and password for us as the salt is saved inside the password
+        //hashedPassword = salt.hashed password
+    }
+    catch{ 
+        res.status(500).send()
+
+    }
+//INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Role`) VALUES ('2', 'Alex', 'Bara', 'a.bara@engcomm.ca', 'pass123', '1', '5146256619', 'Doctor');
+
+
     console.log("Sucess!");
 })
 

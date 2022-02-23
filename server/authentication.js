@@ -18,12 +18,10 @@ app.post('/users',async(req,res) => {// adding a user
     try{
 
         const hashedPassword = await bcrypt.hash(req.body.password,10) // 10 is const salt = await bcrypt.genSalt()
-
-
         const user = {user:req.body.name, password:hashedPassword}
         users.push(user)
         res.status(201).send()
-        hash(salt + 'password123') //hashing the password "password"
+
         //we should add a salt cplumn to the db, bcrypyt handles storing the salt and password for us as the salt is saved inside the password
         //hashedPassword = salt.hashed password
     }
@@ -34,10 +32,14 @@ app.post('/users',async(req,res) => {// adding a user
 })
 
 app.post('/users/login', async(req,res) =>{//only allows for 1 successful login
+
     const user = users.find(user => user.name = req.body.name) //suggested === but it fails if you do
+    //console.log("user info\n"+user)
+    // console.log( user.name +'\t\t'+ req.body.name)
     if (user == null){
         return res.status(400).send('Cannot find user')
     }
+    // console.log(user.password + '\n'+ req.body.password)
     try{
         if(await bcrypt.compare(req.body.password, user.password)){//helps prevent timing attempts
         res.send('Success')
