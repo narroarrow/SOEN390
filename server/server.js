@@ -71,15 +71,49 @@ app.post("/createSymptomForm", (req,res) => {
     );
 });
 
+app.post("/editedPatientData", (req,res) =>{
+    let patientid = 1;
+    let fname = req.body.fname;
+    let lname = req.body.lname;
+    let email = req.body.email;
+    let phone = req.body.phone;
+    let healthinsurance = req.body.healthinsurance;
+
+    db.query(
+        "UPDATE 390db.patients SET FName=?, LName=?, Email=?, Phone=?, HealthInsurance=? WHERE ID=?",
+        [fname, lname, email, phone, healthinsurance, patientid],
+        (err, results) =>{
+            if(err){
+                console.log(err);
+            }else{
+                res.send("Edited!");
+            }
+        }
+    );
+
+});
+
 app.get('/patientProfileData', (req, res) => {
     //will need to use the patient ID in the query below
-    db.query("SELECT P.FName, P.LName, P.HealthInsurance, P.Status FROM patients P, doctors D WHERE P.id=1 AND D.id=P.doctorID", (err,result) => {
+    db.query("SELECT P.FName, P.LName, P.HealthInsurance, P.ID, P.Birthday, P.Phone, P.Email, U.FName AS DFName, U.LName AS DLName FROM patients P, doctors D, users U WHERE P.id=1 AND D.id=P.doctorID AND U.ID=D.ID", (err,result) => {
         if(err) {
             console.log(err);
         }else{
             res.send(result);
         }
-    })
+    });
+});
+
+app.get('/editPatientProfileData', (req, res) => {
+    //will need to use the patients id
+
+    db.query("SELECT P.FName, P.LName, P.Birthday, P.HealthInsurance, P.Phone, P.Email FROM patients P, doctors D WHERE P.id=1 AND D.id=P.doctorID", (err,result) => {
+        if(err) {
+            console.log(err);
+        }else{
+            res.send(result);
+        }
+    });
 })
 
 app.get('/doctorViewingPatientData', (req, res) => {
@@ -91,8 +125,8 @@ app.get('/doctorViewingPatientData', (req, res) => {
         }else{
             res.send(result);
         }
-    })
-})
+    });
+});
 
 // app.get('/*', function(req,res){
 //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
