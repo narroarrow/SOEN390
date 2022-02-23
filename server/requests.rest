@@ -11,6 +11,14 @@ Content-Type: application/json
     "name": "Jim",
     "password": "password"
 }
+###
+POST http://localhost:9000/users
+Content-Type: application/json
+
+{
+    "name": "Alex",
+    "password": "password12345"
+}
 
 ###
 POST http://localhost:9000/users
@@ -18,14 +26,14 @@ Content-Type: application/json
 
 {
     "name": "Jeff",
-    "password": "password"
+    "password": "assword"
 }
 ###
 
-GET http://localhost:8080/users
+GET http://localhost:9000/users
 
 ###
-POST http://localhost:8080/users/login
+POST http://localhost:9000/users/login
 Content-Type: application/json
 
 {
@@ -33,10 +41,27 @@ Content-Type: application/json
     "password": "assword"
 }
 ###
-POST http://localhost:8080/users/login
+POST http://localhost:9000/users/login
+Content-Type: application/json
+
+{
+    "name": "Jim",
+    "password": "password"
+}
+
+###
+POST http://localhost:9000/users/login
+Content-Type: application/json
+
+{
+    "name": "Alex",
+    "password": "password12345"
+}
+###
+POST http://localhost:9000/users/login
 Content-Type: application/json
 
 {
     "name": "Jeff",
-    "password": "password"
+    "password": "assword"
 }

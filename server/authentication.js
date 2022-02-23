@@ -33,7 +33,7 @@ app.post('/users',async(req,res) => {// adding a user
     }
 })
 
-app.post('/users/login', async(req,res) =>{
+app.post('/users/login', async(req,res) =>{//only allows for 1 successful login
     const user = users.find(user => user.name = req.body.name) //suggested === but it fails if you do
     if (user == null){
         return res.status(400).send('Cannot find user')
