@@ -11,6 +11,7 @@ function DoctorPatientProfile() {
   const [patientList, setPatientList] = useState([]); //all patient info
   const [filteredPatients, setFilteredPatients] = useState([]); //filtered values for patient info
   const [executed, setExecuted] = useState(false); //keeps track of if getPatients() method is called
+  const [viewedList, setViewedList] = useState([]);
 
   var tempDoctorID = 1; //temp ID for doctor until login is implemented
 
@@ -32,7 +33,19 @@ function DoctorPatientProfile() {
         setFilteredPatients(patientList);
         setExecuted(true);
       }
-    }); 
+    });   
+  };
+
+  const getViewed = () => { //this function is called when the doctor patient profile page is loaded. It sets the useState patientList to the query result for patient info
+    Axios.get("http://localhost:8080/Viewed").then((response) => {
+      setViewedList(response.data);
+      console.log(response);
+    });   
+  };
+
+  const loadAllFunctions = () => {
+    getPatients();
+    getViewed();
   };
   
 
@@ -49,9 +62,13 @@ function DoctorPatientProfile() {
         </h1>
       </Box>
       <Box sx={{ flexGrow: 1 }} textAlign='center'>
-        <Grid container spacing={5} columns={12} onLoad={getPatients()}>
+        <Grid container spacing={5} columns={12} onLoad={loadAllFunctions()}>
           {filteredPatients.map((val, key) =>{
-            let isFlagged = val.Flagged;
+            let isFlagged = val.Flagged; //checks if patient has been flagged
+            let isViewed = false; //patient health information is not viewed unless doctor specifies
+            if (viewedList.map(el => el.ID).includes(val.ID)){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
+              isViewed = true;
+            }
             return (
               <Grid item md={4} key={key}>
                 <button>
@@ -67,9 +84,8 @@ function DoctorPatientProfile() {
                     title= {val.Fname + " " + val.Lname} //name of patient from db
                     subheader= {val.Status} //status of patient from db
                   />
-                  
-                  <VisibilityIcon/> {/* viewed icon */}
-                  {/* <VisibilityOutlinedIcon/> */} {/* unviewed icon */}
+                              
+                  {isViewed ? (<VisibilityIcon/>) : (<VisibilityOutlinedIcon/>)} {/* If a patients health information has been reviewed the eye icon will be filled */}
                   {isFlagged ? (<FlagIcon color = "secondary"/>) : (<FlagOutlinedIcon/>)} {/* If a patient is flagged the flag icon will be red */}
 
                 </button>
