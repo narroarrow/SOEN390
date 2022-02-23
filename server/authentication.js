@@ -74,7 +74,7 @@ app.post("/Signup", async(req,res) => {
 
         console.log(state)
         counter++;
-        db.query(state, ['69',firstName,lastName,email,hashedPassword,1,'5146256619', 'Doctor'], function(err, result) {
+        db.query(state, ['69',firstName,lastName,email,hashedPassword,1,'5146256619', 'Doctor'], function(err, result) {//ID might be removed since it should be auto indent
             console.log(err)
             res.send(result);
         })
