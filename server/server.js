@@ -48,7 +48,7 @@ app.use(function (req, res, next) {
 // })
 
 app.get("/DoctorPatientProfile", (req, res) => {
-    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
+    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.DoctorID FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
         if (err) {
             console.log(err);
         } else {
