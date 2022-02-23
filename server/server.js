@@ -74,17 +74,16 @@ app.post("/Signup", async(req,res) => {
         //above used for adding to array
 
 
-        state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (${counter}, ${firstName}, ${lastName}, ${email}, ${hashedPassword}, '1', '5146256619', 'Doctor');`;//figure out how to pass variables i created in 
+        state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in 
 //SELECT * FROM 390db.admins;
+// (1, ${firstName}, ${lastName}, ${email}, 'passwrod', '1', '5146256619', 'Doctor')
         console.log(state)
         counter++;
-        db.query(state, function(err, result) {
-            res.sendStatus(201);
+        db.query(state, ['69',firstName,lastName,email,hashedPassword,1,'5146256619', 'Doctor'], function(err, result) {
+            console.log(err)
+            res.send(result);
         })
         
-
-        //we should add a salt cplumn to the db, bcrypyt handles storing the salt and password for us as the salt is saved inside the password
-        //hashedPassword = salt.hashed password
     }
     catch{ 
         res.status(500).send()
@@ -92,8 +91,6 @@ app.post("/Signup", async(req,res) => {
     }
 //INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Role`) VALUES ('2', 'Alex', 'Bara', 'a.bara@engcomm.ca', 'pass123', '1', '5146256619', 'Doctor');
 
-
-    console.log("Sucess!");
 })
 
 //https://youtu.be/mbsmsi7l3r4?t=871 to see how JWT are useful since they can be used at two different ports
