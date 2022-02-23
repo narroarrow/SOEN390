@@ -10,6 +10,7 @@ import PatientProfile from './pages/PatientProfile';
 import DoctorPatientProfile from './pages/DoctorPatientProfile';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import DoctorViewingPatient from './pages/DoctorViewingPatient';
 
 
 function App() {
@@ -62,6 +63,7 @@ useEffect(() => {secondTest()}, [])
           <Route path='/DoctorPatientProfile' element={<DoctorPatientProfile/>} />
           <Route path='/AdminDashboard' element={<AdminDashboard/>}/>
           <Route path='/PatientProfile' element={<PatientProfile/>}/>
+          <Route path='/DoctorViewingPatient' element={<DoctorViewingPatient/>}/>
           
         </Routes>
         <Footer/>
