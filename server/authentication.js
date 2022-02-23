@@ -1,57 +1,88 @@
-//https://www.youtube.com/watch?v=Ud5xKCYQTjM&t=0s
 const express = require('express')
 const app = express()
-const bcrypt = require('bcrypt')
 
 app.use(express.json())
 
-const users = [ //usually stored in a db
-    
-]
+const path = require('path');
+const bodyParser = require('body-parser')
+const db = require('../server/database')
+const mysql = require("mysql2");
+const cors = require('cors');
+const bcrypt = require('bcrypt')
+require('dotenv').config()
 
-app.get('/users',(req, res) => { //route needs to be removed since we don't want to expose user name and password 
-    res.json(users)
-}
-)
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
-app.post('/users',async(req,res) => {// adding a user
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static(__dirname + "../client/public/"));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+
+app.use(express.static('dist'));
+
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+
+//below is a test server function
+app.get('/api', (req, res) => {
+    res.json({"users":["userOne", "userTwo", "userThree"]})
+
+})
+
+// example of using DB query
+
+app.get('/users', (req, res) => {
+
+    let state = `SELECT * FROM 390db.users;`;
+
+    db.query(state, function(err, result) {
+        console.log(result);
+        res.send(result);
+    })
+})
+
+
+//https://youtu.be/mbsmsi7l3r4 start from 00:00
+
+
+//getting the email and passowrd from the form
+app.post("/Login", (req,res) => {
+    let email = req.body.email;
+    let password = req.body.password;
+    //check passwords and emails here then return request
+    console.log("Sucess!!");
+})
+
+//getting the email and passowrd from the form
+app.post("/Signup", async(req,res) => {
+
     try{
+        let firstName = req.body.firstName;
+        let lastName = req.body.lastName;
+        let email = req.body.email;
+        let password = req.body.password;
 
-        const hashedPassword = await bcrypt.hash(req.body.password,10) // 10 is const salt = await bcrypt.genSalt()
-        const user = {user:req.body.name, password:hashedPassword}
-        users.push(user)
-        res.status(201).send()
+        const hashedPassword = await bcrypt.hash(password,10) // 10 is const salt = await bcrypt.genSalt()
+        const user = {firstName:firstName, lastName:lastName,email:email, password:hashedPassword}
 
-        //we should add a salt cplumn to the db, bcrypyt handles storing the salt and password for us as the salt is saved inside the password
-        //hashedPassword = salt.hashed password
+        state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in 
+
+        console.log(state)
+        counter++;
+        db.query(state, ['69',firstName,lastName,email,hashedPassword,1,'5146256619', 'Doctor'], function(err, result) {
+            console.log(err)
+            res.send(result);
+        })
+        
     }
     catch{ 
         res.status(500).send()
 
     }
 })
-
-app.post('/users/login', async(req,res) =>{//only allows for 1 successful login
-
-    const user = users.find(user => user.name = req.body.name) //suggested === but it fails if you do
-    //console.log("user info\n"+user)
-    // console.log( user.name +'\t\t'+ req.body.name)
-    if (user == null){
-        return res.status(400).send('Cannot find user')
-    }
-    // console.log(user.password + '\n'+ req.body.password)
-    try{
-        if(await bcrypt.compare(req.body.password, user.password)){//helps prevent timing attempts
-        res.send('Success')
-    }
-        else{
-            res.send('Not Allowed')
-        }
-    }
-    catch{
-        res.status(500).send()
-    }
-} 
-)
-
-app.listen(9000)
+app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));

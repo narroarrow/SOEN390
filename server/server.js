@@ -60,8 +60,7 @@ app.post("/Login", (req,res) => {
 
 //getting the email and passowrd from the form
 app.post("/Signup", async(req,res) => {
-    let counter = 1;
-    //Store passwords and emails here
+
     try{
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
@@ -70,13 +69,9 @@ app.post("/Signup", async(req,res) => {
 
         const hashedPassword = await bcrypt.hash(password,10) // 10 is const salt = await bcrypt.genSalt()
         const user = {firstName:firstName, lastName:lastName,email:email, password:hashedPassword}
-        //users.push(user) 
-        //above used for adding to array
-
 
         state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in 
-//SELECT * FROM 390db.admins;
-// (1, ${firstName}, ${lastName}, ${email}, 'passwrod', '1', '5146256619', 'Doctor')
+
         console.log(state)
         counter++;
         db.query(state, ['69',firstName,lastName,email,hashedPassword,1,'5146256619', 'Doctor'], function(err, result) {
@@ -89,10 +84,5 @@ app.post("/Signup", async(req,res) => {
         res.status(500).send()
 
     }
-//INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Role`) VALUES ('2', 'Alex', 'Bara', 'a.bara@engcomm.ca', 'pass123', '1', '5146256619', 'Doctor');
-
 })
-
-//https://youtu.be/mbsmsi7l3r4?t=871 to see how JWT are useful since they can be used at two different ports
-// continue from https://youtu.be/mbsmsi7l3r4?t=949 he explains that you can have an authorization server and a login sever separated and the use of refresh tokens
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));
