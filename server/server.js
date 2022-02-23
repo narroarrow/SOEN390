@@ -48,7 +48,17 @@ app.use(function (req, res, next) {
 // })
 
 app.get("/DoctorPatientProfile", (req, res) => {
-    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.DoctorID FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
+    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.get("/Viewed", (req, res) => {
+    db.query("SELECT P.ID FROM 390db.patients P, 390db.healthinformation H, 390db.viewed V WHERE P.ID = H.PatientID AND P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
         if (err) {
             console.log(err);
         } else {
