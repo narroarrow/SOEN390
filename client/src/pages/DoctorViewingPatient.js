@@ -13,33 +13,20 @@ const Item = styled(Paper)(({ theme }) => ({
     fontWeight: 'bold'
   }));
 
-  let doctorViewingPatientData = () => {
-    Axios.get('http://localhost:8080/doctorViewingPatientData',{
-        //send the patient id here
-    }).then((response) => {
-        console.log(response);
-    });
-};
-
-
 
 function DoctorViewingPatient() {
     const location = useLocation();
-    
-    
     const [patientData, setPatientData] = useState([]);
-    let stopeffect=1;
 
-
-    useEffect(() => {
-        Axios.get('http://localhost:8080/doctorViewingPatientData', {
-            id: location.state.ID
-            
-        }).then((response) => {
+    let stopeffect = 1;
+    
+    useEffect(()=>{
+        console.log("hello")
+        Axios.get("http://localhost:8080/doctorViewingPatientData", { params: {id: location.state.ID}}).then((response) => {
+            console.log('hello');
             setPatientData(response.data);
-            console.log(response);
-        });
-    }, [stopeffect]);
+        });  
+    }, [stopeffect]); 
 
     return (
         <div>
@@ -50,21 +37,37 @@ function DoctorViewingPatient() {
                 <Card sx={{ maxWidth: 275, textAlign:'center'}}><h1>Patient Profile </h1></Card>
                 </Box>
                 <Container>
-                    <Grid container spacing={2}>
-                    <Grid item xs={4}>
-                        <Item>Patient Name:</Item>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Item>Patient ID:</Item>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Item>Covid-19 Status:</Item>
-                    </Grid>
-                    <br></br>
-                    <Grid item xs={4}>
-                        <Item>Doctor:</Item>
-                    </Grid>
-                    </Grid>
+                {patientData.map((val, key) =>{ 
+                    return(
+                        <Grid container spacing={2} key={key}>
+                            <Grid item xs={4}>
+                                <Item>Patient Name: {val.Fname + " " + val.Lname}</Item>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Item>Patient ID: {val.ID}</Item>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Item>Covid-19 Status: {val.Status}</Item>
+                            </Grid>
+                            <br></br>
+                            <Grid item xs={4}>
+                                <Item>Doctor: {val.DoctorFirst + " " + val.DoctorLast}</Item>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Item>Symptom: {val.Symptom}</Item>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Item>Weight: {val.Weight}</Item>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Item>Age: {val.Age}</Item>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Item>Gender: {val.gender}</Item>
+                            </Grid>
+                        </Grid>
+                    )
+                })}
                 </Container>
               
                 <Box sx={{padding:5}}>
