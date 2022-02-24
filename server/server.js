@@ -71,9 +71,23 @@ app.get("/doctorViewingPatientData", (req, res) => {
     let pid = req.query.id;
     db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, H.Symptom, H.Weight, H.Age, H.gender FROM 390db.patients P, 390db.users U, 390db.users Udoctor, 390db.healthinformation H WHERE P.ID = ? AND P.ID = U.ID AND P.ID = H.PatientID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
         if (err) {
-            console.log(err)
+            console.log(err);
         } else {
             res.send(result);
+        }
+    });
+});
+
+app.post("/markViewed", (req, res) => {
+    let PatientID = req.body.PatientID;
+    let DoctorID = req.body.DoctorID;
+    let datetime = req.body.datetime;
+    
+    db.query("INSERT INTO 390db.viewed VALUES (?,?,?)", [PatientID, DoctorID, datetime], (err, result) =>{
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Patient profile has been reviewed!")
         }
     });
 });

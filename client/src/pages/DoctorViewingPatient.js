@@ -18,15 +18,28 @@ function DoctorViewingPatient() {
     const location = useLocation();
     const [patientData, setPatientData] = useState([]);
 
+    var tempDoctorID = 1;
+
     let stopeffect = 1;
     
     useEffect(()=>{
-        console.log("hello")
         Axios.get("http://localhost:8080/doctorViewingPatientData", { params: {id: location.state.ID}}).then((response) => {
-            console.log('hello');
             setPatientData(response.data);
         });  
     }, [stopeffect]); 
+
+    let markAsReviewed = () => {
+        const currentDate = new Date();
+        const timestamp = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+      
+        Axios.post("http://localhost:8080/markViewed", {
+            PatientID: location.state.ID,
+            DoctorID: tempDoctorID,
+            datetime: timestamp
+        }).then(()=>{
+            console.log("success")
+        });
+    };
 
     return (
         <div>
@@ -80,7 +93,7 @@ function DoctorViewingPatient() {
                     VIEW PREVIOUS SYMPTOM FORMS
                 </Button>
               
-                <Button sx={{ml:55}} variant="outlined" href="#outlined-buttons">
+                <Button sx={{ml:55}} variant="outlined" onClick={markAsReviewed}>
                     MARK AS REVIEWED
                 </Button>
               
