@@ -101,8 +101,16 @@ function PatientProfile() {
 
                 <br></br>
 
+                <Button sx={{ml:32}} variant="outlined" href="#outlined-buttons" >
+                    FLAG PATIENT
+                </Button>
 
-                <Button sx={{mt:2, ml:53}} variant="outlined" href="/SymptomForm" >
+                <Button sx={{ml:32}} variant="outlined" href="#outlined-buttons" >
+                    UNFLAG PATIENT
+                </Button>
+
+
+                <Button sx={{mt:2, ml:53}} variant="outlined" href="/PatientCovidStatus" >
                     Edit CURRENT STATUS
                 </Button>
                 </Box>
