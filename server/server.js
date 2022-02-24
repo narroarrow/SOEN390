@@ -78,6 +78,17 @@ app.get("/doctorViewingPatientData", (req, res) => {
     });
 });
 
+app.get("/doctorViewingPreviousSymptoms", (req, res) => {
+    let pid = req.query.id;
+    db.query("SELECT * FROM HealthInformation HI WHERE PatientID=?", [pid], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
 app.post("/markViewed", (req, res) => {
     let PatientID = req.body.PatientID;
     let DoctorID = req.body.DoctorID;
@@ -87,9 +98,22 @@ app.post("/markViewed", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.send("Patient profile has been reviewed!")
+            res.send("Patient profile has been reviewed!");
         }
     });
+});
+
+app.post("/requestForm", (req, res) => {
+    let PatientID = req.body.PatientID;
+
+db.query("UPDATE 390db.patients SET SymptomRequested=true where ID=?", [PatientID], (err, result) =>{
+    if (err) {
+        console.log(err);
+    } else {
+        res.send("Patient symptom form requested!");
+    }
+});
+
 });
 
 

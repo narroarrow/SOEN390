@@ -31,7 +31,6 @@ function DoctorViewingPatient() {
     let markAsReviewed = () => {
         const currentDate = new Date();
         const timestamp = currentDate.toISOString().slice(0, 19).replace('T', ' ');
-      
         Axios.post("http://localhost:8080/markViewed", {
             PatientID: location.state.ID,
             DoctorID: tempDoctorID,
@@ -40,6 +39,20 @@ function DoctorViewingPatient() {
             console.log("success")
         });
     };
+
+    let requestForm = () => {
+        Axios.post("http://localhost:8080/requestForm", {
+            PatientID: location.state.ID
+        }).then(()=>{
+            console.log("success")
+        });
+    }
+
+    let previousSymptoms = () => {
+        Axios.get("http://localhost:8080/doctorViewingPreviousSymptoms", { params: {id: location.state.ID}}).then((response) => {
+            console.log("success");
+        });  
+    }
 
     return (
         <div>
@@ -85,11 +98,15 @@ function DoctorViewingPatient() {
               
                 <Box sx={{padding:5}}>
               
-                <Button variant="outlined" href="#outlined-buttons" href="/SymptomForm">
+              //I made it href back to the page so that the page refreshes and the doctor 
+              //can see whether or not they have requested a symptom form.
+                <Button variant="outlined" href="#outlined-buttons" onClick={requestForm} href="/DoctorViewingPatient">
                     REQUEST SYMPTOM FORM
                 </Button>
               
-                <Button sx={{ml: 65}} variant="outlined" href="#outlined-buttons" href="/SymptomForm">
+              //I'm thinking that we make a new page called PreviousSymptoms where all
+              // of the symptom forms will be sent.
+                <Button sx={{ml: 65}} variant="outlined" href="#outlined-buttons" onClick={previousSymptoms} href="/PreviousSymptoms">
                     VIEW PREVIOUS SYMPTOM FORMS
                 </Button>
               
