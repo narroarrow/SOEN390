@@ -1,34 +1,22 @@
 import Paper from '@mui/material/Paper'; import React from 'react'; import FormControlLabel from '@mui/material/FormControlLabel'; import FormControl from '@mui/material/FormControl'; import FormLabel from '@mui/material/FormLabel'; import Radio from '@mui/material/Radio'; import RadioGroup from '@mui/material/RadioGroup'; import { TextField } from '@mui/material'; import Button from '@mui/material/Button'; import Axios from 'axios'; import { useState } from "react";
 
-// let submitPatientCovidStatus = (event) =>{
-//   event.preventDefault();
-//   const data = new FormData(event.currentTarget);
-//   const currentDate = new Date();
-//   const timestamp = currentDate.getTime();
-//    Axios.post('http://localhost:8080/createPatientCovidStatus',{
-//       //patientid: id
-//       timestamp: Date.now(),
-//       weight: data.get('weight'),
-//       temperature: data.get('weight'),
-//       breathing: data.get('breathing'),
-//       chest: data.get('chest'),
-//       fatigue: data.get('fatigue'),
-//       smell: data.get('smell'),
-//       fever: data.get('fever'),
-//       cough: data.get('cough'),
-//       taste: data.get('taste'),
-//       symptoms: data.get('symptoms'),
-//  }).then(()=>{
-//    console.log("success");
-//  });
-// };
+let submitPatientCovidStatus = (event) =>{
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+   Axios.post('http://localhost:8080/createPatientCovidStatus',{
+      //patientid: id
+      status: data.get('covidStatus')
+ }).then(()=>{
+   console.log("success");
+ });
+};
 
 
 function PatientCovidStatus() {
 
   return (
     <div align="Center">
-    <Paper  elevation={24} component="form"  sx={{width: 700, height:2000, mt:10}}> 
+    <Paper  elevation={24} component="form" onSubmit={submitPatientCovidStatus} sx={{width: 700, height:2000, mt:10}}> 
       <h1>Covid Status</h1>
 
       <FormControl>

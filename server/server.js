@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const db = require('../server/database')
 const mysql = require("mysql2");
 const cors = require('cors');
+const { request } = require('http');
 
 //Note to self: This may have to be changed to localhost:8080
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
@@ -68,6 +69,22 @@ app.post("/createSymptomForm", (req,res) => {
                     res.send("Form Submitted!");
                 }
             }
+    );
+});
+
+app.post("/createPatientCovidStatus", (req,res) => {
+    let patientStatus = req.body.status;
+    let patientid = 1;
+
+    db.query("UPDATE 390db.patients SET Status=?",
+    [patientStatus],
+    (err, results) =>{
+        if(err){
+            console.log(err);
+        }else{
+            res.send("Status Change!");
+        }
+    }
     );
 });
 
