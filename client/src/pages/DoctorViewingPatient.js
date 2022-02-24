@@ -1,8 +1,9 @@
 import React from 'react';
-import {Container, Box, Grid, CssBaseline, Button, Card, styled, Paper} from '@mui/material';
+import {Container, Box, Grid, CssBaseline, Button, Card, styled, Paper, formHelperTextClasses} from '@mui/material';
 import Axios from 'axios';
-import { renderMatches } from 'react-router-dom';
-import { useState, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState} from 'react';
+
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -20,15 +21,30 @@ const Item = styled(Paper)(({ theme }) => ({
     });
 };
 
-//const { state } = this.props.location;
 
 
 function DoctorViewingPatient() {
-    render() {
-        return (
-            <div>
-                <Container component="main">
-                    <CssBaseline />
+    const location = useLocation();
+    
+    
+    const [patientData, setPatientData] = useState([]);
+    let stopeffect=1;
+
+
+    useEffect(() => {
+        Axios.get('http://localhost:8080/doctorViewingPatientData', {
+            id: location.state.ID
+            
+        }).then((response) => {
+            setPatientData(response.data);
+            console.log(response);
+        });
+    }, [stopeffect]);
+
+    return (
+        <div>
+            <Container component="main">
+                <CssBaseline />
                 <Box sx={{padding:5}}>
                         
                 <Card sx={{ maxWidth: 275, textAlign:'center'}}><h1>Patient Profile </h1></Card>
@@ -66,12 +82,11 @@ function DoctorViewingPatient() {
                 </Button>
               
                 </Box>
-                </Container>
+            </Container>
               
-            </div>
-        );
+        </div>
+    );
 
-    }
 }
 
 

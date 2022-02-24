@@ -67,4 +67,17 @@ app.get("/Viewed", (req, res) => {
     });
 });
 
+app.get("/doctorViewingPatientData", (req, res) => {
+    let id = req.body.id;
+    console.log(req.body.id);
+    db.query("SELECT * FROM 390db.patients P WHERE P.ID = ?", [id], (err, result) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log(result);
+        }
+    });
+});
+
+
 app.listen(process.env.PORT || 8080, () => console.log(`Listening on port ${process.env.PORT || 8080}!`));

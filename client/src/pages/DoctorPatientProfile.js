@@ -6,13 +6,15 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import Axios from 'axios';
 import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+
 
 function DoctorPatientProfile() {
   const [patientList, setPatientList] = useState([]); //all patient info
   const [filteredPatients, setFilteredPatients] = useState([]); //filtered values for patient info
   const [executed, setExecuted] = useState(false); //keeps track of if getPatients() method is called
   const [viewedList, setViewedList] = useState([]);
+  
 
   var tempDoctorID = 1; //temp ID for doctor until login is implemented
 
@@ -42,6 +44,8 @@ function DoctorPatientProfile() {
       setViewedList(response.data);
     });   
   };
+
+  
 
   /*const loadAllFunctions = () => {
     getPatients();
@@ -76,11 +80,8 @@ function DoctorPatientProfile() {
             }
             return (
               <Grid item md={4} key={key}>
-                <Link to={{
-                  pathname: "/DoctorViewingPatient",
-                  state: val.ID
-                }} style={{textDecoration: 'none'}}>
-                  <Button variant="outlined">
+                  <Link to="/DoctorViewingPatient" state={{ID: val.ID}} style={{textDecoration: 'none'}}>
+                  <Button variant="outlined" href="/DoctorViewingPatient">
                     <CardHeader
                       avatar={
                         <Avatar aria-label="">
@@ -98,7 +99,7 @@ function DoctorPatientProfile() {
                     {isFlagged ? (<FlagIcon color = "secondary"/>) : (<FlagOutlinedIcon/>)} {/* If a patient is flagged the flag icon will be red */}
 
                   </Button>
-                </Link>
+                  </Link>
               </Grid>
             );
           })}
