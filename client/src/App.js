@@ -11,6 +11,8 @@ import DoctorPatientProfile from './pages/DoctorPatientProfile';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import DoctorViewingPatient from './pages/DoctorViewingPatient';
+import HealthOfficialPatientProfile from './pages/HealthOfficialPatientProfile';
+import HealthOfficialViewingPatient from './pages/HealthOfficialViewingPatient';
 
 
 function App() {
@@ -64,6 +66,8 @@ useEffect(() => {secondTest()}, [])
           <Route path='/AdminDashboard' element={<AdminDashboard/>}/>
           <Route path='/PatientProfile' element={<PatientProfile/>}/>
           <Route path='/DoctorViewingPatient' element={<DoctorViewingPatient/>}/>
+          <Route path='/HealthOfficialPatientProfile' element={<HealthOfficialPatientProfile/>}></Route>
+          <Route path='/HealthOfficialViewingPatient' element={<HealthOfficialViewingPatient/>}></Route>
           
         </Routes>
         <Footer/>
