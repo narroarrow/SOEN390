@@ -1,4 +1,4 @@
-import React, { useState, map, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Box, Grid, CssBaseline, Button, Card, styled, Paper } from '@mui/material';
 import Axios from 'axios';
 
@@ -57,10 +57,20 @@ function PatientProfile() {
                             </Item>
                         </Grid>
                         <Grid item xs={4}>
-                            <Item>Patient ID:</Item>
+                            <Item>Patient ID:  
+                                {patientData.map((val, key) => {
+                                    return " " + val.ID
+                                })}
+                                </Item>
+
                         </Grid>
                         <Grid item xs={4}>
-                            <Item>Doctor:</Item>
+                            <Item>Doctor:
+                            {patientData.map((val, key) => {
+                                    return " " + val.DFName + " " + val.DLName
+                                })}
+
+                            </Item>
                         </Grid>
                         <br></br>
 
@@ -72,18 +82,37 @@ function PatientProfile() {
                     <Grid container spacing={2}>
 
                         <Grid item xs={4}>
-                            <Item>Birthdate:</Item>
+                            <Item>Birthdate:
+                            {patientData.map((val, key) => {
+                                    return " " + val.Birthday
+                                })}
+
+                            </Item>
                         </Grid>
                         <Grid item xs={4}>
-                            <Item>Health Insurance:</Item>
+                            <Item>Health Insurance:
+
+                            {patientData.map((val, key) => {
+                                    return " " + val.HealthInsurance
+                                })}
+
+                            </Item>
                         </Grid>
                         <br></br>
 
                         <Grid item xs={4}>
-                            <Item>Phone number:</Item>
+                            <Item>Phone number:
+                            {patientData.map((val, key) => {
+                                    return " " + val.Phome
+                                })}
+                            </Item>
                         </Grid>
                         <Grid item xs={4}>
-                            <Item>Email Address:</Item>
+                            <Item>Email Address:
+                            {patientData.map((val, key) => {
+                                    return " " + val.Email
+                                })}
+                            </Item>
                         </Grid>
                     </Grid>
                 </Container>
@@ -107,17 +136,6 @@ function PatientProfile() {
                     </Button>
 
                 
-                </Box>
-
-                <Box  sx={{textAlign: "center" }}>
-
-                <Button sx={{mr:10}} variant="outlined" href="#outlined-buttons" >
-                    FLAG PATIENT
-                </Button>
-
-                <Button sx={{}} variant="outlined" href="#outlined-buttons" >
-                    UNFLAG PATIENT
-                </Button>
                 </Box>
             </Container>
 

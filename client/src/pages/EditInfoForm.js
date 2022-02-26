@@ -1,7 +1,6 @@
-import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
-import React, { useState, map, useEffect } from 'react';
-import FormControlLabel from '@mui/material/FormControlLabel'; import FormControl from '@mui/material/FormControl'; import FormLabel from '@mui/material/FormLabel'; import Radio from '@mui/material/Radio'; import RadioGroup from '@mui/material/RadioGroup'; import { TextField } from '@mui/material'; import Button from '@mui/material/Button';
+import React, { useState, useEffect } from 'react';
+import FormControl from '@mui/material/FormControl'; import FormLabel from '@mui/material/FormLabel'; import { TextField } from '@mui/material'; import Button from '@mui/material/Button';
 import Axios from 'axios';
 
 let submitEditInfoForm = (event) => {
