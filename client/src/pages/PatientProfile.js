@@ -88,25 +88,35 @@ function PatientProfile() {
                     </Grid>
                 </Container>
 
-                <Box sx={{ padding: 5 }}>
+                <Box sx={{ padding: 5, textAlign: "center" }}>
 
-                    <Button sx={{ mr: 42 }} variant="outlined" href="/EditInfoForm" >
+                    <Button sx={{ mr: 10 }} variant="outlined" href="/EditInfoForm" >
                         EDIT INFO
                     </Button>
 
-                    <Button variant="outlined" href="#outlined-buttons" href="/SymptomForm">
+                    <Button sx={{mr:10}} variant="outlined" href="/PatientCovidStatus" >
+                    Edit CURRENT STATUS
+                </Button>
+
+                    <Button sx={{mr:10}} variant="outlined" href="#outlined-buttons" href="/SymptomForm">
                         SYMPTOM FORM
                     </Button>
 
-                    <Button sx={{ ml: 32 }} variant="outlined" href="#outlined-buttons" >
+                    <Button sx={{  }} variant="outlined" href="#outlined-buttons" >
                         BOOK APPOINTMENT
                     </Button>
 
-                    <br></br>
+                
+                </Box>
 
+                <Box  sx={{textAlign: "center" }}>
 
-                <Button sx={{mt:2, ml:53}} variant="outlined" href="/PatientCovidStatus" >
-                    Edit CURRENT STATUS
+                <Button sx={{mr:10}} variant="outlined" href="#outlined-buttons" >
+                    FLAG PATIENT
+                </Button>
+
+                <Button sx={{}} variant="outlined" href="#outlined-buttons" >
+                    UNFLAG PATIENT
                 </Button>
                 </Box>
             </Container>

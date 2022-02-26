@@ -46,7 +46,7 @@ function EditInfoForm() {
 
   return (
     <div align="Center">
-      <Paper elevation={24} component="form" onLoad onSubmit={submitEditInfoForm} sx={{ width: 700, height: 2000, mt: 10 }}>
+      <Paper elevation={24} component="form" onLoad onSubmit={submitEditInfoForm} sx={{ width: 700, height: 1000, mt: 10 }}>
         <h1>Edit Profile Information</h1>
 
 

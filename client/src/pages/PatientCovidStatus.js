@@ -16,7 +16,7 @@ function PatientCovidStatus() {
 
   return (
     <div align="Center">
-    <Paper  elevation={24} component="form" onSubmit={submitPatientCovidStatus} sx={{width: 700, height:2000, mt:10}}> 
+    <Paper  elevation={24} component="form" onSubmit={submitPatientCovidStatus} sx={{width: 700, height:500, mt:10}}> 
       <h1>Covid Status</h1>
 
       <FormControl>
