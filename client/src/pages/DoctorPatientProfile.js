@@ -13,14 +13,13 @@ function DoctorPatientProfile() {
   const [patientList, setPatientList] = useState([]); //all patient info
   const [filteredPatients, setFilteredPatients] = useState([]); //filtered values for patient info
   const [executed, setExecuted] = useState(false); //keeps track of if getPatients() method is called
-  const [viewedList, setViewedList] = useState([]);
+  const [viewedList, setViewedList] = useState([]); //Patients whose profiles have been reviewed by a doctor
   
-
-  var tempDoctorID = 1; //temp ID for doctor until login is implemented
+  var tempDoctorID = 6;
 
   var myPatients = patientList.filter(e => e.DoctorID === tempDoctorID);
   var allPatients = patientList;
-
+  
   const filterMyPatients = () => { //this function will set the useState filteredPatients to show ALL patients
     setFilteredPatients(myPatients)
   };
@@ -29,30 +28,25 @@ function DoctorPatientProfile() {
     setFilteredPatients(allPatients)
   };
 
-  const getPatients = () => { //this function is called when the doctor patient profile page is loaded. It sets the useState patientList to the query result for patient info
+  function getPatients()  { //this function is called when the doctor patient profile page is loaded. It sets the useState patientList to the query result for patient info
     Axios.get("http://localhost:8080/DoctorPatientProfile").then((response) => {
       setPatientList(response.data);
+      console.log(patientList);
       if (!executed){
         setFilteredPatients(patientList);
         setExecuted(true);
       }
-    });   
+    });  
   };
 
   const getViewed = () => { //this function is called when the doctor patient profile page is loaded. It sets the useState patientList to the query result for patient info
     Axios.get("http://localhost:8080/Viewed").then((response) => {
       setViewedList(response.data);
-    });   
+    });  
   };
-
-  
-
-  /*const loadAllFunctions = () => {
-    getPatients();
-    getViewed();
-  };*/
   
   let stopeffect = 1;
+
   useEffect(()=>{
     getPatients();
     getViewed();

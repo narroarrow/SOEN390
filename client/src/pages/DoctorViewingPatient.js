@@ -15,20 +15,28 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 function DoctorViewingPatient() {
-    const location = useLocation();
-    const [patientData, setPatientData] = useState([]);
+    const location = useLocation(); //get data passed on through previous page (DoctorPatientProfile page)
+    const [patientData, setPatientData] = useState([]); //Patient data used in rendering of page
+    const [viewedList, setViewedList] = useState([]); //list of patients whose profiles have been reviewed
 
-    var tempDoctorID = 1;
-
+    var tempDoctorID = 6;
     let stopeffect = 1;
+
+    let isViewed = false; //variable to verify if patient profile has been viewed, to be used for disabling or enabling MARK AS READ button
+    if (viewedList.map(el => el.ID).includes(location.state.ID)){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
+        isViewed = true;
+    }
     
-    useEffect(()=>{
+    useEffect(()=>{ //When page is loaded, get requests will get patient data as well as a list of patients whose profiles have been viewed
         Axios.get("http://localhost:8080/doctorViewingPatientData", { params: {id: location.state.ID}}).then((response) => {
             setPatientData(response.data);
-        });  
+        });
+        Axios.get("http://localhost:8080/Viewed").then((response) => {
+            setViewedList(response.data);
+        });   
     }, [stopeffect]); 
 
-    let markAsReviewed = () => {
+    let markAsReviewed = () => { //When clicking the MARK AS REVIEWED button, this will send the patient and doctor information to the DB viewed table
         const currentDate = new Date();
         const timestamp = currentDate.toISOString().slice(0, 19).replace('T', ' ');
         Axios.post("http://localhost:8080/markViewed", {
@@ -40,7 +48,7 @@ function DoctorViewingPatient() {
         });
     };
 
-    let requestForm = () => {
+    let requestForm = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
         Axios.post("http://localhost:8080/requestForm", {
             PatientID: location.state.ID
         }).then(()=>{
@@ -48,7 +56,7 @@ function DoctorViewingPatient() {
         });
     }
 
-    let previousSymptoms = () => {
+    let previousSymptoms = () => { //This function gets the list of all the patients previous symptom forms (to be rendered on a page in later sprint)
         Axios.get("http://localhost:8080/doctorViewingPreviousSymptoms", { params: {id: location.state.ID}}).then((response) => {
             console.log("success");
         });  
@@ -80,16 +88,16 @@ function DoctorViewingPatient() {
                                 <Item>Doctor: {val.DoctorFirst + " " + val.DoctorLast}</Item>
                             </Grid>
                             <Grid item xs={4}>
-                                <Item>Symptom: {val.Symptom}</Item>
+                                <Item>Email: {val.Email}</Item>
                             </Grid>
                             <Grid item xs={4}>
-                                <Item>Weight: {val.Weight}</Item>
+                                <Item>Phone Number: {val.Phone}</Item>
                             </Grid>
                             <Grid item xs={4}>
-                                <Item>Age: {val.Age}</Item>
+                                <Item>Birthday: {val.Birthday.substring(0, 10)}</Item>
                             </Grid>
                             <Grid item xs={4}>
-                                <Item>Gender: {val.gender}</Item>
+                                <Item>Address: {val.Address}</Item>
                             </Grid>
                         </Grid>
                     )
@@ -97,22 +105,24 @@ function DoctorViewingPatient() {
                 </Container>
               
                 <Box sx={{padding:5}}>
-              
-              //I made it href back to the page so that the page refreshes and the doctor 
-              //can see whether or not they have requested a symptom form.
+               
+
+              {/* I made it href back to the page so that the page refreshes and the doctor 
+              can see whether or not they have requested a symptom form.*/}
                 <Button variant="outlined" href="#outlined-buttons" onClick={requestForm} href="/DoctorViewingPatient">
                     REQUEST SYMPTOM FORM
                 </Button>
               
-              //I'm thinking that we make a new page called PreviousSymptoms where all
-              // of the symptom forms will be sent.
+              {/* I'm thinking that we make a new page called PreviousSymptoms where all
+               of the symptom forms will be sent.*/}
                 <Button sx={{ml: 65}} variant="outlined" href="#outlined-buttons" onClick={previousSymptoms} href="/PreviousSymptoms">
                     VIEW PREVIOUS SYMPTOM FORMS
                 </Button>
-              
-                <Button sx={{ml:55}} variant="outlined" onClick={markAsReviewed}>
-                    MARK AS REVIEWED
-                </Button>
+
+                {/* If patient profile has been reviewed already, the MARK AS REVIEWED button will be disabled */}
+                {isViewed ? (<Button sx={{ml:55}} variant="outlined" onClick={markAsReviewed} disabled href="/DoctorViewingPatient">MARK AS REVIEWED</Button>) : 
+                (<Button sx={{ml:55}} variant="outlined" onClick={markAsReviewed} href="/DoctorViewingPatient">MARK AS REVIEWED</Button>)}
+                            
               
                 </Box>
             </Container>
