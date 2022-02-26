@@ -11,24 +11,19 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-
-
-//how to make this run as the page opens instead of using a button?
-// let patientProfileData = () => {
-//     Axios.get('http://localhost:8080/patientProfileData',{
-//         //send the patient id here
-//     }).then((response) => {
-//         console.log(response);
-//     });
-// };
-
-
 function PatientProfile() {
 
+    //These variables are used to get the current patient's data.
+    //The const allows us to store the data in a variable using useState()
+    //and the stopeffect will make sure that our useEffect() will only 
+    //run one time.
     const [patientData, setPatientData] = useState([]);
     let stopeffect=1;
 
 
+    //This useEffect() will run after the page renders. It will
+    //get the patients data by using a get and going to the 
+    //server.js file to execute the code to query for the data.
     useEffect(() => {
         Axios.get('http://localhost:8080/patientProfileData', {
             //send the patient id here

@@ -1,5 +1,10 @@
 import Paper from '@mui/material/Paper'; import React from 'react'; import FormControlLabel from '@mui/material/FormControlLabel'; import FormControl from '@mui/material/FormControl'; import FormLabel from '@mui/material/FormLabel'; import Radio from '@mui/material/Radio'; import RadioGroup from '@mui/material/RadioGroup'; import Button from '@mui/material/Button'; import Axios from 'axios';
 
+
+//This variable represents a function that will be called when the user submits
+//their form to change their status. It will post the data from the form to
+//the server.js file so that the patient's information can be altered in
+//the database.
 let submitPatientCovidStatus = (event) =>{
   event.preventDefault();
   const data = new FormData(event.currentTarget);

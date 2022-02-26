@@ -32,18 +32,9 @@ app.get('/api', (req, res) => {
 
 });
 
-// example of using DB query
-
-// app.get('/users', (req, res) => {
-//
-//     let state = `SELECT * FROM cloudscratch.tablescratch;`;
-//
-//     db.query(state, function(err, result) {
-//         console.log(result);
-//         res.send(result);
-//     })
-// })
-
+//This post is called when a user tries to submit a symptom form.
+//The patient's id is passed along with the symptom information
+//so that we can associate it with the right patient.
 app.post("/createSymptomForm", (req,res) => {
     
     let patientid = 1;
@@ -72,12 +63,18 @@ app.post("/createSymptomForm", (req,res) => {
     );
 });
 
+//This post method is called when the user submits a 
+//form to change their current health status. The patient's
+//id is passed to this method. 
 app.post("/createPatientCovidStatus", (req,res) => {
     let patientStatus = req.body.status;
     let patientid = 1;
 
-    db.query("UPDATE 390db.patients SET Status=?",
-    [patientStatus],
+    //This query updates the patients table. It sets the status
+    //to the value that was submitted for the user that filled in the 
+    //form.
+    db.query("UPDATE 390db.patients SET Status=? WHERE ID=?",
+    [patientStatus, patientid],
     (err, results) =>{
         if(err){
             console.log(err);
@@ -110,8 +107,15 @@ app.post("/editedPatientData", (req,res) =>{
 
 });
 
+//This is the code that will be executed when the user opens the 
+//patient profile page. The user's id will be sent to this function
+//by the get.
 app.get('/patientProfileData', (req, res) => {
     //will need to use the patient ID in the query below
+
+    //The query below returns all the information that the user will see on their
+    //profile by using the patient's id to filter through the different patient-doctor
+    //combinations.
     db.query("SELECT P.FName, P.LName, P.HealthInsurance, P.ID, P.Birthday, P.Phone, P.Email, U.FName AS DFName, U.LName AS DLName FROM patients P, doctors D, users U WHERE P.id=1 AND D.id=P.doctorID AND U.ID=D.ID", (err,result) => {
         if(err) {
             console.log(err);
