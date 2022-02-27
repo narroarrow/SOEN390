@@ -5,7 +5,7 @@ app.use(express.json())
 
 const path = require('path');
 const bodyParser = require('body-parser')
-const db = require('./database')
+const db = require('../server/database')
 const mysql = require("mysql2");
 const cors = require('cors');
 const bcrypt = require('bcrypt')
@@ -51,11 +51,34 @@ app.get('/users', (req, res) => {
 
 
 //getting the email and passowrd from the form
-app.post("/Login", (req,res) => {
+app.post("/Login", async(req,res) => {
+ try{   
     let email = req.body.email;
     let password = req.body.password;
     //check passwords and emails here then return request
-    console.log("Sucess!!");
+    console.log("Sucess!");
+    const hashedPassword = await bcrypt.hash(password,10) // 10 is const salt = await bcrypt.genSalt()
+    const user = {email:email, password:hashedPassword}
+
+    state = `SELECT U.Email, U.Password FROM users U WHERE U.Email = "${email}";`;
+
+//    console.log(state)
+
+    db.query(state, function(err, result) {//ID might be removed since it should be auto indent
+        if(err){
+        console.log(err)}
+        else{
+            if(result[0].Password = hashedPassword){
+                
+                //console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+            }
+        res.send(result);
+        }
+    })
+}
+catch{
+    res.status(500).send()
+}
 })
 
 //getting the email and passowrd from the form
@@ -72,13 +95,15 @@ app.post("/Signup", async(req,res) => {
 
         state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in 
 
-        console.log(state)
-        counter++;
-        db.query(state, ['69',firstName,lastName,email,hashedPassword,1,'5146256619', 'Doctor'], function(err, result) {//ID might be removed since it should be auto indent
-            console.log(err)
-            res.send(result);
+    //console.log(state) used to verify proper SQL format
+
+        db.query(state, [Math.floor(Math.random()*100000),firstName,lastName,email,hashedPassword,1,'5146256619', 'Doctor'], function(err, result) {//ID might be removed since it should be auto indent
+            if(err){
+                console.log(err)}
+            else{
+                res.send(result);
+                }
         })
-        
     }
     catch{ 
         res.status(500).send()
