@@ -50,6 +50,9 @@ app.post("/createSymptomForm", (req,res) => {
     let taste = req.body.taste;
     let other = req.body.symptoms;
 
+    //This query will be inserting the values that were passed by the user into
+    //our Health Information table which holds the information of all the symptom
+    //forms. Every symptom form will be related to the patient that submitted it.
     db.query(
         "INSERT INTO 390db.healthinformation (PatientID, Timestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
         [patientid, timestamp, weight, temperature, breathing, chest_pain, fatigue, fever, cough, smell, taste, other],
@@ -85,6 +88,10 @@ app.post("/createPatientCovidStatus", (req,res) => {
     );
 });
 
+//This is the post method that is called when the user
+//submits their edited information. It takes in all the
+//information that was sent in the form along with the
+//patient's id.
 app.post("/editedPatientData", (req,res) =>{
     let patientid = 1;
     let fname = req.body.fname;
@@ -93,6 +100,8 @@ app.post("/editedPatientData", (req,res) =>{
     let phone = req.body.phone;
     let healthinsurance = req.body.healthinsurance;
 
+    //This query finds the patient that wants to edit their information
+    //and then updates the values of certain fields.
     db.query(
         "UPDATE 390db.patients SET FName=?, LName=?, Email=?, Phone=?, HealthInsurance=? WHERE ID=?",
         [fname, lname, email, phone, healthinsurance, patientid],
@@ -125,9 +134,16 @@ app.get('/patientProfileData', (req, res) => {
     });
 });
 
+
+//This is the code that will be executed when the patient first 
+//goes to the edit profile page so that they can see what it is
+//exactly that they need to change. The patient's id is used 
+//to retrieve the data.
 app.get('/editPatientProfileData', (req, res) => {
     //will need to use the patients id
 
+    //This query will return the patients information that we deem ok to change.
+    //It filters the database and looks for the patient with the id that we passed.
     db.query("SELECT P.FName, P.LName, P.Birthday, P.HealthInsurance, P.Phone, P.Email FROM patients P, doctors D WHERE P.id=1 AND D.id=P.doctorID", (err,result) => {
         if(err) {
             console.log(err);
@@ -137,17 +153,7 @@ app.get('/editPatientProfileData', (req, res) => {
     });
 })
 
-app.get('/doctorViewingPatientData', (req, res) => {
-    //will need patient and doctors id
-    //also need to see what it is that the doctor will see
-    db.query("SELECT P.FName, P.LName, ", (err,result) => {
-        if(err) {
-            console.log(err);
-        }else{
-            res.send(result);
-        }
-    });
-});
+
 
 // app.get('/*', function(req,res){
 //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
