@@ -44,7 +44,7 @@ function App() {
 
     function secondTest(){
         axios.get(
-            "http://localhost:8080/api", {withCredentials:true}).then(res =>{console.log(res)})
+            "http://localhost:8080/users", {withCredentials:true}).then(res =>{console.log(res)})
 
     }
 useEffect(() => {secondTest()}, [])

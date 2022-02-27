@@ -2,8 +2,8 @@ const express = require('express')
 const app = express()
 const path = require('path');
 const bodyParser = require('body-parser')
-// const db = require('../server/database')
-// const mysql = require("mysql2");
+const db = require('../server/database')
+const mysql = require("mysql2");
 const cors = require('cors');
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
@@ -31,20 +31,20 @@ app.get('/api', (req, res) => {
 
 // example of using DB query
 
-// app.get('/users', (req, res) => {
-//
-//     let state = `SELECT * FROM cloudscratch.tablescratch;`;
-//
-//     db.query(state, function(err, result) {
-//         console.log(result);
-//         res.send(result);
-//     })
-// })
+app.get('/users', (req, res) => {
+
+    let state = `SELECT * FROM 390db.Users;`;
+
+    db.query(state, function(err, result) {
+        console.log(result);
+        res.send(result);
+    })
+})
 
 
 
 app.get('/*', function(req,res){
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 })
 
 

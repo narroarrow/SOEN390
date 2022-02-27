@@ -2,18 +2,18 @@ const mysql = require('mysql2');
 
 // below comments are to setup your local database
 
-// const connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'root',
-//     database: 'healthdb',
-//
-//
-// })
-//
-// connection.connect();
-//
-// module.exports = connection;
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'root123!',
+    database: '390db',
+
+
+})
+
+connection.connect();
+
+module.exports = connection;
 
 
 
