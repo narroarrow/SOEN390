@@ -1,7 +1,31 @@
 import * as React from 'react';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import {Container, Typography, Box, Grid, Link, Checkbox, FormControlLabel, TextField, CssBaseline, Button, Avatar} from '@mui/material'
+import {Container, Typography, Box, Grid, Link, Checkbox, FormControlLabel, TextField, CssBaseline, Button, Avatar, MenuItem} from '@mui/material'
 import Axios from 'axios';
+
+//all possible users
+const roles = [
+  {
+    value: 'Admin',
+    label: 'Admin',
+  },
+  {
+    value: 'Patient',
+    label: 'Patient',
+  },
+  {
+    value: 'Doctor',
+    label: 'Doctor',
+  },
+  {
+    value: 'Health Official',
+    label: 'Health Official',
+  },
+  {
+    value: 'Immigration Officer',
+    label: 'Immigration Officer',
+  },
+];
 
 
 //handling the Signup form
@@ -20,6 +44,13 @@ let submitSignupForm = (event) =>{
 };
 
 function Signup() {
+    //switching roles
+  const [role, setRoles] = React.useState('Patient');
+
+  const handleChange = (event) => {
+    setRoles(event.target.value);
+  };
+
   return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -39,14 +70,29 @@ function Signup() {
                 <TextField required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name"/>
               </Grid>
               <Grid item xs={12}>
+                <TextField required fullWidth id="Phone Number" label="Phone Number" name="PhoneNumber" autoComplete="phone-number"/>
+              </Grid>
+              <Grid item xs={12}>
                 <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email"/>
               </Grid>
               <Grid item xs={12}>
                 <TextField required fullWidth name="password" label="Password" type="password" id="password"autoComplete="new-password"/>
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel control={<Checkbox value="allowExtraEmails" color="primary" />} label="I want to receive inspiration, marketing promotions and updates via email."/>
-              </Grid> */}
+              <Grid item xs={12}>
+                <TextField required fullWidth name="confirmPassword" label="ConfirmPassword" type="password" id="Confirmpassword" autoComplete="new-password"/>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField center required id="role" select label="Select" value={role} onChange={handleChange} helperText="Please select your currency">
+                  {roles.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              
+
             </Grid>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
