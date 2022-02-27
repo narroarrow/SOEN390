@@ -33,6 +33,7 @@ function DoctorViewingPatient() {
         });
         Axios.get("http://localhost:8080/Viewed").then((response) => {
             setViewedList(response.data);
+            console.log(response.data);
         });   
     }, [stopeffect]); 
 

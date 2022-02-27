@@ -72,6 +72,7 @@ function DoctorPatientProfile() {
             if (viewedList.map(el => el.ID).includes(val.ID)){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
               isViewed = true;
             }
+            let pID = val.ID;
             return (
               <Grid item md={4} key={key}>
                   <Link to="/DoctorViewingPatient" state={{ID: val.ID}} style={{textDecoration: 'none'}}>
