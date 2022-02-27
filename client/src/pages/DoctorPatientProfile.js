@@ -17,8 +17,8 @@ function DoctorPatientProfile() {
   
   var tempDoctorID = 6;
 
-  var myPatients = patientList.filter(e => e.DoctorID === tempDoctorID);
-  var allPatients = patientList;
+  var myPatients = patientList.filter(e => e.DoctorID === tempDoctorID); //returns a filtered list of patients that are assigned to the doctor
+  var allPatients = patientList; //returns all patients
   
   const filterMyPatients = () => { //this function will set the useState filteredPatients to show ALL patients
     setFilteredPatients(myPatients)
@@ -47,7 +47,7 @@ function DoctorPatientProfile() {
   
   let stopeffect = 1;
 
-  useEffect(()=>{
+  useEffect(()=>{ //After the page is rendered, the two functions getPatients() and getViewed() are called once
     getPatients();
     getViewed();
   }, [stopeffect]); 

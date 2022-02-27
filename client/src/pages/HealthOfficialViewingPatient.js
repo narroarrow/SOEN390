@@ -15,7 +15,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 function HealthOfficialViewingPatient() {
-    const location = useLocation(); //get data passed on through previous page (DoctorPatientProfile page)
+    const location = useLocation(); //get data passed on through previous page (HealthOfficialPatientProfile page)
     const [patientData, setPatientData] = useState([]); //Patient data used in rendering of page
 
     let stopeffect = 1;
