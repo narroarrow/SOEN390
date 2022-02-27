@@ -29,14 +29,17 @@ const roles = [
 
 
 //handling the Signup form
-let submitSignupForm = (event) =>{
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
+let userRoles
+let submitSignupForm = (event1) =>{
+  event1.preventDefault();
+  const data = new FormData(event1.currentTarget);
   Axios.post('http://localhost:8080/Signup',{
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
       email: data.get('email'),
-      password: data.get('password')
+      password: data.get('password'),
+      userRole: userRoles,
+      phoneNumber: data.get('PhoneNumber')
  }).then(()=>{
    //will have user authentication here
    alert("success");
@@ -47,8 +50,9 @@ function Signup() {
     //switching roles
   const [role, setRoles] = React.useState('Patient');
 
-  const handleChange = (event) => {
-    setRoles(event.target.value);
+  const handleChange = (event2) => {
+    setRoles(event2.target.value);
+    userRoles = role
   };
 
   return (
@@ -83,7 +87,7 @@ function Signup() {
               </Grid>
 
               <Grid item xs={12}>
-                <TextField center required id="role" select label="Select" value={role} onChange={handleChange} helperText="Please select your currency">
+                <TextField center required name="UserRole" id="UserRole" select label="role" value={role} onChange={handleChange} helperText="Please select your role">
                   {roles.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                     {option.label}
