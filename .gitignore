@@ -7,3 +7,4 @@ client/src/.DS_Store
 .DS_Store
 client/coverage
 server/database.js
+server/database.js
