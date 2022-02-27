@@ -5,7 +5,7 @@ app.use(express.json())
 
 const path = require('path');
 const bodyParser = require('body-parser')
-const db = require('../server/database')
+const db = require('./database')
 const mysql = require("mysql2");
 const cors = require('cors');
 const bcrypt = require('bcrypt')
