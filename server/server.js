@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 app.use(express.static('dist'));
+app.use(express.json());
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -43,7 +44,7 @@ app.get('/users', (req, res) => {
 
 app.get("/adminViewingDoctorData",(req,res) => {
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname FROM Users Udoctor, Doctors D WHERE Udoctor.ID = D.ID;",(err, result) => {
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID;",(err, result) => {
         if(err){
             console.log(err);
         } else {
@@ -55,7 +56,7 @@ app.get("/adminViewingDoctorData",(req,res) => {
 
 app.get("/adminViewingPatientData",(req,res) => {
 
-    db.query("SELECT Upatient.Fname, Upatient.Lname FROM Users Upatient, Patients P WHERE Upatient.ID = P.ID;",(err, result) => {
+    db.query("SELECT Upatient.Fname, Upatient.Lname FROM 390db.Users Upatient, 390db.Patients P WHERE Upatient.ID = P.ID;",(err, result) => {
         if(err){
             console.log(err);
         } else {
