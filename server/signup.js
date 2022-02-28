@@ -56,25 +56,26 @@ app.post("/Login", async(req,res) => {
     let email = req.body.email;
     let password = req.body.password;
     //check passwords and emails here then return request
-    console.log("Sucess!");
-    const hashedPassword = await bcrypt.hash(password,10) // 10 is const salt = await bcrypt.genSalt()
-    const user = {email:email, password:hashedPassword}
 
     state = `SELECT U.Email, U.Password FROM users U WHERE U.Email = "${email}";`;
 
 //    console.log(state)
 
-    db.query(state, function(err, result) {//ID might be removed since it should be auto indent
+    db.query(state, async(err, result) =>{
         if(err){
         console.log(err)}
         else{
-            if(result[0].Password = hashedPassword){
-                
-                //console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+
+            if(await bcrypt.compare(password,result[0].Password)&& email ===result[0].Email){ 
+                console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+            }
+            else{
+                console.log("Wrong Password Dumbass")
             }
         res.send(result);
         }
-    })
+    }
+    )
 }
 catch{
     res.status(500).send()
@@ -89,15 +90,22 @@ app.post("/Signup", async(req,res) => {
         let lastName = req.body.lastName;
         let email = req.body.email;
         let password = req.body.password;
+        let userRole = req.body.userRole
+        let phoneNumber = req.body.phoneNumber
 
         const hashedPassword = await bcrypt.hash(password,10) // 10 is const salt = await bcrypt.genSalt()
-        const user = {firstName:firstName, lastName:lastName,email:email, password:hashedPassword}
 
+
+        let Validated = 0
         state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in 
 
-    //console.log(state) used to verify proper SQL format
+        //console.log(state) //used to verify proper SQL format
 
-        db.query(state, [Math.floor(Math.random()*100000),firstName,lastName,email,hashedPassword,1,'5146256619', 'Doctor'], function(err, result) {//ID might be removed since it should be auto indent
+        if (userRole==='Patient'){//all other user types should to be approved
+            Validated = 1;
+        }
+    
+        db.query(state, [Math.floor(Math.random()*100000),firstName,lastName,email,hashedPassword,Validated,userRole, phoneNumber], function(err, result) {//ID might be removed since it should be auto indent
             if(err){
                 console.log(err)}
             else{
