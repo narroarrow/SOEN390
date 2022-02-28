@@ -117,9 +117,6 @@ app.post("/Signup", async(req,res) => {
                 }
         })
 
-
-
-
         if(userRole == 'Patient'){
 
             state = `SELECT p.DoctorID FROM 390db.patients p Group By P.DoctorID order by Count(p.ID) asc Limit 1;`;
@@ -130,19 +127,15 @@ app.post("/Signup", async(req,res) => {
                     let docID = result[0].DoctorID 
                     // console.log("DoctorID:\t\t"+docID)
 
-
                     // console.log("userID:\t\t"+ uid)
                     patientState = `INSERT INTO 390db.patients (ID, DoctorID, Flagged) VALUES (?,?,?);`;
                     db.query(patientState, [uid,docID,0], function(err, result) {//inserts a new patient with an auto assigned doctor
                         if(err){
                             console.log("\ninserting into patient \n"+err)}
-                        else{
-                        }
                     })
                     }
             })
             
-
         }
 // final send
         res.send(result);
