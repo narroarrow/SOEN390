@@ -44,7 +44,7 @@ function HealthOfficialViewingPatient() {
 
     return (
         <div>
-            <Container component="main">
+            <Container component='main'>
                 <CssBaseline />
                 <Box sx={{padding:5}}>
                         
@@ -88,11 +88,11 @@ function HealthOfficialViewingPatient() {
               
                 {/* I'm thinking that we make a new page called PreviousSymptoms where all
                 of the symptom forms will be sent.*/}
-                <Button sx={{ml: 48}} variant="outlined" href="#outlined-buttons" onClick={previousSymptoms} href="/PreviousSymptoms">
+                <Button sx={{ml: 48}} variant='outlined' href='#outlined-buttons' onClick={previousSymptoms} href='/PreviousSymptoms'>
                     VIEW PREVIOUS SYMPTOM FORMS
                 </Button>
                 <br></br><br></br>
-                <Button sx={{ml:58}} variant="outlined" href="#outlined-buttons" onClick={flagPatient} href="/DoctorViewingPatient">
+                <Button sx={{ml:58}} variant='outlined' href='#outlined-buttons' onClick={flagPatient} href='/DoctorViewingPatient'>
                     FLAG PATIENT
                 </Button>
               

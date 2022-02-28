@@ -73,7 +73,7 @@ function DoctorViewingPatient() {
 
     return (
         <div>
-            <Container component="main">
+            <Container component='main'>
                 <CssBaseline />
                 <Box sx={{padding:5}}>
                         
@@ -118,21 +118,21 @@ function DoctorViewingPatient() {
 
                 {/* I made it href back to the page so that the page refreshes and the doctor 
                 can see whether or not they have requested a symptom form.*/}
-                <Button variant="outlined" href="#outlined-buttons" onClick={requestForm} href="/DoctorViewingPatient">
+                <Button variant='outlined' href='#outlined-buttons' onClick={requestForm} href='/DoctorViewingPatient'>
                     REQUEST SYMPTOM FORM
                 </Button>
               
                 {/* I'm thinking that we make a new page called PreviousSymptoms where all
                 of the symptom forms will be sent.*/}
-                <Button sx={{ml: 65}} variant="outlined" href="#outlined-buttons" onClick={previousSymptoms} href="/PreviousSymptoms">
+                <Button sx={{ml: 65}} variant='outlined' href='#outlined-buttons' onClick={previousSymptoms} href='/PreviousSymptoms'>
                     VIEW PREVIOUS SYMPTOM FORMS
                 </Button>
 
                 {/* If patient profile has been reviewed already, the MARK AS REVIEWED button will be disabled */}
-                {isViewed ? (<Button sx={{ml:55}} variant="outlined" onClick={markAsReviewed} disabled href="/DoctorViewingPatient">MARK AS REVIEWED</Button>) : 
-                (<Button sx={{ml:55}} variant="outlined" onClick={markAsReviewed} href="/DoctorViewingPatient">MARK AS REVIEWED</Button>)}
+                {isViewed ? (<Button sx={{ml:55}} variant='outlined' onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) : 
+                (<Button sx={{ml:55}} variant='outlined' onClick={markAsReviewed} href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>)}
                 <br></br> <br></br>
-                <Button sx={{ml:58}} variant="outlined" href="#outlined-buttons" onClick={flagPatient} href="/DoctorViewingPatient">
+                <Button sx={{ml:58}} variant='outlined' href='#outlined-buttons' onClick={flagPatient} href='/DoctorViewingPatient'>
                     FLAG PATIENT
                 </Button>
               

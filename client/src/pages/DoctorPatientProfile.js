@@ -56,10 +56,10 @@ function DoctorPatientProfile() {
     <div>
       <Box sx={{ padding: 5 }}>
         <h1>Patient Profile Page (Doctor)
-          <Button value='All Patients' name='All Patients' variant="outlined" href="#outlined-buttons" onClick={() => filterAllPatients()} sx={{ textAlign: 'right', right: 0, display: 'inline-block', float: 'right' }}>
+          <Button value='All Patients' name='All Patients' variant='outlined' href='#outlined-buttons' onClick={() => filterAllPatients()} sx={{ textAlign: 'right', right: 0, display: 'inline-block', float: 'right' }}>
             All Patients
           </Button>
-          <Button value='My Patients' name='My Patients' variant="outlined" href="#outlined-buttons" onClick={() => filterMyPatients()} sx={{ textAlign: 'right', right: 10, display: 'inline-block', float: 'right' }}>
+          <Button value='My Patients' name='My Patients' variant='outlined' href='#outlined-buttons' onClick={() => filterMyPatients()} sx={{ textAlign: 'right', right: 10, display: 'inline-block', float: 'right' }}>
             My Patients
           </Button>
         </h1>
@@ -74,8 +74,8 @@ function DoctorPatientProfile() {
             }
             return (
               <Grid item md={4} key={key}>
-                  <Link to="/DoctorViewingPatient" state={{ID: val.ID}} style={{textDecoration: 'none'}}>
-                  <Button variant="outlined" href="/DoctorViewingPatient">
+                  <Link to='/DoctorViewingPatient' state={{ID: val.ID}} style={{textDecoration: 'none'}}>
+                  <Button variant='outlined' href='/DoctorViewingPatient'>
                     <CardHeader
                       avatar={
                         <Avatar aria-label="">
@@ -90,7 +90,7 @@ function DoctorPatientProfile() {
                     />
                                 
                     {isViewed ? (<VisibilityIcon/>) : (<VisibilityOutlinedIcon/>)} {/* If a patients health information has been reviewed the eye icon will be filled */}
-                    {isFlagged ? (<FlagIcon color = "secondary"/>) : (<FlagOutlinedIcon/>)} {/* If a patient is flagged the flag icon will be red */}
+                    {isFlagged ? (<FlagIcon color = 'secondary'/>) : (<FlagOutlinedIcon/>)} {/* If a patient is flagged the flag icon will be red */}
 
                   </Button>
                   </Link>
@@ -100,7 +100,7 @@ function DoctorPatientProfile() {
         </Grid>
       </Box>
       <Box sx={{ padding: 10 }}>
-        <Button variant="outlined" href="#outlined-buttons" sx={{ textAlign: 'right', position: 'absolute', right: '9%' }}>
+        <Button variant='outlined' href='#outlined-buttons' sx={{ textAlign: 'right', position: 'absolute', right: '9%' }}>
           Review Medical Checklist
         </Button>
       </Box>

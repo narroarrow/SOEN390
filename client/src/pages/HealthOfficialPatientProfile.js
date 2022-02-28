@@ -49,7 +49,7 @@ function HealthOfficialPatientProfile() {
     <div>
       <Box sx={{ padding: 5 }}>
         <h1>Patient Profile Page (Health Official)
-          <Button value='All Patients' name='All Patients' variant="outlined" href="#outlined-buttons" onClick={() => filterAllPatients()} sx={{ textAlign: 'right', right: 0, display: 'inline-block', float: 'right' }}>
+          <Button value='All Patients' name='All Patients' variant='outlined' href='#outlined-buttons' onClick={() => filterAllPatients()} sx={{ textAlign: 'right', right: 0, display: 'inline-block', float: 'right' }}>
             All Patients
           </Button>
         </h1>
@@ -64,8 +64,8 @@ function HealthOfficialPatientProfile() {
             }
             return (
               <Grid item md={4} key={key}>
-                  <Link to="/HealthOfficialViewingPatient" state={{ID: val.ID}} style={{textDecoration: 'none'}}>
-                  <Button variant="outlined" href="/HealthOfficialViewingPatient">
+                  <Link to='/HealthOfficialViewingPatient' state={{ID: val.ID}} style={{textDecoration: 'none'}}>
+                  <Button variant='outlined' href='/HealthOfficialViewingPatient'>
                     <CardHeader
                       avatar={
                         <Avatar aria-label="">
@@ -80,7 +80,7 @@ function HealthOfficialPatientProfile() {
                     />
                                 
                     {isViewed ? (<VisibilityIcon/>) : (<VisibilityOutlinedIcon/>)} {/* If a patients health information has been reviewed the eye icon will be filled */}
-                    {isFlagged ? (<FlagIcon color = "secondary"/>) : (<FlagOutlinedIcon/>)} {/* If a patient is flagged the flag icon will be red */}
+                    {isFlagged ? (<FlagIcon color = 'secondary'/>) : (<FlagOutlinedIcon/>)} {/* If a patient is flagged the flag icon will be red */}
 
                   </Button>
                   </Link>
@@ -90,7 +90,7 @@ function HealthOfficialPatientProfile() {
         </Grid>
       </Box>
       <Box sx={{ padding: 10 }}>
-        <Button variant="outlined" href="#outlined-buttons" sx={{ textAlign: 'right', position: 'absolute', right: '9%' }}>
+        <Button variant='outlined' href='#outlined-buttons' sx={{ textAlign: 'right', position: 'absolute', right: '9%' }}>
           Review Medical Checklist
         </Button>
       </Box>
