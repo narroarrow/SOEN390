@@ -42,9 +42,21 @@ app.get('/users', (req, res) => {
     })
 })
 
-app.get("/adminViewingDoctorData",(req,res) => {
+app.get("/adminViewingValidatedDoctorData",(req,res) => {
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID;",(err, result) => {
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
+        if(err){
+            console.log(err);
+        } else {
+            console.log(result);
+            res.send(result);
+        }
+    });
+});
+
+app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
+
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
         if(err){
             console.log(err);
         } else {
@@ -55,7 +67,7 @@ app.get("/adminViewingDoctorData",(req,res) => {
 });
 
 app.get("/adminViewingPatientData",(req,res) => {
-    db.query("SELECT Upatient.Fname, Upatient.Lname FROM 390db.Users Upatient, 390db.Patients P WHERE Upatient.ID = P.ID;",(err, result) => {
+    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname, Udoctor.Lname FROM 390db.Users Upatient, 390db.Patients P, 390db.Users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
         if(err){
             console.log(err);
         } else {
@@ -67,7 +79,43 @@ app.get("/adminViewingPatientData",(req,res) => {
 app.get("/doctorViewingTheirPatientData", (req,res) =>{
     let did = 6;
     //hardcoded to doctor ID 6
-    db.query("SELECT Upatient.Fname, Upatient.Lname FROM 390db.Users  Upatient, 390db.Patients P, 390db.Doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;", [did], (err, result) => {
+    db.query("SELECT Upatient.* FROM 390db.Users Upatient, 390db.Patients P, 390db.Doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;", [did], (err, result) => {
+        if(err){
+            console.log("Error!");
+            console.log(err);
+        } else {
+            console.log("No error!");
+            res.send(result);
+        }
+    });
+});
+
+app.get("/doctorViewingAllDoctors", (req,res) =>{
+    db.query("SELECT Udoctor.* FROM 390db.Users Udoctor, 390db.Doctors D WHERE D.ID =  Udoctor.ID;", (err, result) => {
+        if(err){
+            console.log("Error!");
+            console.log(err);
+        } else {
+            console.log("No error!");
+            res.send(result);
+        }
+    });
+});
+
+app.get("/doctorViewingDoctorPatients", (req,res) =>{
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.Users Upatient, 390db.Users Udoctor, 390db.Patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;", (err, result) => {
+        if(err){
+            console.log("Error!");
+            console.log(err);
+        } else {
+            console.log("No error!");
+            res.send(result);
+        }
+    });
+});
+
+app.get("/doctorViewingAllPatientData", (req,res) =>{
+    db.query("SELECT Upatient.* FROM 390db.Users Upatient, 390db.Patients P WHERE P.ID = Upatient.ID;", (err, result) => {
         if(err){
             console.log("Error!");
             console.log(err);

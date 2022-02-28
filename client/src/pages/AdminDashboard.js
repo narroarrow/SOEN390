@@ -27,22 +27,29 @@ const Item3 = styled(Paper)(({ theme }) => ({
 function AdminDashboard() {
 
     const [patientList, setPatientList] = useState([]); //all patient info
-  const [doctorList, setDoctorList] = useState([]); //all doctor info
+    const [doctorListValidated, setDoctorListValidated] = useState([]); //all doctor info
+    const [doctorListUnvalidated, setDoctorListUnvalidated] = useState([]); //all doctor info
 
-  var allPatients = patientList;
-  var allDoctors = doctorList;
-
-  function getDoctors() {
-    Axios.get("http://localhost:8080/adminViewingDoctorData").then((response) => {
-      setDoctorList(response.data);
-      console.log("doctor:");
+  function getValidatedDoctors() {
+    Axios.get("http://localhost:8080/adminViewingValidatedDoctorData").then((response) => {
+      setDoctorListValidated(response.data);
+      console.log("Validated Doctors:");
       console.log(response.data);
     });
   };
+
+  function getUnvalidatedDoctors() {
+    Axios.get("http://localhost:8080/adminViewingUnvalidatedDoctorData").then((response) => {
+      setDoctorListUnvalidated(response.data);
+      console.log("Unvalidated Doctors:");
+      console.log(response.data);
+    });
+  };
+
   function getPatients() {
     Axios.get("http://localhost:8080/adminViewingPatientData").then((response) => {
       setPatientList(response.data);
-      console.log("Patient:");
+      console.log("Patients:");
       console.log(response.data);
     });
   };
@@ -51,12 +58,23 @@ function AdminDashboard() {
 let stopeffect = 1;
 
 useEffect(() => {
-  getDoctors();
+  getValidatedDoctors();
+  getUnvalidatedDoctors();
   getPatients();
 },[stopeffect]);
 
   return (
     <div>
+      <Container>
+        {patientList.map((val,key) => {
+          return(
+            <Grid item xs={4}>
+            <Item>Patient Name: {val.Fname + " " + val.Lname}</Item>
+        </Grid>
+          )
+        }
+        )}
+      </Container>
       <CardHeader
         avatar={
           <Avatar aria-label="">
