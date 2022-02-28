@@ -33,7 +33,7 @@ function DoctorPatientProfile() {
       setPatientList(response.data);
       console.log(patientList);
       if (!executed){
-        setFilteredPatients(patientList);
+        setFilteredPatients(response.data);
         setExecuted(true);
       }
     });  
