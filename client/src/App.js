@@ -1,6 +1,7 @@
 import Login from './pages/Login.js';
 import Signup from './pages/Signup.js';
 import AdminDashboard from './pages/AdminDashboard';
+import SymptomForm from './pages/SymptomForm';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Switch, Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer.js';
@@ -13,6 +14,8 @@ import axios from 'axios';
 import DoctorViewingPatient from './pages/DoctorViewingPatient.js';
 import HealthOfficialPatientProfile from './pages/HealthOfficialPatientProfile.js';
 import HealthOfficialViewingPatient from './pages/HealthOfficialViewingPatient.js';
+import EditInfoForm from './pages/EditInfoForm';
+import PatientCovidStatus from './pages/PatientCovidStatus';
 
 
 function App() {
@@ -68,6 +71,9 @@ useEffect(() => {secondTest()}, [])
           <Route path='/DoctorViewingPatient' element={<DoctorViewingPatient/>}/>
           <Route path='/HealthOfficialPatientProfile' element={<HealthOfficialPatientProfile/>}></Route>
           <Route path='/HealthOfficialViewingPatient' element={<HealthOfficialViewingPatient/>}></Route>
+          <Route path='/EditInfoForm' element={<EditInfoForm/>}/>
+          <Route path='/PatientCovidStatus' element = {<PatientCovidStatus/>}/>
+          <Route path='/SymptomForm' element={<SymptomForm/>}/>
           
         </Routes>
         <Footer/>
