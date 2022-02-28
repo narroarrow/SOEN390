@@ -86,8 +86,8 @@ function HealthOfficialViewingPatient() {
               
                 <Box sx={{padding:5}}>
               
-              {/* I'm thinking that we make a new page called PreviousSymptoms where all
-               of the symptom forms will be sent.*/}
+                {/* I'm thinking that we make a new page called PreviousSymptoms where all
+                of the symptom forms will be sent.*/}
                 <Button sx={{ml: 48}} variant="outlined" href="#outlined-buttons" onClick={previousSymptoms} href="/PreviousSymptoms">
                     VIEW PREVIOUS SYMPTOM FORMS
                 </Button>
