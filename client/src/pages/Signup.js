@@ -34,7 +34,7 @@ const roles = [
 
 
 //handling the Signup form
-let userRoles
+let userRoles = 'Patient';
 let submitSignupForm = (event1) =>{
   event1.preventDefault();
   const data = new FormData(event1.currentTarget);

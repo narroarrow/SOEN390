@@ -50,13 +50,41 @@ app.get('/users', (req, res) => {
 //https://youtu.be/mbsmsi7l3r4 start from 00:00
 
 
+
 //getting the email and passowrd from the form
-app.post("/Login", (req,res) => {
-    let email = req.body.email;
-    let password = req.body.password;
-    //check passwords and emails here then return request
-    console.log("Sucess!!");
-})
+app.post("/Login", async(req,res) => {
+    try{   
+         //fields were provided by the front end form
+        let email = req.body.email;
+        let password = req.body.password;
+    
+        //query statement
+        state = `SELECT U.Email, U.Password FROM users U WHERE U.Email = "${email}";`;
+    
+        //console.log(state) // used to verify the query
+    
+    
+        db.query(state, async(err, result) =>{ 
+            if(err){
+            console.log(err)} //indicator for errors when executing a query 
+            else{
+                if(await bcrypt.compare(password,result[0].Password)&& email ===result[0].Email){ //await needs "async" in the 'parent' 
+                    //success will send to next page
+    
+                    console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+                }
+                else{
+                    console.log("Wrong Password")
+                }
+            res.send(result);
+            }
+        }
+        )
+    }
+    catch{
+        res.status(500).send()
+    }
+    })
 
 //getting the email and passowrd from the form
 app.post("/Signup", async(req,res) => {
@@ -66,19 +94,28 @@ app.post("/Signup", async(req,res) => {
         let lastName = req.body.lastName;
         let email = req.body.email;
         let password = req.body.password;
+        let userRole = req.body.userRole
+        let phoneNumber = req.body.phoneNumber
 
-        const hashedPassword = await bcrypt.hash(password,10) // 10 is const salt = await bcrypt.genSalt()
-        const user = {firstName:firstName, lastName:lastName,email:email, password:hashedPassword}
+        const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
+        const hashedPassword = await bcrypt.hash(password,salt)
 
+        let Validated = 0
         state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in 
 
-        console.log(state)
-        counter++;
-        db.query(state, ['69',firstName,lastName,email,hashedPassword,1,'5146256619', 'Doctor'], function(err, result) {//ID might be removed since it should be auto indent
-            console.log(err)
-            res.send(result);
+        //console.log(state) //used to verify proper SQL format
+
+        if (userRole==='Patient'){//all other user types should to be approved
+            Validated = 1;
+        }
+        console.log(userRole)
+        db.query(state, [Math.floor(Math.random()*100000),firstName,lastName,email,hashedPassword,Validated,phoneNumber,userRole], function(err, result) {//ID might be removed since it should be auto indent
+            if(err){
+                console.log(err)}
+            else{
+                res.send(result);
+                }
         })
-        
     }
     catch{ 
         res.status(500).send()
