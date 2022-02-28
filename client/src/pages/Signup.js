@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import {Container, Typography, Box, Grid, Link, Checkbox, FormControlLabel, TextField, CssBaseline, Button, Avatar, MenuItem} from '@mui/material'
+import {Container, Typography, Box, Grid, Link, Checkbox, FormControlLabel, TextField, CssBaseline, Button, Avatar, MenuItem, stepConnectorClasses} from '@mui/material'
 import Axios from 'axios';
 import validator from 'validator';
 
@@ -38,7 +38,7 @@ let userRoles
 let submitSignupForm = (event1) =>{
   event1.preventDefault();
   const data = new FormData(event1.currentTarget);
-  if(validator.isEmail(data.get('email')) && validator.isStrongPassword(data.get('password')) && data.get('password') == data.get('Confirmpassword')){
+  if(validator.isEmail(data.get('email')) && validator.isStrongPassword(data.get('password')) && validator.isMobilePhone(data.get('PhoneNumber')) && data.get('password') == data.get('confirmPassword')){
     Axios.post('http://localhost:8080/Signup',{
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
@@ -63,7 +63,7 @@ function Signup() {
 
   const handleChange = (event2) => {
     setRoles(event2.target.value);
-    userRoles = role
+    userRoles = event2.target.value
   };
 
   //validating email
@@ -77,6 +77,18 @@ function Signup() {
       setEmailError('Enter valid Email!');
     }
   };
+
+    //validating phone number
+    const [phoneError, setPhoneError] = useState('');
+    const validatePhone = (e) => {
+      var phone = e.target.value;
+  
+      if (validator.isMobilePhone(phone)) {
+        setPhoneError('');
+      } else {
+        setPhoneError('Enter valid phone number!');
+      }
+    };
 
    //validating password
    const [passwordError, setpasswordError] = useState('');
@@ -116,7 +128,8 @@ function Signup() {
                 <TextField required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="family-name"/>
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth id="Phone Number" label="Phone Number" name="PhoneNumber" autoComplete="phone-number"/>
+                <TextField required fullWidth id="Phone Number" label="Phone Number" name="PhoneNumber" autoComplete="phone-number" onChange={(e) => validatePhone(e)}/>
+                {phoneError}
               </Grid>
               <Grid item xs={12}>
                 <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" onChange={(e) => validateEmail(e)}/>
@@ -133,7 +146,7 @@ function Signup() {
                 {passwordError}
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth name="confirmPassword" label="ConfirmPassword" type="password" id="Confirmpassword" autoComplete="new-password" onChange={(e) => validatePassword(e)}
+                <TextField required fullWidth name="confirmPassword" label="Confirm Password" type="password" id="Confirmpassword" autoComplete="new-password" onChange={(e) => validatePassword(e)}
                 onMouseEnter={() => setIsPassword2Shown(true)} onMouseLeave={() => setIsPassword2Shown(false)}/>
                 {isPassword2Shown && (
                   <div>
