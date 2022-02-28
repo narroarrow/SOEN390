@@ -117,8 +117,6 @@ function EditInfoForm() {
 
         <br></br>
 
-      // href="/PatientProfile" add to button below
-
         <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
           Submit
         </Button>
