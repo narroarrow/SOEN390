@@ -112,9 +112,6 @@ app.post("/Signup", async(req,res) => {
         db.query(state, [uid,firstName,lastName,email,hashedPassword,Validated,phoneNumber,userRole], function(err, result) {//ID might be removed since it should be auto indent
             if(err){
                 console.log(err)}
-            else{
-                
-                }
         })
 
         if(userRole == 'Patient'){
