@@ -1,7 +1,9 @@
 import * as React from 'react';
+import {useState} from 'react';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import {Container, Typography, Box, Grid, Link, Checkbox, FormControlLabel, TextField, CssBaseline, Button, Avatar, MenuItem} from '@mui/material'
 import Axios from 'axios';
+import validator from 'validator';
 
 //all possible users
 const roles = [
@@ -28,26 +30,35 @@ const roles = [
 ];
 
 
+
+
+
 //handling the Signup form
 let userRoles
 let submitSignupForm = (event1) =>{
   event1.preventDefault();
   const data = new FormData(event1.currentTarget);
-  Axios.post('http://localhost:8080/Signup',{
+  if(validator.isEmail(data.get('email')) && validator.isStrongPassword(data.get('password')) && data.get('password') == data.get('Confirmpassword')){
+    Axios.post('http://localhost:8080/Signup',{
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
       userRole: userRoles,
       phoneNumber: data.get('PhoneNumber')
- }).then(()=>{
-   //will have user authentication here
-   alert("success");
- });
+    }).then(()=>{
+      //will have user authentication here
+      alert("success");
+    });
+  }
+  else{
+    alert("Wrong information");
+  }
+  
 };
 
 function Signup() {
-    //switching roles
+  //switching roles
   const [role, setRoles] = React.useState('Patient');
 
   const handleChange = (event2) => {
@@ -55,7 +66,38 @@ function Signup() {
     userRoles = role
   };
 
+  //validating email
+  const [emailError, setEmailError] = useState('');
+  const validateEmail = (e) => {
+    var email = e.target.value;
+
+    if (validator.isEmail(email)) {
+      setEmailError('');
+    } else {
+      setEmailError('Enter valid Email!');
+    }
+  };
+
+   //validating password
+   const [passwordError, setpasswordError] = useState('');
+   const validatePassword = (e) => {
+     var passowrd = e.target.value;
+ 
+     if (validator.isStrongPassword(passowrd)) {
+      setpasswordError('');
+     } else {
+      setpasswordError('Enter valid Password!');
+     }
+   };
+
+   //display password requirements.
+   const [isPassword1Shown, setIsPassword1Shown] = useState(false);
+   const [isPassword2Shown, setIsPassword2Shown] = useState(false);
+
+
   return (
+
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
@@ -77,13 +119,28 @@ function Signup() {
                 <TextField required fullWidth id="Phone Number" label="Phone Number" name="PhoneNumber" autoComplete="phone-number"/>
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email"/>
+                <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" onChange={(e) => validateEmail(e)}/>
+                {emailError}
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth name="password" label="Password" type="password" id="password"autoComplete="new-password"/>
+                <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password" onChange={(e) => validatePassword(e)}
+                onMouseEnter={() => setIsPassword1Shown(true)} onMouseLeave={() => setIsPassword1Shown(false)}/>
+                {isPassword1Shown && (
+                  <div>
+                    min Length is 8, at least 1 lowercase, at least 1 Uppercase, at least 1 Numbers,at least 1 Symbols
+                  </div>
+                )}
+                {passwordError}
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth name="confirmPassword" label="ConfirmPassword" type="password" id="Confirmpassword" autoComplete="new-password"/>
+                <TextField required fullWidth name="confirmPassword" label="ConfirmPassword" type="password" id="Confirmpassword" autoComplete="new-password" onChange={(e) => validatePassword(e)}
+                onMouseEnter={() => setIsPassword2Shown(true)} onMouseLeave={() => setIsPassword2Shown(false)}/>
+                {isPassword2Shown && (
+                  <div>
+                    min Length is 8, at least 1 lowercase, at least 1 Uppercase, at least 1 Numbers, at least 1 Symbols
+                  </div>
+                )}
+                {passwordError}
               </Grid>
 
               <Grid item xs={12}>
