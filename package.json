@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@testing-library/dom": "^8.11.3",
     "cors": "^2.8.5",
     "nodemon": "^2.0.15",
     "supertest": "^6.2.2"
