@@ -1,6 +1,7 @@
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AdminDashboard from './pages/AdminDashboard';
+import SymptomForm from './pages/SymptomForm';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Switch, Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
@@ -9,6 +10,8 @@ import DoctorDashboard from './pages/DoctorDashboard';
 import PatientProfile from './pages/PatientProfile';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import EditInfoForm from './pages/EditInfoForm';
+import PatientCovidStatus from './pages/PatientCovidStatus';
 
 
 function App() {
@@ -60,6 +63,11 @@ useEffect(() => {secondTest()}, [])
           <Route path='/DoctorDashboard' element={<DoctorDashboard/>} />
           <Route path='/AdminDashboard' element={<AdminDashboard/>}/>
           <Route path='/PatientProfile' element={<PatientProfile/>}/>
+          <Route path='/EditInfoForm' element={<EditInfoForm/>}/>
+          <Route path='/PatientCovidStatus' element = {<PatientCovidStatus/>}/>
+          <Route path='/SymptomForm' element={<SymptomForm/>}/>
+
+          
           
         </Routes>
         <Footer/>
