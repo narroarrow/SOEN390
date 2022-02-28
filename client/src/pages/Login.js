@@ -14,7 +14,7 @@ let submitLoginForm = (event) =>{
       password: data.get('password')
  }).then(()=>{
    //will have user authentication here
-   alert("success");
+
  });
 };
 

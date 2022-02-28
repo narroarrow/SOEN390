@@ -52,25 +52,28 @@ app.get('/users', (req, res) => {
 
 //getting the email and passowrd from the form
 app.post("/Login", async(req,res) => {
- try{   
+try{   
+     //fields were provided by the front end form
     let email = req.body.email;
     let password = req.body.password;
-    //check passwords and emails here then return request
 
+    //query statement
     state = `SELECT U.Email, U.Password FROM users U WHERE U.Email = "${email}";`;
 
-//    console.log(state)
+    //console.log(state) // used to verify the query
 
-    db.query(state, async(err, result) =>{
+
+    db.query(state, async(err, result) =>{ 
         if(err){
-        console.log(err)}
+        console.log(err)} //indicator for errors when executing a query 
         else{
+            if(await bcrypt.compare(password,result[0].Password)&& email ===result[0].Email){ //await needs "async" in the 'parent' 
+                //success will send to next page
 
-            if(await bcrypt.compare(password,result[0].Password)&& email ===result[0].Email){ 
                 console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
             }
             else{
-                console.log("Wrong Password Dumbass")
+                console.log("Wrong Password")
             }
         res.send(result);
         }
@@ -93,8 +96,8 @@ app.post("/Signup", async(req,res) => {
         let userRole = req.body.userRole
         let phoneNumber = req.body.phoneNumber
 
-        const hashedPassword = await bcrypt.hash(password,10) // 10 is const salt = await bcrypt.genSalt()
-
+        const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
+        const hashedPassword = await bcrypt.hash(password,salt)
 
         let Validated = 0
         state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in 
@@ -104,8 +107,8 @@ app.post("/Signup", async(req,res) => {
         if (userRole==='Patient'){//all other user types should to be approved
             Validated = 1;
         }
-    
-        db.query(state, [Math.floor(Math.random()*100000),firstName,lastName,email,hashedPassword,Validated,userRole, phoneNumber], function(err, result) {//ID might be removed since it should be auto indent
+        console.log(userRole)
+        db.query(state, [Math.floor(Math.random()*100000),firstName,lastName,email,hashedPassword,Validated,phoneNumber,userRole], function(err, result) {//ID might be removed since it should be auto indent
             if(err){
                 console.log(err)}
             else{
