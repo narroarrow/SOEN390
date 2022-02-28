@@ -41,6 +41,29 @@ app.get('/users', (req, res) => {
     })
 })
 
+app.get("/adminViewingDoctorData",(req,res) => {
+
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname FROM Users Udoctor, Doctors D WHERE Udoctor.ID = D.ID;",(err, result) => {
+        if(err){
+            console.log(err);
+        } else {
+            console.log(result);
+            res.send(result);
+        }
+    });
+});
+
+app.get("/adminViewingPatientData",(req,res) => {
+
+    db.query("SELECT Upatient.Fname, Upatient.Lname FROM Users Upatient, Patients P WHERE Upatient.ID = P.ID;",(err, result) => {
+        if(err){
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
 
 
 app.get('/*', function(req,res){

@@ -1,5 +1,6 @@
 import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled } from '@mui/material';
-import React from 'react';
+import { Axios } from 'axios';
+import React, { useState, useEffect } from 'react';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -17,12 +18,69 @@ const Item2 = styled(Paper)(({ theme }) => ({
 
 const Item3 = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
-  padding: theme.spacing(1),
+  padding: theme.spacing(1), 
   textAlign: 'center',
   color: 'red',
 }));
 
+// function AdminDashboard() {
+//   const [patientList, setPatientList] = useState([]); //all patient info
+//   const [doctorList, setDoctorList] = useState([]); //all doctor info
+
+//   var allPatients = patientList;
+//   var allDoctors = doctorList;
+
+//   function getDoctors() {
+//     Axios.get("http://localhost:8080/adminViewingDoctorData").then((response) => {
+//       setDoctorList(response.data);
+//       console.log(doctorList);
+//     });
+//   };
+//   function getPatients() {
+//     Axios.get("http://localhost:8080/adminViewingPatientData").then((response) => {
+//       setPatientList(response.data);
+//       console.log(patientList);
+//     });
+//   };
+// };
+
+// let stopeffect = 1;
+
+// useEffect(() => {
+//   getDoctors();
+//   getPatients();
+// },[stopeffect]);
+
+
 function PatientProfile() {
+
+  const [patientList, setPatientList] = useState([]); //all patient info
+  const [doctorList, setDoctorList] = useState([]); //all doctor info
+
+  var allPatients = patientList;
+  var allDoctors = doctorList;
+
+  function getDoctors() {
+    Axios.get("http://localhost:8080/adminViewingDoctorData").then((response) => {
+      setDoctorList(response.data);
+      console.log(doctorList);
+    });
+  };
+  function getPatients() {
+    Axios.get("http://localhost:8080/adminViewingPatientData").then((response) => {
+      setPatientList(response.data);
+      console.log(patientList);
+    });
+  };
+
+
+let stopeffect = 1;
+
+useEffect(() => {
+  getDoctors();
+  getPatients();
+},[stopeffect]);
+
   return (
     <div>
       <CardHeader
