@@ -91,6 +91,14 @@ app.get("/doctorViewingPatientData", (req, res) => {
 app.get("/doctorViewingPreviousSymptoms", (req, res) => {
     let pid = req.query.id;
     db.query("SELECT * FROM HealthInformation HI WHERE PatientID=?", [pid], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
       
 //below is a test server function
 app.get('/api', (req, res) => {
