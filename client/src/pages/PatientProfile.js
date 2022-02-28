@@ -32,6 +32,11 @@ function PatientProfile() {
         });
     }, [stopeffect]);
 
+
+    // Returning the HTML / CSS for the Patient Profile
+    // Each GRID ITEM retrieves patient data from the database
+    // and displays it.
+    // Each button on the page brings you to the associated pages
     return (
         <div>
             <Container component="main">

@@ -53,6 +53,8 @@ function EditInfoForm() {
   let patientPhoneNumber = editPatientData.map((val, key) => { return val.Phone });
   let patientEmail = editPatientData.map((val, key) => { return val.Email });
 
+  // Allows patients to edit their information adding appropriate info in the text fields
+
   return (
     <div align="Center">
       <Paper elevation={24} component="form" onLoad onSubmit={submitEditInfoForm} sx={{ width: 700, height: 1000, mt: 10 }}>

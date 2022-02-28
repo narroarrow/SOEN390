@@ -19,6 +19,8 @@ let submitPatientCovidStatus = (event) => {
 
 function PatientCovidStatus() {
 
+  // Takes users input for Covid status, either selects: healthy, isolating, or infected.
+  
   return (
     <div align="Center">
       <Paper elevation={24} component="form" onSubmit={submitPatientCovidStatus} sx={{ width: 700, height: 500, mt: 10 }}>
