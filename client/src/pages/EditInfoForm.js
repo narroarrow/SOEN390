@@ -1,8 +1,6 @@
-import Paper from '@mui/material/Paper';
-import React, { useState, useEffect } from 'react';
-import FormControl from '@mui/material/FormControl'; import FormLabel from '@mui/material/FormLabel'; import { TextField } from '@mui/material'; import Button from '@mui/material/Button';
+import { Paper, FormControl, FormLabel, TextField, Button } from '@mui/material/Paper';
 import Axios from 'axios';
-
+import React, { useState, useEffect } from 'react';
 
 //This variable represents a function that will be called when the
 //user submits the form with their updated data. The updated data will be 
@@ -126,6 +124,5 @@ function EditInfoForm() {
     </div>
   );
 }
-
 
 export default EditInfoForm;

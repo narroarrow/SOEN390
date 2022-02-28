@@ -10,7 +10,6 @@ const Item = styled(Paper)(({ theme }) => ({
     fontWeight: 'bold'
 }));
 
-
 function PatientProfile() {
 
     //These variables are used to get the current patient's data.
@@ -31,7 +30,6 @@ function PatientProfile() {
             console.log(response);
         });
     }, [stopeffect]);
-
 
     // Returning the HTML / CSS for the Patient Profile
     // Each GRID ITEM retrieves patient data from the database
@@ -140,6 +138,5 @@ function PatientProfile() {
         </div>
     );
 }
-
 
 export default PatientProfile;

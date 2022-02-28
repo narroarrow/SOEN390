@@ -1,5 +1,6 @@
-import Paper from '@mui/material/Paper'; import React from 'react'; import FormControlLabel from '@mui/material/FormControlLabel'; import FormControl from '@mui/material/FormControl'; import FormLabel from '@mui/material/FormLabel'; import Radio from '@mui/material/Radio'; import RadioGroup from '@mui/material/RadioGroup'; import Button from '@mui/material/Button'; import Axios from 'axios';
-
+import { Paper, FormControlLabel, FormControl, FormLabel, Radio, RadioGroup, Button } from '@mui/material'; 
+import React from 'react'; 
+import Axios from 'axios';
 
 //This variable represents a function that will be called when the user submits
 //their form to change their status. It will post the data from the form to
@@ -15,7 +16,6 @@ let submitPatientCovidStatus = (event) => {
     console.log('success');
   });
 };
-
 
 function PatientCovidStatus() {
 
@@ -74,6 +74,5 @@ function PatientCovidStatus() {
     </div>
   );
 }
-
 
 export default PatientCovidStatus;
