@@ -55,11 +55,24 @@ app.get("/adminViewingDoctorData",(req,res) => {
 });
 
 app.get("/adminViewingPatientData",(req,res) => {
-
     db.query("SELECT Upatient.Fname, Upatient.Lname FROM 390db.Users Upatient, 390db.Patients P WHERE Upatient.ID = P.ID;",(err, result) => {
         if(err){
             console.log(err);
         } else {
+            res.send(result);
+        }
+    });
+});
+
+app.get("/doctorViewingTheirPatientData", (req,res) =>{
+    let did = 6;
+    //hardcoded to doctor ID 6
+    db.query("SELECT Upatient.Fname, Upatient.Lname FROM 390db.Users  Upatient, 390db.Patients P, 390db.Doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;", [did], (err, result) => {
+        if(err){
+            console.log("Error!");
+            console.log(err);
+        } else {
+            console.log("No error!");
             res.send(result);
         }
     });

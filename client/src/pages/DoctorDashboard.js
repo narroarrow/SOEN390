@@ -1,7 +1,27 @@
-import * as React from 'react';
 import { Avatar, IconButton, Button, Box, Grid, CardHeader,} from '@mui/material';
+import React, {useState, useEffect} from 'react';
+import Axios from 'axios';
+
 
 function DoctorDashboard() {
+
+  const [patientList, setPatientList] = useState([]); //all patient info
+  var tempDoctorID = 6;
+  var allPatients = patientList;
+
+  function getDoctorPatients() {
+    Axios.get("http://localhost:8080/doctorViewingTheirPatientData", {params: {id: tempDoctorID}}).then((response) => {
+      setPatientList(response.data);
+      console.log(response.data);
+    });
+  };
+
+
+let stopeffect = 1;
+
+useEffect(() => {
+  getDoctorPatients();
+},[stopeffect]);
 
   return (
     <div>
@@ -42,5 +62,4 @@ function DoctorDashboard() {
     </div>
   );
 }
-
 export default DoctorDashboard;

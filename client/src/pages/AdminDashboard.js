@@ -35,13 +35,15 @@ function AdminDashboard() {
   function getDoctors() {
     Axios.get("http://localhost:8080/adminViewingDoctorData").then((response) => {
       setDoctorList(response.data);
-      console.log(doctorList);
+      console.log("doctor:");
+      console.log(response.data);
     });
   };
   function getPatients() {
     Axios.get("http://localhost:8080/adminViewingPatientData").then((response) => {
       setPatientList(response.data);
-      console.log(patientList);
+      console.log("Patient:");
+      console.log(response.data);
     });
   };
 
