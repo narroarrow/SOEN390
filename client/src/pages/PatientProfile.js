@@ -11,24 +11,18 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-
-
-//how to make this run as the page opens instead of using a button?
-// let patientProfileData = () => {
-//     Axios.get('http://localhost:8080/patientProfileData',{
-//         //send the patient id here
-//     }).then((response) => {
-//         console.log(response);
-//     });
-// };
-
-
 function PatientProfile() {
 
+    //These variables are used to get the current patient's data.
+    //The const allows us to store the data in a variable using useState()
+    //and the stopeffect will make sure that our useEffect() will only 
+    //run one time.
     const [patientData, setPatientData] = useState([]);
-    let stopeffect=1;
+    let stopeffect = 1;
 
-
+    //This useEffect() will run after the page renders. It will
+    //get the patients data by using a get and going to the 
+    //server.js file to execute the code to query for the data.
     useEffect(() => {
         Axios.get('http://localhost:8080/patientProfileData', {
             //send the patient id here
@@ -57,16 +51,16 @@ function PatientProfile() {
                             </Item>
                         </Grid>
                         <Grid item xs={4}>
-                            <Item>Patient ID:  
+                            <Item>Patient ID:
                                 {patientData.map((val, key) => {
                                     return " " + val.ID
                                 })}
-                                </Item>
+                            </Item>
 
                         </Grid>
                         <Grid item xs={4}>
                             <Item>Doctor:
-                            {patientData.map((val, key) => {
+                                {patientData.map((val, key) => {
                                     return " " + val.DFName + " " + val.DLName
                                 })}
 
@@ -83,7 +77,7 @@ function PatientProfile() {
 
                         <Grid item xs={4}>
                             <Item>Birthdate:
-                            {patientData.map((val, key) => {
+                                {patientData.map((val, key) => {
                                     return " " + val.Birthday
                                 })}
 
@@ -92,7 +86,7 @@ function PatientProfile() {
                         <Grid item xs={4}>
                             <Item>Health Insurance:
 
-                            {patientData.map((val, key) => {
+                                {patientData.map((val, key) => {
                                     return " " + val.HealthInsurance
                                 })}
 
@@ -102,14 +96,14 @@ function PatientProfile() {
 
                         <Grid item xs={4}>
                             <Item>Phone number:
-                            {patientData.map((val, key) => {
+                                {patientData.map((val, key) => {
                                     return " " + val.Phome
                                 })}
                             </Item>
                         </Grid>
                         <Grid item xs={4}>
                             <Item>Email Address:
-                            {patientData.map((val, key) => {
+                                {patientData.map((val, key) => {
                                     return " " + val.Email
                                 })}
                             </Item>
@@ -123,19 +117,18 @@ function PatientProfile() {
                         EDIT INFO
                     </Button>
 
-                    <Button sx={{mr:10}} variant="outlined" href="/PatientCovidStatus" >
-                    Edit CURRENT STATUS
-                </Button>
+                    <Button sx={{ mr: 10 }} variant="outlined" href="/PatientCovidStatus" >
+                        Edit CURRENT STATUS
+                    </Button>
 
-                    <Button sx={{mr:10}} variant="outlined" href="#outlined-buttons" href="/SymptomForm">
+                    <Button sx={{ mr: 10 }} variant="outlined" href="#outlined-buttons" href="/SymptomForm">
                         SYMPTOM FORM
                     </Button>
 
-                    <Button sx={{  }} variant="outlined" href="#outlined-buttons" >
+                    <Button sx={{}} variant="outlined" href="#outlined-buttons" >
                         BOOK APPOINTMENT
                     </Button>
 
-                
                 </Box>
             </Container>
 
