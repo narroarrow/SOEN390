@@ -123,7 +123,7 @@ app.get('/patientProfileData', (req, res) => {
     //The query below returns all the information that the user will see on their
     //profile by using the patient's id to filter through the different patient-doctor
     //combinations.
-    db.query("SELECT P.FName, P.LName, P.HealthInsurance, P.ID, P.Birthday, P.Phone, P.Email, U.FName AS DFName, U.LName AS DLName FROM patients P, doctors D, users U WHERE P.id=1 AND D.id=P.doctorID AND U.ID=D.ID", (err, result) => {
+    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName FROM patients P, doctors D, users U, users U2 WHERE P.id=1 AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", (err, result) => {
         if (err) {
             console.log(err);
         } else {

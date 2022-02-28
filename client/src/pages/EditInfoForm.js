@@ -1,4 +1,4 @@
-import { Paper, FormControl, FormLabel, TextField, Button } from '@mui/material/Paper';
+import { Paper, FormControl, FormLabel, TextField, Button } from '@mui/material';
 import Axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
