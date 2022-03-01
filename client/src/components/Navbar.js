@@ -2,7 +2,7 @@ import * as React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Container, Box, Button, AppBar, Toolbar, IconButton, Typography, Menu, Avatar, Tooltip, MenuItem} from '@mui/material';
 
-const pages = ['Login', 'Signup', 'AdminDashboard', 'DoctorDashboard', 'PatientProfile'];
+const pages = ['Login', 'Signup', 'AdminDashboard', 'DoctorPatientProfile', 'DoctorDashboard', 'PatientProfile'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
@@ -66,7 +66,7 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                <Avatar alt="Remy Sharp" src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" />
               </IconButton>
             </Tooltip>
             <Menu sx={{ mt: '45px' }} id="menu-appbar" anchorEl={anchorElUser} anchorOrigin={{ vertical: 'top', horizontal: 'right',}} keepMounted transformOrigin={{ vertical: 'top', horizontal: 'right',}}
