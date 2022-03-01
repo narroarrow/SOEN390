@@ -1,4 +1,4 @@
-import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled } from '@mui/material';
+import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled, TextField } from '@mui/material';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
 
@@ -27,8 +27,28 @@ const Item3 = styled(Paper)(({ theme }) => ({
 function AdminDashboard() {
 
     const [patientList, setPatientList] = useState([]); //all patient info
+    const [filteredPatientList, setFilteredPatientList] = useState([]); //all patient info
     const [doctorListValidated, setDoctorListValidated] = useState([]); //all doctor info
     const [doctorListUnvalidated, setDoctorListUnvalidated] = useState([]); //all doctor info
+
+    var ptSearch = "";
+    var patientsOf = patientList.filter(e => e.Fname.includes(ptSearch) ); //returns a filtered list of patients based on search
+    var allPatients = patientList;
+
+    var docSearch = "";
+    var docOf = doctorListValidated.filter(e => e.Fname.includes(docSearch) ); //returns a filtered list of doctors based on search
+
+    const filterMyPatients = () => { //this function will set the useState filteredPatients to show ALL patients
+      setPatientList(patientsOf)
+    };
+
+    const filterAllPatients = () => { //this function will set the useState filteredPatients to show the patients assigned specifically to the doctor who is logged in
+      setFilteredPatientList(allPatients)
+    };
+
+    const filterMyDoc = () => { //this function will set the useState filteredPatients to show the patients assigned specifically to the doctor who is logged in
+      setDoctorListValidated(docOf)
+    };
 
   function getValidatedDoctors() {
     Axios.get("http://localhost:8080/adminViewingValidatedDoctorData").then((response) => {
@@ -49,6 +69,7 @@ function AdminDashboard() {
   function getPatients() {
     Axios.get("http://localhost:8080/adminViewingPatientData").then((response) => {
       setPatientList(response.data);
+      setFilteredPatientList(response.data);
       console.log("Patients:");
       console.log(response.data);
     });
@@ -61,20 +82,11 @@ useEffect(() => {
   getValidatedDoctors();
   getUnvalidatedDoctors();
   getPatients();
+ 
 },[stopeffect]);
 
   return (
     <div>
-      <Container>
-        {patientList.map((val,key) => {
-          return(
-            <Grid item xs={4}>
-            <Item>Patient Name: {val.Fname + " " + val.Lname}</Item>
-        </Grid>
-          )
-        }
-        )}
-      </Container>
       <CardHeader
         avatar={
           <Avatar aria-label="">
@@ -83,234 +95,109 @@ useEffect(() => {
         action={
           <IconButton aria-label=""></IconButton>
         }
-        title="My Admin Profile"
-        subheader="Name of Admin"
+        title="Welcome Admin"
+        subheader="Admin"
       />
       <Container maxWidth="md" sx={{ pb: '2%' }}>
         <Grid container spacing={2} >
-          <Grid item xs={11}>
-            <Card container sx={{ marginBottom: '2%', padding: '2%' }}>
+          <Grid item xs={8}>
+            <Card container sx={{ marginBottom: '2%', padding: '3%' }}>
               <Typography variant="body1" color="initial" >
                 Patients
               </Typography>
             </Card>
           </Grid>
-          <Grid item xs={1}>
-            <Button variant="contained" color="primary" >
-              Filter
-            </Button>
+          <Grid item xs={4}>
+            <TextField id="ptSearch" label="Search" variant="filled" onChange={() => filterMyPatients()}>{ptSearch}</TextField>
           </Grid>
         </Grid>
+
         <Grid container spacing={2} >
-          <Grid item xs={4}>
-            <Item>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    P1
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Patient 1 Profile "
-                subheader="Status: Active"
-              />
-            </Item>
-          </Grid>
-          <Grid item xs={4}>
-            <Item>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    P2
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Patient 2 Profile "
-                subheader="Status: Active"
-              />
-            </Item>
-          </Grid>
-          <Grid item xs={4}>
-            <Item>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    P3
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Patient 3 Profile "
-                subheader="Status: Active"
-              />
-            </Item>
-          </Grid>
-          <Grid item xs={4}>
-            <Item><CardHeader
-              avatar={
-                <Avatar aria-label="">
-                  P4
-                </Avatar>
-              }
-              action={
-                <IconButton aria-label=""></IconButton>
-              }
-              title="Patient 4 Profile "
-              subheader="Status: Active"
-            /></Item>
-          </Grid>
-          <Grid item xs={4}>
-            <Item>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    P5
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Patient 5 Profile "
-                subheader="Status: Active"
-              />
-            </Item>
-          </Grid>
-          <Grid item xs={4}>
-            <Item2 >
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    P6
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Patient 6 Profile "
-                subheader="Status: Inactive"
-              />
-            </Item2>
-          </Grid>
-        </Grid>
+          {filteredPatientList.map((val,key) => {
+            return(
+              <Grid item xs={4} key={key}>
+              <Item>
+                <CardHeader
+                  avatar={
+                    <Avatar aria-label="">
+                      P{key}
+                    </Avatar>
+                  }
+                  action={
+                    <IconButton aria-label=""></IconButton>
+                  }
+                  title = {val.Fname + " " + val.Lname} 
+                  subheader = {`Doctor: ${val.docFname} ${val.docLname}`} 
+                />
+                 <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}>Contact: ${val.Phone}</Typography>
+              </Item>
+              </Grid>
+            )
+          }
+          )}
+        </Grid> 
       </Container>
       <hr></hr>
       <Container maxWidth="md" sx={{ padding: '2%' }}>
         <Grid container spacing={2} >
-          <Grid item xs={11}>
-            <Card container sx={{ marginBottom: '2%', padding: '2%' }}>
+          <Grid item xs={8}>
+            <Card container sx={{ marginBottom: '2%', padding: '3%' }}>
               <Typography variant="body1" color="initial" >
                 Doctors
               </Typography>
             </Card>
           </Grid>
-          <Grid item xs={1}>
-            <Button variant="contained" color="primary" >
-              Filter
-            </Button>
+          <Grid item xs={4}>
+            <TextField id="docSearch" label="Search" variant="filled" onChange={() => filterMyDoc()}>{docSearch}</TextField>
           </Grid>
         </Grid>
         <Grid container spacing={2} >
-          <Grid item xs={4}>
-            <Item>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    D1
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Doctor 1 Profile "
-                subheader="Status: Active"
-              />
-            </Item>
-          </Grid>
-          <Grid item xs={4}>
-            <Item>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    D2
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Doctor 2 Profile "
-                subheader="Status: Active"
-              />
-            </Item>
-          </Grid>
-          <Grid item xs={4}>
-            <Item>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    D3
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Doctor 3 Profile "
-                subheader="Status: Active"
-              />
-            </Item>
-          </Grid>
-          <Grid item xs={4}>
-            <Item>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    D4
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Doctor 4 Profile "
-                subheader="Status: Active" />
-            </Item>
-          </Grid>
-          <Grid item xs={4}>
-            <Item3>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    D5
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Doctor 5 Profile "
-                subheader="Status: Action Required"
-              />
-            </Item3>
-          </Grid>
-          <Grid item xs={4}>
-            <Item2>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="">
-                    D6
-                  </Avatar>
-                }
-                action={
-                  <IconButton aria-label=""></IconButton>
-                }
-                title="Doctor 6 Profile "
-                subheader="Status: Inactive"
-              />
-            </Item2>
-          </Grid>
-        </Grid>
+        {doctorListUnvalidated.map((val,key) => {
+            return(
+              <Grid item xs={4} key={key}>
+                <Item3>
+                  <CardHeader
+                    avatar={
+                      <Avatar aria-label="">
+                        D{key}
+                      </Avatar>
+                    }
+                    action={
+                      <IconButton aria-label=""></IconButton>
+                    }
+                    title = {val.Fname + " " + val.Lname} 
+                    subheader = {`Contact: ${val.Phone}`} 
+                  />
+                  <Button variant="contained" color="primary" >
+                  VALIDATE
+                  </Button>
+                </Item3>
+              </Grid>
+            )
+          }
+          )}
+          {doctorListValidated.map((val,key) => {
+            return(
+              <Grid item xs={4} key={key}>
+                <Item>
+                  <CardHeader
+                    avatar={
+                      <Avatar aria-label="">
+                        D{key}
+                      </Avatar>
+                    }
+                    action={
+                      <IconButton aria-label=""></IconButton>
+                    }
+                    title = {val.Fname + " " + val.Lname} 
+                    subheader = {`Contact: ${val.Phone}`} 
+                  />
+                </Item>
+              </Grid>
+            )
+          }
+          )}
+        </Grid> 
       </Container>
     </div>
   );
