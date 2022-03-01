@@ -67,7 +67,7 @@ app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
 });
 
 app.get("/adminViewingPatientData",(req,res) => {
-    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname, Udoctor.Lname FROM 390db.Users Upatient, 390db.Patients P, 390db.Users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
+    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.Users Upatient, 390db.Patients P, 390db.Users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
         if(err){
             console.log(err);
         } else {
