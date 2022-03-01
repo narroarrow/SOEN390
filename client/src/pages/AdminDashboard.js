@@ -75,6 +75,13 @@ function AdminDashboard() {
     });
   };
 
+  let validateDoctor = (ID) => {
+    Axios.post("http://localhost:8080/validateDoctor", {
+      DoctorID: ID
+    }).then(()=>{
+      console.log("success")
+    });
+  };
 
 let stopeffect = 1;
 
@@ -168,7 +175,7 @@ useEffect(() => {
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
-                  <Button variant="contained" color="primary" >
+                  <Button variant="contained" color="primary" onClick={() => validateDoctor(val.ID)} >
                   VALIDATE
                   </Button>
                 </Item3>

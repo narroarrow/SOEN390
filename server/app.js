@@ -56,7 +56,7 @@ app.get("/adminViewingValidatedDoctorData",(req,res) => {
 
 app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
         if(err){
             console.log(err);
         } else {
