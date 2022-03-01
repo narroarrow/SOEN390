@@ -46,7 +46,7 @@ let submitSignupForm = (event1) =>{
       password: data.get('password'),
       userRole: userRoles,
       phoneNumber: data.get('PhoneNumber')
-    }).then(()=>{
+    }, {withCredentials: true}).then(()=>{
       //will have user authentication here
       alert("success");
     });

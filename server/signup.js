@@ -5,7 +5,7 @@ app.use(express.json())
 
 const path = require('path');
 const bodyParser = require('body-parser')
-const db = require('../server/database')
+const db = require('./database')
 const mysql = require("mysql2");
 const cors = require('cors');
 const bcrypt = require('bcrypt')
@@ -116,7 +116,7 @@ app.post("/Signup", async(req,res) => {
 
         if(userRole == 'Patient'){
 
-            state = `SELECT p.DoctorID FROM 390db.patients p Group By P.DoctorID order by Count(p.ID) asc Limit 1;`;
+            state = `SELECT p.DoctorID FROM 390db.patients p Group By p.DoctorID order by Count(p.ID) asc Limit 1;`;
             db.query(state, function(err, result) {//finds the doctor with the least amount of patients 
                 if(err){
                     console.log(err)}
