@@ -20,6 +20,7 @@ app.use(express.static('dist'));
 
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
+require('dotenv').config()
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -313,38 +314,35 @@ app.post("/Login", async (req, res) => {
         let state = `SELECT U.Email, U.Password FROM users U WHERE U.Email = "${email}";`;
 
         //console.log(state) // used to verify the query
-        console.log(password);
 
         db.query(state, async (err, result) => {
                 if (err) {
-                    console.log(err)
+                    console.log('err: '+err)
                 } //indicator for errors when executing a query
                 else {
-                    console.log(password +'\n'+result[0].Password)
+                    // console.log(password +'\n'+result[0].Password)
                     if (await bcrypt.compare(password, result[0].Password) && email === result[0].Email) { //await needs "async" in the 'parent'
-                        if (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, (error, token) => {
+                        if (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, (error, token)=> {
                             if (error) {
-                                console.log('fail');
-                                console.log(token)
+                                console.log('Wrong Password');
+                                console.log(error)
                                 res.status(403).send();
-                            } else {
-                                console.log(email)
+                            } else {                             
                                 let update = `UPDATE users SET Token = "${token}" WHERE email = "${email}"`
                                 db.query(update, async (err2, result2) => {
                                     if (err2){
-                                        console.log(err2)
+                                        console.log("err2: "+err2)
                                     } else {
-                                        console.log(token);
                                         //res.cookie('token', token).send();
+                                        console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
                                         res.sendStatus(200)
                                     }})
                             }
-                        }))
-
-                        console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-                    } else {
-                        console.log("Wrong Password")
-                    }
+                            }
+                        )
+                        )
+                        console.log("")
+                    } 
                     // res.send(result);
                 }
             }
@@ -376,7 +374,7 @@ app.post("/Signup", async (req, res) => {
         if (userRole === 'Patient') {//all other user types should to be approved
             Validated = 1;
         }
-        console.log(userRole)
+        // console.log(userRole)
 
         db.query(state, [uid, firstName, lastName, email, hashedPassword, Validated, phoneNumber, userRole], function (err, result) {//ID might be removed since it should be auto indent
             if (err) {

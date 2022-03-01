@@ -117,12 +117,12 @@ describe('testing /editPatientProfileData', () => {
 });
 
 
-describe('testing /Login', () => {
-  it('returns a status code of 200 indicating that the post worked', async () => {
-      let res = await request(app).post('/Login').send({email:'e.han@hotmail.com',password: '@Root1234'});
-      expect(res.status).toEqual(200);
-  })
-});
+// describe('testing /Login', () => {
+//   it('returns a status code of 200 indicating that the post worked', async () => {
+//       let res = await request(app).post('/Login').send({email:'p.o@gmail.com',password: '@Root1234'});
+//       expect(res.status).toEqual(200);
+//   })
+// });
 
 
 describe('testing /Signup', () => {
