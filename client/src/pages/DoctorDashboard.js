@@ -10,7 +10,6 @@ function DoctorDashboard() {
   const [allPatients, setAllPatientList] = useState([]); //all patient info
   
   var tempDoctorID = 6;
-  var allPatients = patientList;
 
   function getDoctorPatients() {
     Axios.get("http://localhost:8080/doctorViewingTheirPatientData", {params: {id: tempDoctorID}}).then((response) => {
@@ -28,13 +27,20 @@ function DoctorDashboard() {
     });
   };
 
-  function getAllPatients()
-  {
+  function getAllPatients(){
     Axios.get("http://localhost:8080/doctorViewingAllPatientData").then((response) => {
       setAllPatientList(response.data);
       console.log("All Patients:");
       console.log(response.data);
     });  
+  };
+
+  let validateDoctor = () => {
+    Axios.post("http://localhost:8080/validateDoctor", {
+      DoctorID: 6
+    }).then(()=>{
+      console.log("success")
+    });
   };
 
 
@@ -44,6 +50,7 @@ function DoctorDashboard() {
   getDoctorPatients();
   getPatientsPerDoctor();
   getAllPatients();
+  validateDoctor();
   },[stopeffect]);
 
   return (
