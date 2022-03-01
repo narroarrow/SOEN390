@@ -100,7 +100,7 @@ function PatientProfile() {
                         <Grid item xs={4}>
                             <Item>Phone number:
                                 {patientData.map((val, key) => {
-                                    return " " + val.Phome
+                                    return " " + val.Phone
                                 })}
                             </Item>
                         </Grid>

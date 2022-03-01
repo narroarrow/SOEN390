@@ -14,6 +14,7 @@ let submitPatientCovidStatus = (event) => {
     status: data.get('covidStatus')
   }).then(() => {
     console.log('success');
+    window.location.href="/PatientProfile";
   });
 };
 

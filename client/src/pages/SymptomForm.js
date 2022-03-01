@@ -26,6 +26,7 @@ let submitSymptomForm = (event) => {
     symptoms: data.get('symptoms'),
   }).then(() => {
     console.log("success");
+    window.location.href="/PatientProfile";
   });
 };
 

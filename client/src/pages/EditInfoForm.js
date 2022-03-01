@@ -42,6 +42,7 @@ function EditInfoForm() {
     }).then((response) => {
       setEditPatientData(response.data);
       console.log(response);
+      window.location.href="/PatientProfile";
     });
   }, [stopeffect]);
 
