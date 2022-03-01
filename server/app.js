@@ -281,7 +281,7 @@ app.get('/editPatientProfileData', (req, res) => {
 
     //This query will return the patients information that we deem ok to change.
     //It filters the database and looks for the patient with the id that we passed.
-    db.query("SELECT U.FName, U.LName, U.Birthday, P.HealthInsurance, U.Phone, P.Email FROM patients P, users U, doctors D WHERE P.id=1 AND D.id=P.doctorID AND P.id=U.id", (err, result) => {
+    db.query("SELECT U.FName, U.LName, U.Birthday, P.HealthInsurance, U.Phone, U.Email FROM patients P, users U, doctors D WHERE P.id=1 AND D.id=P.doctorID AND P.id=U.id", (err, result) => {
         if (err) {
             console.log(err);
         } else {

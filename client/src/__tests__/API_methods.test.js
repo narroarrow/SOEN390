@@ -71,7 +71,7 @@ describe('testing /DoctorPatientProfile', () => {
 //change the timestamp value by 1.
 describe('testing /createSymptomForm', () => {
     it('returns a status code of 200 indicating that the post worked', async () => {
-        let res = await request(app).post('/createSymptomForm').send({ timestamp: 1645465574884, weight: 25, temperature: 66, breathing: 1, chest: 2, fatigue: 1, fever: 1, cough: 5, smell: 4, taste: 2, symptoms: 'sore' })
+        let res = await request(app).post('/createSymptomForm').send({ timestamp: Math.floor(Math.random() * 9999999999999), weight: 25, temperature: 66, breathing: 1, chest: 2, fatigue: 1, fever: 1, cough: 5, smell: 4, taste: 2, symptoms: 'sore' })
         expect(res.statusCode).toEqual(200);
     })
 });
@@ -116,7 +116,10 @@ describe('testing /editPatientProfileData', () => {
     })
 });
 
-
+//Here we just try to login with a known email and password
+//If the get is successful, a 200 status code will be returned
+//to make the test pass.
+//Currently this test does not work
 describe('testing /Login', () => {
   it('returns a status code of 200 indicating that the post worked', async () => {
       let res = await request(app).post('/Login').send({email:'e.han@hotmail.com',password: '@Root1234'});
@@ -124,7 +127,9 @@ describe('testing /Login', () => {
   })
 });
 
-
+//Here we just try to get the patient profile data so that it can be edited.
+//If the get is successful, a 200 status code will be returned
+//to make the test pass.
 describe('testing /Signup', () => {
   it('returns a status code of 200 indicating that the post worked', async () => {
       let res = await request(app).post('/Signup').send({firstName: 'Matt', lastName:'Pop', email:'e.han@hotmail.com',password: '@Root1234', userRole:'Doctor',phoneNumber:'5146683216'});
