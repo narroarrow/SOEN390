@@ -2,8 +2,7 @@
 const jwt = require('jsonwebtoken');
 const express = require('express')
 const app = express()
-
-app.use(express.json())
+const app = require('./app.js');
 
 const path = require('path');
 const bodyParser = require('body-parser')
@@ -13,11 +12,13 @@ const cors = require('cors');
 const bcrypt = require('bcrypt')
 var cookieParser = require('cookie-parser')
 require('dotenv').config()
+app.use(express.json())
+
 app.use(cookieParser());
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
-app.use(express.static(path.join(__dirname, "../client/build")));
-app.use(express.static(__dirname + "../client/public/"));
+
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
