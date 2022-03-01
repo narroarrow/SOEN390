@@ -20,12 +20,8 @@
     "supertest": "^6.2.2"
   },
   "dependencies": {
-<<<<<<< HEAD
     "bcrypt": "^5.0.1",
-    "cookie-parser": "^1.4.6",
-=======
     "body-parser": "^1.19.2",
->>>>>>> pre-release
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
