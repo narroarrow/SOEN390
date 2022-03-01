@@ -185,8 +185,18 @@ app.post("/editedPatientData", (req, res) => {
     //This query finds the patient that wants to edit their information
     //and then updates the values of certain fields.
     db.query(
-        "UPDATE 390db.patients SET FName=?, LName=?, Email=?, Phone=?, HealthInsurance=? WHERE ID=?",
-        [fname, lname, email, phone, healthinsurance, patientid],
+        "UPDATE 390db.users SET FName=?, LName=?, Email=?, Phone=? WHERE ID=?",
+        [fname, lname, email, phone, patientid],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+            } 
+        }
+    );
+
+    db.query(
+        "UPDATE 390db.patients SET HealthInsurance=? WHERE ID=?",
+        [healthinsurance, patientid],
         (err, results) => {
             if (err) {
                 console.log(err);
@@ -195,6 +205,7 @@ app.post("/editedPatientData", (req, res) => {
             }
         }
     );
+
 
 });
 
