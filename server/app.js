@@ -78,7 +78,8 @@ app.get("/Viewed", (req, res) => {
 and display it in the UI. */
 app.get("/doctorViewingPatientData", (req, res) => {
     let pid = req.query.id;
-    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
+    //PLEASE NOT THAT I HAVE REMOVED P.SymptomRequested FROM THE QUERY*************************************************************************************************************
+    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, U.Email, U.Phone, U.Birthday, U.Address FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -262,7 +263,7 @@ app.get('/editPatientProfileData', (req, res) => {
 
     //This query will return the patients information that we deem ok to change.
     //It filters the database and looks for the patient with the id that we passed.
-    db.query("SELECT P.FName, P.LName, P.Birthday, P.HealthInsurance, P.Phone, P.Email FROM patients P, doctors D WHERE P.id=1 AND D.id=P.doctorID", (err, result) => {
+    db.query("SELECT U.FName, U.LName, U.Birthday, P.HealthInsurance, U.Phone, P.Email FROM patients P, users U, doctors D WHERE P.id=1 AND D.id=P.doctorID AND P.id=U.id", (err, result) => {
         if (err) {
             console.log(err);
         } else {
