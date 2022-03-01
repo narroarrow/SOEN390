@@ -11,7 +11,7 @@ function DoctorDashboard() {
   
   var tempDoctorID = 6;
 
-  function getDoctorPatients() {
+  function getDoctorPatients() { //returns all patient information for a given doctor using GET
     Axios.get("http://localhost:8080/doctorViewingTheirPatientData", {params: {id: tempDoctorID}}).then((response) => {
       setPatientList(response.data);
       console.log("Logged In Doctor Patients:");
@@ -19,7 +19,8 @@ function DoctorDashboard() {
     });
   };
 
-  function getPatientsPerDoctor(){
+  
+  function getPatientsPerDoctor(){ //returns all patient information organized by doctor using GET
     Axios.get("http://localhost:8080/doctorViewingDoctorPatients").then((response) => {
       setPatientPerDoctorList(response.data);
       console.log("Patients Organized By Doctor:");
@@ -27,7 +28,8 @@ function DoctorDashboard() {
     });
   };
 
-  function getAllPatients(){
+  
+  function getAllPatients(){ //returns all patient information using GET
     Axios.get("http://localhost:8080/doctorViewingAllPatientData").then((response) => {
       setAllPatientList(response.data);
       console.log("All Patients:");
@@ -37,7 +39,8 @@ function DoctorDashboard() {
 
   let stopeffect = 1;
 
-  useEffect(() => {
+  
+  useEffect(() => { //when the doctor dashboard page is rendered, these functions are executed
   getDoctorPatients();
   getPatientsPerDoctor();
   getAllPatients();
