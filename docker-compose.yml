@@ -5,9 +5,20 @@ services:
     build:
       context: ./server
       dockerfile: ./Dockerfile
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+      - /app/server/node_modules
     image: "dmurphy1217/twitter-sentiment-backend"
     ports:
       - "8080:8080"
+    environment:
+      - MYSQL_DATABASE=390db
+      - MYSQL_USER=roots
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    depends_on:
+      - mysql_server
   frontend:
     build:
       context: ./client
@@ -17,3 +28,19 @@ services:
       - "3000:3000"
     links:
       - "backend:be"
+
+
+  mysql_server:
+    image: mysql:8.0
+    ports:
+      - "3366:3306"
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=390db
+      - MYSQL_USER=roots
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10

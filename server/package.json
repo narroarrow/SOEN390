@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "build": "../node_modules/.bin/react-scripts build",
-    "dev": "server/node_modules/.bin/nodemon "
+    "dev": "server/node_modules/.bin/nodemon ",
+    "devStart2": "nodemon authServer.js"
   },
   "keywords": [],
   "author": "",
@@ -19,8 +20,14 @@
     "supertest": "^6.2.2"
   },
   "dependencies": {
+<<<<<<< HEAD
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
+=======
     "body-parser": "^1.19.2",
+>>>>>>> pre-release
     "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "react-scripts": "^5.0.0"

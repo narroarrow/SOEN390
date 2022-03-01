@@ -2,19 +2,43 @@ const mysql = require('mysql2');
 
 // below comments are to setup your local database
 
- const connection = mysql.createConnection({
-     host: 'localhost',
-     user: 'root',
-     password: 'root',
-     database: '390db',
+
+// try {
+//     setTimeout(function () {
+//
+//         const connection = mysql.createConnection({
+//             host: 'mysql_server',
+//             user: 'root',
+//             password: 'password',
+//             database: '390db',
+//             port: '3306'
+//
+//
+//         })
+//         connection.connect(function (err) {
+//             if (err) throw err;
+//             console.log("Database Connected!");
+//         });
+//
+//     }, 5 * 1000);
+// } finally {console.log('ok')}
 
 
- })
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+    database: '390db',
+    port: '3306'
+})
 
- connection.connect();
+connection.connect();
 
- module.exports = connection;
 
+
+
+
+module.exports = connection;
 
 
 

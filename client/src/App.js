@@ -35,13 +35,12 @@ function App() {
                     "Content-Type": "application/json"
                 }
                 const res = await axios(url);
-                console.log("Data from backend---",res.data)
+                console.log("Data from backend---", res.data)
                 setExampleData(res.data)
                 console.log('the example data is: ', res.data)
 
 
-            }
-            catch (err) {
+            } catch (err) {
             }
         }
         callCheckHealth();
@@ -49,12 +48,19 @@ function App() {
 
     //second test using cookies
 
-    function secondTest(){
+    function secondTest() {
         axios.get(
-            "http://localhost:8080/api", {withCredentials:true}).then(res =>{console.log(res)})
-
+            "http://localhost:8080/users", {withCredentials: true}).then(res => {
+            console.log(res)
+        })
     }
-useEffect(() => {secondTest()}, [])
+
+    function checkAuth() {
+        axios.get(
+            "http://localhost:8080/checkAuth", {withCredentials: true}).then(res => console.log(res)
+            // USER DATA IS IN RES
+        ).catch(err => console.log(err))
+    }
 
   return (
       <div className="App">
