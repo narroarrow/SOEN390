@@ -35,22 +35,12 @@ function DoctorDashboard() {
     });  
   };
 
-  let validateDoctor = () => {
-    Axios.post("http://localhost:8080/validateDoctor", {
-      DoctorID: 6
-    }).then(()=>{
-      console.log("success")
-    });
-  };
-
-
   let stopeffect = 1;
 
   useEffect(() => {
   getDoctorPatients();
   getPatientsPerDoctor();
   getAllPatients();
-  validateDoctor();
   },[stopeffect]);
 
   return (
