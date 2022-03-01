@@ -50,7 +50,7 @@ function AdminDashboard() {
       setDoctorListValidated(docOf)
     };
 
-  function getValidatedDoctors() {
+  function getValidatedDoctors() { //this function will return all information associated to validated doctors
     Axios.get("http://localhost:8080/adminViewingValidatedDoctorData").then((response) => {
       setDoctorListValidated(response.data);
       console.log("Validated Doctors:");
@@ -58,7 +58,7 @@ function AdminDashboard() {
     });
   };
 
-  function getUnvalidatedDoctors() {
+  function getUnvalidatedDoctors() { //this function will return all information associated to unvalidated doctors
     Axios.get("http://localhost:8080/adminViewingUnvalidatedDoctorData").then((response) => {
       setDoctorListUnvalidated(response.data);
       console.log("Unvalidated Doctors:");
@@ -66,7 +66,7 @@ function AdminDashboard() {
     });
   };
 
-  function getPatients() {
+  function getPatients() { //this function will return all information associated to patients
     Axios.get("http://localhost:8080/adminViewingPatientData").then((response) => {
       setPatientList(response.data);
       setFilteredPatientList(response.data);
@@ -75,7 +75,7 @@ function AdminDashboard() {
     });
   };
 
-  let validateDoctor = (ID) => {
+  let validateDoctor = (ID) => { //this function will validate doctors on click
     Axios.post("http://localhost:8080/validateDoctor", {
       DoctorID: ID
     }).then(()=>{
@@ -86,7 +86,8 @@ function AdminDashboard() {
 
 let stopeffect = 1;
 
-useEffect(() => {
+
+useEffect(() => { //functions executed upon page render
   getValidatedDoctors();
   getUnvalidatedDoctors();
   getPatients();
