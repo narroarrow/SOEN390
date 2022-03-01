@@ -69,10 +69,14 @@ app.get("/DoctorPatientProfile", (req, res) => {
  It returns a list of patients whose profiles have reviewed. This is used to create indicators in the UI when a patient profile has been reviewed such 
  as a filled in eye icon for viewed patients. */
 app.get("/Viewed", (req, res) => {
-    db.query("SELECT P.ID FROM 390db.patients P, 390db.healthinformation H, 390db.viewed V WHERE P.ID = H.PatientID AND P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
+
+    // ERIC CHANGE: REMOVED WHERE P.ID = H.PATIENTID BECAUSE OTHERWISE MARK AS REVIEWED NEVER WORKS UNLESS WE CREATE A HEALTH INFORMATION FOR THE PATIENT 
+
+    db.query("SELECT P.ID FROM 390db.patients P, 390db.healthinformation H, 390db.viewed V WHERE P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
         if (err) {
             console.log(err);
         } else {
+            console.log(result);
             res.send(result);
         }
     });
@@ -218,7 +222,7 @@ app.post("/markViewed", (req, res) => {
     let PatientID = req.body.PatientID;
     let DoctorID = req.body.DoctorID;
     let datetime = req.body.datetime;
-    
+
     db.query("INSERT INTO 390db.viewed VALUES (?,?,?)", [PatientID, DoctorID, datetime], (err, result) =>{
         if (err) {
             console.log(err);
