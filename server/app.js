@@ -7,11 +7,13 @@ const mysql = require("mysql2");
 const cors = require('cors');
 const { request } = require('http');
 
+var cookieParser = require('cookie-parser')
+app.use(express.json());
+app.use(cookieParser());
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(express.static(__dirname + "../client/public/"));
-app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
@@ -29,26 +31,26 @@ app.use(function (req, res, next) {
 
 
 //below is a test server function
-//app.get('/api', (req, res) => {
-//    res.json({"users":["userOne", "userTwo", "userThree"]})
-//
-//})
+app.get('/api', (req, res) => {
+   res.json({"users":["userOne", "userTwo", "userThree"]})
+
+})
 
 // example of using DB query
+//
+app.get('/users', (req, res) => {
 
-// app.get('/users', (req, res) => {
-//
-//     let state = `SELECT * FROM cloudscratch.tablescratch;`;
-//
-//     db.query(state, function(err, result) {
-//         console.log(result);
-//         res.send(result);
-//     })
-// })
+    let state = `SELECT * FROM 390db.users;`;
+
+    db.query(state, function(err, result) {
+        console.log(result);
+        res.send(result);
+    })
+})
 
 
 // app.get('/*', function(req,res){
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+//     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 // })
 
 /* This get method will be executed when rendering the DoctorPatientProfile page. The database will be querries to get the patients names, ID, status and whether they have been
@@ -335,8 +337,8 @@ app.post("/Login", async (req, res) => {
                                         console.log(err2)
                                     } else {
                                         console.log(token);
-                                        //res.cookie('token', token).send();
-                                        res.sendStatus(200)
+                                        res.cookie('token', token).send();
+                                        // res.sendStatus(200)
                                     }})
                             }
                         }))
