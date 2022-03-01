@@ -103,7 +103,9 @@ function DoctorViewingPatient() {
                                 <Item>Phone Number: {val.Phone}</Item>
                             </Grid>
                             <Grid item xs={4}>
-                                <Item>Birthday: {val.Birthday.substring(0, 10)}</Item>
+
+
+                                <Item>Birthday: {val.Birthday?val.Birthday.substring(0, 10): 'No birthday input'}</Item>
                             </Grid>
                             <Grid item xs={4}>
                                 <Item>Address: {val.Address}</Item>
