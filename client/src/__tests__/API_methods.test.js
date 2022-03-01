@@ -1,5 +1,6 @@
 const app = require('../../../server/app.js');
 const request = require('supertest');
+const { changeUser } = require('../../../server/database.js');
 
 //Here we try to get a specific patients information so that it can be displayed in the UI.
 //If the get is successful, a 200 status code will be returned to make the test pass. 
@@ -113,4 +114,20 @@ describe('testing /editPatientProfileData', () => {
         let res = await request(app).get('/editPatientProfileData');
         expect(res.statusCode).toEqual(200);
     })
+});
+
+
+describe('testing /Login', () => {
+  it('returns a status code of 200 indicating that the post worked', async () => {
+      let res = await request(app).post('/Login').send({email:'e.han@hotmail.com',password: '@Root1234'});
+      expect(res.status).toEqual(200);
+  })
+});
+
+
+describe('testing /Signup', () => {
+  it('returns a status code of 200 indicating that the post worked', async () => {
+      let res = await request(app).post('/Signup').send({firstName: 'Matt', lastName:'Pop', email:'e.han@hotmail.com',password: '@Root1234', userRole:'Doctor',phoneNumber:'5146683216'});
+      expect(res.status).toEqual(200);
+  })
 });

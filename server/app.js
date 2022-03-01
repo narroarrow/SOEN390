@@ -7,17 +7,21 @@ const mysql = require("mysql2");
 const cors = require('cors');
 const { request } = require('http');
 
+var cookieParser = require('cookie-parser')
+app.use(express.json());
+app.use(cookieParser());
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(express.static(__dirname + "../client/public/"));
-app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 app.use(express.static('dist'));
 
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -27,26 +31,26 @@ app.use(function (req, res, next) {
 
 
 //below is a test server function
-//app.get('/api', (req, res) => {
-//    res.json({"users":["userOne", "userTwo", "userThree"]})
-//
-//})
+app.get('/api', (req, res) => {
+   res.json({"users":["userOne", "userTwo", "userThree"]})
+
+})
 
 // example of using DB query
+//
+app.get('/users', (req, res) => {
 
-// app.get('/users', (req, res) => {
-//
-//     let state = `SELECT * FROM cloudscratch.tablescratch;`;
-//
-//     db.query(state, function(err, result) {
-//         console.log(result);
-//         res.send(result);
-//     })
-// })
+    let state = `SELECT * FROM 390db.users;`;
+
+    db.query(state, function(err, result) {
+        console.log(result);
+        res.send(result);
+    })
+})
 
 
 // app.get('/*', function(req,res){
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+//     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 // })
 
 /* This get method will be executed when rendering the DoctorPatientProfile page. The database will be querries to get the patients names, ID, status and whether they have been
@@ -275,5 +279,141 @@ app.get('/editPatientProfileData', (req, res) => {
 //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // });
 
+
+// start of sign up and login
+app.get('/checkAuth', function (req, res) {
+    console.log(req.cookies);
+    const token = req.cookies.token;
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+        if (err) {
+            res.status(403).send();
+        } else {
+            res.json(data);
+        }
+    })
+})
+
+app.get('/user', function (req, res){
+    const {token} = req.cookies;
+    let state = `SELECT U.Email, U.Password FROM users U WHERE U.Token = "${token}";`;
+
+    db.query(state, function (err, user) {
+        console.log(user);
+        res.send(user);
+    }.catch(() => res.sendStatus(406)))
+
+})
+
+//getting the email and passowrd from the form
+app.post("/Login", async (req, res) => {
+    try {
+        //fields were provided by the front end form
+        let email = req.body.email;
+        let password = req.body.password;
+
+        //query statement
+        let state = `SELECT U.Email, U.Password FROM users U WHERE U.Email = "${email}";`;
+
+        //console.log(state) // used to verify the query
+        console.log(password);
+
+        db.query(state, async (err, result) => {
+                if (err) {
+                    console.log(err)
+                } //indicator for errors when executing a query
+                else {
+                    console.log(password +'\n'+result[0].Password)
+                    if (await bcrypt.compare(password, result[0].Password) && email === result[0].Email) { //await needs "async" in the 'parent'
+                        if (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, (error, token) => {
+                            if (error) {
+                                console.log('fail');
+                                console.log(token)
+                                res.status(403).send();
+                            } else {
+                                console.log(email)
+                                let update = `UPDATE users SET Token = "${token}" WHERE email = "${email}"`
+                                db.query(update, async (err2, result2) => {
+                                    if (err2){
+                                        console.log(err2)
+                                    } else {
+                                        console.log(token);
+                                        res.cookie('token', token).send();
+                                        // res.sendStatus(200)
+                                    }})
+                            }
+                        }))
+
+                        console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+                    } else {
+                        console.log("Wrong Password")
+                    }
+                    // res.send(result);
+                }
+            }
+        )
+    } catch {
+        res.status(500).send()
+    }
+})
+
+//getting the email and passowrd from the form
+app.post("/Signup", async (req, res) => {
+
+    try {
+        let firstName = req.body.firstName;
+        let lastName = req.body.lastName;
+        let email = req.body.email;
+        let password = req.body.password;
+        let userRole = req.body.userRole
+        let phoneNumber = req.body.phoneNumber
+        const uid = Math.floor(Math.random() * 100000)
+        const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        let Validated = 0
+        let state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in
+
+        //console.log(state) //used to verify proper SQL format
+
+        if (userRole === 'Patient') {//all other user types should to be approved
+            Validated = 1;
+        }
+        console.log(userRole)
+
+        db.query(state, [uid, firstName, lastName, email, hashedPassword, Validated, phoneNumber, userRole], function (err, result) {//ID might be removed since it should be auto indent
+            if (err) {
+                console.log(err)
+            }
+        })
+
+        if (userRole == 'Patient') {
+
+            state = `SELECT p.DoctorID FROM 390db.patients p Group By p.DoctorID order by Count(p.ID) asc Limit 1;`;
+            db.query(state, function (err, result) {//finds the doctor with the least amount of patients
+                if (err) {
+                    console.log(err)
+                } else {
+                    let docID = result[0].DoctorID
+                    // console.log("DoctorID:\t\t"+docID)
+
+                    // console.log("userID:\t\t"+ uid)
+                    let patientState = `INSERT INTO 390db.patients (ID, DoctorID, Flagged) VALUES (?,?,?);`;
+                    db.query(patientState, [uid, docID, 0], function (err, result) {//inserts a new patient with an auto assigned doctor
+                        if (err) {
+                            console.log("\ninserting into patient \n" + err)
+                        }
+                    })
+                }
+            })
+
+        }
+// final send
+        res.sendStatus(200);
+    } catch {
+        res.status(500).send()
+
+    }
+})
+// end of sign up and login
 
 module.exports = app;
