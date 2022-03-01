@@ -1,7 +1,48 @@
-import * as React from 'react';
 import { Avatar, IconButton, Button, Box, Grid, CardHeader,} from '@mui/material';
+import React, {useState, useEffect} from 'react';
+import Axios from 'axios';
+
 
 function DoctorDashboard() {
+
+  const [patientList, setPatientList] = useState([]); //all patient info
+  const [patientsPerDoctor, setPatientPerDoctorList] = useState([]); //all patient info
+  const [allPatients, setAllPatientList] = useState([]); //all patient info
+  
+  var tempDoctorID = 6;
+
+  function getDoctorPatients() {
+    Axios.get("http://localhost:8080/doctorViewingTheirPatientData", {params: {id: tempDoctorID}}).then((response) => {
+      setPatientList(response.data);
+      console.log("Logged In Doctor Patients:");
+      console.log(response.data);
+    });
+  };
+
+  function getPatientsPerDoctor(){
+    Axios.get("http://localhost:8080/doctorViewingDoctorPatients").then((response) => {
+      setPatientPerDoctorList(response.data);
+      console.log("Patients Organized By Doctor:");
+      console.log(response.data);
+    });
+  };
+
+  function getAllPatients(){
+    Axios.get("http://localhost:8080/doctorViewingAllPatientData").then((response) => {
+      setAllPatientList(response.data);
+      console.log("All Patients:");
+      console.log(response.data);
+    });  
+  };
+
+  let stopeffect = 1;
+
+  useEffect(() => {
+  getDoctorPatients();
+  getPatientsPerDoctor();
+  getAllPatients();
+  },[stopeffect]);
+
   return (
     <div>
       <Box sx={{ padding: 5 }}>
@@ -41,5 +82,4 @@ function DoctorDashboard() {
     </div>
   );
 }
-
 export default DoctorDashboard;

@@ -417,3 +417,95 @@ app.post("/Signup", async (req, res) => {
 // end of sign up and login
 
 module.exports = app;
+app.get("/adminViewingValidatedDoctorData",(req,res) => {
+
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
+        if(err){
+            console.log(err);
+        } else {
+            res.send(result);
+            console.log(result);
+        }
+    });
+});
+app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
+
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
+            console.log(err);
+        if(err){
+            console.log(result);
+        } else {
+            res.send(result);
+        }
+});
+    });
+app.get("/adminViewingPatientData",(req,res) => {
+    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.Users Upatient, 390db.Patients P, 390db.Users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
+            console.log(err);
+        if(err){
+        } else {
+        }
+            res.send(result);
+    });
+});
+app.get("/doctorViewingTheirPatientData", (req,res) =>{
+    let did = 6;
+    db.query("SELECT Upatient.* FROM 390db.Users Upatient, 390db.Patients P, 390db.Doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;", [did], (err, result) => {
+    //hardcoded to doctor ID 6
+        if(err){
+            console.log("Error!");
+            console.log(err);
+        } else {
+            console.log("No error!");
+            res.send(result);
+        }
+});
+    });
+app.get("/doctorViewingAllDoctors", (req,res) =>{
+    db.query("SELECT Udoctor.* FROM 390db.Users Udoctor, 390db.Doctors D WHERE D.ID =  Udoctor.ID;", (err, result) => {
+        if(err){
+            console.log("Error!");
+            console.log(err);
+        } else {
+            res.send(result);
+            console.log("No error!");
+        }
+    });
+});
+app.get("/doctorViewingDoctorPatients", (req,res) =>{
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.Users Upatient, 390db.Users Udoctor, 390db.Patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;", (err, result) => {
+        if(err){
+            console.log("Error!");
+            console.log(err);
+            console.log("No error!");
+        } else {
+            res.send(result);
+        }
+    });
+});
+app.get("/doctorViewingAllPatientData", (req,res) =>{
+    db.query("SELECT Upatient.* FROM 390db.Users Upatient, 390db.Patients P WHERE P.ID = Upatient.ID;", (err, result) => {
+        if(err){
+        } else {
+            console.log("Error!");
+            console.log(err);
+            console.log("No error!");
+            res.send(result);
+        }
+    });
+});
+app.post("/validateDoctor", (req,res) =>{
+   let DoctorID = req.body.DoctorID;
+
+       if(err){
+   db.query("UPDATE 390db.Users SET Validated = 1 WHERE ID = ?", [DoctorID], (err, result) =>{
+           console.log(err);
+           res.send("Doctor validated!");
+       } else{
+       }
+   }
+});
+   );
+app.get('/*', function(req,res){
+    res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
+})
