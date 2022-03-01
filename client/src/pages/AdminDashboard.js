@@ -81,6 +81,7 @@ function AdminDashboard() {
     }).then(()=>{
       console.log("success")
     });
+    window.location.reload(false);
   };
 
 let stopeffect = 1;
