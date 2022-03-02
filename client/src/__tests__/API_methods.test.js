@@ -71,7 +71,7 @@ describe('testing /DoctorPatientProfile', () => {
 //change the timestamp value by 1.
 describe('testing /createSymptomForm', () => {
     it('returns a status code of 200 indicating that the post worked', async () => {
-        let res = await request(app).post('/createSymptomForm').send({ timestamp: 1645465574884, weight: 25, temperature: 66, breathing: 1, chest: 2, fatigue: 1, fever: 1, cough: 5, smell: 4, taste: 2, symptoms: 'sore' })
+        let res = await request(app).post('/createSymptomForm').send({ timestamp: Math.floor(Math.random() * 9999999999999), weight: 25, temperature: 66, breathing: 1, chest: 2, fatigue: 1, fever: 1, cough: 5, smell: 4, taste: 2, symptoms: 'sore' })
         expect(res.statusCode).toEqual(200);
     })
 });
@@ -116,18 +116,95 @@ describe('testing /editPatientProfileData', () => {
     })
 });
 
+//Here we just try to login with a known email and password
+//If the get is successful, a 200 status code will be returned
+//to make the test pass.
+//Currently this test does not work
+describe('testing /Login', () => {
+  it('returns a status code of 200 indicating that the post worked', async () => {
+      let res = await request(app).post('/Login').send({email:'e.han@hotmail.com',password: '@Root1234'});
+      expect(res.status).toEqual(200);
+  })
+});
 
-// describe('testing /Login', () => {
-//   it('returns a status code of 200 indicating that the post worked', async () => {
-//       let res = await request(app).post('/Login').send({email:'p.o@gmail.com',password: '@Root1234'});
-//       expect(res.status).toEqual(200);
-//   })
-// });
-
-
+//Here we just try to get the patient profile data so that it can be edited.
+//If the get is successful, a 200 status code will be returned
+//to make the test pass.
 describe('testing /Signup', () => {
   it('returns a status code of 200 indicating that the post worked', async () => {
       let res = await request(app).post('/Signup').send({firstName: 'Matt', lastName:'Pop', email:'e.han@hotmail.com',password: '@Root1234', userRole:'Doctor',phoneNumber:'5146683216'});
       expect(res.status).toEqual(200);
+  })
+});
+
+//Here we try to get basic contact information for all validated doctors.
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+describe('testing /adminViewingValidatedDoctorData', () => {
+    it('returns a status code of 200 indicating that the get worked', async () => {
+      let res = await request(app).get('/adminViewingValidatedDoctorData');
+      expect(res.statusCode).toEqual(200);
+    })
+  });
+
+//Here we try to get basic contact information for all unvalidated doctors.
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+  describe('testing /adminViewingUnvalidatedDoctorData', () => {
+    it('returns a status code of 200 indicating that the get worked', async () => {
+      let res = await request(app).get('/adminViewingUnvalidatedDoctorData');
+      expect(res.statusCode).toEqual(200);
+    })
+  });
+
+//Here we try to get basic contact information for all patients.
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+  describe('testing /adminViewingPatientData', () => {
+    it('returns a status code of 200 indicating that the get worked', async () => {
+      let res = await request(app).get('/adminViewingPatientData');
+      expect(res.statusCode).toEqual(200);
+    })
+  });
+
+//Here we try to get information for all patients.
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+  describe('testing /doctorViewingTheirPatientData', () => {
+    it('returns a status code of 200 indicating that the get worked', async () => {
+      let res = await request(app).get('/doctorViewingTheirPatientData');
+      expect(res.statusCode).toEqual(200);
+    })
+  });
+
+//Here we try to get information for all doctors.
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+  describe('testing /doctorViewingAllDoctors', () => {
+    it('returns a status code of 200 indicating that the get worked', async () => {
+      let res = await request(app).get('/doctorViewingAllDoctors');
+      expect(res.statusCode).toEqual(200);
+    })
+  });
+
+//Here we try to get information for all patients organized by doctor.
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+  describe('testing /doctorViewingDoctorPatients', () => {
+    it('returns a status code of 200 indicating that the get worked', async () => {
+      let res = await request(app).get('/doctorViewingDoctorPatients');
+      expect(res.statusCode).toEqual(200);
+    })
+  });
+
+//Here we try to get information for all patients.
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+  describe('testing /doctorViewingAllPatientData', () => {
+    it('returns a status code of 200 indicating that the get worked', async () => {
+      let res = await request(app).get('/doctorViewingAllPatientData');
+      expect(res.statusCode).toEqual(200);
+    })
+  });
+
+  //Here we try to validate a doctor
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+describe('testing /validateDoctor', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/validateDoctor').send({DoctorID: 6});
+    expect(res.statusCode).toEqual(200);
   })
 });

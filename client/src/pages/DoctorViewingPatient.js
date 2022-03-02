@@ -46,7 +46,7 @@ function DoctorViewingPatient() {
             datetime: timestamp
         }).then(()=>{
             console.log("success")
-        });
+        }).catch((err) => console.log(err));
     };
 
     let requestForm = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
@@ -103,7 +103,9 @@ function DoctorViewingPatient() {
                                 <Item>Phone Number: {val.Phone}</Item>
                             </Grid>
                             <Grid item xs={4}>
-                                <Item>Birthday: {val.Birthday.substring(0, 10)}</Item>
+
+
+                                <Item>Birthday: {val.Birthday?val.Birthday.substring(0, 10): '19/19/1999'}</Item>
                             </Grid>
                             <Grid item xs={4}>
                                 <Item>Address: {val.Address}</Item>

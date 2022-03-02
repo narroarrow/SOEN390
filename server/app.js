@@ -2,16 +2,18 @@ const express = require('express')
 const app = express()
 const path = require('path');
 const bodyParser = require('body-parser')
-const db = require('../server/database')
+const db = require('./database')
 const mysql = require("mysql2");
 const cors = require('cors');
 const { request } = require('http');
 
+var cookieParser = require('cookie-parser')
+app.use(express.json());
+app.use(cookieParser());
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(express.static(__dirname + "../client/public/"));
-app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
@@ -30,26 +32,26 @@ app.use(function (req, res, next) {
 
 
 //below is a test server function
-//app.get('/api', (req, res) => {
-//    res.json({"users":["userOne", "userTwo", "userThree"]})
-//
-//})
+app.get('/api', (req, res) => {
+   res.json({"users":["userOne", "userTwo", "userThree"]})
+
+})
 
 // example of using DB query
+//
+app.get('/users', (req, res) => {
 
-// app.get('/users', (req, res) => {
-//
-//     let state = `SELECT * FROM cloudscratch.tablescratch;`;
-//
-//     db.query(state, function(err, result) {
-//         console.log(result);
-//         res.send(result);
-//     })
-// })
+    let state = `SELECT * FROM 390db.users;`;
+
+    db.query(state, function(err, result) {
+        console.log(result);
+        res.send(result);
+    })
+})
 
 
 // app.get('/*', function(req,res){
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+//     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 // })
 
 /* This get method will be executed when rendering the DoctorPatientProfile page. The database will be querries to get the patients names, ID, status and whether they have been
@@ -68,10 +70,14 @@ app.get("/DoctorPatientProfile", (req, res) => {
  It returns a list of patients whose profiles have reviewed. This is used to create indicators in the UI when a patient profile has been reviewed such 
  as a filled in eye icon for viewed patients. */
 app.get("/Viewed", (req, res) => {
-    db.query("SELECT P.ID FROM 390db.patients P, 390db.healthinformation H, 390db.viewed V WHERE P.ID = H.PatientID AND P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
+
+    // ERIC CHANGE: REMOVED WHERE P.ID = H.PATIENTID BECAUSE OTHERWISE MARK AS REVIEWED NEVER WORKS UNLESS WE CREATE A HEALTH INFORMATION FOR THE PATIENT 
+
+    db.query("SELECT P.ID FROM 390db.patients P, 390db.healthinformation H, 390db.viewed V WHERE P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
         if (err) {
             console.log(err);
         } else {
+            console.log(result);
             res.send(result);
         }
     });
@@ -180,8 +186,18 @@ app.post("/editedPatientData", (req, res) => {
     //This query finds the patient that wants to edit their information
     //and then updates the values of certain fields.
     db.query(
-        "UPDATE 390db.patients SET FName=?, LName=?, Email=?, Phone=?, HealthInsurance=? WHERE ID=?",
-        [fname, lname, email, phone, healthinsurance, patientid],
+        "UPDATE 390db.users SET FName=?, LName=?, Email=?, Phone=? WHERE ID=?",
+        [fname, lname, email, phone, patientid],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+            } 
+        }
+    );
+
+    db.query(
+        "UPDATE 390db.patients SET HealthInsurance=? WHERE ID=?",
+        [healthinsurance, patientid],
         (err, results) => {
             if (err) {
                 console.log(err);
@@ -190,6 +206,7 @@ app.post("/editedPatientData", (req, res) => {
             }
         }
     );
+
 
 });
 
@@ -217,7 +234,7 @@ app.post("/markViewed", (req, res) => {
     let PatientID = req.body.PatientID;
     let DoctorID = req.body.DoctorID;
     let datetime = req.body.datetime;
-    
+
     db.query("INSERT INTO 390db.viewed VALUES (?,?,?)", [PatientID, DoctorID, datetime], (err, result) =>{
         if (err) {
             console.log(err);
@@ -265,7 +282,7 @@ app.get('/editPatientProfileData', (req, res) => {
 
     //This query will return the patients information that we deem ok to change.
     //It filters the database and looks for the patient with the id that we passed.
-    db.query("SELECT U.FName, U.LName, U.Birthday, P.HealthInsurance, U.Phone, P.Email FROM patients P, users U, doctors D WHERE P.id=1 AND D.id=P.doctorID AND P.id=U.id", (err, result) => {
+    db.query("SELECT U.FName, U.LName, U.Birthday, P.HealthInsurance, U.Phone, U.Email FROM patients P, users U, doctors D WHERE P.id=1 AND D.id=P.doctorID AND P.id=U.id", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -333,9 +350,9 @@ app.post("/Login", async (req, res) => {
                                     if (err2){
                                         console.log("err2: "+err2)
                                     } else {
-                                        //res.cookie('token', token).send();
-                                        console.log("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-                                        res.sendStatus(200)
+                                        console.log(token);
+                                        res.cookie('token', token).send();
+                                        // res.sendStatus(200)
                                     }})
                             }
                             }
@@ -411,5 +428,100 @@ app.post("/Signup", async (req, res) => {
     }
 })
 // end of sign up and login
+
+app.get("/adminViewingValidatedDoctorData",(req,res) => {
+
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
+        if(err){
+            console.log(err);
+        } else {
+            res.send(result);
+            console.log(result);
+        }
+    });
+});
+app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
+
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
+            console.log(err);
+        if(err){
+            console.log(result);
+        } else {
+            res.send(result);
+        }
+});
+    });
+app.get("/adminViewingPatientData",(req,res) => {
+    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
+            console.log(err);
+        if(err){
+        } else {
+        }
+            res.send(result);
+    });
+});
+app.get("/doctorViewingTheirPatientData", (req,res) =>{
+    let did = 6;
+    db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P, 390db.doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;", [did], (err, result) => {
+    //hardcoded to doctor ID 6
+        if(err){
+            console.log("Error!");
+            console.log(err);
+        } else {
+            console.log("No error!");
+            res.send(result);
+        }
+});
+    });
+app.get("/doctorViewingAllDoctors", (req,res) =>{
+    db.query("SELECT Udoctor.* FROM 390db.users Udoctor, 390db.doctors D WHERE D.ID =  Udoctor.ID;", (err, result) => {
+        if(err){
+            console.log("Error!");
+            console.log(err);
+        } else {
+            res.send(result);
+            console.log("No error!");
+        }
+    });
+});
+app.get("/doctorViewingDoctorPatients", (req,res) =>{
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.users Upatient, 390db.users Udoctor, 390db.patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;", (err, result) => {
+        if(err){
+            console.log("Error!");
+            console.log(err);
+            console.log("No error!");
+        } else {
+            res.send(result);
+        }
+    });
+});
+app.get("/doctorViewingAllPatientData", (req,res) =>{
+    db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P WHERE P.ID = Upatient.ID;", (err, result) => {
+        if(err){
+        } else {
+            console.log("Error!");
+            console.log(err);
+            console.log("No error!");
+            res.send(result);
+        }
+    });
+});
+app.post("/validateDoctor", (req,res) =>{
+   let DoctorID = req.body.DoctorID;
+
+
+   db.query("UPDATE 390db.users SET Validated = 1 WHERE ID = ?", [DoctorID], (err, result) =>{
+       if(err){
+           console.log(err);
+       } else{
+           res.send("Doctor validated!");
+       }
+   })
+});
+
+app.get('/*', function(req,res){
+    res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
+})
+
 
 module.exports = app;

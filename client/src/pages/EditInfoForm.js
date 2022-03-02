@@ -20,6 +20,7 @@ let submitEditInfoForm = (event) => {
     healthinsurance: data.get('patientHI'),
   }).then(() => {
     console.log('success');
+    window.location.href="/PatientProfile";
   });
 };
 

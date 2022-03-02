@@ -12,8 +12,8 @@ let submitLoginForm = (event) =>{
   Axios.post('http://localhost:8080/Login',{
       email: data.get('email'),
       password: data.get('password')
- }, {withCredentials: true}).then(()=>{
-   //will have user authentication here
+ }, {withCredentials: true}).then(user=>{
+   console.log(user);
 
  });
 };

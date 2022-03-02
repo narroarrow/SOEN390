@@ -41,6 +41,7 @@ function App() {
 
 
             } catch (err) {
+                console.log(err);
             }
         }
         callCheckHealth();
@@ -52,7 +53,7 @@ function App() {
         axios.get(
             "http://localhost:8080/users", {withCredentials: true}).then(res => {
             console.log(res)
-        })
+        }).catch(err => console.log(err))
     }
 
     function checkAuth() {
@@ -61,11 +62,11 @@ function App() {
             // USER DATA IS IN RES
         ).catch(err => console.log(err))
     }
-
+    useEffect(() => {checkAuth();}, [])
   return (
       <div className="App">
         <CssBaseline />
-        
+
         <Navbar/>
         <Routes>
           <Route path='/login' element={<Login/>} />
