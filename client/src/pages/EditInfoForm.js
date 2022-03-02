@@ -20,6 +20,7 @@ let submitEditInfoForm = (event) => {
     healthinsurance: data.get('patientHI'),
   }).then(() => {
     console.log('success');
+    window.location.href="/PatientProfile";
   });
 };
 
@@ -42,7 +43,6 @@ function EditInfoForm() {
     }).then((response) => {
       setEditPatientData(response.data);
       console.log(response);
-      window.location.href="/PatientProfile";
     });
   }, [stopeffect]);
 
