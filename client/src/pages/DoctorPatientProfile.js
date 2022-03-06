@@ -7,6 +7,8 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import Axios from 'axios';
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import FiberNewIcon from '@mui/icons-material/FiberNew';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
 
 
 function DoctorPatientProfile() {
@@ -72,6 +74,10 @@ function DoctorPatientProfile() {
             if (viewedList.map(el => el.ID).includes(val.ID)){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
               isViewed = true;
             }
+            let isChatRequested = false;
+            if (val.ChatRequested === 1 && val.DoctorID === tempDoctorID){
+              isChatRequested = true;
+            }
             return (
               <Grid item md={4} key={key}>
                   <Link to='/DoctorViewingPatient' state={{ID: val.ID}} style={{textDecoration: 'none'}}>
@@ -91,6 +97,7 @@ function DoctorPatientProfile() {
                                 
                     {isViewed ? (<VisibilityIcon/>) : (<VisibilityOutlinedIcon/>)} {/* If a patients health information has been reviewed the eye icon will be filled */}
                     {isFlagged ? (<FlagIcon color = 'secondary'/>) : (<FlagOutlinedIcon/>)} {/* If a patient is flagged the flag icon will be red */}
+                    {isChatRequested ? (<AnnouncementIcon/>) : (<AnnouncementIcon sx={{visibility: 'hidden'}}/>)}
 
                   </Button>
                   </Link>

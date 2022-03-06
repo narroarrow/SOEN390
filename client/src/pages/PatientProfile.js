@@ -28,8 +28,29 @@ function PatientProfile() {
         }).then((response) => {
             setPatientData(response.data);
             console.log(response);
-        });
+        })
     }, [stopeffect]);
+
+    //User ID will have to be passed
+    let requestChat = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
+        Axios.post("http://localhost:8080/RequestChat").then(()=>{
+            console.log("success");
+            window.location.href="/PatientProfile";
+            
+        });
+    }
+
+    let isChatRequested = false; //variable to verify if patient profile has been viewed, to be used for disabling or enabling MARK AS READ button
+    let isChatRequestedArray = patientData.map((val, key) => {return val.ChatRequested});
+    if (isChatRequestedArray[0] === 1){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
+        isChatRequested = true;
+    }
+
+    let chatGranted = false; //variable to verify if patient profile has been viewed, to be used for disabling or enabling MARK AS READ button
+    let chatGrantedArray = patientData.map((val, key) => {return val.ChatPermission});
+    if (chatGrantedArray[0] === 1){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
+        chatGranted = true;
+    }
 
     // Returning the HTML / CSS for the Patient Profile
     // Each GRID ITEM retrieves patient data from the database
@@ -131,6 +152,12 @@ function PatientProfile() {
                     <Button sx={{}} variant="outlined" href="#outlined-buttons" >
                         BOOK APPOINTMENT
                     </Button>
+
+                    {isChatRequested ?  (<Button sx={{}} variant="outlined" disabled>CHAT REQUESTED</Button>): 
+                                        (<Button sx={{}} variant="outlined" onClick={requestChat}>REQUEST CHAT</Button>) }
+
+                    {chatGranted ?      (<Button sx={{}} variant="outlined">CHAT</Button>) : 
+                                        (<Button sx={{}} variant="outlined" disabled>CHAT</Button>)}
 
                 </Box>
             </Container>

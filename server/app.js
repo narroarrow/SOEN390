@@ -57,7 +57,7 @@ app.get('/users', (req, res) => {
 /* This get method will be executed when rendering the DoctorPatientProfile page. The database will be querries to get the patients names, ID, status and whether they have been
 flagged or not. The returned list is a list of all patients in the database. */
 app.get("/DoctorPatientProfile", (req, res) => {
-    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
+    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID, P.ChatRequested FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -87,7 +87,7 @@ app.get("/Viewed", (req, res) => {
 and display it in the UI. */
 app.get("/doctorViewingPatientData", (req, res) => {
     let pid = req.query.id;
-    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
+    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested, P.ChatPermission FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -219,10 +219,11 @@ app.get('/patientProfileData', (req, res) => {
     //The query below returns all the information that the user will see on their
     //profile by using the patient's id to filter through the different patient-doctor
     //combinations.
-    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName FROM patients P, doctors D, users U, users U2 WHERE P.id=1 AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", (err, result) => {
+    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName, P.ChatRequested, P.ChatPermission FROM patients P, doctors D, users U, users U2 WHERE P.id=1 AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", (err, result) => {
         if (err) {
             console.log(err);
         } else {
+            console.log(result);
             res.send(result);
         }
     });

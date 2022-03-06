@@ -71,6 +71,20 @@ function DoctorViewingPatient() {
         });
     }
 
+    let acceptChat = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
+        Axios.post("http://localhost:8080/acceptChat", {
+            PatientID: location.state.ID
+        }).then(()=>{
+            console.log("success")
+        });
+    }
+
+    let isChatAccepted = false; //variable to verify if patient profile has been viewed, to be used for disabling or enabling MARK AS READ button
+    let isChatAcceptedArray = patientData.map((val, key) => {return val.ChatPermission});
+    if (isChatAcceptedArray[0] === 1){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
+        isChatAccepted = true;
+    }
+
     return (
         <div>
             <Container component='main'>
@@ -137,6 +151,9 @@ function DoctorViewingPatient() {
                 <Button sx={{ml:58}} variant='outlined' href='#outlined-buttons' onClick={flagPatient} href='/DoctorViewingPatient'>
                     FLAG PATIENT
                 </Button>
+
+                {isChatAccepted ? (<Button variant='outlined' disabled href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) : 
+                (<Button variant='outlined' href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}
               
                 </Box>
             </Container>
