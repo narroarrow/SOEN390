@@ -51,7 +51,7 @@ app.post("/acceptChat", (req, res) => {
     let pid = req.body.PatientID;
     console.log(pid);
     console.log("test");
-    db.query("UPDATE 390db.patients SET ChatRequested=0 WHERE ID=?",
+    db.query("UPDATE 390db.patients SET ChatRequested=false WHERE ID=?",
         [pid],
         (err, results) => {
             if (err) {
@@ -59,7 +59,7 @@ app.post("/acceptChat", (req, res) => {
             } 
         }
     );
-    db.query("UPDATE 390db.patients SET ChatPermission=1 WHERE ID=?",
+    db.query("UPDATE 390db.patients SET ChatPermission=true WHERE ID=?",
         [pid],
         (err, results) => {
             if (err) {
@@ -69,6 +69,19 @@ app.post("/acceptChat", (req, res) => {
             }
         }
     );
+});
+
+app.post("/unflagPatient", (req, res) => {
+    let PatientID = req.body.PatientID;
+
+    db.query("UPDATE 390db.patients SET Flagged=false where ID=?", [PatientID], (err, result) =>{
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Patient has been unflagged!");
+        }
+    });
+
 });
 
 module.exports = app;

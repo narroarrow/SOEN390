@@ -71,6 +71,14 @@ function DoctorViewingPatient() {
         });
     }
 
+    let unflagPatient = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
+        Axios.post("http://localhost:8080/unflagPatient", {
+            PatientID: location.state.ID
+        }).then(()=>{
+            console.log("success")
+        });
+    }
+
     let acceptChat = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
         Axios.post("http://localhost:8080/acceptChat", {
             PatientID: location.state.ID
@@ -83,6 +91,12 @@ function DoctorViewingPatient() {
     let isChatAcceptedArray = patientData.map((val, key) => {return val.ChatPermission});
     if (isChatAcceptedArray[0] === 1){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
         isChatAccepted = true;
+    }
+
+    let isFlagged = false;
+    let isFlaggedArray = patientData.map((val, key) => {return val.Flagged});
+    if (isFlaggedArray[0] === 1){
+        isFlagged = true;
     }
 
     return (
@@ -148,9 +162,9 @@ function DoctorViewingPatient() {
                 {isViewed ? (<Button sx={{ml:55}} variant='outlined' onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) : 
                 (<Button sx={{ml:55}} variant='outlined' onClick={markAsReviewed} href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>)}
                 <br></br> <br></br>
-                <Button sx={{ml:58}} variant='outlined' href='#outlined-buttons' onClick={flagPatient} href='/DoctorViewingPatient'>
-                    FLAG PATIENT
-                </Button>
+
+                {isFlagged ? (<Button sx={{ml:58}} variant='outlined' href='#outlined-buttons' onClick={unflagPatient} href='/DoctorViewingPatient'>UNFLAG PATIENT</Button>) : 
+                (<Button sx={{ml:58}} variant='outlined' href='#outlined-buttons' onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
 
                 {isChatAccepted ? (<Button variant='outlined' disabled href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) : 
                 (<Button variant='outlined' href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}

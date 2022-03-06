@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 
 
-function HealthOfficialPatientProfile() {
+function ImmigrationOfficerPatientProfile() {
   const [patientList, setPatientList] = useState([]); //all patient info
   const [filteredPatients, setFilteredPatients] = useState([]); //filtered values for patient info
   const [executed, setExecuted] = useState(false); //keeps track of if getPatients() method is called
@@ -48,7 +48,7 @@ function HealthOfficialPatientProfile() {
   return (
     <div>
       <Box sx={{ padding: 5 }}>
-        <h1>Patient Profile Page (Health Official)
+        <h1>Patient Profile Page (Immigration Officer)
           <Button value='All Patients' name='All Patients' variant='outlined' href='#outlined-buttons' onClick={() => filterAllPatients()} sx={{ textAlign: 'right', right: 0, display: 'inline-block', float: 'right' }}>
             All Patients
           </Button>
@@ -98,4 +98,4 @@ function HealthOfficialPatientProfile() {
   );
 }
 
-export default HealthOfficialPatientProfile;
+export default ImmigrationOfficerPatientProfile;

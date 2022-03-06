@@ -87,7 +87,7 @@ app.get("/Viewed", (req, res) => {
 and display it in the UI. */
 app.get("/doctorViewingPatientData", (req, res) => {
     let pid = req.query.id;
-    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested, P.ChatPermission FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
+    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested, P.ChatPermission, P.Flagged FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -264,13 +264,13 @@ db.query("UPDATE 390db.patients SET SymptomRequested=true where ID=?", [PatientI
 app.post("/flagPatient", (req, res) => {
     let PatientID = req.body.PatientID;
 
-db.query("UPDATE 390db.patients SET Flagged=true where ID=?", [PatientID], (err, result) =>{
-    if (err) {
-        console.log(err);
-    } else {
-        res.send("Patient has been flagged!");
-    }
-});
+    db.query("UPDATE 390db.patients SET Flagged=true where ID=?", [PatientID], (err, result) =>{
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Patient has been flagged!");
+        }
+    });
 
 });
 
