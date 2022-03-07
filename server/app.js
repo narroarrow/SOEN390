@@ -522,7 +522,60 @@ app.post("/validateDoctor", (req,res) =>{
 
 app.get('/*', function(req,res){
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
-})
+});
+
+app.post("/RequestChat", (req, res) => {
+    let patientid = 1;
+
+    db.query("UPDATE 390db.patients SET ChatRequested=1 WHERE ID=?",
+        [patientid],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Chat Requested!");
+            }
+        }
+    );
+});
+
+app.post("/acceptChat", (req, res) => {
+    console.log("hello");
+    let pid = req.body.PatientID;
+    console.log(pid);
+    console.log("test");
+    db.query("UPDATE 390db.patients SET ChatRequested=false WHERE ID=?",
+        [pid],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+            } 
+        }
+    );
+    db.query("UPDATE 390db.patients SET ChatPermission=true WHERE ID=?",
+        [pid],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Chat Accepted!");
+            }
+        }
+    );
+});
+
+app.post("/unflagPatient", (req, res) => {
+    let PatientID = req.body.PatientID;
+
+    db.query("UPDATE 390db.patients SET Flagged=false where ID=?", [PatientID], (err, result) =>{
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Patient has been unflagged!");
+        }
+    });
+
+});
 
 
 module.exports = app;
