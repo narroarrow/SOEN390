@@ -57,205 +57,202 @@ const [color, setColor] = useState("green");
   return (
    
 
-    <TableContainer>
-      <Table >
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell>Calories</TableCell>
-            <TableCell>Fat&nbsp;(g)</TableCell>
-            <TableCell>Carbs&nbsp;(g)</TableCell>
-            <TableCell>Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-            <TableRow>
-              <tdTaken> Hello</tdTaken>
-              <tdTaken> world </tdTaken>
-              <tdTaken>afe</tdTaken>
-              <tdTaken>efwff</tdTaken>
-              <tdTaken>edfwfdew</tdTaken>
-            </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    // <TableContainer>
+    //   <Table >
+    //     <TableHead>
+    //       <TableRow>
+    //         <TableCell>Dessert (100g serving)</TableCell>
+    //         <TableCell>Calories</TableCell>
+    //         <TableCell>Fat&nbsp;(g)</TableCell>
+    //         <TableCell>Carbs&nbsp;(g)</TableCell>
+    //         <TableCell>Protein&nbsp;(g)</TableCell>
+    //       </TableRow>
+    //     </TableHead>
+    //     <TableBody>
+    //         <TableRow>
+    //           <tdTaken> Hello</tdTaken>
+    //           <tdTaken> world </tdTaken>
+    //           <tdTaken>afe</tdTaken>
+    //           <tdTaken>efwff</tdTaken>
+    //           <tdTaken>edfwfdew</tdTaken>
+    //         </TableRow>
+    //     </TableBody>
+    //   </Table>
+    // </TableContainer>
 
 
-    // <table aria-label="custom pagination table" style={{border: "1px solid black"}}>
-    //     <thead>
-    //       <tr>
-    //         <th>time</th>
-    //         <th style={{border: "1px solid black"}}>Sunday</th>
-    //         <th style={{border: "1px solid black"}}>Monday</th>
-    //         <th style={{border: "1px solid black"}}>Tuesday</th>
-    //         <th style={{border: "1px solid black"}}>Wednesday</th>
-    //         <th style={{border: "1px solid black"}}>Thursday</th>
-    //         <th style={{border: "1px solid black"}}>Friday</th>
-    //         <th style={{border: "1px solid black"}}>Saturday</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
-    //         <tr>
-    //             <tdFree></tdFree>
-    //             <tdFree></tdFree>
-    //             <tdFree></tdFree>
-    //             <tdFree></tdFree>
-    //             <tdFree></tdFree>
-    //             <tdFree></tdFree>
-    //             <tdFree></tdFree>
-    //             <tdFree></tdFree>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //         <tr>
-    //             <td style={{border: "1px solid black"}, {height: "15px"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black", backgroundColor: {color}}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //             <td style={{border: "1px solid black"}}></td>
-    //         </tr>
-    //       {/* {(rowsPerPage > 0
+    <table aria-label="custom pagination table" style={{border: "1px solid black"}}>
+        <thead>
+          <tr>
+            <th>time</th>
+            <th style={{border: "1px solid black"}}>Sunday</th>
+            <th style={{border: "1px solid black"}}>Monday</th>
+            <th style={{border: "1px solid black"}}>Tuesday</th>
+            <th style={{border: "1px solid black"}}>Wednesday</th>
+            <th style={{border: "1px solid black"}}>Thursday</th>
+            <th style={{border: "1px solid black"}}>Friday</th>
+            <th style={{border: "1px solid black"}}>Saturday</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* for (i=0; i<=7; i++){
+            <tr>
+              for (j=0; j<=24; j++){
+                <td id="j+i*7" className='if from backend then free, else not free' onclick() =>(do smt)></td>
+              }
+            </tr>
+          } */}
+            <tr>
+                <td style={{border: "1px solid black"}}>8h</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>8h30</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>9h</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>9h30</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>10h</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>10h30</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>11h</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+            <td style={{border: "1px solid black"}}>11h30</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+            <td style={{border: "1px solid black"}}>12h</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+            <td style={{border: "1px solid black"}}>12h30</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>13h</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>13h30</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>14h</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black", backgroundColor: "green"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>14h30</td>
+                <td style={{border: "1px solid black", backgroundColor: "green"}}></td>
+                <td style={{border: "1px solid black", backgroundColor: "green"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black", backgroundColor: "green"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+            <tr>
+                <td style={{border: "1px solid black"}}>15h</td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black", backgroundColor: "green"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+                <td style={{border: "1px solid black"}}></td>
+            </tr>
+           {/* {(rowsPerPage > 0
     //         ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     //         : rows
     //       ).map((row) => (
@@ -275,8 +272,8 @@ const [color, setColor] = useState("green");
     //           <td colSpan={3} />
     //         </tr>
     //       )} */}
-    //     </tbody>
-    // </table>
+        </tbody>
+     </table>
 
 
   )
