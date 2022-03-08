@@ -54,7 +54,8 @@ app.get("/contact", (req,res) => {
 app.get("/seeOpenAppointments", (req,res) => {
     let patientID = 1; //maybe pull from JWT
 
-    state = "SELECT StartTime,EndTime, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;;"
+    state = "SELECT StartTime,EndTime, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;"
+    //startTime and endTime may be removed and replaced with a time ID
     db.query(state,[patientID], (err, result) => {
         if (err) {
             console.log(err);
