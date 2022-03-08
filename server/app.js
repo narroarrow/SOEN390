@@ -431,7 +431,7 @@ app.post("/Signup", async (req, res) => {
 
 app.get("/adminViewingValidatedDoctorData",(req,res) => {
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Email, Udoctor.Address, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
         if(err){
             console.log(err);
         } else {
@@ -442,7 +442,7 @@ app.get("/adminViewingValidatedDoctorData",(req,res) => {
 });
 app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Email, Udoctor.Address, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
             console.log(err);
         if(err){
             console.log(result);
