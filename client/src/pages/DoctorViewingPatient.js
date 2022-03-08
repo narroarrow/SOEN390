@@ -26,6 +26,8 @@ function DoctorViewingPatient() {
     if (viewedList.map(el => el.ID).includes(location.state.ID)){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
         isViewed = true;
     }
+
+    
     
     useEffect(()=>{ //When page is loaded, get requests will get patient data as well as a list of patients whose profiles have been viewed
         Axios.get("http://localhost:8080/doctorViewingPatientData", { params: {id: location.state.ID}}).then((response) => {
@@ -37,11 +39,14 @@ function DoctorViewingPatient() {
         });   
     }, [stopeffect]); 
 
+    
+
     let markAsReviewed = () => { //When clicking the MARK AS REVIEWED button, this will send the patient and doctor information to the DB viewed table
         const currentDate = new Date();
         const timestamp = currentDate.toISOString().slice(0, 19).replace('T', ' ');
         Axios.post("http://localhost:8080/markViewed", {
             PatientID: location.state.ID,
+            PatientDocID: patientData.map((val, key) => {return val.DoctorID})[0],
             DoctorID: tempDoctorID,
             datetime: timestamp
         }).then(()=>{
@@ -91,6 +96,12 @@ function DoctorViewingPatient() {
     let isChatAcceptedArray = patientData.map((val, key) => {return val.ChatPermission});
     if (isChatAcceptedArray[0] === 1){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
         isChatAccepted = true;
+    }
+
+    let isNewPatient = false;
+    let isNewPatientArray = patientData.map((val, key) => {return val.NewPatient});
+    if(isNewPatientArray[0] === 1){
+        isNewPatient = true;
     }
 
     let isFlagged = false;
@@ -148,23 +159,24 @@ function DoctorViewingPatient() {
 
                 {/* I made it href back to the page so that the page refreshes and the doctor 
                 can see whether or not they have requested a symptom form.*/}
-                <Button variant='outlined' href='#outlined-buttons' onClick={requestForm} href='/DoctorViewingPatient'>
+                <Button variant='outlined' onClick={requestForm} href='/DoctorViewingPatient'>
                     REQUEST SYMPTOM FORM
                 </Button>
               
                 {/* I'm thinking that we make a new page called PreviousSymptoms where all
                 of the symptom forms will be sent.*/}
-                <Button sx={{ml: 65}} variant='outlined' href='#outlined-buttons' onClick={previousSymptoms} href='/PreviousSymptoms'>
+                <Button sx={{ml: 65}} variant='outlined' onClick={previousSymptoms} href='/PreviousSymptoms'>
                     VIEW PREVIOUS SYMPTOM FORMS
                 </Button>
 
                 {/* If patient profile has been reviewed already, the MARK AS REVIEWED button will be disabled */}
-                {isViewed ? (<Button sx={{ml:55}} variant='outlined' onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) : 
-                (<Button sx={{ml:55}} variant='outlined' onClick={markAsReviewed} href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>)}
+                {(!isViewed || isNewPatient) ? (<Button sx={{ml:55}} variant='outlined' onClick={markAsReviewed} href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) : 
+                (<Button sx={{ml:55}} variant='outlined' onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) 
+                }
                 <br></br> <br></br>
 
-                {isFlagged ? (<Button sx={{ml:58}} variant='outlined' href='#outlined-buttons' onClick={unflagPatient} href='/DoctorViewingPatient'>UNFLAG PATIENT</Button>) : 
-                (<Button sx={{ml:58}} variant='outlined' href='#outlined-buttons' onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
+                {isFlagged ? (<Button sx={{ml:58}} variant='outlined' onClick={unflagPatient} href='/DoctorViewingPatient'>UNFLAG PATIENT</Button>) : 
+                (<Button sx={{ml:58}} variant='outlined' onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
 
                 {isChatAccepted ? (<Button variant='outlined' disabled href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) : 
                 (<Button variant='outlined' href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}

@@ -57,7 +57,7 @@ app.get('/users', (req, res) => {
 /* This get method will be executed when rendering the DoctorPatientProfile page. The database will be querries to get the patients names, ID, status and whether they have been
 flagged or not. The returned list is a list of all patients in the database. */
 app.get("/DoctorPatientProfile", (req, res) => {
-    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID, P.ChatRequested FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
+    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID, P.ChatRequested, P.NewPatient FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -87,7 +87,7 @@ app.get("/Viewed", (req, res) => {
 and display it in the UI. */
 app.get("/doctorViewingPatientData", (req, res) => {
     let pid = req.query.id;
-    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested, P.ChatPermission, P.Flagged FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
+    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, P.NewPatient, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, Udoctor.ID AS DoctorID, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested, P.ChatPermission, P.Flagged FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -233,16 +233,30 @@ app.get('/patientProfileData', (req, res) => {
 /* This post method is called when a docotr clicks the MARK AS REVIEWED button on a patient profile. It will update the 'viewed table' in the database. */
 app.post("/markViewed", (req, res) => {
     let PatientID = req.body.PatientID;
+    let PatientDocID = req.body.PatientDocID;
     let DoctorID = req.body.DoctorID;
     let datetime = req.body.datetime;
 
     db.query("INSERT INTO 390db.viewed VALUES (?,?,?)", [PatientID, DoctorID, datetime], (err, result) =>{
         if (err) {
             console.log(err);
-        } else {
-            res.send("Patient profile has been reviewed!");
         }
     });
+
+
+
+    if(PatientDocID === DoctorID){
+
+        db.query("UPDATE 390db.patients SET NewPatient=0 WHERE ID=?", [PatientID], (err, result) =>{
+            if (err) {
+                console.log(err);
+            }else{
+                console.log("Updated new patient");
+            }
+        });
+    }
+
+    res.send("Success!");
 });
 
 /* This post method is called when a doctor clicks the REQUEST SYMPTOM FORM button on a patient profile. It will update the SymptomRequested attribute in the patient 

@@ -78,6 +78,11 @@ function DoctorPatientProfile() {
             if (val.ChatRequested === 1 && val.DoctorID === tempDoctorID){
               isChatRequested = true;
             }
+            let isPatientNew = false;
+            if (val.NewPatient === 1 && val.DoctorID === tempDoctorID){
+              isPatientNew = true;
+            }
+
             return (
               <Grid item md={4} key={key}>
                   <Link to='/DoctorViewingPatient' state={{ID: val.ID}} style={{textDecoration: 'none'}}>
@@ -98,6 +103,7 @@ function DoctorPatientProfile() {
                     {isViewed ? (<VisibilityIcon/>) : (<VisibilityOutlinedIcon/>)} {/* If a patients health information has been reviewed the eye icon will be filled */}
                     {isFlagged ? (<FlagIcon color = 'secondary'/>) : (<FlagOutlinedIcon/>)} {/* If a patient is flagged the flag icon will be red */}
                     {isChatRequested ? (<AnnouncementIcon/>) : (<AnnouncementIcon sx={{visibility: 'hidden'}}/>)}
+                    {isPatientNew ? (<FiberNewIcon/>) : (<FiberNewIcon sx={{visibility: 'hidden'}}/>)}
 
                   </Button>
                   </Link>
