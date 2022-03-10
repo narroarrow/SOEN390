@@ -50,18 +50,33 @@ app.get("/contact", (req,res) => {
 }
 )
 
+
+function arrayMaker(result){
+    // console.log(result)
+    const returnedAvails = [];
+    for(let i = 0; i < Object.keys(result).length; i++){
+        // console.log(`${result[i]["dayName"]} ${result[i]["StartTime"]} - ${result[i]["EndTime"]}`)
+        returnedAvails.push(`${result[i]["dayName"]} ${result[i]["StartTime"]} - ${result[i]["EndTime"]}`)
+    }
+    console.log(returnedAvails);
+    return returnedAvails;
+
+    
+}
 //see open appointments
 app.get("/seeOpenAppointments", (req,res) => {
     let patientID = 1; //maybe pull from JWT
 
-    state = "SELECT StartTime,EndTime, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;"
-    //startTime and endTime may be removed and replaced with a time ID
+    state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = 1) and dh.DoctorID= u.id and dh.Availability = 1;"
+    //non-hard coded 
+    //SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;
     db.query(state,[patientID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(result);
-            res.send(result);
+            // console.log(Object.keys(result).length);
+            res.send(arrayMaker(result));
+            // res.send(result);
         }
     });
 }
