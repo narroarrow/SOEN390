@@ -519,6 +519,104 @@ app.post("/validateDoctor", (req,res) =>{
    })
 });
 
+//Gets the number of patients in each status category
+app.post("/statusCountAllPatients", (req,res) =>{
+    db.query("  SELECT healthyCount, isolatingCount, infectedCount " + 
+               "FROM (  SELECT count(*) as healthyCount " + 
+                "FROM 390db.Patients P " +
+                "WHERE P.Status = 'Healthy') as healthyCount, " + 
+                "(  SELECT count(*) as isolatingCount " + 
+                "FROM 390db.Patients P " +
+                "WHERE P.Status = 'Isolating') as isolatingCount, " + 
+                "(  SELECT count(*) as infectedCount " + 
+                "FROM 390db.Patients P " +
+                "WHERE P.Status = 'Infected') as infectedCount;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+//Gets the total number of patients
+ app.post("/countAllPatients", (req,res) =>{
+    db.query("SELECT count(*) as allPatientCount FROM 390db.Patients P", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+//Gets the total number of flagged patients
+ app.post("/countAllFlaggedPatients", (req,res) =>{
+    db.query("SELECT count(*) as allFlaggedPatientCount FROM 390db.Patients P WHERE P.Flagged = 1", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+//Gets the total number of registered doctors
+ app.post("/countAllValidatedDoctors", (req,res) =>{
+    db.query("SELECT count(*) as allRegisteredDoctorsCount FROM 390db.Users U WHERE U.Validated = 1 AND U.Role = 'Doctor'", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets top 5 doctors with most to least patients
+ app.post("/doctorsWithMostPatients", (req,res) =>{
+    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+    "GROUP BY D.ID " + 
+    "ORDER BY countPatients DESC " + //Ordered by most to least
+    "LIMIT 5) " +
+    "UNION " +
+    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    "FROM 390db.Patients P1) AND D.ID = U.ID " +
+    "ORDER BY countPatients DESC " +
+    "LIMIT 5;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets top 5 doctors with least to most patients
+ app.post("/doctorsWithLeastPatients", (req,res) =>{ 
+    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+    "GROUP BY D.ID " + 
+    "ORDER BY countPatients ASC " + //Ordered by least to most
+    "LIMIT 5) " +
+    "UNION " +
+    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    "FROM 390db.Patients P1) AND D.ID = U.ID " +
+    "ORDER BY countPatients ASC " +
+    "LIMIT 5;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
 app.get('/*', function(req,res){
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 })
