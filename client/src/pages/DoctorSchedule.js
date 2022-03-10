@@ -50,7 +50,7 @@ export default function DoctorSchedule(){
             <div style={{ height: 400, width: '100%' }}>
 
                 
-            <FormGroup>
+            <FormGroup label="Doctor Schedule">
                 <FormControlLabel control={<Checkbox/>} label="8:00" />
                 
             </FormGroup>
