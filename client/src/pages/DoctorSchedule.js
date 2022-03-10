@@ -1,4 +1,4 @@
-import { Paper, FormControlLabel, FormControl, FormLabel, Radio, RadioGroup, Button,  Typography, Checkbox, FormGroup} from '@mui/material'; 
+import { Paper, FormControlLabel, FormControl, FormLabel, Radio, RadioGroup, Button,  Typography, Checkbox, FormGroup, Box, Container} from '@mui/material'; 
 import React from 'react'; 
 import Axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
@@ -44,16 +44,118 @@ export default function DoctorSchedule(){
   
         return (
 
+            <div align="Center">
+            <Paper elevation={24} component="form" sx={{ width: 1400, height: 2000, mt: 10}}>
+            <h1>Doctor Schedule</h1>
 
-            
-
-            <div style={{ height: 400, width: '100%' }}>
-
-                
-            <FormGroup label="Doctor Schedule">
-                <FormControlLabel control={<Checkbox/>} label="8:00" />
+            <Box sx = {{ display: 'flex', justifyContent: 'center'}}>
+            <FormGroup sx={{ px:5,  border: 1}}>
+            <FormLabel component="legend">Monday</FormLabel>
+               
+                <FormControlLabel control={<Checkbox/>} label="8:00 - 8:30"/>
+                <FormControlLabel control={<Checkbox/>} label="8:30 - 9:00" />
+                <FormControlLabel control={<Checkbox/>} label="9:00 - 9:30"/>
+                <FormControlLabel control={<Checkbox/>} label="9:30 - 10:00" />
+                <FormControlLabel control={<Checkbox/>} label="10:00 - 10:30"/>
+                <FormControlLabel control={<Checkbox/>} label="10:30 - 11:00" />
+                <FormControlLabel control={<Checkbox/>} label="11:00 - 11:30"/>
+                <FormControlLabel control={<Checkbox/>} label="11:30 - 12:00" />
+                <FormControlLabel control={<Checkbox/>} label="12:00 - 12:30"/>
+                <FormControlLabel control={<Checkbox/>} label="12:30 - 13:00" />
+                <FormControlLabel control={<Checkbox/>} label="13:00 - 13:30"/>
+                <FormControlLabel control={<Checkbox/>} label="13:30 - 14:00" />
+                <FormControlLabel control={<Checkbox/>} label="14:00 - 14:30"/>
+                <FormControlLabel control={<Checkbox/>} label="15:30 - 16:00" />
+                <FormControlLabel control={<Checkbox/>} label="16:00 - 16:30"/>
+                <FormControlLabel control={<Checkbox/>} label="16:30 - 17:00" />
+               
                 
             </FormGroup>
+
+            <FormGroup sx={{ px:5, textAlign:"center"}}>
+            <FormLabel component="legend">Tuesday</FormLabel>
+            <FormControlLabel control={<Checkbox/>} label="8:00 - 8:30"/>
+                <FormControlLabel control={<Checkbox/>} label="8:30 - 9:00" />
+                <FormControlLabel control={<Checkbox/>} label="9:00 - 9:30"/>
+                <FormControlLabel control={<Checkbox/>} label="9:30 - 10:00" />
+                <FormControlLabel control={<Checkbox/>} label="10:00 - 10:30"/>
+                <FormControlLabel control={<Checkbox/>} label="10:30 - 11:00" />
+                <FormControlLabel control={<Checkbox/>} label="11:00 - 11:30"/>
+                <FormControlLabel control={<Checkbox/>} label="11:30 - 12:00" />
+                <FormControlLabel control={<Checkbox/>} label="12:00 - 12:30"/>
+                <FormControlLabel control={<Checkbox/>} label="12:30 - 13:00" />
+                <FormControlLabel control={<Checkbox/>} label="13:00 - 13:30"/>
+                <FormControlLabel control={<Checkbox/>} label="13:30 - 14:00" />
+                <FormControlLabel control={<Checkbox/>} label="14:00 - 14:30"/>
+                <FormControlLabel control={<Checkbox/>} label="15:30 - 16:00" />
+                <FormControlLabel control={<Checkbox/>} label="16:00 - 16:30"/>
+                <FormControlLabel control={<Checkbox/>} label="16:30 - 17:00" />
+                
+            </FormGroup>
+
+            <FormGroup sx={{ px:5}}>
+            <FormLabel component="legend">Wednesday</FormLabel>
+            <FormControlLabel control={<Checkbox/>} label="8:00 - 8:30"/>
+                <FormControlLabel control={<Checkbox/>} label="8:30 - 9:00" />
+                <FormControlLabel control={<Checkbox/>} label="9:00 - 9:30"/>
+                <FormControlLabel control={<Checkbox/>} label="9:30 - 10:00" />
+                <FormControlLabel control={<Checkbox/>} label="10:00 - 10:30"/>
+                <FormControlLabel control={<Checkbox/>} label="10:30 - 11:00" />
+                <FormControlLabel control={<Checkbox/>} label="11:00 - 11:30"/>
+                <FormControlLabel control={<Checkbox/>} label="11:30 - 12:00" />
+                <FormControlLabel control={<Checkbox/>} label="12:00 - 12:30"/>
+                <FormControlLabel control={<Checkbox/>} label="12:30 - 13:00" />
+                <FormControlLabel control={<Checkbox/>} label="13:00 - 13:30"/>
+                <FormControlLabel control={<Checkbox/>} label="13:30 - 14:00" />
+                <FormControlLabel control={<Checkbox/>} label="14:00 - 14:30"/>
+                <FormControlLabel control={<Checkbox/>} label="15:30 - 16:00" />
+                <FormControlLabel control={<Checkbox/>} label="16:00 - 16:30"/>
+                <FormControlLabel control={<Checkbox/>} label="16:30 - 17:00" />
+                
+            </FormGroup>
+
+            <FormGroup sx={{ px:5}}>
+            <FormLabel component="legend">Thursday</FormLabel>
+            <FormControlLabel control={<Checkbox/>} label="8:00 - 8:30"/>
+                <FormControlLabel control={<Checkbox/>} label="8:30 - 9:00" />
+                <FormControlLabel control={<Checkbox/>} label="9:00 - 9:30"/>
+                <FormControlLabel control={<Checkbox/>} label="9:30 - 10:00" />
+                <FormControlLabel control={<Checkbox/>} label="10:00 - 10:30"/>
+                <FormControlLabel control={<Checkbox/>} label="10:30 - 11:00" />
+                <FormControlLabel control={<Checkbox/>} label="11:00 - 11:30"/>
+                <FormControlLabel control={<Checkbox/>} label="11:30 - 12:00" />
+                <FormControlLabel control={<Checkbox/>} label="12:00 - 12:30"/>
+                <FormControlLabel control={<Checkbox/>} label="12:30 - 13:00" />
+                <FormControlLabel control={<Checkbox/>} label="13:00 - 13:30"/>
+                <FormControlLabel control={<Checkbox/>} label="13:30 - 14:00" />
+                <FormControlLabel control={<Checkbox/>} label="14:00 - 14:30"/>
+                <FormControlLabel control={<Checkbox/>} label="15:30 - 16:00" />
+                <FormControlLabel control={<Checkbox/>} label="16:00 - 16:30"/>
+                <FormControlLabel control={<Checkbox/>} label="16:30 - 17:00" />
+                
+            </FormGroup>
+
+            <FormGroup sx={{ px:5}}>
+            <FormLabel component="legend">Friday</FormLabel>
+            <FormControlLabel control={<Checkbox/>} label="8:00 - 8:30"/>
+                <FormControlLabel control={<Checkbox/>} label="8:30 - 9:00" />
+                <FormControlLabel control={<Checkbox/>} label="9:00 - 9:30"/>
+                <FormControlLabel control={<Checkbox/>} label="9:30 - 10:00" />
+                <FormControlLabel control={<Checkbox/>} label="10:00 - 10:30"/>
+                <FormControlLabel control={<Checkbox/>} label="10:30 - 11:00" />
+                <FormControlLabel control={<Checkbox/>} label="11:00 - 11:30"/>
+                <FormControlLabel control={<Checkbox/>} label="11:30 - 12:00" />
+                <FormControlLabel control={<Checkbox/>} label="12:00 - 12:30"/>
+                <FormControlLabel control={<Checkbox/>} label="12:30 - 13:00" />
+                <FormControlLabel control={<Checkbox/>} label="13:00 - 13:30"/>
+                <FormControlLabel control={<Checkbox/>} label="13:30 - 14:00" />
+                <FormControlLabel control={<Checkbox/>} label="14:00 - 14:30"/>
+                <FormControlLabel control={<Checkbox/>} label="15:30 - 16:00" />
+                <FormControlLabel control={<Checkbox/>} label="16:00 - 16:30"/>
+                <FormControlLabel control={<Checkbox/>} label="16:30 - 17:00" />
+                
+            </FormGroup>
+            </Box>
 
 
               {/* <DataGrid
@@ -63,6 +165,8 @@ export default function DoctorSchedule(){
                 rowsPerPageOptions={[5]}
                 
               /> */}
+
+              </Paper>
             </div>
           );
         }
