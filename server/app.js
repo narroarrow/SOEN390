@@ -591,9 +591,9 @@ function arrayMaker(result){
 }
 //see open appointments
 app.get("/seeOpenAppointments", (req,res) => {
-    let patientID = 1; //maybe pull from JWT
-    let patientId = req.query["id"];
-    console.log(patientId);
+    //getting ID from client
+    let patientID = req.query["id"];
+    console.log(patientID);
     // state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = 1) and dh.DoctorID= u.id and dh.Availability = 1;"
     //non-hard coded 
     state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;"
