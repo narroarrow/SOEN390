@@ -5,17 +5,17 @@ const bodyParser = require('body-parser')
 const db = require('./database')
 const mysql = require("mysql2");
 const cors = require('cors');
-const { request } = require('http');
+const {request} = require('http');
 
 var cookieParser = require('cookie-parser')
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(express.static(__dirname + "../client/public/"));
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
 
 app.use(express.static('dist'));
@@ -33,7 +33,7 @@ app.use(function (req, res, next) {
 
 //below is a test server function
 app.get('/api', (req, res) => {
-   res.json({"users":["userOne", "userTwo", "userThree"]})
+    res.json({"users": ["userOne", "userTwo", "userThree"]})
 
 })
 
@@ -43,8 +43,7 @@ app.get('/users', (req, res) => {
 
     let state = `SELECT * FROM 390db.users;`;
 
-    db.query(state, function(err, result) {
-        console.log(result);
+    db.query(state, function (err, result) {
         res.send(result);
     })
 })
@@ -77,7 +76,6 @@ app.get("/Viewed", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(result);
             res.send(result);
         }
     });
@@ -108,10 +106,10 @@ app.get("/doctorViewingPreviousSymptoms", (req, res) => {
     });
 });
 
-      
+
 //below is a test server function
 app.get('/api', (req, res) => {
-    res.json({ "users": ["userOne", "userTwo", "userThree"] })
+    res.json({"users": ["userOne", "userTwo", "userThree"]})
 
 });
 
@@ -191,7 +189,7 @@ app.post("/editedPatientData", (req, res) => {
         (err, results) => {
             if (err) {
                 console.log(err);
-            } 
+            }
         }
     );
 
@@ -218,8 +216,9 @@ app.get('/patientProfileData', (req, res) => {
 
     //The query below returns all the information that the user will see on their
     //profile by using the patient's id to filter through the different patient-doctor
+
     //combinations.
-    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName FROM patients P, doctors D, users U, users U2 WHERE P.id=1 AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", (err, result) => {
+    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName FROM patients P, doctors D, users U, users U2 WHERE P.ID=? AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", [req.cookies.id], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -235,7 +234,7 @@ app.post("/markViewed", (req, res) => {
     let DoctorID = req.body.DoctorID;
     let datetime = req.body.datetime;
 
-    db.query("INSERT INTO 390db.viewed VALUES (?,?,?)", [PatientID, DoctorID, datetime], (err, result) =>{
+    db.query("INSERT INTO 390db.viewed VALUES (?,?,?)", [PatientID, DoctorID, datetime], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -249,13 +248,13 @@ table of the DB. */
 app.post("/requestForm", (req, res) => {
     let PatientID = req.body.PatientID;
 
-db.query("UPDATE 390db.patients SET SymptomRequested=true where ID=?", [PatientID], (err, result) =>{
-    if (err) {
-        console.log(err);
-    } else {
-        res.send("Patient symptom form requested!");
-    }
-});
+    db.query("UPDATE 390db.patients SET SymptomRequested=true where ID=?", [PatientID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Patient symptom form requested!");
+        }
+    });
 
 });
 
@@ -263,13 +262,13 @@ db.query("UPDATE 390db.patients SET SymptomRequested=true where ID=?", [PatientI
 app.post("/flagPatient", (req, res) => {
     let PatientID = req.body.PatientID;
 
-db.query("UPDATE 390db.patients SET Flagged=true where ID=?", [PatientID], (err, result) =>{
-    if (err) {
-        console.log(err);
-    } else {
-        res.send("Patient has been flagged!");
-    }
-});
+    db.query("UPDATE 390db.patients SET Flagged=true where ID=?", [PatientID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Patient has been flagged!");
+        }
+    });
 
 });
 
@@ -298,23 +297,21 @@ app.get('/editPatientProfileData', (req, res) => {
 
 // start of sign up and login
 app.get('/checkAuth', function (req, res) {
-    console.log(req.cookies);
     const token = req.cookies.token;
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
         if (err) {
             res.status(403).send();
         } else {
-            res.json(data);
+            res.send({email: data, role: req.cookies.role, id: req.cookies.id});
         }
     })
 })
 
-app.get('/user', function (req, res){
+app.get('/user', function (req, res) {
     const {token} = req.cookies;
     let state = `SELECT U.Email, U.Password FROM users U WHERE U.Token = "${token}";`;
 
     db.query(state, function (err, user) {
-        console.log(user);
         res.send(user);
     }.catch(() => res.sendStatus(406)))
 
@@ -324,54 +321,87 @@ app.get('/user', function (req, res){
 app.post("/Login", async (req, res) => {
     try {
         //fields were provided by the front end form
+        if (!req.body.email || !req.body.password) {
+            throw err;
+        }
         let email = req.body.email;
         let password = req.body.password;
 
         //query statement
-        let state = `SELECT U.Email, U.Password FROM users U WHERE U.Email = "${email}";`;
+        let state = `SELECT U.Email, U.Password, U.Role, U.ID, U.Validated FROM users U WHERE U.Email = "${email}";`;
 
         //console.log(state) // used to verify the query
 
         db.query(state, async (err, result) => {
-                if (err) {
-                    console.log('err: '+err)
-                } //indicator for errors when executing a query
-                else {
-                    // console.log(password +'\n'+result[0].Password)
-                    if (await bcrypt.compare(password, result[0].Password) && email === result[0].Email) { //await needs "async" in the 'parent'
-                        if (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, (error, token)=> {
-                            if (error) {
-                                console.log('Wrong Password');
-                                console.log(error)
-                                res.status(403).send();
-                            } else {                             
-                                let update = `UPDATE users SET Token = "${token}" WHERE email = "${email}"`
-                                db.query(update, async (err2, result2) => {
-                                    if (err2){
-                                        console.log("err2: "+err2)
+                try {
+                    if (err) {
+                        console.log('err: ' + err)
+                    } //indicator for errors when executing a query
+                    else {
+                        if (!result[0]) {
+                            throw err;
+                        } else if (await bcrypt.compare(password, result[0].Password) && email === result[0].Email) {
+
+                            //await needs "async" in the 'parent'
+                            if (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, (error, token) => {
+                                    if (error) {
+                                        console.log('Wrong Password');
+                                        console.log(error)
+                                        res.status(403).send();
+                                    } else if (result[0].Validated == 0) {
+                                        res.status(405).send();
                                     } else {
-                                        console.log(token);
-                                        res.cookie('token', token).send();
-                                        // res.sendStatus(200)
-                                    }})
-                            }
-                            }
-                        )
-                        )
-                        console.log("")
-                    } 
-                    // res.send(result);
+                                        let update = `UPDATE users SET Token = "${token}" WHERE email = "${email}"`
+                                        db.query(update, async (err2, result2) => {
+                                            if (err2) {
+                                                console.log("err2: " + err2)
+                                            } else {
+                                                res.cookie('token', token);
+                                                res.cookie('role', result[0].Role);
+                                                res.cookie('id', result[0].ID)
+                                                res.sendStatus(200);
+                                            }
+                                        })
+                                    }
+                                }
+                            )
+                            );
+                        } else {
+                            throw err
+                        }
+                    }
+                } catch (err) {
+                    res.status(500).send();
                 }
             }
         )
-    } catch {
+    } catch (err) {
         res.status(500).send()
     }
 })
 
+
+app.post('/Logout', ((req, res) => {
+    res.clearCookie('token');
+    res.clearCookie('role');
+    res.clearCookie('id');
+    res.status(200).send();
+}));
+
 //getting the email and passowrd from the form
 app.post("/Signup", async (req, res) => {
+    let existing = false;
+    let uid;
+    db.query("SELECT * FROM 390db.users U WHERE U.email = ?", [req.body.email], async (err, result) => {
 
+        if (result.length !== 0) {
+            existing = true;
+        }
+    });
+    db.query(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "390db" AND TABLE_NAME = "users"`, [], async (err, result) => {
+
+        uid = result.AUTO_INCREMENT;
+    });
     try {
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
@@ -379,49 +409,80 @@ app.post("/Signup", async (req, res) => {
         let password = req.body.password;
         let userRole = req.body.userRole
         let phoneNumber = req.body.phoneNumber
-        const uid = Math.floor(Math.random() * 100000)
+
+        let uid;
         const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
         const hashedPassword = await bcrypt.hash(password, salt)
 
         let Validated = 0
-        let state = `INSERT INTO 390db.users (ID, FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in
+        let state = `INSERT INTO 390db.users (FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?);`;//figure out how to pass variables i created in
+
 
         //console.log(state) //used to verify proper SQL format
 
         if (userRole === 'Patient') {//all other user types should to be approved
             Validated = 1;
         }
-        // console.log(userRole)
 
-        db.query(state, [uid, firstName, lastName, email, hashedPassword, Validated, phoneNumber, userRole], function (err, result) {//ID might be removed since it should be auto indent
-            if (err) {
-                console.log(err)
-            }
-        })
-
-        if (userRole == 'Patient') {
-
-            state = `SELECT p.DoctorID FROM 390db.patients p Group By p.DoctorID order by Count(p.ID) asc Limit 1;`;
-            db.query(state, function (err, result) {//finds the doctor with the least amount of patients
+        if (existing === false) {
+            db.query(state, [firstName, lastName, email, hashedPassword, Validated, phoneNumber, userRole], function (err, result) {//ID might be removed since it should be auto indent
                 if (err) {
                     console.log(err)
-                } else {
-                    let docID = result[0].DoctorID
-                    // console.log("DoctorID:\t\t"+docID)
-
-                    // console.log("userID:\t\t"+ uid)
-                    let patientState = `INSERT INTO 390db.patients (ID, DoctorID, Flagged) VALUES (?,?,?);`;
-                    db.query(patientState, [uid, docID, 0], function (err, result) {//inserts a new patient with an auto assigned doctor
-                        if (err) {
-                            console.log("\ninserting into patient \n" + err)
-                        }
-                    })
+                    res.sendStatus(500);
                 }
+                uid = result.insertId;
+
             })
 
+            if (userRole == 'Patient') {
+
+                state = `SELECT p.DoctorID FROM 390db.patients p Group By p.DoctorID order by Count(p.ID) asc Limit 1;`;
+                db.query(state, function (err, result) {//finds the doctor with the least amount of patients
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        let docID = result[0].DoctorID
+
+                        let patientState = `INSERT INTO 390db.patients (ID, DoctorID, Flagged) VALUES (?,?,?);`;
+                        db.query(patientState, [uid, docID, 0], function (err, result) {//inserts a new patient with an auto assigned doctor
+                            if (err) {
+                                console.log("\ninserting into patient \n" + err)
+                            }
+                        })
+                    }
+                })
+
+            } else if (userRole == 'Doctor') {
+                db.promise().query(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "390db" AND TABLE_NAME = "users"`, [], async (err, result) => {
+                    uid = result.AUTO_INCREMENT;
+                }).then(() => {
+                    let doctorState = `INSERT INTO 390db.doctors (ID, License) VALUES (?,?);`;
+                    db.query(doctorState, [uid, req.body.medicalLicense], function (err, result) {//inserts a new patient with an auto assigned doctor
+                        if (err) {
+                            console.log("\ninserting into doctors \n" + err)
+                        }
+                    })
+                });
+
+
+            } else if (userRole == 'Immigration Officer' || 'Health Official') {
+                db.promise().query(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "390db" AND TABLE_NAME = "users"`, [], async (err, result) => {
+                    uid = result.AUTO_INCREMENT;
+                }).then(() => {
+                    let doctorState = `INSERT INTO 390db.otherusers (ID, Type) VALUES (?,?);`;
+                    db.query(doctorState, [uid, userRole], function (err, result) {//inserts a new patient with an auto assigned doctor
+                        if (err) {
+                            console.log("\ninserting into officials \n" + err)
+                        }
+                    })
+                });
+
+            }
+            res.sendStatus(200);
         }
 // final send
-        res.sendStatus(200);
+        else
+            res.status(500).send()
     } catch {
         res.status(500).send()
 
@@ -429,64 +490,61 @@ app.post("/Signup", async (req, res) => {
 })
 // end of sign up and login
 
-app.get("/adminViewingValidatedDoctorData",(req,res) => {
+app.get("/adminViewingValidatedDoctorData", (req, res) => {
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
-        if(err){
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;", (err, result) => {
+        if (err) {
             console.log(err);
         } else {
             res.send(result);
-            console.log(result);
         }
     });
 });
-app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
+app.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;", (err, result) => {
+
+        if (err) {
             console.log(err);
-        if(err){
-            console.log(result);
         } else {
             res.send(result);
         }
-});
     });
-app.get("/adminViewingPatientData",(req,res) => {
-    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
+});
+app.get("/adminViewingPatientData", (req, res) => {
+    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;", (err, result) => {
+        if (err) {
             console.log(err);
-        if(err){
         } else {
         }
-            res.send(result);
+        res.send(result);
     });
 });
-app.get("/doctorViewingTheirPatientData", (req,res) =>{
+app.get("/doctorViewingTheirPatientData", (req, res) => {
     let did = 6;
     db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P, 390db.doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;", [did], (err, result) => {
-    //hardcoded to doctor ID 6
-        if(err){
+        //hardcoded to doctor ID 6
+        if (err) {
             console.log("Error!");
             console.log(err);
         } else {
-            console.log("No error!");
             res.send(result);
         }
-});
     });
-app.get("/doctorViewingAllDoctors", (req,res) =>{
+});
+app.get("/doctorViewingAllDoctors", (req, res) => {
     db.query("SELECT Udoctor.* FROM 390db.users Udoctor, 390db.doctors D WHERE D.ID =  Udoctor.ID;", (err, result) => {
-        if(err){
+        if (err) {
             console.log("Error!");
             console.log(err);
         } else {
             res.send(result);
-            console.log("No error!");
         }
     });
 });
-app.get("/doctorViewingDoctorPatients", (req,res) =>{
+app.get("/doctorViewingDoctorPatients", (req, res) => {
     db.query("SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.users Upatient, 390db.users Udoctor, 390db.patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;", (err, result) => {
-        if(err){
+        if (err) {
             console.log("Error!");
             console.log(err);
             console.log("No error!");
@@ -495,31 +553,30 @@ app.get("/doctorViewingDoctorPatients", (req,res) =>{
         }
     });
 });
-app.get("/doctorViewingAllPatientData", (req,res) =>{
+app.get("/doctorViewingAllPatientData", (req, res) => {
     db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P WHERE P.ID = Upatient.ID;", (err, result) => {
-        if(err){
-        } else {
+        if (err) {
             console.log("Error!");
             console.log(err);
-            console.log("No error!");
+        } else {
             res.send(result);
         }
     });
 });
-app.post("/validateDoctor", (req,res) =>{
-   let DoctorID = req.body.DoctorID;
+app.post("/validateDoctor", (req, res) => {
+    let DoctorID = req.body.DoctorID;
 
 
-   db.query("UPDATE 390db.users SET Validated = 1 WHERE ID = ?", [DoctorID], (err, result) =>{
-       if(err){
-           console.log(err);
-       } else{
-           res.send("Doctor validated!");
-       }
-   })
+    db.query("UPDATE 390db.users SET Validated = 1 WHERE ID = ?", [DoctorID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Doctor validated!");
+        }
+    })
 });
 
-app.get('/*', function(req,res){
+app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 })
 
