@@ -1,23 +1,10 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Container, Typography, Box, Grid, FormLabel, RadioGroup, Radio, FormControl, FormControlLabel, TextField, CssBaseline, Button, Avatar, MenuItem, stepConnectorClasses} from '@mui/material'
 import Axios from 'axios';
 
 
 
-let items=['Monday 8h30-9h','Monday 9h-9h40', 'Tuesday 16h-16h30','Wednesday 13h30-14h','Friday 15h-15h30'];
-let itemList=[];
-items.forEach((item,index)=>{
-  itemList.push( 
-<FormControlLabel value={item} name={item} id={index} control={<Radio />} label={item} />
-  // <Grid item xs={12}>
-    
-  //{/* <Button id={index} name={index} type="submit" variant="contained" fullWidth color="primary" onClick={testing= {item}}> */}
-    // {item}
-  //  {/* </Button> */}
-// </Grid>
-  )
-})
 
 
 
@@ -45,6 +32,40 @@ function PatientAppointment() {
     }
     
   };
+
+  const [appointments, setAppointments] = useState([]);
+  let stopeffect = 1;
+
+  useEffect(()=>{ //When page is loaded, get requests will get patient data as well as a list of patients whose profiles have been viewed
+    Axios.get("http://localhost:8080/seeOpenAppointments").then((response) => {
+      setAppointments(response.data);
+    });   
+}, [stopeffect]); 
+
+  // function getFreeTimes()  { //this function is called when the doctor patient profile page is loaded. It sets the useState patientList to the query result for patient info
+  //   Axios.get("http://localhost:8080/seeOpenAppointments").then((response) => {
+  //     setAppointments(response.data);
+  //     console.log(appointments);
+  //   });  
+  // };
+
+  // getFreeTimes();
+
+  let items=['Monday 8h30-9h','Monday 9h-9h40', 'Tuesday 16h-16h30','Wednesday 13h30-14h','Friday 15h-15h30'];
+  let itemList=[];
+  appointments.forEach((item,index)=>{
+    itemList.push( 
+  <FormControlLabel value={item} name={item} id={index} control={<Radio />} label={item} />
+    // <Grid item xs={12}>
+      
+    //{/* <Button id={index} name={index} type="submit" variant="contained" fullWidth color="primary" onClick={testing= {item}}> */}
+      // {item}
+    //  {/* </Button> */}
+  // </Grid>
+    )
+  })
+  
+
   return (
 
     
