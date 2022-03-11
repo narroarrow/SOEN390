@@ -34,7 +34,11 @@ function PatientAppointment() {
 
   //This will automatically get the appointment slots available for the doctor to which the patient is assigned to
   useEffect(()=>{ 
-    Axios.get("http://localhost:8080/seeOpenAppointments").then((response) => {
+    Axios.get("http://localhost:8080/seeOpenAppointments", {
+      params: {
+        ID: 12345
+      }
+    }).then((response) => {
       setAppointments(response.data);
     });   
 }, [stopeffect]); 
