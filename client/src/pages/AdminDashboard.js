@@ -1,6 +1,7 @@
 import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled, TextField } from '@mui/material';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
+import {Navigate} from "react-router-dom";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -95,6 +96,10 @@ useEffect(() => { //functions executed upon page render
 },[stopeffect]);
 
   return (
+      <>
+          {
+              localStorage.getItem("role")!='Admin' && <Navigate to={"/"} refresh={true}/>
+          }
     <div>
       <CardHeader
         avatar={
@@ -208,7 +213,7 @@ useEffect(() => { //functions executed upon page render
           )}
         </Grid> 
       </Container>
-    </div>
+    </div> </>
   );
 }
 export default AdminDashboard;

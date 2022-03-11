@@ -1,6 +1,7 @@
 import { Avatar, IconButton, Button, Box, Grid, CardHeader,} from '@mui/material';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
+import {Navigate} from "react-router-dom";
 
 
 function DoctorDashboard() {
@@ -47,6 +48,11 @@ function DoctorDashboard() {
   },[stopeffect]);
 
   return (
+
+      <>
+        {
+          localStorage.getItem("role")!='Doctor' && <Navigate to={"/"} refresh={true}/>
+        }
     <div>
       <Box sx={{ padding: 5 }}>
         <h1>Doctor Dashboard
@@ -82,7 +88,7 @@ function DoctorDashboard() {
           Review Medical Checklist
         </Button>
       </Box>
-    </div>
+    </div> </>
   );
 }
 export default DoctorDashboard;

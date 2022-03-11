@@ -4,6 +4,7 @@ import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import {Container, Typography, Box, Grid, Link, Checkbox, FormControlLabel, TextField, CssBaseline, Button, Avatar, MenuItem, stepConnectorClasses} from '@mui/material'
 import Axios from 'axios';
 import validator from 'validator';
+import {Navigate} from "react-router-dom";
 
 //all possible users
 const roles = [
@@ -35,35 +36,46 @@ const roles = [
 
 //handling the Signup form
 let userRoles = 'Patient';
-let submitSignupForm = (event1) =>{
-  event1.preventDefault();
-  const data = new FormData(event1.currentTarget);
-  if(validator.isEmail(data.get('email')) && validator.isStrongPassword(data.get('password')) && validator.isMobilePhone(data.get('PhoneNumber')) && data.get('password') == data.get('confirmPassword')){
-    Axios.post('http://localhost:8080/Signup',{
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-      userRole: userRoles,
-      phoneNumber: data.get('PhoneNumber')
-    }, {withCredentials: true}).then(()=>{
-      //will have user authentication here
-      alert("success");
-    });
-  }
-  else{
-    alert("Wrong information");
-  }
-  
-};
+
 
 function Signup() {
   //switching roles
   const [role, setRoles] = React.useState('Patient');
+  const [isDoctor, setIsDoctor] = useState(false);
 
+  let submitSignupForm = (event1) =>{
+    event1.preventDefault();
+    const data = new FormData(event1.currentTarget);
+    if(validator.isEmail(data.get('email')) && validator.isStrongPassword(data.get('password')) && validator.isMobilePhone(data.get('PhoneNumber')) && data.get('password') == data.get('confirmPassword')){
+      Axios.post('http://localhost:8080/Signup',{
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+        email: data.get('email'),
+        password: data.get('password'),
+        userRole: userRoles,
+        phoneNumber: data.get('PhoneNumber'),
+        medicalLicense: data.get('medicalLicense') ? data.get('medicalLicense') : ''
+      }, {withCredentials: true}).then(()=>{
+
+        window.location.href = "/Login"
+      }).catch(() =>    setEmailExisting('Your email already exists!'));
+    }
+
+
+  };
   const handleChange = (event2) => {
     setRoles(event2.target.value);
     userRoles = event2.target.value
+    console.log(event2.target.value)
+    if (event2.target.value == 'Doctor'){
+      setIsDoctor(true);
+    } else {
+      setIsDoctor(false);
+    }
+  };
+
+  const submit = () => {
+    setEmailExisting('')
   };
 
   //validating email
@@ -105,10 +117,13 @@ function Signup() {
    //display password requirements.
    const [isPassword1Shown, setIsPassword1Shown] = useState(false);
    const [isPassword2Shown, setIsPassword2Shown] = useState(false);
-
-
+   const [emailExisting, setEmailExisting] = useState('');
   return (
 
+      <>
+        {
+        localStorage.getItem("role") && <Navigate to={"/"} refresh={true}/>
+        }
 
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -119,7 +134,7 @@ function Signup() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={submitSignupForm} sx={{ mt: 3 }}>
+          <Box component="form"  onSubmit={submitSignupForm} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField autoComplete="given-name" name="firstName" required fullWidth id="firstName" label="First Name" autoFocus/>
@@ -155,7 +170,9 @@ function Signup() {
                 )}
                 {passwordError}
               </Grid>
-
+              {isDoctor &&  <Grid item xs={12}>
+                <TextField required fullWidth name="medicalLicense" label="Medical License" id="medicalLicense" autoComplete="medical-license"/>
+              </Grid> }
               <Grid item xs={12}>
                 <TextField center required name="UserRole" id="UserRole" select label="role" value={role} onChange={handleChange} helperText="Please select your role">
                   {roles.map((option) => (
@@ -168,11 +185,15 @@ function Signup() {
               
 
             </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+           <div onClick={submit}> <Button type="submit" fullWidth  variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
-            </Button>
+           </Button></div>
+            {emailExisting && emailExisting}
+
             <Grid container justifyContent="flex-end">
+
               <Grid item>
+
                 <Link href="#" variant="body2">
                   Already have an account? Sign in
                 </Link>
@@ -180,7 +201,7 @@ function Signup() {
             </Grid>
           </Box>
         </Box>
-      </Container>
+      </Container> </>
   );
 }
 
