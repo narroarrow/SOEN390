@@ -36,7 +36,7 @@ function PatientAppointment() {
   useEffect(()=>{ 
     Axios.get("http://localhost:8080/seeOpenAppointments", {
       params: {
-        ID: 12345
+        id: localStorage.getItem('id')
       }
     }).then((response) => {
       setAppointments(response.data);
