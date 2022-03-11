@@ -17,12 +17,15 @@ function PatientAppointment() {
     console.log(value);
     if(value != ''){
       Axios.post('http://localhost:8080/PatientAppointment',{
+        patientID: localStorage.getItem('id'),
+        appointmentTime: value
       }, {withCredentials: true}).then(()=>{
-        //will have user authentication here
+        //printing success message
         alert("success");
       });
     }
     else{
+      //this message will apper if no input was selected
       alert("Please select a valid appointment");
     }
     
