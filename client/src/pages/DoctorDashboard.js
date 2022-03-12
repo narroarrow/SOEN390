@@ -122,6 +122,14 @@ function DoctorDashboard() {
   });  
   };
 
+  function getAllNotifications(){//This will return all notifications
+    Axios.post("http://localhost:8080/retrieveAllNotifications").then((response)=>{
+      setNotificationsList(response.data);
+      console.log("Notification List:");
+      console.log(response.data);  
+  });  
+  }
+
   let stopeffect = 1;
 
   useEffect(() => { //when the doctor dashboard page is rendered, these functions are executed
@@ -137,6 +145,7 @@ function DoctorDashboard() {
   getFlaggedPatientsNotViewed();
   getFlaggedPatientsLeastViewed();
   getFlaggedPatientsNoSymptomFormResponse();
+  getAllNotifications();
   },[stopeffect]);
 
   const Item = styled(Paper)(({ theme }) => ({
