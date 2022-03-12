@@ -687,6 +687,7 @@ app.post("/makeAppointments", (req,res) => {
             } else {
                 console.log("appointment update: ")
                 console.log(result);
+                res.send(result);
             }
         }
         
