@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Grid, CssBaseline, Button, Card, styled, Paper } from '@mui/material';
 import Axios from 'axios';
+import {Navigate} from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -23,9 +24,7 @@ function PatientProfile() {
     //get the patients data by using a get and going to the 
     //server.js file to execute the code to query for the data.
     useEffect(() => {
-        Axios.get('http://localhost:8080/patientProfileData', {
-            //send the patient id here
-        }).then((response) => {
+        Axios.get('http://localhost:8080/patientProfileData', { withCredentials: true, params: {id: localStorage.getItem('id')}}).then((response) => {
             setPatientData(response.data);
             console.log(response);
         })
@@ -56,6 +55,10 @@ function PatientProfile() {
     // and displays it.
     // Each button on the page brings you to the associated pages
     return (
+<>
+        {
+            localStorage.getItem("role")!='Patient' && <Navigate to={"/"} refresh={true}/>
+        }
         <div>
             <Container component="main">
                 <CssBaseline />
@@ -144,11 +147,11 @@ function PatientProfile() {
                         Edit CURRENT STATUS
                     </Button>
 
-                    <Button sx={{ mr: 10 }} variant="outlined" href="#outlined-buttons" href="/SymptomForm">
+                    <Button sx={{ mr: 10 }} variant="outlined"  href="/SymptomForm">
                         SYMPTOM FORM
                     </Button>
 
-                    <Button sx={{}} variant="outlined" href="#outlined-buttons" >
+                    <Button sx={{}} variant="outlined" href="/PatientApointment" >
                         BOOK APPOINTMENT
                     </Button>
                     
@@ -164,6 +167,7 @@ function PatientProfile() {
             </Container>
 
         </div>
+    </>
     );
 }
 

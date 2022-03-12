@@ -6,7 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import Axios from 'axios';
 import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 
@@ -55,6 +55,10 @@ function DoctorPatientProfile() {
   }, [stopeffect]); 
 
   return (
+      <>
+        {
+          localStorage.getItem("role")!=('Doctor' && 'Admin') && <Navigate to={"/"} refresh={true}/>
+        }
     <div>
       <Box sx={{ padding: 5 }}>
         <h1>Patient Profile Page (Doctor)
@@ -117,7 +121,7 @@ function DoctorPatientProfile() {
           Review Medical Checklist
         </Button>
       </Box>
-    </div>
+    </div> </>
   );
 }
 
