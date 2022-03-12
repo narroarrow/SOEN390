@@ -14,6 +14,9 @@ function DoctorDashboard() {
   const [totalStatusCounts, setTotalStatusCounts]= useState([]); // patient status count
   const [doctorsWithMostPatientsList, setDoctorsWithMostPatientsList]= useState([]); //list of doctors with most patients
   const [doctorsWithLeastPatientsList, setDoctorsWithLeastPatientsList]= useState([]); //list of doctors with least patients
+  const [patientsFlaggedNotViewedList, setPatientsFlaggedNotViewedList]= useState([]); //list of patients whose forms have not been reviewed
+  const [patientsFlaggedLeastViewedList, setpatientsFlaggedLeastViewedList]= useState([]); //list of patients whose forms have been viewed from longest to most recent
+  const [patientsFlaggedNoSymptomFormResponse, setpatientsFlaggedNoSymptomFormResponseList]= useState([]); //list of patients that have not yet submitted their form
 
   var tempDoctorID = 6;
 
@@ -91,6 +94,30 @@ function DoctorDashboard() {
   });  
   };
 
+  function getFlaggedPatientsNotViewed(){ //This will return the list of patients that have submitted a form but have not been reviewed
+    Axios.post("http://localhost:8080/patientsFlaggedNotViewed").then((response)=>{
+      setPatientsFlaggedNotViewedList(response.data);
+      console.log("Flagged Patients Not Viewed");
+      console.log(response.data)  
+  });  
+  };
+
+  function getFlaggedPatientsLeastViewed(){ //This will return the list of patients whose form has been reviewed from longest to most recent
+    Axios.post("http://localhost:8080/patientsFlaggedLeastViewed").then((response)=>{
+      setpatientsFlaggedLeastViewedList(response.data);
+      console.log("Patients Flagged Least Viewed");
+      console.log(response.data)  
+  });  
+  };
+
+  function getFlaggedPatientsNoSymptomFormResponse(){ //This will return the list of patients that have been sent a form to fill out but have not done so
+    Axios.post("http://localhost:8080/patientsFlaggedNoSymptomFormResponse").then((response)=>{
+      setpatientsFlaggedNoSymptomFormResponseList(response.data);
+      console.log("Patients Flagged No Symptom Form Response:");
+      console.log(response.data)  
+  });  
+  };
+
   let stopeffect = 1;
 
   useEffect(() => { //when the doctor dashboard page is rendered, these functions are executed
@@ -103,6 +130,9 @@ function DoctorDashboard() {
   getStatusCountAllPatients();
   getDoctorsWithMostPatients();
   getDoctorsWithLeastPatients();
+  getFlaggedPatientsNotViewed();
+  getFlaggedPatientsLeastViewed();
+  getFlaggedPatientsNoSymptomFormResponse();
   },[stopeffect]);
 
   return (

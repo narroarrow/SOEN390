@@ -630,6 +630,99 @@ app.post("/statusCountAllPatients", (req,res) =>{
     })
  });
 
+  //Gets top 5 doctors with least to most patients
+  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
+    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+    "GROUP BY D.ID " + 
+    "ORDER BY countPatients ASC " + //Ordered by least to most
+    "LIMIT 5) " +
+    "UNION " +
+    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    "FROM 390db.Patients P1) AND D.ID = U.ID " +
+    "ORDER BY countPatients ASC " +
+    "LIMIT 5;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+  //Gets top 5 doctors with least to most patients
+  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
+    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+    "GROUP BY D.ID " + 
+    "ORDER BY countPatients ASC " + //Ordered by least to most
+    "LIMIT 5) " +
+    "UNION " +
+    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    "FROM 390db.Patients P1) AND D.ID = U.ID " +
+    "ORDER BY countPatients ASC " +
+    "LIMIT 5;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets the list of patients that are flagged but whose file has not been viewed
+ app.post("/patientsFlaggedNotViewed", (req,res) =>{ 
+    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email " +
+    "FROM 390db.Users Upatient, 390db.Patients P, 390db.InfoRequest IR, 390db.HealthInformation HI, 390db.Viewed V " +
+    "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.Timestamp AND P.ID IN " + 
+    "(SELECT P1.ID " +
+                                                             "FROM 390db.Patients P1, 390db. HealthInformation H1, 390db.Viewed V1 " +
+                                                             "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.Timestamp > V1.Timestamp);", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets the list of patients that are flagged and have been viewed from latest to most recent
+ app.post("/patientsFlaggedLeastViewed", (req,res) =>{ 
+    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, V.Timestamp as verifiedTime, P.ID " +
+    "FROM 390db.Patients P, 390db.Users Upatient, 390db.HealthInformation H , 390db.Viewed V " +
+    "WHERE Upatient.ID = P.ID AND H.PatientID = P.ID AND P.Flagged = 1 AND P.ID = V.PatientID AND H.Timestamp < (SELECT MAX(V1.Timestamp) " +
+                                                                                                            "FROM 390db.Viewed V1 " +
+                                                                                                            "WHERE P.ID = V1.PatientID) " +
+    "ORDER BY verifiedTime;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets the list of patients that have been flagged and have not submitted their symptom form upion receiving a request from their doctor
+ app.post("/patientsFlaggedNoSymptomFormResponse", (req,res) =>{ 
+    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, IR.Timestamp as requestTime, P.ID " +
+    "FROM 390db.Patients P, 390db.Users Upatient, 390db.InfoRequest IR, 390db.HealthInformation IH " +
+    "WHERE P.Flagged = 1 AND P.ID = Upatient.ID AND IR.PatientID = P.ID  AND IR.PatientID = IH.PatientID AND IR.Timestamp > IH.Timestamp " +
+    "ORDER BY requestTime ASC;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ 
 app.get('/*', function(req,res){
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 })
