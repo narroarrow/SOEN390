@@ -1,6 +1,8 @@
 import * as React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Container, Box, Button, AppBar, Toolbar, IconButton, Typography, Menu, Avatar, Tooltip, MenuItem, count, Badge} from '@mui/material';
+import Axios from 'axios';
+import {useState, useEffect} from 'react';
 
 const pages = ['Login', 'Signup', 'AdminDashboard', 'DoctorPatientProfile', 'DoctorDashboard', 'PatientProfile'];
 var settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -8,7 +10,7 @@ var settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  var [count, setCount] = React.useState(6);
+  var [count, setCount] = React.useState();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -24,12 +26,28 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  console.log("here is count: " + count);
   if (count!=0 && count>0){
     settings = ['Profile', 'Account', 'Dashboard', 'Logout', 'Notifications'];
   }
   else{
     count=0;
   }
+
+  function getNotificationsCount(){
+    Axios.post("http://localhost:8080/getAllNotificationCount").then((response)=>{     
+      setCount(response.data[0].notificationCount);
+      console.log("Notification Count:");
+      console.log(response.data);  
+    });  
+  }
+  
+
+  let stopeffect = 1;
+
+  useEffect(() => { //when the doctor dashboard page is rendered, these functions are executed
+    getNotificationsCount();
+    },[stopeffect]);
 
   return (
     <AppBar position="static">

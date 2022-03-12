@@ -172,8 +172,8 @@ function DoctorDashboard() {
                       {key+1}
                     </Avatar>
                   }    
-                  title = {"Patient ID: " + val.PatientID}
-                  subheader = {"DateTime: " + val.DateTime.substring(0,10) + " " + val.DateTime.substring(11,19)}
+                  title = {"Patient Name: " + val.Fname + " " + val.Lname}
+                  subheader = {"Appointment Time: " + val.appointmentTime.substring(0,10) + " " + val.appointmentTime.substring(11,19)}
                 />
             )
           }
