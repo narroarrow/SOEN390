@@ -31,7 +31,9 @@ function PatientProfile() {
     }, [stopeffect]);
 
     let requestChat = () => { //When clicking the REQUEST CHAT button, this will update the ChatRequested attribute in the patient tale to true
-        Axios.post("http://localhost:8080/RequestChat").then(()=>{
+        Axios.post("http://localhost:8080/RequestChat", {
+            patientid: localStorage.getItem('id')
+        }).then(()=>{
             console.log("success");
             window.location.href="/PatientProfile";
             
@@ -43,6 +45,8 @@ function PatientProfile() {
     if (isChatRequestedArray[0] === 1){ 
         isChatRequested = true;
     }
+
+    
 
     let chatGranted = false; //variable to verify if patient has permission to chat with doctor, to be used for disabling or enabling OPEN CHAT button
     let chatGrantedArray = patientData.map((val, key) => {return val.ChatPermission});
@@ -157,8 +161,8 @@ function PatientProfile() {
                     
                     <br></br><br></br>
 
-                    {isChatRequested ?  (<Button sx={{mr: 22}} variant="outlined">CHAT REQUESTED</Button>): 
-                                        (<Button sx={{mr: 22}} variant="outlined" onClick={requestChat} disabled>REQUEST CHAT</Button>) }
+                    {isChatRequested ?  (<Button sx={{mr: 22}} variant="outlined" onClick={requestChat} >REQUEST CHAT</Button>):
+                                        (<Button sx={{mr: 22}} variant="outlined" disabled>CHAT REQUESTED</Button>)}
 
                     {chatGranted ?      (<Button sx={{}} variant="outlined">OPEN CHAT</Button>) : 
                                         (<Button sx={{}} variant="outlined" disabled> OPEN CHAT</Button>)}

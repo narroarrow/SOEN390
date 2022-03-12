@@ -12,7 +12,7 @@ let submitSymptomForm = (event) => {
   const currentDate = new Date();
   const timestamp = currentDate.getTime();
   Axios.post('http://localhost:8080/createSymptomForm', {
-    //patientid: id
+    patientid: localStorage.getItem('id'),
     timestamp: Date.now(),
     weight: data.get('weight'),
     temperature: data.get('weight'),
@@ -67,7 +67,6 @@ function SymptomForm() {
           <RadioGroup
             row
             aria-labelledby="breathing"
-            name="position"
             defaultValue="top"
             sx={{ mb: 5 }}
             id="breathing"

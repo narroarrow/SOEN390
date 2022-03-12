@@ -118,7 +118,7 @@ app.get('/api', (req, res) => {
 //so that we can associate it with the right patient.
 app.post("/createSymptomForm", (req, res) => {
 
-    let patientid = 1;
+    let patientid = req.body.patientid;
     let timestamp = req.body.timestamp;
     let weight = req.body.weight;
     let temperature = req.body.temperature;
@@ -152,7 +152,7 @@ app.post("/createSymptomForm", (req, res) => {
 //id is passed to this method. 
 app.post("/createPatientCovidStatus", (req, res) => {
     let patientStatus = req.body.status;
-    let patientid = 1;
+    let patientid = req.body.patientid;
 
     //This query updates the patients table. It sets the status
     //to the value that was submitted for the user that filled in the 
@@ -174,7 +174,7 @@ app.post("/createPatientCovidStatus", (req, res) => {
 //information that was sent in the form along with the
 //patient's id.
 app.post("/editedPatientData", (req, res) => {
-    let patientid = 1;
+    let patientid = req.body.patientid;
     let fname = req.body.fname;
     let lname = req.body.lname;
     let email = req.body.email;
@@ -212,14 +212,15 @@ app.post("/editedPatientData", (req, res) => {
 //patient profile page. The user's id will be sent to this function
 //by the get.
 app.get('/patientProfileData', (req, res) => {
-    //will need to use the patient ID in the query below
+
+
 
     //The query below returns all the information that the user will see on their
     //profile by using the patient's id to filter through the different patient-doctor
 
     //combinations.
 
-    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName, P.ChatRequested, P.ChatPermission FROM patients P, doctors D, users U, users U2 WHERE P.id=1 AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", (err, result) => {
+    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName FROM patients P, doctors D, users U, users U2 WHERE P.ID=? AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", [req.cookies.id], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -295,11 +296,10 @@ app.post("/flagPatient", (req, res) => {
 //exactly that they need to change. The patient's id is used 
 //to retrieve the data.
 app.get('/editPatientProfileData', (req, res) => {
-    //will need to use the patients id
 
     //This query will return the patients information that we deem ok to change.
     //It filters the database and looks for the patient with the id that we passed.
-    db.query("SELECT U.FName, U.LName, U.Birthday, P.HealthInsurance, U.Phone, U.Email FROM patients P, users U, doctors D WHERE P.id=1 AND D.id=P.doctorID AND P.id=U.id", (err, result) => {
+    db.query("SELECT U.FName, U.LName, U.Birthday, P.HealthInsurance, U.Phone, U.Email FROM patients P, users U, doctors D WHERE P.id=? AND D.id=P.doctorID AND P.id=U.id", [req.cookies.id], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -748,7 +748,7 @@ app.get('/*', function (req, res) {
 });
 
 app.post("/RequestChat", (req, res) => {
-    let patientid = 1;
+    let patientid = req.body.patientid;
 
     db.query("UPDATE 390db.patients SET ChatRequested=1 WHERE ID=?",
         [patientid],

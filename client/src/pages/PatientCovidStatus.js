@@ -10,7 +10,7 @@ let submitPatientCovidStatus = (event) => {
   event.preventDefault();
   const data = new FormData(event.currentTarget);
   Axios.post('http://localhost:8080/createPatientCovidStatus', {
-    //patientid: id
+    patientid: localStorage.getItem('id'),
     status: data.get('covidStatus')
   }).then(() => {
     console.log('success');

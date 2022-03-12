@@ -12,7 +12,7 @@ let submitEditInfoForm = (event) => {
   const currentDate = new Date();
   const timestamp = currentDate.getTime();
   Axios.post('http://localhost:8080/editedPatientData', {
-    //patientid: id
+    patientid: localStorage.getItem('id'),
     fname: data.get('firstName'),
     lname: data.get('lastName'),
     email: data.get('patientEmail'),
@@ -39,7 +39,8 @@ function EditInfoForm() {
   //server.js file to execute the code to query for the current data.
   useEffect(() => {
     Axios.get('http://localhost:8080/editPatientProfileData', {
-      //send the patient id here
+      withCredentials: true, 
+      params: {id: localStorage.getItem('id')}
     }).then((response) => {
       setEditPatientData(response.data);
       console.log(response);
