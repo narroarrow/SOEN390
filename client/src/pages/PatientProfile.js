@@ -53,7 +53,7 @@ function PatientProfile() {
     if (chatGrantedArray[0] === 1){ 
         chatGranted = true;
     }
-
+   
     // Returning the HTML / CSS for the Patient Profile
     // Each GRID ITEM retrieves patient data from the database
     // and displays it.
@@ -161,8 +161,8 @@ function PatientProfile() {
                     
                     <br></br><br></br>
 
-                    {isChatRequested ?  (<Button sx={{mr: 22}} variant="outlined" onClick={requestChat} >REQUEST CHAT</Button>):
-                                        (<Button sx={{mr: 22}} variant="outlined" disabled>CHAT REQUESTED</Button>)}
+                    {isChatRequested ?  (<Button sx={{mr: 22}} variant="outlined" disabled>CHAT REQUESTED</Button>):
+                                        (<Button sx={{mr: 22}} variant="outlined" onClick={requestChat} >REQUEST CHAT</Button>)}
 
                     {chatGranted ?      (<Button sx={{}} variant="outlined">OPEN CHAT</Button>) : 
                                         (<Button sx={{}} variant="outlined" disabled> OPEN CHAT</Button>)}

@@ -162,7 +162,7 @@ function DoctorViewingPatient() {
                     </Button>
                 
                     {isFlagged ? (<Button sx={{mr: 22}} variant='outlined' onClick={unflagPatient} href='/DoctorViewingPatient'>UNFLAG PATIENT</Button>) : 
-                    (<Button variant='outlined' onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
+                    (<Button sx={{mr: 22}} variant='outlined' onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
 
                     {/* I'm thinking that we make a new page called PreviousSymptoms where all
                     of the symptom forms will be sent.*/}
