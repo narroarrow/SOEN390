@@ -735,6 +735,17 @@ app.post("/statusCountAllPatients", (req,res) =>{
     })
  });
 
+ //Gets the total number of appointments
+ app.post("/getAllNotificationCount", (req,res) =>{ 
+    db.query("SELECT count(*) as notificationCount FROM 390db.Appointments", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
  
 app.get('/*', function(req,res){
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
