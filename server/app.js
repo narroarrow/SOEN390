@@ -578,8 +578,7 @@ app.post("/validateDoctor", (req, res) => {
 
 //Finds the next day in the calenda
 function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date()) {
-    const dayOfWeek = ["sun","mon","tue","wed","thu","fri","sat"]
-                      .indexOf(dayName.slice(0,3).toLowerCase());
+    const dayOfWeek = ["sun","mon","tue","wed","thu","fri","sat"].indexOf(dayName.slice(0,3).toLowerCase());
     if (dayOfWeek < 0) return;
     refDate.setHours(0,0,0,0);
     refDate.setDate(refDate.getDate() + +!!excludeToday + 
@@ -587,7 +586,6 @@ function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date())
     return refDate;
 }
 
-console.log("Next is: " + getNextDayOfTheWeek("Wednesday", false));
 
 //creates the array that is returned to Client
 function arrayMaker(result){
@@ -611,7 +609,7 @@ function arrayMaker(result){
 app.get("/seeOpenAppointments", (req,res) => {
     //getting ID from client
     let patientID = req.query["id"];
-    console.log(patientID);
+    console.log("Patient ID: "+patientID);
     // state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = 1) and dh.DoctorID= u.id and dh.Availability = 1;"
     //non-hard coded 
     state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;"
@@ -619,16 +617,50 @@ app.get("/seeOpenAppointments", (req,res) => {
     //SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;
     db.query(state,[patientID], (err, result) => {
         if (err) {
-            console.log(err);
+            console.log("Error: "+err);
         } else {
-            // console.log(Object.keys(result).length);
+            console.log("Results open: "+result);
             res.send(arrayMaker(result));
             // res.send(result);
+            
         }
     });
 }
 )
 
+
+app.post("/makeAppointments", (req,res) => {
+    var appointment = req.body.appointmentTime;
+    var appointmentArray = appointment.split(/(\s+)/);
+    let dayName = appointmentArray[0]
+    let start = appointmentArray[8]
+    let end = appointmentArray[12]
+    let patID = req.body.patientID//JWT; 
+    console.log(dayName+"\t"+start+"\t"+ end+"\t"+patID)
+    //two manipulations one to update the doctorhours and another to insert the appointment.
+    state = "UPDATE 390db.doctorhours dh set dh.availability = 0 WHERE dh.StartTime = ? and dh.EndTime = ? and dh.availability = 1 and dh.dayName = ? and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
+    db.query(state,[start,end, dayName,patID], (err, result) => {
+        if (err) {
+            console.log("Error: "+err);
+        } else {
+            console.log(result);
+        }
+    }    
+    );
+    state2 = "INSERT INTO 390db.appointments (PatientID,DoctorID,startTime,endTime,Priority) VALUES(?,(SELECT DoctorID from 390db.patients p where id = ?),?,?,5);"
+    
+    db.query(state2,[patID,patID,start,end], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(state2);
+            res.send(result);
+        }
+    }
+    
+    );
+}
+)
 
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));

@@ -50,24 +50,41 @@ app.get("/contact", (req,res) => {
 }
 )
 
+//Finds the next day in the calenda
+function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date()) {
+    const dayOfWeek = ["sun","mon","tue","wed","thu","fri","sat"]
+                      .indexOf(dayName.slice(0,3).toLowerCase());
+    if (dayOfWeek < 0) return;
+    refDate.setHours(0,0,0,0);
+    refDate.setDate(refDate.getDate() + +!!excludeToday + 
+                    (dayOfWeek + 7 - refDate.getDay() - +!!excludeToday) % 7);
+    return refDate;
+}
 
+
+//creates the array that is returned to Client
 function arrayMaker(result){
     // console.log(result)
     const returnedAvails = [];
     for(let i = 0; i < Object.keys(result).length; i++){
-        // console.log(`${result[i]["dayName"]} ${result[i]["StartTime"]} - ${result[i]["EndTime"]}`)
-        returnedAvails.push(`${result[i]["dayName"]} ${result[i]["StartTime"]} - ${result[i]["EndTime"]}`)
+        if(result[i]["dayName"] !=null){
+            //putting the appointment in the right format
+            // console.log()
+            // returnedAvails.push(`${result[i]["dayName"]} ${result[i]["StartTime"]} - ${result[i]["EndTime"]}`)
+            returnedAvails.push(""+getNextDayOfTheWeek(result[i]["dayName"], true).toString().slice(0, 15)+" "+result[i]["StartTime"]+" - "+ result[i]["EndTime"])
+        }
+
     }
     console.log(returnedAvails);
     return returnedAvails;
-
-    
 }
+
+
 //see open appointments
 app.get("/seeOpenAppointments", (req,res) => {
-    let patientID = 1; //maybe pull from JWT
-    let patientId = req.query["id"];
-    console.log(patientId);
+    //getting ID from client
+    let patientID = req.query["id"];
+    console.log(patientID);
     // state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = 1) and dh.DoctorID= u.id and dh.Availability = 1;"
     //non-hard coded 
     state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;"
@@ -75,32 +92,46 @@ app.get("/seeOpenAppointments", (req,res) => {
     //SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;
     db.query(state,[patientID], (err, result) => {
         if (err) {
-            console.log(err);
+            console.log("Error: "+err);
         } else {
-            // console.log(Object.keys(result).length);
+            console.log(result);
             res.send(arrayMaker(result));
             // res.send(result);
         }
     });
 }
 )
-//maybe we can merge the code below into the seeAppointments 
-app.get("/makeAppointments", (req,res) => {
-    let docID = req.body.tempVal; //can we fill in this valus on a form with no changes allowed so when it submits the doctorID is carried in automatically from when we brought the lists of open appointments in
-    let start = req.body.start
-    let end = req.body.end
-    let patID = //JWT; 
-    //two manipulations one to update the doctorhours and another to insert the appointment.
-    state = "UPDATE 390db.doctorhours dh WHERE dh.StartTime = ?,dh.EndTime = ?,dh.availability = 1, dh.doctorID = ?; INSERT INTO 390db.appointments (PatientID,DoctorID,DateTime,Priority) VALUES(?,?,?,5);"
 
-    db.query(state,[start,end,docID,patID,docID,start], (err, result) => {
+
+app.post("/makeAppointments", (req,res) => {
+    var appointment = req.body.appointmentTime;
+    var appointmentArray = appointment.split(/(\s+)/);
+    let dayName = appointmentArray[0]
+    let start = appointmentArray[8]
+    let end = appointmentArray[12]
+    let patID = req.body.patientID//JWT; 
+    // console.log(dayName+"\t"+start+"\t"+ end+"\t"+patID)
+    //two manipulations one to update the doctorhours and another to insert the appointment.
+    state = "UPDATE 390db.doctorhours dh set dh.availability = 0 WHERE dh.StartTime = ? and dh.EndTime = ? and dh.availability = 1 and dh.dayName = ? and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
+    db.query(state,[start,end, dayName,patID], (err, result) => {
+        if (err) {
+            console.log("Error: "+err);
+        } else {
+            console.log(result);
+        }
+    }    
+    );
+    state2 = "INSERT INTO 390db.appointments (PatientID,DoctorID,startTime,endTime,Priority) VALUES(?,(SELECT DoctorID from 390db.patients p where id = ?),?,?,5);"
+    
+    db.query(state2,[patID,patID,start,end], (err, result) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(result);
+            console.log(state2);
             res.send(result);
         }
-    });
+    }
+    
+    );
 }
 )
-
