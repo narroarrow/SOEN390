@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
-const express = require('express')
-const app = require('./app.js')
+const express = require('express');
+const app = require('./app.js');
+const doctorNotification = require('./doctor_notification.js');
 
 const path = require('path');
 const bodyParser = require('body-parser')

@@ -56,7 +56,7 @@ app.get('/users', (req, res) => {
 /* This get method will be executed when rendering the DoctorPatientProfile page. The database will be querries to get the patients names, ID, status and whether they have been
 flagged or not. The returned list is a list of all patients in the database. */
 app.get("/DoctorPatientProfile", (req, res) => {
-    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
+    db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID, P.ChatRequested, P.NewPatient FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -85,7 +85,7 @@ app.get("/Viewed", (req, res) => {
 and display it in the UI. */
 app.get("/doctorViewingPatientData", (req, res) => {
     let pid = req.query.id;
-    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
+    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, P.NewPatient, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, Udoctor.ID AS DoctorID, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested, P.ChatPermission, P.Flagged FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -218,10 +218,12 @@ app.get('/patientProfileData', (req, res) => {
     //profile by using the patient's id to filter through the different patient-doctor
 
     //combinations.
-    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName FROM patients P, doctors D, users U, users U2 WHERE P.ID=? AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", [req.cookies.id], (err, result) => {
+
+    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName, P.ChatRequested, P.ChatPermission FROM patients P, doctors D, users U, users U2 WHERE P.id=1 AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", (err, result) => {
         if (err) {
             console.log(err);
         } else {
+            console.log(result);
             res.send(result);
         }
     });
@@ -231,16 +233,30 @@ app.get('/patientProfileData', (req, res) => {
 /* This post method is called when a docotr clicks the MARK AS REVIEWED button on a patient profile. It will update the 'viewed table' in the database. */
 app.post("/markViewed", (req, res) => {
     let PatientID = req.body.PatientID;
+    let PatientDocID = req.body.PatientDocID;
     let DoctorID = req.body.DoctorID;
     let datetime = req.body.datetime;
 
     db.query("INSERT INTO 390db.viewed VALUES (?,?,?)", [PatientID, DoctorID, datetime], (err, result) => {
         if (err) {
             console.log(err);
-        } else {
-            res.send("Patient profile has been reviewed!");
         }
     });
+
+
+
+    if(PatientDocID === DoctorID){
+
+        db.query("UPDATE 390db.patients SET NewPatient=0 WHERE ID=?", [PatientID], (err, result) =>{
+            if (err) {
+                console.log(err);
+            }else{
+                console.log("Updated new patient");
+            }
+        });
+    }
+
+    res.send("Success!");
 });
 
 /* This post method is called when a doctor clicks the REQUEST SYMPTOM FORM button on a patient profile. It will update the SymptomRequested attribute in the patient 
@@ -262,7 +278,9 @@ app.post("/requestForm", (req, res) => {
 app.post("/flagPatient", (req, res) => {
     let PatientID = req.body.PatientID;
 
-    db.query("UPDATE 390db.patients SET Flagged=true where ID=?", [PatientID], (err, result) => {
+
+    db.query("UPDATE 390db.patients SET Flagged=true where ID=?", [PatientID], (err, result) =>{
+
         if (err) {
             console.log(err);
         } else {
@@ -727,7 +745,60 @@ app.post("/makeAppointments", (req,res) => {
 
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
-})
+});
+
+app.post("/RequestChat", (req, res) => {
+    let patientid = 1;
+
+    db.query("UPDATE 390db.patients SET ChatRequested=1 WHERE ID=?",
+        [patientid],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Chat Requested!");
+            }
+        }
+    );
+});
+
+app.post("/acceptChat", (req, res) => {
+    console.log("hello");
+    let pid = req.body.PatientID;
+    console.log(pid);
+    console.log("test");
+    db.query("UPDATE 390db.patients SET ChatRequested=false WHERE ID=?",
+        [pid],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+            } 
+        }
+    );
+    db.query("UPDATE 390db.patients SET ChatPermission=true WHERE ID=?",
+        [pid],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Chat Accepted!");
+            }
+        }
+    );
+});
+
+app.post("/unflagPatient", (req, res) => {
+    let PatientID = req.body.PatientID;
+
+    db.query("UPDATE 390db.patients SET Flagged=false where ID=?", [PatientID], (err, result) =>{
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Patient has been unflagged!");
+        }
+    });
+
+});
 
 
 module.exports = app;

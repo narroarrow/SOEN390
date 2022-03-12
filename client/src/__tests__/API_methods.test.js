@@ -217,3 +217,30 @@ describe('testing /seeOpenAppointments', () => {
     expect(res.body).anything();
   })
 });
+
+//Here we update the Flagged attribute in the patient table of the DB to 0
+//If the post is successful, a 200 status code will be returned to make the test pass.
+describe('testing /unflagPatient', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/unflagPatient').send({PatientID: 1});
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Here we update the ChatPermission attribute in the patient table of the DB to 1 and the ChatRequested attribute to 0
+//If the post is succesfull, a 200 status code will be returned to make the test pass.
+describe('testing /acceptChat', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/acceptChat').send({PatientID: 1});
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Here we update the ChatRequested attribute in the patient table of the DB to 1
+//If the post is succesfull, a 200 status code will be returned to make the test pass.
+describe('testing /RequestChat', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/RequestChat');
+    expect(res.statusCode).toEqual(200);
+  })
+});

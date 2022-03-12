@@ -14,6 +14,8 @@ import axios from 'axios';
 import DoctorViewingPatient from './pages/DoctorViewingPatient.js';
 import HealthOfficialPatientProfile from './pages/HealthOfficialPatientProfile.js';
 import HealthOfficialViewingPatient from './pages/HealthOfficialViewingPatient.js';
+import ImmigrationOfficerPatientProfile from './pages/ImmigrationOfficerPatientProfile.js';
+import ImmigrationOfficerViewingPatient from './pages/ImmigrationOfficerViewingPatient.js';
 import EditInfoForm from './pages/EditInfoForm';
 import PatientCovidStatus from './pages/PatientCovidStatus';
 import PatientAppointment from './pages/PatientAppointment';
@@ -64,10 +66,13 @@ function App() {
                     <Route path='/DoctorViewingPatient' element={<DoctorViewingPatient/>}/>
                     <Route path='/HealthOfficialPatientProfile' element={<HealthOfficialPatientProfile/>}></Route>
                     <Route path='/HealthOfficialViewingPatient' element={<HealthOfficialViewingPatient/>}></Route>
+                    <Route path='/ImmigrationOfficerPatientProfile' element={<ImmigrationOfficerPatientProfile/>}></Route>
+                    <Route path='/ImmigrationOfficerViewingPatient' element={<ImmigrationOfficerViewingPatient/>}></Route>
                     <Route path='/EditInfoForm' element={<EditInfoForm/>}/>
                     <Route path='/PatientCovidStatus' element={<PatientCovidStatus/>}/>
                     <Route path='/SymptomForm' element={<SymptomForm/>}/>
                     <Route path='/PatientAppointment' element={<PatientAppointment/>}/>
+
 
 
                 </Routes>
