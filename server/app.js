@@ -722,9 +722,22 @@ app.post("/statusCountAllPatients", (req,res) =>{
     })
  });
 
-//Gets all appointment notifications
+//Gets patient name, and appointment time
  app.post("/retrieveAllNotifications", (req,res) =>{ 
-    db.query("SELECT * FROM 390db.Appointments;", (err, result) =>{
+    db.query("SELECT Upatient.Fname, Upatient.Lname, A.Datetime as appointmentTime " +
+    "FROM 390db.Appointments A, 390db.Users Upatient " +
+    "Where A.PatientID = Upatient.ID;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets the total number of appointments
+ app.post("/getAllNotificationCount", (req,res) =>{ 
+    db.query("SELECT count(*) as notificationCount FROM 390db.Appointments", (err, result) =>{
         if(err){
             console.log(err);
         } else{

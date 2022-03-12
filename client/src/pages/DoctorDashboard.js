@@ -122,7 +122,7 @@ function DoctorDashboard() {
   });  
   };
 
-  function getAllNotifications(){//This will return all notifications
+  function getAllNotifications(){//This will return patient name, and appointment time
     Axios.post("http://localhost:8080/retrieveAllNotifications").then((response)=>{
       setNotificationsList(response.data);
       console.log("Notification List:");
