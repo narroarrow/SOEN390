@@ -295,7 +295,7 @@ app.get('/editPatientProfileData', (req, res) => {
 // });
 
 
-// start of sign up and login
+// start of sign up and login. creating correct cookies if logged in
 app.get('/checkAuth', function (req, res) {
     const token = req.cookies.token;
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
@@ -307,15 +307,7 @@ app.get('/checkAuth', function (req, res) {
     })
 })
 
-app.get('/user', function (req, res) {
-    const {token} = req.cookies;
-    let state = `SELECT U.Email, U.Password FROM users U WHERE U.Token = "${token}";`;
 
-    db.query(state, function (err, user) {
-        res.send(user);
-    }.catch(() => res.sendStatus(406)))
-
-})
 
 //getting the email and passowrd from the form
 app.post("/Login", async (req, res) => {
@@ -380,7 +372,7 @@ app.post("/Login", async (req, res) => {
     }
 })
 
-
+// clearing cookies on logout
 app.post('/Logout', ((req, res) => {
     res.clearCookie('token');
     res.clearCookie('role');
@@ -398,6 +390,7 @@ app.post("/Signup", async (req, res) => {
             existing = true;
         }
     });
+    // select last auto increment
     db.query(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "390db" AND TABLE_NAME = "users"`, [], async (err, result) => {
 
         uid = result.AUTO_INCREMENT;
@@ -433,7 +426,7 @@ app.post("/Signup", async (req, res) => {
                 uid = result.insertId;
 
             })
-
+            // inserting in correct table after users table insert
             if (userRole == 'Patient') {
 
                 state = `SELECT p.DoctorID FROM 390db.patients p Group By p.DoctorID order by Count(p.ID) asc Limit 1;`;

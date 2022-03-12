@@ -42,7 +42,7 @@ function Signup() {
   //switching roles
   const [role, setRoles] = React.useState('Patient');
   const [isDoctor, setIsDoctor] = useState(false);
-
+// signing up -> if correct send to login page -> if not  display error
   let submitSignupForm = (event1) =>{
     event1.preventDefault();
     const data = new FormData(event1.currentTarget);
@@ -63,6 +63,7 @@ function Signup() {
 
 
   };
+  // if is doctor we will add health license
   const handleChange = (event2) => {
     setRoles(event2.target.value);
     userRoles = event2.target.value
@@ -73,7 +74,7 @@ function Signup() {
       setIsDoctor(false);
     }
   };
-
+// remove error message after new submit
   const submit = () => {
     setEmailExisting('')
   };
@@ -114,7 +115,7 @@ function Signup() {
      }
    };
 
-   //display password requirements.
+   //display password requirements and email error
    const [isPassword1Shown, setIsPassword1Shown] = useState(false);
    const [isPassword2Shown, setIsPassword2Shown] = useState(false);
    const [emailExisting, setEmailExisting] = useState('');

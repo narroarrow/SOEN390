@@ -41,7 +41,7 @@ class Login extends Component {
     }
 
 
-
+    // on login remove errors. if errors set errors. if not login and reload page. will be redirected in render
     onLogin() {
         this.setState({unvalidated: ''})
         this.setState({wrongCredentials: ''})
