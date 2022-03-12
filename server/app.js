@@ -429,6 +429,7 @@ app.post("/Signup", async (req, res) => {
 })
 // end of sign up and login
 
+// Gets validated doctor first name, last name, phone number to the admin
 app.get("/adminViewingValidatedDoctorData",(req,res) => {
 
     db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
@@ -440,6 +441,8 @@ app.get("/adminViewingValidatedDoctorData",(req,res) => {
         }
     });
 });
+
+// Gets unvalidated doctor first name, last name, phone number to the admin
 app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
 
     db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
@@ -451,6 +454,8 @@ app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
         }
 });
     });
+
+// Gets patient first name, last name, phone number to the admin
 app.get("/adminViewingPatientData",(req,res) => {
     db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
             console.log(err);
@@ -460,6 +465,8 @@ app.get("/adminViewingPatientData",(req,res) => {
             res.send(result);
     });
 });
+
+//Gets all relevant patient information to the doctor logged in
 app.get("/doctorViewingTheirPatientData", (req,res) =>{
     let did = 6;
     db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P, 390db.doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;", [did], (err, result) => {
@@ -473,6 +480,8 @@ app.get("/doctorViewingTheirPatientData", (req,res) =>{
         }
 });
     });
+
+//Gets all doctor information to other doctors
 app.get("/doctorViewingAllDoctors", (req,res) =>{
     db.query("SELECT Udoctor.* FROM 390db.users Udoctor, 390db.doctors D WHERE D.ID =  Udoctor.ID;", (err, result) => {
         if(err){
@@ -484,6 +493,8 @@ app.get("/doctorViewingAllDoctors", (req,res) =>{
         }
     });
 });
+
+//Gets all patient information with their assigned doctor to any doctor logged in
 app.get("/doctorViewingDoctorPatients", (req,res) =>{
     db.query("SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.users Upatient, 390db.users Udoctor, 390db.patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;", (err, result) => {
         if(err){
@@ -495,6 +506,8 @@ app.get("/doctorViewingDoctorPatients", (req,res) =>{
         }
     });
 });
+
+//Gets all patient information to doctors
 app.get("/doctorViewingAllPatientData", (req,res) =>{
     db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P WHERE P.ID = Upatient.ID;", (err, result) => {
         if(err){
@@ -506,10 +519,10 @@ app.get("/doctorViewingAllPatientData", (req,res) =>{
         }
     });
 });
+
+//Post to validate doctor in database
 app.post("/validateDoctor", (req,res) =>{
    let DoctorID = req.body.DoctorID;
-
-
    db.query("UPDATE 390db.users SET Validated = 1 WHERE ID = ?", [DoctorID], (err, result) =>{
        if(err){
            console.log(err);
