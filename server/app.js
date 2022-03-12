@@ -646,8 +646,77 @@ app.post("/makeAppointments", (req,res) => {
     // }
     // console.log(dayName+"\t"+start+"\t"+ end+"\t"+patID+"\t"+aptDate)
     //two manipulations one to update the doctorhours and another to insert the appointment.
-    state = "UPDATE 390db.doctorhours dh set dh.availability = 0 WHERE dh.StartTime = ? and dh.EndTime = ? and dh.availability = 1 and dh.dayName = ? and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
-    db.query(state,[start,end, dayName,patID], (err, result) => {
+
+    //searches for existing appointments
+    state = "SELECT * FROM 390db.appointments a where a.PatientID = ? and a.DoctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
+    db.query(state,[patID,patID,start, dayName], (err, result) => {
+
+        if(result.length==1){
+        //query then modify and update apt table and doctorhours
+        
+        //first update used to remove availability 
+        updateState1 = "UPDATE 390db.doctorhours dh set dh.availability = 0 WHERE dh.StartTime = ? and dh.EndTime = ? and dh.availability = 1 and dh.dayName = ? and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
+            db.query(updateState1,[start,end,dayName,patID], (err, result) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("first update: ");
+                    console.log(result);
+
+                }
+            }
+        );
+
+        //second update to free doctor up 
+        updateState2 = "UPDATE 390db.doctorhours dh set dh.availability = 1 WHERE dh.StartTime = (select startTime from appointments apt2 where apt2.PatientID = ?) and dh.availability = 0  and dh.dayName = (select dayName from appointments apt2 where apt2.PatientID = ?) and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
+        db.query(updateState2,[patID,patID,patID], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("second update: ");
+                console.log(result);
+            }
+        }
+        );
+
+        //update the appointment
+        updateState3 = "UPDATE 390db.appointments apt set apt.startTime = ?, apt.endTime = ?, apt.aptDate = ?, apt.dayName = ? WHERE apt.doctorID = (SELECT DoctorID from 390db.patients p where id = ?) and apt.PatientID = ?;"
+        db.query(updateState3,[start,end,aptDate,dayName,patID,patID], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("appointment update: ")
+                console.log(result);
+            }
+        }
+        
+        );
+        }
+        if(result.length==0){
+        //add new appointment with no previous appointment
+            state = "UPDATE 390db.doctorhours dh set dh.availability = 0 WHERE dh.StartTime = ? and dh.EndTime = ? and dh.availability = 1 and dh.dayName = ? and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
+        db.query(state,[start,end, dayName,patID], (err, result) => {
+            if (err) {
+                console.log("Error: "+err);
+            } else {
+                console.log(result);
+            }
+        }    
+        );
+        state2 = "INSERT INTO 390db.appointments (PatientID,DoctorID,startTime,endTime,aptDate,dayName,Priority) VALUES(?,(SELECT DoctorID from 390db.patients p where id = ?),?,?,?,?,5);"
+        
+        db.query(state2,[patID,patID,start,end,aptDate,dayName], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(state2);
+                res.send(result);
+            }
+        }
+        
+        );
+        }
+
         if (err) {
             console.log("Error: "+err);
         } else {
@@ -655,18 +724,10 @@ app.post("/makeAppointments", (req,res) => {
         }
     }    
     );
-    state2 = "INSERT INTO 390db.appointments (PatientID,DoctorID,startTime,endTime,aptDate,Priority) VALUES(?,(SELECT DoctorID from 390db.patients p where id = ?),?,?,?,5);"
+
+
+
     
-    db.query(state2,[patID,patID,start,end,aptDate], (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(state2);
-            res.send(result);
-        }
-    }
-    
-    );
 }
 )
 
