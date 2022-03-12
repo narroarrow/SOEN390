@@ -25,7 +25,7 @@ function App() {
 
 
 
-
+    // on correct authentication check (logged in) set role and id in localstorage (non-sensitive data)
     function checkAuth() {
         return new Promise(((resolve, reject) => {
             axios.get(

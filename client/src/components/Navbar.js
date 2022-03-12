@@ -43,7 +43,7 @@ const ResponsiveAppBar = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
+    // instantiate navbar differently depending on correct role
     function instantiateNavBar() {
         {
 
