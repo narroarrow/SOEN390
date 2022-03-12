@@ -78,9 +78,7 @@ const TimeSlotCalendar = () => {
         setTimeSlotsPerDay(calculatedTimeSlots);
     };
     const submit = () => {
-        selectedTimeSlots.forEach(timeSlot => {
 
-        })
         let backendTimeSlots = [];
         selectedTimeSlots.forEach(timeSlot => {
             backendTimeSlots.push({
