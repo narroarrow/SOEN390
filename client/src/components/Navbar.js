@@ -11,8 +11,10 @@ import {
     Menu,
     Avatar,
     Tooltip,
-    MenuItem
+    MenuItem,
+    Badge,
 } from '@mui/material';
+import MailIcon from '@mui/icons-material/Mail';
 import axios from "axios";
 import {useEffect} from "react";
 import Cookies from 'js-cookie';
@@ -29,6 +31,8 @@ const ResponsiveAppBar = () => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [user, setUser] = React.useState(null);
     const [pagesTest, setPagesTest] = React.useState([]);
+    const [count, setCount] = React.useState(3);
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -57,6 +61,8 @@ const ResponsiveAppBar = () => {
             }
             if (localStorage.getItem('role') == 'Patient') {
                 pages.push('PatientProfile');
+                pages.push('PatientAppointment');
+                
             }
             if (localStorage.getItem('role') == 'Admin') {
                 pages.push('AdminDashboard');
@@ -130,25 +136,34 @@ const ResponsiveAppBar = () => {
                     </Typography>
 
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+                        {/* displays proper page based on if th epage is Logout */}
                         {pages.map((page) => (
-                            page === 'Logout' ? <Button key={page} onClick={logout}
-                                                        sx={{my: 2, color: 'white', display: 'block'}}>
+                            page === 'Logout' ? 
+                                <Button key={page} onClick={logout} sx={{my: 2, color: 'white', display: 'block'}}>
                                     {page}
                                 </Button> :
-
                                 <Button key={page} onClick={handleCloseNavMenu}
                                         sx={{my: 2, color: 'white', display: 'block'}} href={`/${page}`}>
                                     {page}
                                 </Button>
                         ))}
                     </Box>
+                    {localStorage.getItem('role') &&
                     <Box sx={{flexGrow: 0}}>
+                    <Badge color="secondary" badgeContent={count}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                {localStorage.getItem('role') && <Avatar alt="Remy Sharp"
-                                                                         src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg"/>
-                                }             </IconButton>
+                            {localStorage.getItem("role")=='Patient' && 
+                             <Avatar alt="Remy Sharp"src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg"/> }  
+                             {localStorage.getItem("role")=='Doctor' &&
+                             <Avatar alt="Remy Sharp"src="https://thumbnail.imgbin.com/20/13/16/imgbin-profession-job-computer-icons-user-profile-avatar-doctor-cartoon-0UHE4i8tiPvnj2bjTRnTZ2nnf_t.jpg"/> }
+                             {localStorage.getItem("role")=='Admin' && 
+                             <Avatar alt="Remy Sharp"src="https://www.clipartmax.com/png/middle/344-3449008_vector-avatars-circle-avatar.png"/> }  
+                             
+                                       
+                            </IconButton>
                         </Tooltip>
+                        </Badge>
                         <Menu sx={{mt: '45px'}} id="menu-appbar" anchorEl={anchorElUser}
                               anchorOrigin={{vertical: 'top', horizontal: 'right',}} keepMounted
                               transformOrigin={{vertical: 'top', horizontal: 'right',}}
@@ -161,7 +176,7 @@ const ResponsiveAppBar = () => {
                                 </MenuItem>
                             ))}
                         </Menu>
-                    </Box>
+                    </Box> }
                 </Toolbar>
             </Container>
         </AppBar>

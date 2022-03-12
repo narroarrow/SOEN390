@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
-import {Container, Box, FormLabel, RadioGroup, Radio, FormControl, FormControlLabel, CssBaseline, Button} from '@mui/material'
+import {Container, Box, FormLabel, RadioGroup, Radio, FormControl, FormControlLabel, CssBaseline, Button, Typography, Card} from '@mui/material'
 import Axios from 'axios';
+import {Navigate} from "react-router-dom";
 
 function PatientAppointment() {
 
@@ -68,14 +69,21 @@ console.log("Next is: " + getNextDayOfTheWeek("Wednesday", false));
   })
   
   return (
+  <>
+    {
+      localStorage.getItem("role")!='Patient' && <Navigate to={"/"} refresh={true}/>
+    }
     <Container component="main" maxWidth="xs">
     <CssBaseline />
     {/* Centering the form in the middle of the screen */}
+    <br/><br/><br/><br/>
+    <Card>
       <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
+        <Typography variant='h4'>Book your appointment</Typography>
       {/* Creatinf the form */}
       <form onSubmit={submitSAppointmentForm}>
       <FormControl sx={{ m: 3 }} variant="standard">
-        <FormLabel id="demo-error-radios">Book your appointment</FormLabel>
+        <FormLabel id="demo-error-radios">Please select a time</FormLabel>
         <RadioGroup aria-labelledby="demo-error-radios" name="appointment" onChange={handleRadioChange}>
           {/* Displays all appointments options */}
           {itemList}
@@ -86,7 +94,9 @@ console.log("Next is: " + getNextDayOfTheWeek("Wednesday", false));
       </FormControl>
     </form>
       </Box>
+      </Card>
     </Container>
+  </>
   )
 }
   export default PatientAppointment
