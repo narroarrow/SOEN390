@@ -631,12 +631,20 @@ app.get("/seeOpenAppointments", (req,res) => {
 
 app.post("/makeAppointments", (req,res) => {
     var appointment = req.body.appointmentTime;
+    // console.log(appointment)
+
+
     var appointmentArray = appointment.split(/(\s+)/);
     let dayName = appointmentArray[0]
     let start = appointmentArray[8]
     let end = appointmentArray[12]
+    let aptDate = appointmentArray[2]+" "+appointmentArray[4] + " "+ appointmentArray[6]
     let patID = req.body.patientID//JWT; 
-    console.log(dayName+"\t"+start+"\t"+ end+"\t"+patID)
+
+    // for( var i =0; i<appointmentArray.length;i++){
+    //     console.log(i+" : "+appointmentArray[i])
+    // }
+    // console.log(dayName+"\t"+start+"\t"+ end+"\t"+patID+"\t"+aptDate)
     //two manipulations one to update the doctorhours and another to insert the appointment.
     state = "UPDATE 390db.doctorhours dh set dh.availability = 0 WHERE dh.StartTime = ? and dh.EndTime = ? and dh.availability = 1 and dh.dayName = ? and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
     db.query(state,[start,end, dayName,patID], (err, result) => {
@@ -647,9 +655,9 @@ app.post("/makeAppointments", (req,res) => {
         }
     }    
     );
-    state2 = "INSERT INTO 390db.appointments (PatientID,DoctorID,startTime,endTime,Priority) VALUES(?,(SELECT DoctorID from 390db.patients p where id = ?),?,?,5);"
+    state2 = "INSERT INTO 390db.appointments (PatientID,DoctorID,startTime,endTime,aptDate,Priority) VALUES(?,(SELECT DoctorID from 390db.patients p where id = ?),?,?,?,5);"
     
-    db.query(state2,[patID,patID,start,end], (err, result) => {
+    db.query(state2,[patID,patID,start,end,aptDate], (err, result) => {
         if (err) {
             console.log(err);
         } else {
