@@ -31,7 +31,7 @@ const ResponsiveAppBar = () => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [user, setUser] = React.useState(null);
     const [pagesTest, setPagesTest] = React.useState([]);
-    const [count, setCount] = React.useState(3);
+    const [count, setCount] = React.useState(2);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
