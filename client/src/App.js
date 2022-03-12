@@ -16,6 +16,8 @@ import HealthOfficialPatientProfile from './pages/HealthOfficialPatientProfile.j
 import HealthOfficialViewingPatient from './pages/HealthOfficialViewingPatient.js';
 import EditInfoForm from './pages/EditInfoForm';
 import PatientCovidStatus from './pages/PatientCovidStatus';
+import PatientAppointment from './pages/PatientAppointment';
+
 import Cookies from 'js-cookie';
 import Common from './pages/Common'
 
@@ -65,6 +67,7 @@ function App() {
                     <Route path='/EditInfoForm' element={<EditInfoForm/>}/>
                     <Route path='/PatientCovidStatus' element={<PatientCovidStatus/>}/>
                     <Route path='/SymptomForm' element={<SymptomForm/>}/>
+                    <Route path='/PatientAppointment' element={<PatientAppointment/>}/>
 
 
                 </Routes>

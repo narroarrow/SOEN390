@@ -127,11 +127,11 @@ function PatientProfile() {
                         Edit CURRENT STATUS
                     </Button>
 
-                    <Button sx={{ mr: 10 }} variant="outlined" href="#outlined-buttons" href="/SymptomForm">
+                    <Button sx={{ mr: 10 }} variant="outlined"  href="/SymptomForm">
                         SYMPTOM FORM
                     </Button>
 
-                    <Button sx={{}} variant="outlined" href="#outlined-buttons" >
+                    <Button sx={{}} variant="outlined" href="/PatientApointment" >
                         BOOK APPOINTMENT
                     </Button>
 
