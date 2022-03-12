@@ -1,6 +1,8 @@
-import { Avatar, IconButton, Button, Box, Grid, CardHeader,} from '@mui/material';
+import { Avatar, IconButton, Button, Box, Grid, CardHeader,Paper} from '@mui/material';
+import { styled } from '@mui/material/styles';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
+
 
 
 function DoctorDashboard() {
@@ -14,6 +16,12 @@ function DoctorDashboard() {
   const [totalStatusCounts, setTotalStatusCounts]= useState([]); // patient status count
   const [doctorsWithMostPatientsList, setDoctorsWithMostPatientsList]= useState([]); //list of doctors with most patients
   const [doctorsWithLeastPatientsList, setDoctorsWithLeastPatientsList]= useState([]); //list of doctors with least patients
+  const [notificationsList, setNotificationsList]= useState([]); //list of notfications
+
+
+
+ 
+
 
   var tempDoctorID = 6;
 
@@ -105,43 +113,26 @@ function DoctorDashboard() {
   getDoctorsWithLeastPatients();
   },[stopeffect]);
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
+
   return (
-    <div>
-      <Box sx={{ padding: 5 }}>
-        <h1>Doctor Dashboard
-          <Button variant="outlined" href="#outlined-buttons" sx={{ textAlign: 'right', position: 'absolute', right: '10%' }}>
-            Filter
-          </Button>
-        </h1>
-      </Box>
-      <Box sx={{ flexGrow: 1 }} textAlign='center'>
-        <Grid container spacing={5} columns={12}>
-          {Array.from(Array(12)).map((_, index) => ( //array value is the number of patients
-            <Grid item md={4} key={index}>
-              <button>
-                <CardHeader
-                  avatar={
-                    <Avatar aria-label="">
-                      P{index}
-                    </Avatar>
-                  }
-                  action={
-                    <IconButton aria-label=""></IconButton>
-                  }
-                  title="Patient Profile"
-                  subheader="Name of Patient"
-                />
-              </button>
-            </Grid>
-          ))}
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2} sx={{ marginBottom: '2%', padding: '2%' }} >
+        <Grid item xs={8} >
+          {/* <Item>xs=8</Item> */}
         </Grid>
-      </Box>
-      <Box sx={{ padding: 10 }}>
-        <Button variant="outlined" href="#outlined-buttons" sx={{ textAlign: 'right', position: 'absolute', right: '9%' }}>
-          Review Medical Checklist
-        </Button>
-      </Box>
-    </div>
+        <Grid item xs={4}>
+          <Item><h1>Notifications</h1></Item>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
+
 export default DoctorDashboard;
