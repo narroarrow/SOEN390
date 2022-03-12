@@ -1,13 +1,14 @@
 import * as React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-import {Container, Box, Button, AppBar, Toolbar, IconButton, Typography, Menu, Avatar, Tooltip, MenuItem} from '@mui/material';
+import {Container, Box, Button, AppBar, Toolbar, IconButton, Typography, Menu, Avatar, Tooltip, MenuItem, count, Badge} from '@mui/material';
 
 const pages = ['Login', 'Signup', 'AdminDashboard', 'DoctorPatientProfile', 'DoctorDashboard', 'PatientProfile'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+var settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  var [count, setCount] = React.useState(6);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -23,6 +24,12 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  if (count!=0 && count>0){
+    settings = ['Profile', 'Account', 'Dashboard', 'Logout', 'Notifications'];
+  }
+  else{
+    count=0;
+  }
 
   return (
     <AppBar position="static">
@@ -63,12 +70,15 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
 
+          
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          <Badge color="secondary" badgeContent={count}>
+                        <Tooltip title="Open settings">
+                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                 <Avatar alt="Remy Sharp" src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" />
               </IconButton>
             </Tooltip>
+            </Badge>
             <Menu sx={{ mt: '45px' }} id="menu-appbar" anchorEl={anchorElUser} anchorOrigin={{ vertical: 'top', horizontal: 'right',}} keepMounted transformOrigin={{ vertical: 'top', horizontal: 'right',}}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
@@ -76,6 +86,7 @@ const ResponsiveAppBar = () => {
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
+
                 </MenuItem>
               ))}
             </Menu>
