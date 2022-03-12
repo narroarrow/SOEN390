@@ -722,6 +722,17 @@ app.post("/statusCountAllPatients", (req,res) =>{
     })
  });
 
+//Gets all appointment notifications
+ app.post("/retrieveAllNotifications", (req,res) =>{ 
+    db.query("SELECT * FROM 390db.Appointments;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
  
 app.get('/*', function(req,res){
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));

@@ -79,19 +79,26 @@ function AdminDashboard() {
     Axios.post("http://localhost:8080/validateDoctor", {
       DoctorID: ID
     }).then(()=>{
-      console.log("success")
+      console.log("successfully validated doctor!")
+    });
+    window.location.reload(false);
+  };
+
+  let invalidateDoctor = (ID) => { //This function will update the validate attribute in the users table
+    Axios.post("http://localhost:8080/invalidateDoctor", {
+      DoctorID: ID
+    }).then(()=>{
+      console.log("successfully invalidated doctor!")
     });
     window.location.reload(false);
   };
 
 let stopeffect = 1;
 
-
 useEffect(() => { //functions executed upon page render
   getValidatedDoctors();
   getUnvalidatedDoctors();
   getPatients();
- 
 },[stopeffect]);
 
   return (
