@@ -76,35 +76,35 @@ function DoctorViewingPatient() {
         });
     }
 
-    let unflagPatient = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
+    let unflagPatient = () => { //When clicking the UNFLAG button, this will update the Flagged attribute in the patient tale to false
         Axios.post("http://localhost:8080/unflagPatient", {
-            PatientID: location.state.ID
+            PatientID: location.state.ID //The patient ID is being passed to the post method
         }).then(()=>{
             console.log("success")
         });
     }
 
-    let acceptChat = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
+    let acceptChat = () => { //When clicking the ACCEPT CHAt button, this will update the ChatPermission attribute in the patient tale to true
         Axios.post("http://localhost:8080/acceptChat", {
-            PatientID: location.state.ID
+            PatientID: location.state.ID //The patient ID is being passed to the post method
         }).then(()=>{
             console.log("success")
         });
     }
 
-    let isChatAccepted = false; //variable to verify if patient profile has been viewed, to be used for disabling or enabling MARK AS READ button
+    let isChatAccepted = false; //variable to verify if patient has already been granted permission to chat, to be used for disabling or enabling ACCEPT CHAT button
     let isChatAcceptedArray = patientData.map((val, key) => {return val.ChatPermission});
-    if (isChatAcceptedArray[0] === 1){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
+    if (isChatAcceptedArray[0] === 1){ 
         isChatAccepted = true;
     }
 
-    let isNewPatient = false;
+    let isNewPatient = false; //variable to verify if a patient is new
     let isNewPatientArray = patientData.map((val, key) => {return val.NewPatient});
     if(isNewPatientArray[0] === 1){
         isNewPatient = true;
     }
 
-    let isFlagged = false;
+    let isFlagged = false; //variable to verify if patient has already been flagged, to be used for displaying either the FLAG or UNFLAG butttons
     let isFlaggedArray = patientData.map((val, key) => {return val.Flagged});
     if (isFlaggedArray[0] === 1){
         isFlagged = true;
@@ -155,31 +155,30 @@ function DoctorViewingPatient() {
                 </Container>
               
                 <Box sx={{padding:5}}>
-               
+                    {/* I made it href back to the page so that the page refreshes and the doctor 
+                    can see whether or not they have requested a symptom form.*/}
+                    <Button sx={{mr: 25}} variant='outlined' onClick={requestForm} href='/DoctorViewingPatient'>
+                        REQUEST SYMPTOM FORM
+                    </Button>
+                
+                    {isFlagged ? (<Button sx={{mr: 22}} variant='outlined' onClick={unflagPatient} href='/DoctorViewingPatient'>UNFLAG PATIENT</Button>) : 
+                    (<Button variant='outlined' onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
 
-                {/* I made it href back to the page so that the page refreshes and the doctor 
-                can see whether or not they have requested a symptom form.*/}
-                <Button variant='outlined' onClick={requestForm} href='/DoctorViewingPatient'>
-                    REQUEST SYMPTOM FORM
-                </Button>
-              
-                {/* I'm thinking that we make a new page called PreviousSymptoms where all
-                of the symptom forms will be sent.*/}
-                <Button sx={{ml: 65}} variant='outlined' onClick={previousSymptoms} href='/PreviousSymptoms'>
-                    VIEW PREVIOUS SYMPTOM FORMS
-                </Button>
+                    {/* I'm thinking that we make a new page called PreviousSymptoms where all
+                    of the symptom forms will be sent.*/}
+                    <Button variant='outlined' onClick={previousSymptoms} href='/PreviousSymptoms'>
+                        PREVIOUS SYMPTOM FORMS
+                    </Button>
 
-                {/* If patient profile has been reviewed already, the MARK AS REVIEWED button will be disabled */}
-                {(!isViewed || isNewPatient) ? (<Button sx={{ml:55}} variant='outlined' onClick={markAsReviewed} href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) : 
-                (<Button sx={{ml:55}} variant='outlined' onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) 
-                }
-                <br></br> <br></br>
+                    <br></br><br></br>
 
-                {isFlagged ? (<Button sx={{ml:58}} variant='outlined' onClick={unflagPatient} href='/DoctorViewingPatient'>UNFLAG PATIENT</Button>) : 
-                (<Button sx={{ml:58}} variant='outlined' onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
+                    {/* If patient profile has been reviewed already, the MARK AS REVIEWED button will be disabled */}
+                    {(!isViewed || isNewPatient) ? (<Button sx={{ml: 32, mr: 22}} variant='outlined' onClick={markAsReviewed} href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) : 
+                    (<Button sx={{ml: 32, mr: 22}} variant='outlined' onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) 
+                    }
 
-                {isChatAccepted ? (<Button variant='outlined' disabled href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) : 
-                (<Button variant='outlined' href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}
+                    {isChatAccepted ? (<Button variant='outlined' disabled href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) : 
+                    (<Button variant='outlined' href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}
               
                 </Box>
             </Container>

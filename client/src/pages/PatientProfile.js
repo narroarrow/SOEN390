@@ -31,8 +31,7 @@ function PatientProfile() {
         })
     }, [stopeffect]);
 
-    //User ID will have to be passed
-    let requestChat = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
+    let requestChat = () => { //When clicking the REQUEST CHAT button, this will update the ChatRequested attribute in the patient tale to true
         Axios.post("http://localhost:8080/RequestChat").then(()=>{
             console.log("success");
             window.location.href="/PatientProfile";
@@ -40,15 +39,15 @@ function PatientProfile() {
         });
     }
 
-    let isChatRequested = false; //variable to verify if patient profile has been viewed, to be used for disabling or enabling MARK AS READ button
+    let isChatRequested = false; //variable to verify if patient has requested to chat, to be used for disabling or enabling REQUEST CHAT button
     let isChatRequestedArray = patientData.map((val, key) => {return val.ChatRequested});
-    if (isChatRequestedArray[0] === 1){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
+    if (isChatRequestedArray[0] === 1){ 
         isChatRequested = true;
     }
 
-    let chatGranted = false; //variable to verify if patient profile has been viewed, to be used for disabling or enabling MARK AS READ button
+    let chatGranted = false; //variable to verify if patient has permission to chat with doctor, to be used for disabling or enabling OPEN CHAT button
     let chatGrantedArray = patientData.map((val, key) => {return val.ChatPermission});
-    if (chatGrantedArray[0] === 1){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
+    if (chatGrantedArray[0] === 1){ 
         chatGranted = true;
     }
 
@@ -152,12 +151,14 @@ function PatientProfile() {
                     <Button sx={{}} variant="outlined" href="#outlined-buttons" >
                         BOOK APPOINTMENT
                     </Button>
+                    
+                    <br></br><br></br>
 
-                    {isChatRequested ?  (<Button sx={{}} variant="outlined" disabled>CHAT REQUESTED</Button>): 
-                                        (<Button sx={{}} variant="outlined" onClick={requestChat}>REQUEST CHAT</Button>) }
+                    {isChatRequested ?  (<Button sx={{mr: 22}} variant="outlined">CHAT REQUESTED</Button>): 
+                                        (<Button sx={{mr: 22}} variant="outlined" onClick={requestChat} disabled>REQUEST CHAT</Button>) }
 
-                    {chatGranted ?      (<Button sx={{}} variant="outlined">CHAT</Button>) : 
-                                        (<Button sx={{}} variant="outlined" disabled>CHAT</Button>)}
+                    {chatGranted ?      (<Button sx={{}} variant="outlined">OPEN CHAT</Button>) : 
+                                        (<Button sx={{}} variant="outlined" disabled> OPEN CHAT</Button>)}
 
                 </Box>
             </Container>
