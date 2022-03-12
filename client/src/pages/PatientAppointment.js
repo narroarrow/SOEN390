@@ -22,8 +22,9 @@ function PatientAppointment() {
         patientID: localStorage.getItem('id'),
         appointmentTime: value
       }, {withCredentials: true}).then(()=>{
-        //printing success message
-        alert("success");
+        //printing success message and redirect to home page
+        alert("You successfully booked your appointment");
+        window.location.href = "/"
       });
     }
     else{
