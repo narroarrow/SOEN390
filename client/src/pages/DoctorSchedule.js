@@ -1,4 +1,4 @@
-import { Paper, FormControlLabel, FormControl, FormLabel, Checkbox, FormGroup} from '@mui/material'; 
+import { Paper, FormControlLabel, FormControl, FormLabel, Checkbox, FormGroup, Button} from '@mui/material'; 
 import React, { useState, useEffect } from "react";
 import * as moment from "moment";
 
@@ -7,6 +7,7 @@ const TimeSlotDayTable = (props) => {
   const { day, slots, handleChange } = props;
 
   return (
+    
     <div className="time-slot-day">
       <h1>{day}</h1>
 
@@ -16,13 +17,15 @@ const TimeSlotDayTable = (props) => {
         ))}
       </div>
     </div>
+    
+    
   );
 };
 
 const TimeSlotCalendar = () => {
   const DAYS_TO_DISPLAY = 5; // update this to change how many days you show automatically
   const TIME_SLOT_INTERVAL_IN_MINUTES = 30;
-  const currentDate = moment().local().startOf("day");
+  const currentDate = moment().isoWeekday(0).startOf("day");
   const [timeSlotsPerDay, setTimeSlotsPerDay] = useState([]);
   const selectedTimeSlots = [];
 
@@ -42,8 +45,10 @@ const TimeSlotCalendar = () => {
     // 17 - 8 = 9, 9 / 0.5 = 18 - 2 = 16, since you don't want to count 8 and 17 hours, but double check with other calculations
     const numberOfTimeSlots = (endHour - startHour) / (TIME_SLOT_INTERVAL_IN_MINUTES / 60);
     for (var i = 0; i < DAYS_TO_DISPLAY; i++) {
-      let day = currentDate.add(i, "days");
-      console.log(day)
+      let day = currentDate.add(1, "days");
+
+
+      
       
       let timeSlots = {
         day: day.format("dddd"),
@@ -76,7 +81,13 @@ const TimeSlotCalendar = () => {
     calculateTimeSlots(8, 17);
   }, []);
 
-  return <div>{timeSlotsPerDay.length > 0 && timeSlotsPerDay.map((timeSlotsOnDay, index) => <TimeSlotDayTable handleChange={handleChange} key={`${index}`} day={timeSlotsOnDay.day} slots={timeSlotsOnDay.slots} />)}</div>;
+  return <div>
+    {timeSlotsPerDay.length > 0 && timeSlotsPerDay.map((timeSlotsOnDay, index) => <TimeSlotDayTable handleChange={handleChange} key={`${index}`} day={timeSlotsOnDay.day} slots={timeSlotsOnDay.slots} />)}
+    
+    <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+          Submit
+        </Button>
+    </div>;
 };
 
 export default TimeSlotCalendar;
