@@ -1,4 +1,4 @@
-import { Avatar, IconButton, Button, Box, Grid, CardHeader,Paper} from '@mui/material';
+import { Avatar, IconButton, Button, Box, Grid, CardHeader,Paper, Typography} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
@@ -163,7 +163,22 @@ function DoctorDashboard() {
           {/* <Item>xs=8</Item> */}
         </Grid>
         <Grid item xs={4}>
-          <Item><h1>Notifications</h1></Item>
+          <Item><h1>Notifications</h1>
+          {notificationsList.map((val,key) => {
+            return(             
+                <CardHeader
+                  avatar={
+                    <Avatar aria-label="">
+                      {key+1}
+                    </Avatar>
+                  }    
+                  title = {"Patient ID: " + val.PatientID}
+                  subheader = {"DateTime: " + val.DateTime.substring(0,10) + " " + val.DateTime.substring(11,19)}
+                />
+            )
+          }
+          )}
+          </Item>
         </Grid>
       </Grid>
     </Box>
