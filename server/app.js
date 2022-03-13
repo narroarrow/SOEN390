@@ -5,7 +5,9 @@ const bodyParser = require('body-parser')
 const db = require('./database')
 const mysql = require("mysql2");
 const cors = require('cors');
-const {request} = require('http');
+const { request } = require('http');
+const mail = require('nodemailer');
+
 
 var cookieParser = require('cookie-parser')
 app.use(express.json());
@@ -29,6 +31,26 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
+let sendEmail = (fName,lName,email) => {
+    const transporter = mail.createTransport({
+        service: "gmail",
+        auth: {
+            user: "noreply.COVID19site@gmail.com",
+            pass: "COVID19#2022"
+        }
+    });
+
+    const mailOptions = {
+        from: "COVID 19 WEBSITE",
+        to: email,
+        subject: "Your Account Has Been Invalidated",
+        text: "Dear " + fName + " " + lName +  ",\n\n" + "We regret to inform you that your account has been invalidated.\n\nRegards,\n\nCOVID 19 Website"
+    }
+
+    transporter.sendMail(mailOptions);
+}
+
 
 
 //below is a test server function
@@ -517,11 +539,12 @@ app.post("/Signup", async (req, res) => {
 })
 // end of sign up and login
 
-
 // Gets validated doctor first name, last name, phone number to the admin
 app.get("/adminViewingValidatedDoctorData",(req,res) => {
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;", (err, result) => {
-        if (err) {
+
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
+        if(err){
+
             console.log(err);
         } else {
             res.send(result);
@@ -533,23 +556,30 @@ app.get("/adminViewingValidatedDoctorData",(req,res) => {
 app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
     db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;", (err, result) => {
 
-        if (err) {
+
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
+            
+        if(err){
+
             console.log(err);
         } else {
+            console.log(result);
             res.send(result);
         }
     });
-});
 
 
 // Gets patient first name, last name, phone number to the admin
 app.get("/adminViewingPatientData",(req,res) => {
     db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
-        if (err) {
+
+            
+        if(err){
             console.log(err);
         } else {
+            //sendEmail();
+            res.send(result);
         }
-        res.send(result);
     });
 });
 
@@ -565,7 +595,7 @@ app.get("/doctorViewingTheirPatientData", (req,res) =>{
             res.send(result);
         }
     });
-})
+
 
 //Gets all doctor information to other doctors
 app.get("/doctorViewingAllDoctors", (req,res) =>{
@@ -603,6 +633,7 @@ app.get("/doctorViewingAllPatientData", (req,res) =>{
         }
     });
 });
+
 
 //Finds the next day in the calenda
 function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date()) {
@@ -762,6 +793,7 @@ app.post("/makeAppointments", (req,res) => {
 
 // app.get('/*', function (req, res) {
 
+
 //Post to validate doctor in database
 app.post("/validateDoctor", (req,res) =>{
    let DoctorID = req.body.DoctorID;
@@ -774,6 +806,42 @@ app.post("/validateDoctor", (req,res) =>{
    })
 });
 
+
+app.post("/invalidateDoctor", (req,res) =>{
+    //Delete from the database
+    let DoctorID = req.body.DoctorID;
+    console.log(DoctorID);
+    var fName;
+    var lName;
+    var email;
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Email FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND D.ID = ?", [DoctorID], (err, result) => {
+        if(err){
+            console.log(err);
+        } else{
+            fName = result[0].Fname;
+            lName = result[0].Lname;
+            email = result[0].Email;
+            console.log(email);
+        }
+    }); 
+
+    db.query("DELETE FROM 390db.Doctors WHERE ID = ?", [DoctorID], (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+          console.log("Deleted from Doctors table"); //This will eventually send an email to the invalidated doctor
+        }
+    })
+
+    db.query("DELETE FROM 390db.Users WHERE ID = ?", [DoctorID], (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+          console.log("Deleted from Users Table");
+          sendEmail(fName,lName,email); //This will eventually send an email to the invalidated doctor
+        }
+    })
+ });
 
 app.post("/doctorAvailbility",(req,res) =>{
     let gridSlots = req.body["backendTimeSlots"];
@@ -819,7 +887,6 @@ app.post("/doctorAvailbility",(req,res) =>{
 
 )
 
-
 //Gets the number of patients in each status category
 app.post("/statusCountAllPatients", (req,res) =>{
     db.query("  SELECT healthyCount, isolatingCount, infectedCount " + 
@@ -861,6 +928,11 @@ app.post("/statusCountAllPatients", (req,res) =>{
     })
  });
 
+
+ app.post("/sendEmail", (req,res) =>{
+    //sendEmail();
+ });
+
 //Gets the total number of registered doctors
  app.post("/countAllValidatedDoctors", (req,res) =>{
     db.query("SELECT count(*) as allRegisteredDoctorsCount FROM 390db.Users U WHERE U.Validated = 1 AND U.Role = 'Doctor'", (err, result) =>{
@@ -894,6 +966,7 @@ app.post("/statusCountAllPatients", (req,res) =>{
         }
     })
  });
+
 
 //  //Gets top 5 doctors with least to most patients
 //  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
@@ -940,6 +1013,7 @@ app.post("/statusCountAllPatients", (req,res) =>{
 //         }
 //     })
 //  });
+
 
   //Gets top 5 doctors with least to most patients
   app.post("/doctorsWithLeastPatients", (req,res) =>{ 
@@ -1012,6 +1086,7 @@ app.post("/statusCountAllPatients", (req,res) =>{
 
 //Gets patient name, and appointment time
  app.post("/retrieveAllNotifications", (req,res) =>{ 
+
     // A.Datetime as appointmentTime 
     db.query("SELECT Upatient.Fname, Upatient.Lname " +
     "FROM 390db.Appointments A, 390db.Users Upatient " +
