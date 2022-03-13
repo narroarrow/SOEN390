@@ -12,12 +12,12 @@ const mail = require('nodemailer');
 var cookieParser = require('cookie-parser')
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(express.static(__dirname + "../client/public/"));
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 app.use(express.static('dist'));
@@ -32,7 +32,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-let sendEmail = (fName,lName,email) => {
+let sendEmail = (fName, lName, email) => {
     const transporter = mail.createTransport({
         service: "gmail",
         auth: {
@@ -45,7 +45,7 @@ let sendEmail = (fName,lName,email) => {
         from: "COVID 19 WEBSITE",
         to: email,
         subject: "Your Account Has Been Invalidated",
-        text: "Dear " + fName + " " + lName +  ",\n\n" + "We regret to inform you that your account has been invalidated.\n\nRegards,\n\nCOVID 19 Website"
+        text: "Dear " + fName + " " + lName + ",\n\n" + "We regret to inform you that your account has been invalidated.\n\nRegards,\n\nCOVID 19 Website"
     }
 
     transporter.sendMail(mailOptions);
@@ -55,7 +55,7 @@ let sendEmail = (fName,lName,email) => {
 
 //below is a test server function
 app.get('/api', (req, res) => {
-    res.json({"users": ["userOne", "userTwo", "userThree"]})
+    res.json({ "users": ["userOne", "userTwo", "userThree"] })
 
 })
 
@@ -131,7 +131,7 @@ app.get("/doctorViewingPreviousSymptoms", (req, res) => {
 
 //below is a test server function
 app.get('/api', (req, res) => {
-    res.json({"users": ["userOne", "userTwo", "userThree"]})
+    res.json({ "users": ["userOne", "userTwo", "userThree"] })
 
 });
 
@@ -266,12 +266,12 @@ app.post("/markViewed", (req, res) => {
         }
     });
 
-    if(PatientDocID === DoctorID){
+    if (PatientDocID === DoctorID) {
 
-        db.query("UPDATE 390db.patients SET NewPatient=0 WHERE ID=?", [PatientID], (err, result) =>{
+        db.query("UPDATE 390db.patients SET NewPatient=0 WHERE ID=?", [PatientID], (err, result) => {
             if (err) {
                 console.log(err);
-            }else{
+            } else {
                 console.log("Updated new patient");
             }
         });
@@ -300,7 +300,7 @@ app.post("/flagPatient", (req, res) => {
     let PatientID = req.body.PatientID;
 
 
-    db.query("UPDATE 390db.patients SET Flagged=true where ID=?", [PatientID], (err, result) =>{
+    db.query("UPDATE 390db.patients SET Flagged=true where ID=?", [PatientID], (err, result) => {
 
         if (err) {
             console.log(err);
@@ -340,7 +340,7 @@ app.get('/checkAuth', function (req, res) {
         if (err) {
             res.status(403).send();
         } else {
-            res.send({email: data, role: req.cookies.role, id: req.cookies.id});
+            res.send({ email: data, role: req.cookies.role, id: req.cookies.id });
         }
     })
 })
@@ -363,47 +363,47 @@ app.post("/Login", async (req, res) => {
         //console.log(state) // used to verify the query
 
         db.query(state, async (err, result) => {
-                try {
-                    if (err) {
-                        console.log('err: ' + err)
-                    } //indicator for errors when executing a query
-                    else {
-                        if (!result[0]) {
-                            throw err;
-                        } else if (await bcrypt.compare(password, result[0].Password) && email === result[0].Email) {
+            try {
+                if (err) {
+                    console.log('err: ' + err)
+                } //indicator for errors when executing a query
+                else {
+                    if (!result[0]) {
+                        throw err;
+                    } else if (await bcrypt.compare(password, result[0].Password) && email === result[0].Email) {
 
-                            //await needs "async" in the 'parent'
-                            if (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, (error, token) => {
-                                    if (error) {
-                                        console.log('Wrong Password');
-                                        console.log(error)
-                                        res.status(403).send();
-                                    } else if (result[0].Validated == 0) {
-                                        res.status(405).send();
+                        //await needs "async" in the 'parent'
+                        if (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, (error, token) => {
+                            if (error) {
+                                console.log('Wrong Password');
+                                console.log(error)
+                                res.status(403).send();
+                            } else if (result[0].Validated == 0) {
+                                res.status(405).send();
+                            } else {
+                                let update = `UPDATE users SET Token = "${token}" WHERE email = "${email}"`
+                                db.query(update, async (err2, result2) => {
+                                    if (err2) {
+                                        console.log("err2: " + err2)
                                     } else {
-                                        let update = `UPDATE users SET Token = "${token}" WHERE email = "${email}"`
-                                        db.query(update, async (err2, result2) => {
-                                            if (err2) {
-                                                console.log("err2: " + err2)
-                                            } else {
-                                                res.cookie('token', token);
-                                                res.cookie('role', result[0].Role);
-                                                res.cookie('id', result[0].ID)
-                                                res.sendStatus(200);
-                                            }
-                                        })
+                                        res.cookie('token', token);
+                                        res.cookie('role', result[0].Role);
+                                        res.cookie('id', result[0].ID)
+                                        res.sendStatus(200);
                                     }
-                                }
-                            )
-                            );
-                        } else {
-                            throw err
+                                })
+                            }
                         }
+                        )
+                        );
+                    } else {
+                        throw err
                     }
-                } catch (err) {
-                    res.status(500).send();
                 }
+            } catch (err) {
+                res.status(500).send();
             }
+        }
         )
     } catch (err) {
         res.status(500).send()
@@ -490,7 +490,7 @@ app.post("/Signup", async (req, res) => {
                         console.log(err)
                     } else {
                         let docID = result[0]["id"]
-                        let countP = result[0]["patientCount"]+1
+                        let countP = result[0]["patientCount"] + 1
 
                         let patientState = `Update doctors set patientCount = ? where id = ?;`;
                         db.query(patientState, [countP, docID], function (err, result) {//inserts a new patient with an auto assigned doctor
@@ -529,7 +529,7 @@ app.post("/Signup", async (req, res) => {
             }
             res.sendStatus(200);
         }
-// final send
+        // final send
         else
             res.status(500).send()
     } catch {
@@ -540,10 +540,10 @@ app.post("/Signup", async (req, res) => {
 // end of sign up and login
 
 // Gets validated doctor first name, last name, phone number to the admin
-app.get("/adminViewingValidatedDoctorData",(req,res) => {
+app.get("/adminViewingValidatedDoctorData", (req, res) => {
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
-        if(err){
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;", (err, result) => {
+        if (err) {
 
             console.log(err);
         } else {
@@ -553,620 +553,627 @@ app.get("/adminViewingValidatedDoctorData",(req,res) => {
 });
 
 // Gets unvalidated doctor first name, last name, phone number to the admin
-app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
+app.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
     db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;", (err, result) => {
 
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
-            
-        if(err){
+        db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;", (err, result) => {
 
-            console.log(err);
-        } else {
-            console.log(result);
-            res.send(result);
-        }
-    });
+            if (err) {
 
-
-// Gets patient first name, last name, phone number to the admin
-app.get("/adminViewingPatientData",(req,res) => {
-    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
-
-            
-        if(err){
-            console.log(err);
-        } else {
-            //sendEmail();
-            res.send(result);
-        }
-    });
-});
-
-//Gets all relevant patient information to the doctor logged in
-app.get("/doctorViewingTheirPatientData", (req,res) =>{
-    let did = 6;
-    db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P, 390db.doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;", [did], (err, result) => {
-        //hardcoded to doctor ID 6
-        if (err) {
-            console.log("Error!");
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-
-
-//Gets all doctor information to other doctors
-app.get("/doctorViewingAllDoctors", (req,res) =>{
-    db.query("SELECT Udoctor.* FROM 390db.users Udoctor, 390db.doctors D WHERE D.ID =  Udoctor.ID;", (err, result) => {
-        if (err) {
-            console.log("Error!");
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-});
-
-//Gets all patient information with their assigned doctor to any doctor logged in
-app.get("/doctorViewingDoctorPatients", (req,res) =>{
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.users Upatient, 390db.users Udoctor, 390db.patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;", (err, result) => {
-        if (err) {
-            console.log("Error!");
-            console.log(err);
-            console.log("No error!");
-        } else {
-            res.send(result);
-        }
-    });
-});
-
-//Gets all patient information to doctors
-app.get("/doctorViewingAllPatientData", (req,res) =>{
-    db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P WHERE P.ID = Upatient.ID;", (err, result) => {
-        if (err) {
-            console.log("Error!");
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-});
-
-
-//Finds the next day in the calenda
-function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date()) {
-    const dayOfWeek = ["sun","mon","tue","wed","thu","fri","sat"].indexOf(dayName.slice(0,3).toLowerCase());
-    if (dayOfWeek < 0) return;
-    refDate.setHours(0,0,0,0);
-    refDate.setDate(refDate.getDate() + +!!excludeToday + 
-                    (dayOfWeek + 7 - refDate.getDay() - +!!excludeToday) % 7);
-    return refDate;
+                console.log(err);
+            } else {
+                console.log(result);
+                res.send(result);
+            }
+        });
+    }
+    )
 }
+    );
 
 
-//creates the array that is returned to Client
-function arrayMaker(result){
-    // console.log(result)
-    const returnedAvails = [];
-    for(let i = 0; i < Object.keys(result).length; i++){
-        if(result[i]["dayName"] !=null){
-            //putting the appointment in the right format
-            // console.log()
-            // returnedAvails.push(`${result[i]["dayName"]} ${result[i]["StartTime"]} - ${result[i]["EndTime"]}`)
-            returnedAvails.push(""+getNextDayOfTheWeek(result[i]["dayName"], true).toString().slice(0, 15)+" "+result[i]["StartTime"]+" - "+ result[i]["EndTime"])
+    // Gets patient first name, last name, phone number to the admin
+    app.get("/adminViewingPatientData", (req, res) => {
+        db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;", (err, result) => {
+
+
+            if (err) {
+                console.log(err);
+            } else {
+                //sendEmail();
+                res.send(result);
+            }
+        });
+    });
+
+    //Gets all relevant patient information to the doctor logged in
+    app.get("/doctorViewingTheirPatientData", (req, res) => {
+        let did = 6;
+        db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P, 390db.doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;", [did], (err, result) => {
+            //hardcoded to doctor ID 6
+            if (err) {
+                console.log("Error!");
+                console.log(err);
+            } else {
+                res.send(result);
+            }
+        });
+    }
+    );
+
+
+
+    //Gets all doctor information to other doctors
+    app.get("/doctorViewingAllDoctors", (req, res) => {
+        db.query("SELECT Udoctor.* FROM 390db.users Udoctor, 390db.doctors D WHERE D.ID =  Udoctor.ID;", (err, result) => {
+            if (err) {
+                console.log("Error!");
+                console.log(err);
+            } else {
+                res.send(result);
+            }
+        });
+    });
+
+    //Gets all patient information with their assigned doctor to any doctor logged in
+    app.get("/doctorViewingDoctorPatients", (req, res) => {
+        db.query("SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.users Upatient, 390db.users Udoctor, 390db.patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;", (err, result) => {
+            if (err) {
+                console.log("Error!");
+                console.log(err);
+                console.log("No error!");
+            } else {
+                res.send(result);
+            }
+        });
+    });
+
+    //Gets all patient information to doctors
+    app.get("/doctorViewingAllPatientData", (req, res) => {
+        db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P WHERE P.ID = Upatient.ID;", (err, result) => {
+            if (err) {
+                console.log("Error!");
+                console.log(err);
+            } else {
+                res.send(result);
+            }
+        });
+    });
+
+
+    //Finds the next day in the calenda
+    function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date()) {
+        const dayOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"].indexOf(dayName.slice(0, 3).toLowerCase());
+        if (dayOfWeek < 0) return;
+        refDate.setHours(0, 0, 0, 0);
+        refDate.setDate(refDate.getDate() + +!!excludeToday +
+            (dayOfWeek + 7 - refDate.getDay() - +!!excludeToday) % 7);
+        return refDate;
+    }
+
+
+    //creates the array that is returned to Client
+    function arrayMaker(result) {
+        // console.log(result)
+        const returnedAvails = [];
+        for (let i = 0; i < Object.keys(result).length; i++) {
+            if (result[i]["dayName"] != null) {
+                //putting the appointment in the right format
+                // console.log()
+                // returnedAvails.push(`${result[i]["dayName"]} ${result[i]["StartTime"]} - ${result[i]["EndTime"]}`)
+                returnedAvails.push("" + getNextDayOfTheWeek(result[i]["dayName"], true).toString().slice(0, 15) + " " + result[i]["StartTime"] + " - " + result[i]["EndTime"])
+            }
+
         }
+        console.log(returnedAvails);
+        return returnedAvails;
+    }
+
+
+    //see open appointments
+    app.get("/seeOpenAppointments", (req, res) => {
+        //getting ID from client
+        let patientID = req.query["id"];
+        console.log("Patient ID: " + patientID);
+        // state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = 1) and dh.DoctorID= u.id and dh.Availability = 1;"
+        //non-hard coded 
+        state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;"
+
+        //SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;
+        db.query(state, [patientID], (err, result) => {
+            if (err) {
+                console.log("Error: " + err);
+            } else {
+                console.log("Results open: " + result);
+                res.send(arrayMaker(result));
+                // res.send(result);
+
+            }
+        });
+    }
+    )
+
+
+    app.post("/makeAppointments", (req, res) => {
+        var appointment = req.body.appointmentTime;
+        // console.log(appointment)
+
+
+        var appointmentArray = appointment.split(/(\s+)/);
+        let dayName = appointmentArray[0]
+        let start = appointmentArray[8]
+        let end = appointmentArray[12]
+        let aptDate = appointmentArray[2] + " " + appointmentArray[4] + " " + appointmentArray[6]
+        let patID = req.body.patientID//JWT; 
+
+        // for( var i =0; i<appointmentArray.length;i++){
+        //     console.log(i+" : "+appointmentArray[i])
+        // }
+        // console.log(dayName+"\t"+start+"\t"+ end+"\t"+patID+"\t"+aptDate)
+        //two manipulations one to update the doctorhours and another to insert the appointment.
+
+        //searches for existing appointments
+        state = "SELECT * FROM 390db.appointments a where a.PatientID = ? and a.DoctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
+        db.query(state, [patID, patID, start, dayName], (err, result) => {
+
+            if (result.length == 1) {
+                //query then modify and update apt table and doctorhours
+
+                //first update used to remove availability 
+                updateState1 = "UPDATE 390db.doctorhours dh set dh.availability = 0 WHERE dh.StartTime = ? and dh.EndTime = ? and dh.availability = 1 and dh.dayName = ? and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
+                db.query(updateState1, [start, end, dayName, patID], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("first update: ");
+                        console.log(result);
+
+                    }
+                }
+                );
+
+                //second update to free doctor up 
+                updateState2 = "UPDATE 390db.doctorhours dh set dh.availability = 1 WHERE dh.StartTime = (select startTime from appointments apt2 where apt2.PatientID = ?) and dh.availability = 0  and dh.dayName = (select dayName from appointments apt2 where apt2.PatientID = ?) and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
+                db.query(updateState2, [patID, patID, patID], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("second update: ");
+                        console.log(result);
+                    }
+                }
+                );
+
+                //update the appointment
+                updateState3 = "UPDATE 390db.appointments apt set apt.startTime = ?, apt.endTime = ?, apt.aptDate = ?, apt.dayName = ? WHERE apt.doctorID = (SELECT DoctorID from 390db.patients p where id = ?) and apt.PatientID = ?;"
+                db.query(updateState3, [start, end, aptDate, dayName, patID, patID], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("appointment update: ")
+                        console.log(result);
+                        res.send(result);
+                    }
+                }
+
+                );
+            }
+            if (result.length == 0) {
+                //add new appointment with no previous appointment
+                state = "UPDATE 390db.doctorhours dh set dh.availability = 0 WHERE dh.StartTime = ? and dh.EndTime = ? and dh.availability = 1 and dh.dayName = ? and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
+                db.query(state, [start, end, dayName, patID], (err, result) => {
+                    if (err) {
+                        console.log("Error: " + err);
+                    } else {
+                        console.log(result);
+                    }
+                }
+                );
+                state2 = "INSERT INTO 390db.appointments (PatientID,DoctorID,startTime,endTime,aptDate,dayName,Priority) VALUES(?,(SELECT DoctorID from 390db.patients p where id = ?),?,?,?,?,5);"
+
+                db.query(state2, [patID, patID, start, end, aptDate, dayName], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(state2);
+                        res.send(result);
+                    }
+                }
+
+                );
+            }
+
+            if (err) {
+                console.log("Error: " + err);
+            } else {
+                console.log(result);
+            }
+        }
+        );
+
+
+
 
     }
-    console.log(returnedAvails);
-    return returnedAvails;
-}
+    )
+
+    // app.get('/*', function (req, res) {
 
 
-//see open appointments
-app.get("/seeOpenAppointments", (req,res) => {
-    //getting ID from client
-    let patientID = req.query["id"];
-    console.log("Patient ID: "+patientID);
-    // state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = 1) and dh.DoctorID= u.id and dh.Availability = 1;"
-    //non-hard coded 
-    state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;"
-
-    //SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;
-    db.query(state,[patientID], (err, result) => {
-        if (err) {
-            console.log("Error: "+err);
-        } else {
-            console.log("Results open: "+result);
-            res.send(arrayMaker(result));
-            // res.send(result);
-            
-        }
+    //Post to validate doctor in database
+    app.post("/validateDoctor", (req, res) => {
+        let DoctorID = req.body.DoctorID;
+        db.query("UPDATE 390db.users SET Validated = 1 WHERE ID = ?", [DoctorID], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Doctor validated!");
+            }
+        })
     });
-}
-)
 
 
-app.post("/makeAppointments", (req,res) => {
-    var appointment = req.body.appointmentTime;
-    // console.log(appointment)
+    app.post("/invalidateDoctor", (req, res) => {
+        //Delete from the database
+        let DoctorID = req.body.DoctorID;
+        console.log(DoctorID);
+        var fName;
+        var lName;
+        var email;
+        db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Email FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND D.ID = ?", [DoctorID], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                fName = result[0].Fname;
+                lName = result[0].Lname;
+                email = result[0].Email;
+                console.log(email);
+            }
+        });
 
+        db.query("DELETE FROM 390db.Doctors WHERE ID = ?", [DoctorID], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Deleted from Doctors table"); //This will eventually send an email to the invalidated doctor
+            }
+        })
 
-    var appointmentArray = appointment.split(/(\s+)/);
-    let dayName = appointmentArray[0]
-    let start = appointmentArray[8]
-    let end = appointmentArray[12]
-    let aptDate = appointmentArray[2]+" "+appointmentArray[4] + " "+ appointmentArray[6]
-    let patID = req.body.patientID//JWT; 
+        db.query("DELETE FROM 390db.Users WHERE ID = ?", [DoctorID], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Deleted from Users Table");
+                sendEmail(fName, lName, email); //This will eventually send an email to the invalidated doctor
+            }
+        })
+    });
 
-    // for( var i =0; i<appointmentArray.length;i++){
-    //     console.log(i+" : "+appointmentArray[i])
-    // }
-    // console.log(dayName+"\t"+start+"\t"+ end+"\t"+patID+"\t"+aptDate)
-    //two manipulations one to update the doctorhours and another to insert the appointment.
+    app.post("/doctorAvailbility", (req, res) => {
+        let gridSlots = req.body["backendTimeSlots"];
+        let dID = gridSlots[0]["doctorID"];
 
-    //searches for existing appointments
-    state = "SELECT * FROM 390db.appointments a where a.PatientID = ? and a.DoctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
-    db.query(state,[patID,patID,start, dayName], (err, result) => {
-
-        if(result.length==1){
-        //query then modify and update apt table and doctorhours
-        
-        //first update used to remove availability 
-        updateState1 = "UPDATE 390db.doctorhours dh set dh.availability = 0 WHERE dh.StartTime = ? and dh.EndTime = ? and dh.availability = 1 and dh.dayName = ? and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
-            db.query(updateState1,[start,end,dayName,patID], (err, result) => {
+        db.query(
+            "Delete from 390db.doctorhours where DoctorID = ?",
+            [dID], (err, results) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log("first update: ");
-                    console.log(result);
-
+                    console.log(results)
+                    console.log("Deleted Availbilities");
                 }
             }
         );
+        for (i = 0; i < gridSlots.length; i++) {
+            let gridSlots = req.body["backendTimeSlots"];
+            let dayName = gridSlots[i]["day"];
+            let dID = gridSlots[i]["doctorID"];
+            let startTime = gridSlots[i]["startTime"];
+            let endTime = gridSlots[i]["endTime"];
+            console.log(dayName + dID + startTime + endTime)
 
-        //second update to free doctor up 
-        updateState2 = "UPDATE 390db.doctorhours dh set dh.availability = 1 WHERE dh.StartTime = (select startTime from appointments apt2 where apt2.PatientID = ?) and dh.availability = 0  and dh.dayName = (select dayName from appointments apt2 where apt2.PatientID = ?) and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
-        db.query(updateState2,[patID,patID,patID], (err, result) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("second update: ");
-                console.log(result);
-            }
+            db.query(
+                "INSERT INTO 390db.doctorhours (dayName,DoctorID,StartTime,EndTime,Availability) VALUES (?,?,?,?,1)",
+                [dayName, dID, startTime, endTime],
+                (err, results) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log('Insertions')
+                        console.log(results)
+
+                    }
+                }
+            );
+
         }
-        );
+        res.send("Form Submitted!");
 
-        //update the appointment
-        updateState3 = "UPDATE 390db.appointments apt set apt.startTime = ?, apt.endTime = ?, apt.aptDate = ?, apt.dayName = ? WHERE apt.doctorID = (SELECT DoctorID from 390db.patients p where id = ?) and apt.PatientID = ?;"
-        db.query(updateState3,[start,end,aptDate,dayName,patID,patID], (err, result) => {
+    }
+
+    )
+
+    //Gets the number of patients in each status category
+    app.post("/statusCountAllPatients", (req, res) => {
+        db.query("  SELECT healthyCount, isolatingCount, infectedCount " +
+            "FROM (  SELECT count(*) as healthyCount " +
+            "FROM 390db.Patients P " +
+            "WHERE P.Status = 'Healthy') as healthyCount, " +
+            "(  SELECT count(*) as isolatingCount " +
+            "FROM 390db.Patients P " +
+            "WHERE P.Status = 'Isolating') as isolatingCount, " +
+            "(  SELECT count(*) as infectedCount " +
+            "FROM 390db.Patients P " +
+            "WHERE P.Status = 'Infected') as infectedCount;", (err, result) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(result);
+                }
+            })
+    });
+    //Gets the total number of patients
+    app.post("/countAllPatients", (req, res) => {
+        db.query("SELECT count(*) as allPatientCount FROM 390db.Patients P", (err, result) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log("appointment update: ")
-                console.log(result);
                 res.send(result);
             }
-        }
-        
-        );
-        }
-        if(result.length==0){
-        //add new appointment with no previous appointment
-            state = "UPDATE 390db.doctorhours dh set dh.availability = 0 WHERE dh.StartTime = ? and dh.EndTime = ? and dh.availability = 1 and dh.dayName = ? and dh.doctorID = (SELECT DoctorID from 390db.patients p where id = ?);"
-        db.query(state,[start,end, dayName,patID], (err, result) => {
-            if (err) {
-                console.log("Error: "+err);
-            } else {
-                console.log(result);
-            }
-        }    
-        );
-        state2 = "INSERT INTO 390db.appointments (PatientID,DoctorID,startTime,endTime,aptDate,dayName,Priority) VALUES(?,(SELECT DoctorID from 390db.patients p where id = ?),?,?,?,?,5);"
-        
-        db.query(state2,[patID,patID,start,end,aptDate,dayName], (err, result) => {
+        })
+    });
+
+    //Gets the total number of flagged patients
+    app.post("/countAllFlaggedPatients", (req, res) => {
+        db.query("SELECT count(*) as allFlaggedPatientCount FROM 390db.Patients P WHERE P.Flagged = 1", (err, result) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log(state2);
                 res.send(result);
             }
-        }
-        
-        );
-        }
-
-        if (err) {
-            console.log("Error: "+err);
-        } else {
-            console.log(result);
-        }
-    }    
-    );
+        })
+    });
 
 
+    app.post("/sendEmail", (req, res) => {
+        //sendEmail();
+    });
 
-    
-}
-)
-
-// app.get('/*', function (req, res) {
-
-
-//Post to validate doctor in database
-app.post("/validateDoctor", (req,res) =>{
-   let DoctorID = req.body.DoctorID;
-   db.query("UPDATE 390db.users SET Validated = 1 WHERE ID = ?", [DoctorID], (err, result) =>{
-       if(err){
-           console.log(err);
-       } else{
-           res.send("Doctor validated!");
-       }
-   })
-});
-
-
-app.post("/invalidateDoctor", (req,res) =>{
-    //Delete from the database
-    let DoctorID = req.body.DoctorID;
-    console.log(DoctorID);
-    var fName;
-    var lName;
-    var email;
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Email FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND D.ID = ?", [DoctorID], (err, result) => {
-        if(err){
-            console.log(err);
-        } else{
-            fName = result[0].Fname;
-            lName = result[0].Lname;
-            email = result[0].Email;
-            console.log(email);
-        }
-    }); 
-
-    db.query("DELETE FROM 390db.Doctors WHERE ID = ?", [DoctorID], (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-          console.log("Deleted from Doctors table"); //This will eventually send an email to the invalidated doctor
-        }
-    })
-
-    db.query("DELETE FROM 390db.Users WHERE ID = ?", [DoctorID], (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-          console.log("Deleted from Users Table");
-          sendEmail(fName,lName,email); //This will eventually send an email to the invalidated doctor
-        }
-    })
- });
-
-app.post("/doctorAvailbility",(req,res) =>{
-    let gridSlots = req.body["backendTimeSlots"];
-    let dID = gridSlots[0]["doctorID"];
-
-    db.query(
-        "Delete from 390db.doctorhours where DoctorID = ?",
-        [dID],(err, results) => {
+    //Gets the total number of registered doctors
+    app.post("/countAllValidatedDoctors", (req, res) => {
+        db.query("SELECT count(*) as allRegisteredDoctorsCount FROM 390db.Users U WHERE U.Validated = 1 AND U.Role = 'Doctor'", (err, result) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log(results)
-                console.log("Deleted Availbilities");
+                res.send(result);
             }
-        }
-    );
-    for (i =0; i<gridSlots.length;i++){
-        let gridSlots = req.body["backendTimeSlots"];
-        let dayName = gridSlots[i]["day"];
-        let dID = gridSlots[i]["doctorID"];
-        let startTime = gridSlots[i]["startTime"];
-        let endTime = gridSlots[i]["endTime"];
-        console.log(dayName+dID+startTime+endTime)
+        })
+    });
 
-        db.query(
-            "INSERT INTO 390db.doctorhours (dayName,DoctorID,StartTime,EndTime,Availability) VALUES (?,?,?,?,1)",
-            [dayName,dID,startTime,endTime],
+    //Gets top 5 doctors with most to least patients
+    app.post("/doctorsWithMostPatients", (req, res) => {
+        db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
+            "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+            "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
+            "GROUP BY D.ID " +
+            "ORDER BY countPatients DESC " + //Ordered by most to least
+            "LIMIT 5) " +
+            "UNION " +
+            "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+            "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+            "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+            "FROM 390db.Patients P1) AND D.ID = U.ID " +
+            "ORDER BY countPatients DESC " +
+            "LIMIT 5;", (err, result) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(result);
+                }
+            })
+    });
+
+
+    //  //Gets top 5 doctors with least to most patients
+    //  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
+    //     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+    //     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+    //    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+    //     "GROUP BY D.ID " + 
+    //     "ORDER BY countPatients ASC " + //Ordered by least to most
+    //     "LIMIT 5) " +
+    //     "UNION " +
+    //     "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    //     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+    //     "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    //     "FROM 390db.Patients P1) AND D.ID = U.ID " +
+    //     "ORDER BY countPatients ASC " +
+    //     "LIMIT 5;", (err, result) =>{
+    //         if(err){
+    //             console.log(err);
+    //         } else{
+    //             res.send(result);
+    //         }
+    //     })
+    //  });
+
+    //   //Gets top 5 doctors with least to most patients
+    //   app.post("/doctorsWithLeastPatients", (req,res) =>{ 
+    //     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+    //     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+    //    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+    //     "GROUP BY D.ID " + 
+    //     "ORDER BY countPatients ASC " + //Ordered by least to most
+    //     "LIMIT 5) " +
+    //     "UNION " +
+    //     "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    //     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+    //     "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    //     "FROM 390db.Patients P1) AND D.ID = U.ID " +
+    //     "ORDER BY countPatients ASC " +
+    //     "LIMIT 5;", (err, result) =>{
+    //         if(err){
+    //             console.log(err);
+    //         } else{
+    //             res.send(result);
+    //         }
+    //     })
+    //  });
+
+
+    //Gets top 5 doctors with least to most patients
+    app.post("/doctorsWithLeastPatients", (req, res) => {
+        db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
+            "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+            "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
+            "GROUP BY D.ID " +
+            "ORDER BY countPatients ASC " + //Ordered by least to most
+            "LIMIT 5) " +
+            "UNION " +
+            "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+            "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+            "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+            "FROM 390db.Patients P1) AND D.ID = U.ID " +
+            "ORDER BY countPatients ASC " +
+            "LIMIT 5;", (err, result) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(result);
+                }
+            })
+    });
+
+    //Gets the list of patients that are flagged but whose file has not been viewed
+    app.post("/patientsFlaggedNotViewed", (req, res) => {
+        db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email " +
+            "FROM 390db.Users Upatient, 390db.Patients P, 390db.InfoRequest IR, 390db.HealthInformation HI, 390db.Viewed V " +
+            "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.Timestamp AND P.ID IN " +
+            "(SELECT P1.ID " +
+            "FROM 390db.Patients P1, 390db. HealthInformation H1, 390db.Viewed V1 " +
+            "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.Timestamp > V1.Timestamp);", (err, result) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(result);
+                }
+            })
+    });
+
+    //Gets the list of patients that are flagged and have been viewed from latest to most recent
+    app.post("/patientsFlaggedLeastViewed", (req, res) => {
+        db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, V.Timestamp as verifiedTime, P.ID " +
+            "FROM 390db.Patients P, 390db.Users Upatient, 390db.HealthInformation H , 390db.Viewed V " +
+            "WHERE Upatient.ID = P.ID AND H.PatientID = P.ID AND P.Flagged = 1 AND P.ID = V.PatientID AND H.Timestamp < (SELECT MAX(V1.Timestamp) " +
+            "FROM 390db.Viewed V1 " +
+            "WHERE P.ID = V1.PatientID) " +
+            "ORDER BY verifiedTime;", (err, result) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(result);
+                }
+            })
+    });
+
+    //Gets the list of patients that have been flagged and have not submitted their symptom form upion receiving a request from their doctor
+    app.post("/patientsFlaggedNoSymptomFormResponse", (req, res) => {
+        db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, IR.Timestamp as requestTime, P.ID " +
+            "FROM 390db.Patients P, 390db.Users Upatient, 390db.InfoRequest IR, 390db.HealthInformation IH " +
+            "WHERE P.Flagged = 1 AND P.ID = Upatient.ID AND IR.PatientID = P.ID  AND IR.PatientID = IH.PatientID AND IR.Timestamp > IH.Timestamp " +
+            "ORDER BY requestTime ASC;", (err, result) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(result);
+                }
+            })
+    });
+
+    //Gets patient name, and appointment time
+    app.post("/retrieveAllNotifications", (req, res) => {
+
+        // A.Datetime as appointmentTime 
+        db.query("SELECT Upatient.Fname, Upatient.Lname " +
+            "FROM 390db.Appointments A, 390db.Users Upatient " +
+            "Where A.PatientID = Upatient.ID;", (err, result) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(result);
+                }
+            })
+    });
+
+    //Gets the total number of appointments
+    app.post("/getAllNotificationCount", (req, res) => {
+        db.query("SELECT count(*) as notificationCount FROM 390db.Appointments", (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(result);
+            }
+        })
+    });
+
+
+    app.get('/*', function (req, res) {
+        res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
+    });
+
+    app.post("/RequestChat", (req, res) => {
+        let patientid = req.body.patientid;
+
+        db.query("UPDATE 390db.patients SET ChatRequested=1 WHERE ID=?",
+            [patientid],
             (err, results) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log('Insertions')
-                    console.log(results)
-                    
+                    res.send("Chat Requested!");
                 }
             }
         );
-        
-    }
-    res.send("Form Submitted!");
-    
-}
-
-)
-
-//Gets the number of patients in each status category
-app.post("/statusCountAllPatients", (req,res) =>{
-    db.query("  SELECT healthyCount, isolatingCount, infectedCount " + 
-               "FROM (  SELECT count(*) as healthyCount " + 
-                "FROM 390db.Patients P " +
-                "WHERE P.Status = 'Healthy') as healthyCount, " + 
-                "(  SELECT count(*) as isolatingCount " + 
-                "FROM 390db.Patients P " +
-                "WHERE P.Status = 'Isolating') as isolatingCount, " + 
-                "(  SELECT count(*) as infectedCount " + 
-                "FROM 390db.Patients P " +
-                "WHERE P.Status = 'Infected') as infectedCount;", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-//Gets the total number of patients
- app.post("/countAllPatients", (req,res) =>{
-    db.query("SELECT count(*) as allPatientCount FROM 390db.Patients P", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-
-//Gets the total number of flagged patients
- app.post("/countAllFlaggedPatients", (req,res) =>{
-    db.query("SELECT count(*) as allFlaggedPatientCount FROM 390db.Patients P WHERE P.Flagged = 1", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-
-
- app.post("/sendEmail", (req,res) =>{
-    //sendEmail();
- });
-
-//Gets the total number of registered doctors
- app.post("/countAllValidatedDoctors", (req,res) =>{
-    db.query("SELECT count(*) as allRegisteredDoctorsCount FROM 390db.Users U WHERE U.Validated = 1 AND U.Role = 'Doctor'", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-
- //Gets top 5 doctors with most to least patients
- app.post("/doctorsWithMostPatients", (req,res) =>{
-    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
-    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
-   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
-    "GROUP BY D.ID " + 
-    "ORDER BY countPatients DESC " + //Ordered by most to least
-    "LIMIT 5) " +
-    "UNION " +
-    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
-    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-    "FROM 390db.Patients P1) AND D.ID = U.ID " +
-    "ORDER BY countPatients DESC " +
-    "LIMIT 5;", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-
-
-//  //Gets top 5 doctors with least to most patients
-//  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
-//     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
-//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
-//    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
-//     "GROUP BY D.ID " + 
-//     "ORDER BY countPatients ASC " + //Ordered by least to most
-//     "LIMIT 5) " +
-//     "UNION " +
-//     "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
-//     "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-//     "FROM 390db.Patients P1) AND D.ID = U.ID " +
-//     "ORDER BY countPatients ASC " +
-//     "LIMIT 5;", (err, result) =>{
-//         if(err){
-//             console.log(err);
-//         } else{
-//             res.send(result);
-//         }
-//     })
-//  });
-
-//   //Gets top 5 doctors with least to most patients
-//   app.post("/doctorsWithLeastPatients", (req,res) =>{ 
-//     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
-//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
-//    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
-//     "GROUP BY D.ID " + 
-//     "ORDER BY countPatients ASC " + //Ordered by least to most
-//     "LIMIT 5) " +
-//     "UNION " +
-//     "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
-//     "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-//     "FROM 390db.Patients P1) AND D.ID = U.ID " +
-//     "ORDER BY countPatients ASC " +
-//     "LIMIT 5;", (err, result) =>{
-//         if(err){
-//             console.log(err);
-//         } else{
-//             res.send(result);
-//         }
-//     })
-//  });
-
-
-  //Gets top 5 doctors with least to most patients
-  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
-    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
-    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
-   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
-    "GROUP BY D.ID " + 
-    "ORDER BY countPatients ASC " + //Ordered by least to most
-    "LIMIT 5) " +
-    "UNION " +
-    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
-    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-    "FROM 390db.Patients P1) AND D.ID = U.ID " +
-    "ORDER BY countPatients ASC " +
-    "LIMIT 5;", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-
- //Gets the list of patients that are flagged but whose file has not been viewed
- app.post("/patientsFlaggedNotViewed", (req,res) =>{ 
-    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email " +
-    "FROM 390db.Users Upatient, 390db.Patients P, 390db.InfoRequest IR, 390db.HealthInformation HI, 390db.Viewed V " +
-    "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.Timestamp AND P.ID IN " + 
-    "(SELECT P1.ID " +
-                                                             "FROM 390db.Patients P1, 390db. HealthInformation H1, 390db.Viewed V1 " +
-                                                             "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.Timestamp > V1.Timestamp);", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-
- //Gets the list of patients that are flagged and have been viewed from latest to most recent
- app.post("/patientsFlaggedLeastViewed", (req,res) =>{ 
-    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, V.Timestamp as verifiedTime, P.ID " +
-    "FROM 390db.Patients P, 390db.Users Upatient, 390db.HealthInformation H , 390db.Viewed V " +
-    "WHERE Upatient.ID = P.ID AND H.PatientID = P.ID AND P.Flagged = 1 AND P.ID = V.PatientID AND H.Timestamp < (SELECT MAX(V1.Timestamp) " +
-                                                                                                            "FROM 390db.Viewed V1 " +
-                                                                                                            "WHERE P.ID = V1.PatientID) " +
-    "ORDER BY verifiedTime;", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-
- //Gets the list of patients that have been flagged and have not submitted their symptom form upion receiving a request from their doctor
- app.post("/patientsFlaggedNoSymptomFormResponse", (req,res) =>{ 
-    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, IR.Timestamp as requestTime, P.ID " +
-    "FROM 390db.Patients P, 390db.Users Upatient, 390db.InfoRequest IR, 390db.HealthInformation IH " +
-    "WHERE P.Flagged = 1 AND P.ID = Upatient.ID AND IR.PatientID = P.ID  AND IR.PatientID = IH.PatientID AND IR.Timestamp > IH.Timestamp " +
-    "ORDER BY requestTime ASC;", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-
-//Gets patient name, and appointment time
- app.post("/retrieveAllNotifications", (req,res) =>{ 
-
-    // A.Datetime as appointmentTime 
-    db.query("SELECT Upatient.Fname, Upatient.Lname " +
-    "FROM 390db.Appointments A, 390db.Users Upatient " +
-    "Where A.PatientID = Upatient.ID;", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-
- //Gets the total number of appointments
- app.post("/getAllNotificationCount", (req,res) =>{ 
-    db.query("SELECT count(*) as notificationCount FROM 390db.Appointments", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
-
- 
-app.get('/*', function(req,res){
-    res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
-});
-
-app.post("/RequestChat", (req, res) => {
-    let patientid = req.body.patientid;
-
-    db.query("UPDATE 390db.patients SET ChatRequested=1 WHERE ID=?",
-        [patientid],
-        (err, results) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.send("Chat Requested!");
-            }
-        }
-    );
-});
-
-app.post("/acceptChat", (req, res) => {
-    console.log("hello");
-    let pid = req.body.PatientID;
-    console.log(pid);
-    console.log("test");
-    db.query("UPDATE 390db.patients SET ChatRequested=false WHERE ID=?",
-        [pid],
-        (err, results) => {
-            if (err) {
-                console.log(err);
-            } 
-        }
-    );
-    db.query("UPDATE 390db.patients SET ChatPermission=true WHERE ID=?",
-        [pid],
-        (err, results) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.send("Chat Accepted!");
-            }
-        }
-    );
-});
-
-app.post("/unflagPatient", (req, res) => {
-    let PatientID = req.body.PatientID;
-
-    db.query("UPDATE 390db.patients SET Flagged=false where ID=?", [PatientID], (err, result) =>{
-        if (err) {
-            console.log(err);
-        } else {
-            res.send("Patient has been unflagged!");
-        }
     });
 
-});
+    app.post("/acceptChat", (req, res) => {
+        console.log("hello");
+        let pid = req.body.PatientID;
+        console.log(pid);
+        console.log("test");
+        db.query("UPDATE 390db.patients SET ChatRequested=false WHERE ID=?",
+            [pid],
+            (err, results) => {
+                if (err) {
+                    console.log(err);
+                }
+            }
+        );
+        db.query("UPDATE 390db.patients SET ChatPermission=true WHERE ID=?",
+            [pid],
+            (err, results) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send("Chat Accepted!");
+                }
+            }
+        );
+    });
+
+    app.post("/unflagPatient", (req, res) => {
+        let PatientID = req.body.PatientID;
+
+        db.query("UPDATE 390db.patients SET Flagged=false where ID=?", [PatientID], (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Patient has been unflagged!");
+            }
+        });
+
+    });
 
 
-module.exports = app;
+    module.exports = app;
