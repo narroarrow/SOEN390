@@ -2,6 +2,7 @@ import { Avatar, IconButton, Button, Box, Grid, CardHeader,Paper, Typography} fr
 import { styled } from '@mui/material/styles';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
+import {Navigate} from "react-router-dom";
 
 
 
@@ -157,15 +158,24 @@ function DoctorDashboard() {
   }));
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} sx={{ marginBottom: '2%', padding: '2%' }} >
-        <Grid item xs={8} >
-          {/* <Item>xs=8</Item> */}
-        </Grid>
-        <Grid item xs={4}>
-          <Item><h1>Notifications</h1>
-          {notificationsList.map((val,key) => {
-            return(             
+
+      <>
+        {
+          localStorage.getItem("role")!='Doctor' && <Navigate to={"/"} refresh={true}/>
+        }
+    <div>
+      <Box sx={{ padding: 5 }}>
+        <h1>Doctor Dashboard
+          <Button variant="outlined" href="#outlined-buttons" sx={{ textAlign: 'right', position: 'absolute', right: '10%' }}>
+            Filter
+          </Button>
+        </h1>
+      </Box>
+      <Box sx={{ flexGrow: 1 }} textAlign='center'>
+        <Grid container spacing={5} columns={12}>
+          {Array.from(Array(12)).map((_, index) => ( //array value is the number of patients
+            <Grid item md={4} key={index}>
+              <button>
                 <CardHeader
                   avatar={
                     <Avatar aria-label="">
@@ -180,8 +190,13 @@ function DoctorDashboard() {
           )}
           </Item>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+      <Box sx={{ padding: 10 }}>
+        <Button variant="outlined" href="#outlined-buttons" sx={{ textAlign: 'right', position: 'absolute', right: '9%' }}>
+          Review Medical Checklist
+        </Button>
+      </Box>
+    </div> </>
   );
 }
 

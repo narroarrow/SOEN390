@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Grid, CssBaseline, Button, Card, styled, Paper } from '@mui/material';
 import Axios from 'axios';
+import {Navigate} from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -23,19 +24,41 @@ function PatientProfile() {
     //get the patients data by using a get and going to the 
     //server.js file to execute the code to query for the data.
     useEffect(() => {
-        Axios.get('http://localhost:8080/patientProfileData', {
-            //send the patient id here
-        }).then((response) => {
+        Axios.get('http://localhost:8080/patientProfileData', { withCredentials: true, params: {id: localStorage.getItem('id')}}).then((response) => {
             setPatientData(response.data);
             console.log(response);
-        });
+        })
     }, [stopeffect]);
+
+    let requestChat = () => { //When clicking the REQUEST CHAT button, this will update the ChatRequested attribute in the patient tale to true
+        Axios.post("http://localhost:8080/RequestChat").then(()=>{
+            console.log("success");
+            window.location.href="/PatientProfile";
+            
+        });
+    }
+
+    let isChatRequested = false; //variable to verify if patient has requested to chat, to be used for disabling or enabling REQUEST CHAT button
+    let isChatRequestedArray = patientData.map((val, key) => {return val.ChatRequested});
+    if (isChatRequestedArray[0] === 1){ 
+        isChatRequested = true;
+    }
+
+    let chatGranted = false; //variable to verify if patient has permission to chat with doctor, to be used for disabling or enabling OPEN CHAT button
+    let chatGrantedArray = patientData.map((val, key) => {return val.ChatPermission});
+    if (chatGrantedArray[0] === 1){ 
+        chatGranted = true;
+    }
 
     // Returning the HTML / CSS for the Patient Profile
     // Each GRID ITEM retrieves patient data from the database
     // and displays it.
     // Each button on the page brings you to the associated pages
     return (
+<>
+        {
+            localStorage.getItem("role")!='Patient' && <Navigate to={"/"} refresh={true}/>
+        }
         <div>
             <Container component="main">
                 <CssBaseline />
@@ -124,18 +147,27 @@ function PatientProfile() {
                         Edit CURRENT STATUS
                     </Button>
 
-                    <Button sx={{ mr: 10 }} variant="outlined" href="#outlined-buttons" href="/SymptomForm">
+                    <Button sx={{ mr: 10 }} variant="outlined"  href="/SymptomForm">
                         SYMPTOM FORM
                     </Button>
 
-                    <Button sx={{}} variant="outlined" href="#outlined-buttons" >
+                    <Button sx={{}} variant="outlined" href="/PatientApointment" >
                         BOOK APPOINTMENT
                     </Button>
+                    
+                    <br></br><br></br>
+
+                    {isChatRequested ?  (<Button sx={{mr: 22}} variant="outlined">CHAT REQUESTED</Button>): 
+                                        (<Button sx={{mr: 22}} variant="outlined" onClick={requestChat} disabled>REQUEST CHAT</Button>) }
+
+                    {chatGranted ?      (<Button sx={{}} variant="outlined">OPEN CHAT</Button>) : 
+                                        (<Button sx={{}} variant="outlined" disabled> OPEN CHAT</Button>)}
 
                 </Box>
             </Container>
 
         </div>
+    </>
     );
 }
 
