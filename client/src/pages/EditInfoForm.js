@@ -1,6 +1,7 @@
 import { Paper, FormControl, FormLabel, TextField, Button } from '@mui/material';
 import Axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 //This variable represents a function that will be called when the
 //user submits the form with their updated data. The updated data will be 
@@ -56,6 +57,12 @@ function EditInfoForm() {
   // Allows patients to edit their information adding appropriate info in the text fields
 
   return (
+
+    <>
+      {
+        localStorage.getItem("role") != 'Patient' && <Navigate to={"/"} refresh={true} />
+      }
+
     <div align="Center">
       <Paper elevation={24} component="form" onLoad onSubmit={submitEditInfoForm} sx={{ width: 700, height: 1000, mt: 10 }}>
         <h1>Edit Profile Information</h1>
@@ -124,6 +131,7 @@ function EditInfoForm() {
       </Paper>
 
     </div>
+    </>
   );
 }
 
