@@ -789,12 +789,13 @@ app.post("/doctorAvailbility",(req,res) =>{
                 } else {
                     console.log('Insertions')
                     console.log(results)
-                    res.send("Form Submitted!");
+                    
                 }
             }
         );
         
     }
+    res.send("Form Submitted!");
     
 }
 

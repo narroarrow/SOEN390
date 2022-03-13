@@ -3,12 +3,17 @@ import React, {useState, useEffect} from "react";
 import * as moment from "moment";
 import Axios from "axios";
 import { Box } from '@mui/system';
+import {Navigate} from "react-router-dom";
 
 const TimeSlotDayTable = (props) => {
     // Object destructuring, get the day and timeSlots properties from props, which we passed in when we used .map in the TimeSlotCalendar component
     const {day, slots, handleChange} = props;
 
     return (
+    <>
+        {
+          localStorage.getItem("role")!='Doctor' && <Navigate to={"/"} refresh={true}/>
+        }
 
         <div className="time-slot-day">
             <h1>{day}</h1>
@@ -20,6 +25,7 @@ const TimeSlotDayTable = (props) => {
                 ))}
             </div>
         </div>
+    </>
 
 
     );
@@ -84,7 +90,7 @@ const TimeSlotCalendar = () => {
         selectedTimeSlots.forEach(timeSlot => {
             backendTimeSlots.push({
                 day: timeSlot.day.substr(0, 3),
-                doctorID: 1,
+                doctorID: localStorage.getItem('id'),
                 startTime: timeSlot.label.substr(0, 5).concat(":00"),
                 endTime: timeSlot.label.substr(8, 14).concat(":00")
             })

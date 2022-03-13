@@ -71,6 +71,8 @@ const ResponsiveAppBar = () => {
             if (localStorage.getItem('role') == 'Doctor') {
                 pages.push('DoctorDashboard');
                 pages.push('DoctorPatientProfile');
+                pages.push('DoctorSchedule');
+                
             }
             if (localStorage.getItem('role') != null) {
                 pages.push('Logout');
