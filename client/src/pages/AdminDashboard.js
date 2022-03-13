@@ -85,6 +85,9 @@ function AdminDashboard() {
   };
 
   let invalidateDoctor = (ID) => { //This function will update the validate attribute in the users table
+    if(!window.confirm("Are you sure you would like to deny this account? This will permanently delete the account from the system and inform the contact by email.")){
+      return;
+    }
     Axios.post("http://localhost:8080/invalidateDoctor", {
       DoctorID: ID
     }).then(()=>{
