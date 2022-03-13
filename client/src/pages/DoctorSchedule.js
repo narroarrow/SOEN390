@@ -92,7 +92,7 @@ const TimeSlotCalendar = () => {
 
         let doctorScheduleData = {backendTimeSlots}
 
-        Axios.post('http://localhost:8080/doctorAppointments(JEFF-METHOD-NAME)', doctorScheduleData, {withCredentials: true}).then(res => {
+        Axios.post('http://localhost:8080/doctorAvailbility', doctorScheduleData, {withCredentials: true}).then(res => {
             console.log(res)
         }).catch((err) => {
             console.log(err)

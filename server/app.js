@@ -519,6 +519,49 @@ app.post("/validateDoctor", (req,res) =>{
    })
 });
 
+app.post("/doctorAvailbility",(req,res) =>{
+    let gridSlots = req.body["backendTimeSlots"];
+    let dID = gridSlots[0]["doctorID"];
+
+    db.query(
+        "Delete from 390db.doctorhours where DoctorID = ?",
+        [dID],(err, results) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(results)
+                console.log("Deleted Availbilities");
+            }
+        }
+    );
+    for (i =0; i<gridSlots.length;i++){
+        let gridSlots = req.body["backendTimeSlots"];
+        let dayName = gridSlots[i]["day"];
+        let dID = gridSlots[i]["doctorID"];
+        let startTime = gridSlots[i]["startTime"];
+        let endTime = gridSlots[i]["endTime"];
+        console.log(dayName+dID+startTime+endTime)
+
+        db.query(
+            "INSERT INTO 390db.doctorhours (dayName,DoctorID,StartTime,EndTime,Availability) VALUES (?,?,?,?,1)",
+            [dayName,dID,startTime,endTime],
+            (err, results) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Insertions')
+                    console.log(results)
+                    res.send("Form Submitted!");
+                }
+            }
+        );
+        
+    }
+    
+}
+
+)
+
 app.get('/*', function(req,res){
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 })
