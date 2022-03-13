@@ -124,7 +124,11 @@ function DoctorDashboard() {
   };
 
   function getAllNotifications(){//This will return patient name, and appointment time
-    Axios.post("http://localhost:8080/retrieveAllNotifications").then((response)=>{
+    Axios.post("http://localhost:8080/retrieveAllNotifications", {
+      params: {
+        id: localStorage.getItem('id')
+      }
+    }).then((response)=>{
       setNotificationsList(response.data);
       console.log("Notification List:");
       console.log(response.data);  
@@ -179,7 +183,7 @@ function DoctorDashboard() {
                     </Avatar>
                   }
                   title = {"Patient Name: " + val.Fname + " " + val.Lname}
-                  // subheader = {"Appointment Time: " + val.appointmentTime.substring(0,10) + " " + val.appointmentTime.substring(11,19)}
+                  subheader = {"Appointment Time: " + val.aptDate+ " "+val.startTime +" to "+ val.endTime}
                 />
             )
           }

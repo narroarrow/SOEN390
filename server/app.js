@@ -950,10 +950,10 @@ app.post("/statusCountAllPatients", (req,res) =>{
 
 //Gets patient name, and appointment time
  app.post("/retrieveAllNotifications", (req,res) =>{ 
-    // A.Datetime as appointmentTime 
-    db.query("SELECT Upatient.Fname, Upatient.Lname " +
-    "FROM 390db.Appointments A, 390db.Users Upatient " +
-    "Where A.PatientID = Upatient.ID;", (err, result) =>{
+    let doctorID = req.query["id"];
+    db.query("SELECT Upatient.Fname, Upatient.Lname, A.aptDate, A.startTime, A.endTime " +
+    "FROM 390db.Appointments A, 390db.Users Upatient, 390db.Doctors D, 390db.Patients P " +
+    "Where A.PatientID = Upatient.ID AND A.doctorID = ? AND P.id=Upatient.id AND P.doctorID = D.id;", [doctorID], (err, result) =>{
         if(err){
             console.log(err);
         } else{
