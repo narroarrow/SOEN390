@@ -32,7 +32,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-let sendEmail = () => {
+let sendEmail = (fName,lName,email) => {
     const transporter = mail.createTransport({
         service: "gmail",
         auth: {
@@ -43,9 +43,9 @@ let sendEmail = () => {
 
     const mailOptions = {
         from: "COVID 19 WEBSITE",
-        to: "josephmezza@yahoo.com",
-        subject: "First test",
-        text: "This is an email test!"
+        to: email,
+        subject: "Your Account Has Been Invalidated",
+        text: "Dear " + fName + " " + lName +  ",\n\n" + "We regret to inform you that your account has been invalidated.\n\nRegards,\n\nCOVID 19 Website"
     }
 
     transporter.sendMail(mailOptions);
@@ -562,27 +562,36 @@ app.post("/invalidateDoctor", (req,res) =>{
     //Delete from the database
     let DoctorID = req.body.DoctorID;
     console.log(DoctorID);
-    // db.query("SELECT Udoctor.Email FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND D.ID = ?", [DoctorID], (err, result) => {
-    //     let email = result;
-    // });
+    var fName;
+    var lName;
+    var email;
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Email FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND D.ID = ?", [DoctorID], (err, result) => {
+        if(err){
+            console.log(err);
+        } else{
+            fName = result[0].Fname;
+            lName = result[0].Lname;
+            email = result[0].Email;
+            console.log(email);
+        }
+    }); 
 
     db.query("DELETE FROM 390db.Doctors WHERE ID = ?", [DoctorID], (err, result) =>{
         if(err){
             console.log(err);
         } else{
-          //  sendEmail(); This will eventually send an email to the invalidated doctor
+          console.log("Deleted from Doctors table"); //This will eventually send an email to the invalidated doctor
         }
     })
 
-    db.query("DELETE FROM 390db.Users WHERE ID = ?", [DoctorID], (err, result) =>{
+    db.query("DELETE FROM 390db.Doctors WHERE ID = ?", [DoctorID], (err, result) =>{
         if(err){
             console.log(err);
         } else{
-          //  sendEmail(); This will eventually send an email to the invalidated doctor
-          console.log("Doctor invalidated successfully.");
+          console.log("Deleted from Users Table");
+          sendEmail(fName,lName,email); //This will eventually send an email to the invalidated doctor
         }
     })
-
  });
 
 //Gets the number of patients in each status category
