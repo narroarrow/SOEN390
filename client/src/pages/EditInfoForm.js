@@ -1,6 +1,7 @@
 import { Paper, FormControl, FormLabel, TextField, Button } from '@mui/material';
 import Axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 //This variable represents a function that will be called when the
 //user submits the form with their updated data. The updated data will be 
@@ -12,7 +13,7 @@ let submitEditInfoForm = (event) => {
   const currentDate = new Date();
   const timestamp = currentDate.getTime();
   Axios.post('http://localhost:8080/editedPatientData', {
-    //patientid: id
+    patientid: localStorage.getItem('id'),
     fname: data.get('firstName'),
     lname: data.get('lastName'),
     email: data.get('patientEmail'),
@@ -39,7 +40,8 @@ function EditInfoForm() {
   //server.js file to execute the code to query for the current data.
   useEffect(() => {
     Axios.get('http://localhost:8080/editPatientProfileData', {
-      //send the patient id here
+      withCredentials: true, 
+      params: {id: localStorage.getItem('id')}
     }).then((response) => {
       setEditPatientData(response.data);
       console.log(response);
@@ -55,6 +57,12 @@ function EditInfoForm() {
   // Allows patients to edit their information adding appropriate info in the text fields
 
   return (
+
+    <>
+      {
+        localStorage.getItem("role") != 'Patient' && <Navigate to={"/"} refresh={true} />
+      }
+
     <div align="Center">
       <Paper elevation={24} component="form" onLoad onSubmit={submitEditInfoForm} sx={{ width: 700, height: 1000, mt: 10 }}>
         <h1>Edit Profile Information</h1>
@@ -123,6 +131,7 @@ function EditInfoForm() {
       </Paper>
 
     </div>
+    </>
   );
 }
 

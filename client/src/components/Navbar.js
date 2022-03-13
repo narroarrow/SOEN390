@@ -75,6 +75,9 @@ const ResponsiveAppBar = () => {
             if (localStorage.getItem('role') != null) {
                 pages.push('Logout');
             }
+            if (localStorage.getItem('role') == 'Immigration Officer') {
+                pages.push('ImmigrationOfficerPatientProfile');
+            }
 
 
         }
