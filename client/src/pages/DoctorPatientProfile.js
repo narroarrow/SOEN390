@@ -61,7 +61,7 @@ function DoctorPatientProfile() {
         }
     <div>
       <Box sx={{ padding: 5 }}>
-        <h1>Patient Profile Page (Doctor)
+        <h1>Patient Profile (Doctor)      
           <Button value='All Patients' name='All Patients' variant='outlined' href='#outlined-buttons' onClick={() => filterAllPatients()} sx={{ textAlign: 'right', right: 0, display: 'inline-block', float: 'right' }}>
             All Patients
           </Button>
@@ -70,7 +70,7 @@ function DoctorPatientProfile() {
           </Button>
         </h1>
       </Box>
-      <Box sx={{ flexGrow: 1 }} textAlign='center'>
+      <Box sx={{ flexGrow: 1 , padding: 5}} textAlign='center'>
         <Grid container spacing={5} columns={12}>
           {filteredPatients.map((val, key) =>{
             let isFlagged = val.Flagged; //checks if patient has been flagged
