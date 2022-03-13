@@ -6,7 +6,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import Axios from 'axios';
 import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
+import FiberNewIcon from '@mui/icons-material/FiberNew';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
 
 
 function DoctorPatientProfile() {
@@ -15,7 +17,7 @@ function DoctorPatientProfile() {
   const [executed, setExecuted] = useState(false); //keeps track of if getPatients() method is called
   const [viewedList, setViewedList] = useState([]); //Patients whose profiles have been reviewed by a doctor
   
-  var tempDoctorID = 6;
+  var tempDoctorID = parseInt(localStorage.getItem('id'));
 
   var myPatients = patientList.filter(e => e.DoctorID === tempDoctorID); //returns a filtered list of patients that are assigned to the doctor
   var allPatients = patientList; //returns all patients
@@ -53,6 +55,10 @@ function DoctorPatientProfile() {
   }, [stopeffect]); 
 
   return (
+      <>
+        {
+          localStorage.getItem("role")!=('Doctor' || 'Admin') && <Navigate to={"/"} refresh={true}/>
+        }
     <div>
       <Box sx={{ padding: 5 }}>
         <h1>Patient Profile Page (Doctor)
@@ -72,6 +78,15 @@ function DoctorPatientProfile() {
             if (viewedList.map(el => el.ID).includes(val.ID)){ //if the PatientID is present in the list of Viewed Patients then set isViewed to true
               isViewed = true;
             }
+            let isChatRequested = false;
+            if (val.ChatRequested === 1 && val.DoctorID === tempDoctorID){
+              isChatRequested = true;
+            }
+            let isPatientNew = false;
+            if (val.NewPatient === 1 && val.DoctorID === tempDoctorID){
+              isPatientNew = true;
+            }
+
             return (
               <Grid item md={4} key={key}>
                   <Link to='/DoctorViewingPatient' state={{ID: val.ID}} style={{textDecoration: 'none'}}>
@@ -91,6 +106,8 @@ function DoctorPatientProfile() {
                                 
                     {isViewed ? (<VisibilityIcon/>) : (<VisibilityOutlinedIcon/>)} {/* If a patients health information has been reviewed the eye icon will be filled */}
                     {isFlagged ? (<FlagIcon color = 'secondary'/>) : (<FlagOutlinedIcon/>)} {/* If a patient is flagged the flag icon will be red */}
+                    {isChatRequested ? (<AnnouncementIcon/>) : (<AnnouncementIcon sx={{visibility: 'hidden'}}/>)}
+                    {isPatientNew ? (<FiberNewIcon/>) : (<FiberNewIcon sx={{visibility: 'hidden'}}/>)}
 
                   </Button>
                   </Link>
@@ -104,7 +121,7 @@ function DoctorPatientProfile() {
           Review Medical Checklist
         </Button>
       </Box>
-    </div>
+    </div> </>
   );
 }
 
