@@ -184,7 +184,8 @@ useEffect(() => { //functions executed upon page render
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
-                  <Button variant="contained" color="primary" onClick={() => validateDoctor(val.ID)} >
+                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%', color: 'black'}}>Doctor License: ${val.License}</Typography>
+                  <Button  sx={{ marginLeft: '20%'}} variant="contained" color="primary" onClick={() => validateDoctor(val.ID)} >
                   VALIDATE
                   </Button>
                   <Button variant="contained" color="primary" onClick={() => invalidateDoctor(val.ID)} sx={{ ml: '2%' }} >
@@ -211,6 +212,7 @@ useEffect(() => { //functions executed upon page render
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
+                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}>Doctor License: ${val.License}</Typography>
                 </Item>
               </Grid>
             )
