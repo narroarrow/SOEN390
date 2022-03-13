@@ -501,8 +501,9 @@ app.post("/Signup", async (req, res) => {
 })
 // end of sign up and login
 
-app.get("/adminViewingValidatedDoctorData", (req, res) => {
 
+// Gets validated doctor first name, last name, phone number to the admin
+app.get("/adminViewingValidatedDoctorData",(req,res) => {
     db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;", (err, result) => {
         if (err) {
             console.log(err);
@@ -511,8 +512,9 @@ app.get("/adminViewingValidatedDoctorData", (req, res) => {
         }
     });
 });
-app.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
 
+// Gets unvalidated doctor first name, last name, phone number to the admin
+app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
     db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;", (err, result) => {
 
         if (err) {
@@ -521,17 +523,20 @@ app.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
             res.send(result);
         }
     });
-});
-app.get("/adminViewingPatientData", (req, res) => {
-    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;", (err, result) => {
-        if (err) {
+
+
+// Gets patient first name, last name, phone number to the admin
+app.get("/adminViewingPatientData",(req,res) => {
+    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
             console.log(err);
         } else {
         }
         res.send(result);
     });
 });
-app.get("/doctorViewingTheirPatientData", (req, res) => {
+
+//Gets all relevant patient information to the doctor logged in
+app.get("/doctorViewingTheirPatientData", (req,res) =>{
     let did = 6;
     db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P, 390db.doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;", [did], (err, result) => {
         //hardcoded to doctor ID 6
@@ -542,8 +547,9 @@ app.get("/doctorViewingTheirPatientData", (req, res) => {
             res.send(result);
         }
     });
-});
-app.get("/doctorViewingAllDoctors", (req, res) => {
+
+//Gets all doctor information to other doctors
+app.get("/doctorViewingAllDoctors", (req,res) =>{
     db.query("SELECT Udoctor.* FROM 390db.users Udoctor, 390db.doctors D WHERE D.ID =  Udoctor.ID;", (err, result) => {
         if (err) {
             console.log("Error!");
@@ -553,7 +559,9 @@ app.get("/doctorViewingAllDoctors", (req, res) => {
         }
     });
 });
-app.get("/doctorViewingDoctorPatients", (req, res) => {
+
+//Gets all patient information with their assigned doctor to any doctor logged in
+app.get("/doctorViewingDoctorPatients", (req,res) =>{
     db.query("SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.users Upatient, 390db.users Udoctor, 390db.patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;", (err, result) => {
         if (err) {
             console.log("Error!");
@@ -564,7 +572,9 @@ app.get("/doctorViewingDoctorPatients", (req, res) => {
         }
     });
 });
-app.get("/doctorViewingAllPatientData", (req, res) => {
+
+//Gets all patient information to doctors
+app.get("/doctorViewingAllPatientData", (req,res) =>{
     db.query("SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P WHERE P.ID = Upatient.ID;", (err, result) => {
         if (err) {
             console.log("Error!");
@@ -574,6 +584,7 @@ app.get("/doctorViewingAllPatientData", (req, res) => {
         }
     });
 });
+
 app.post("/validateDoctor", (req, res) => {
     let DoctorID = req.body.DoctorID;
 
@@ -744,6 +755,235 @@ app.post("/makeAppointments", (req,res) => {
 )
 
 app.get('/*', function (req, res) {
+
+//Post to validate doctor in database
+app.post("/validateDoctor", (req,res) =>{
+   let DoctorID = req.body.DoctorID;
+   db.query("UPDATE 390db.users SET Validated = 1 WHERE ID = ?", [DoctorID], (err, result) =>{
+       if(err){
+           console.log(err);
+       } else{
+           res.send("Doctor validated!");
+       }
+   })
+});
+
+//Gets the number of patients in each status category
+app.post("/statusCountAllPatients", (req,res) =>{
+    db.query("  SELECT healthyCount, isolatingCount, infectedCount " + 
+               "FROM (  SELECT count(*) as healthyCount " + 
+                "FROM 390db.Patients P " +
+                "WHERE P.Status = 'Healthy') as healthyCount, " + 
+                "(  SELECT count(*) as isolatingCount " + 
+                "FROM 390db.Patients P " +
+                "WHERE P.Status = 'Isolating') as isolatingCount, " + 
+                "(  SELECT count(*) as infectedCount " + 
+                "FROM 390db.Patients P " +
+                "WHERE P.Status = 'Infected') as infectedCount;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+//Gets the total number of patients
+ app.post("/countAllPatients", (req,res) =>{
+    db.query("SELECT count(*) as allPatientCount FROM 390db.Patients P", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+//Gets the total number of flagged patients
+ app.post("/countAllFlaggedPatients", (req,res) =>{
+    db.query("SELECT count(*) as allFlaggedPatientCount FROM 390db.Patients P WHERE P.Flagged = 1", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+//Gets the total number of registered doctors
+ app.post("/countAllValidatedDoctors", (req,res) =>{
+    db.query("SELECT count(*) as allRegisteredDoctorsCount FROM 390db.Users U WHERE U.Validated = 1 AND U.Role = 'Doctor'", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets top 5 doctors with most to least patients
+ app.post("/doctorsWithMostPatients", (req,res) =>{
+    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+    "GROUP BY D.ID " + 
+    "ORDER BY countPatients DESC " + //Ordered by most to least
+    "LIMIT 5) " +
+    "UNION " +
+    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    "FROM 390db.Patients P1) AND D.ID = U.ID " +
+    "ORDER BY countPatients DESC " +
+    "LIMIT 5;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets top 5 doctors with least to most patients
+ app.post("/doctorsWithLeastPatients", (req,res) =>{ 
+    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+    "GROUP BY D.ID " + 
+    "ORDER BY countPatients ASC " + //Ordered by least to most
+    "LIMIT 5) " +
+    "UNION " +
+    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    "FROM 390db.Patients P1) AND D.ID = U.ID " +
+    "ORDER BY countPatients ASC " +
+    "LIMIT 5;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+  //Gets top 5 doctors with least to most patients
+  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
+    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+    "GROUP BY D.ID " + 
+    "ORDER BY countPatients ASC " + //Ordered by least to most
+    "LIMIT 5) " +
+    "UNION " +
+    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    "FROM 390db.Patients P1) AND D.ID = U.ID " +
+    "ORDER BY countPatients ASC " +
+    "LIMIT 5;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+  //Gets top 5 doctors with least to most patients
+  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
+    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+    "GROUP BY D.ID " + 
+    "ORDER BY countPatients ASC " + //Ordered by least to most
+    "LIMIT 5) " +
+    "UNION " +
+    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    "FROM 390db.Patients P1) AND D.ID = U.ID " +
+    "ORDER BY countPatients ASC " +
+    "LIMIT 5;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets the list of patients that are flagged but whose file has not been viewed
+ app.post("/patientsFlaggedNotViewed", (req,res) =>{ 
+    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email " +
+    "FROM 390db.Users Upatient, 390db.Patients P, 390db.InfoRequest IR, 390db.HealthInformation HI, 390db.Viewed V " +
+    "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.Timestamp AND P.ID IN " + 
+    "(SELECT P1.ID " +
+                                                             "FROM 390db.Patients P1, 390db. HealthInformation H1, 390db.Viewed V1 " +
+                                                             "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.Timestamp > V1.Timestamp);", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets the list of patients that are flagged and have been viewed from latest to most recent
+ app.post("/patientsFlaggedLeastViewed", (req,res) =>{ 
+    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, V.Timestamp as verifiedTime, P.ID " +
+    "FROM 390db.Patients P, 390db.Users Upatient, 390db.HealthInformation H , 390db.Viewed V " +
+    "WHERE Upatient.ID = P.ID AND H.PatientID = P.ID AND P.Flagged = 1 AND P.ID = V.PatientID AND H.Timestamp < (SELECT MAX(V1.Timestamp) " +
+                                                                                                            "FROM 390db.Viewed V1 " +
+                                                                                                            "WHERE P.ID = V1.PatientID) " +
+    "ORDER BY verifiedTime;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets the list of patients that have been flagged and have not submitted their symptom form upion receiving a request from their doctor
+ app.post("/patientsFlaggedNoSymptomFormResponse", (req,res) =>{ 
+    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, IR.Timestamp as requestTime, P.ID " +
+    "FROM 390db.Patients P, 390db.Users Upatient, 390db.InfoRequest IR, 390db.HealthInformation IH " +
+    "WHERE P.Flagged = 1 AND P.ID = Upatient.ID AND IR.PatientID = P.ID  AND IR.PatientID = IH.PatientID AND IR.Timestamp > IH.Timestamp " +
+    "ORDER BY requestTime ASC;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+//Gets patient name, and appointment time
+ app.post("/retrieveAllNotifications", (req,res) =>{ 
+    db.query("SELECT Upatient.Fname, Upatient.Lname, A.Datetime as appointmentTime " +
+    "FROM 390db.Appointments A, 390db.Users Upatient " +
+    "Where A.PatientID = Upatient.ID;", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ //Gets the total number of appointments
+ app.post("/getAllNotificationCount", (req,res) =>{ 
+    db.query("SELECT count(*) as notificationCount FROM 390db.Appointments", (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
+ 
+app.get('/*', function(req,res){
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 });
 
