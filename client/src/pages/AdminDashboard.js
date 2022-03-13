@@ -93,12 +93,19 @@ function AdminDashboard() {
     window.location.reload(false);
   };
 
+  function sendEmail(){
+    Axios.post("http://localhost:8080/sendEmail").then(()=>{
+      console.log("Sent Email!")
+    });
+  }
+
 let stopeffect = 1;
 
 useEffect(() => { //functions executed upon page render
   getValidatedDoctors();
   getUnvalidatedDoctors();
   getPatients();
+  //sendEmail();
 },[stopeffect]);
 
   return (
