@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Box, Grid, CssBaseline, Button, Card, styled, Paper, formHelperTextClasses} from '@mui/material';
 import Axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 import { useEffect, useState} from 'react';
 
 
@@ -19,7 +19,7 @@ function DoctorViewingPatient() {
     const [patientData, setPatientData] = useState([]); //Patient data used in rendering of page
     const [viewedList, setViewedList] = useState([]); //list of patients whose profiles have been reviewed
 
-    var tempDoctorID = 6;
+    var tempDoctorID = parseInt(localStorage.getItem('id'));
     let stopeffect = 1;
 
     let isViewed = false; //variable to verify if patient profile has been viewed, to be used for disabling or enabling MARK AS READ button
@@ -111,6 +111,11 @@ function DoctorViewingPatient() {
     }
 
     return (
+        <>
+        {
+          localStorage.getItem("role")!=('Doctor' || 'Admin') && <Navigate to={"/"} refresh={true}/>
+        }
+        
         <div>
             <Container component='main'>
                 <CssBaseline />
@@ -184,6 +189,7 @@ function DoctorViewingPatient() {
             </Container>
               
         </div>
+    </>
     );
 
 }

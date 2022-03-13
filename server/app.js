@@ -244,8 +244,6 @@ app.post("/markViewed", (req, res) => {
         }
     });
 
-
-
     if(PatientDocID === DoctorID){
 
         db.query("UPDATE 390db.patients SET NewPatient=0 WHERE ID=?", [PatientID], (err, result) =>{

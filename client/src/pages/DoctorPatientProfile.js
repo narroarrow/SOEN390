@@ -17,9 +17,9 @@ function DoctorPatientProfile() {
   const [executed, setExecuted] = useState(false); //keeps track of if getPatients() method is called
   const [viewedList, setViewedList] = useState([]); //Patients whose profiles have been reviewed by a doctor
   
-  var tempDoctorID = localStorage.getItem('id');
+  var tempDoctorID = parseInt(localStorage.getItem('id'));
 
-  var myPatients = patientList.filter(e => e.DoctorID === tempDoctorID); //returns a filtered list of patients that are assigned to the doctor
+  var myPatients = patientList.filter(e => e.DoctorID == tempDoctorID); //returns a filtered list of patients that are assigned to the doctor
   var allPatients = patientList; //returns all patients
   
   const filterMyPatients = () => { //this function will set the useState filteredPatients to show ALL patients
