@@ -155,7 +155,7 @@ function PatientProfile() {
                             SYMPTOM FORM
                         </Button>
 
-                        <Button sx={{}} variant="outlined" href="/PatientApointment" >
+                        <Button sx={{}} variant="outlined" href="/PatientAppointment" >
                             BOOK APPOINTMENT
                         </Button>
 
