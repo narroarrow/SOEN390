@@ -763,16 +763,17 @@ app.post("/statusCountAllPatients", (req,res) =>{
     db.query("  SELECT healthyCount, isolatingCount, infectedCount " + 
                "FROM (  SELECT count(*) as healthyCount " + 
                 "FROM 390db.Patients P " +
-                "WHERE P.Status = 'Healthy') as healthyCount, " + 
+                "WHERE P.Status = 'Normal') as healthyCount, " + 
                 "(  SELECT count(*) as isolatingCount " + 
                 "FROM 390db.Patients P " +
-                "WHERE P.Status = 'Isolating') as isolatingCount, " + 
+                "WHERE P.Status = 'Dead') as isolatingCount, " + 
                 "(  SELECT count(*) as infectedCount " + 
                 "FROM 390db.Patients P " +
-                "WHERE P.Status = 'Infected') as infectedCount;", (err, result) =>{
+                "WHERE P.Status = 'COVID') as infectedCount;", (err, result) =>{
         if(err){
             console.log(err);
         } else{
+            console.log(result)
             res.send(result);
         }
     })

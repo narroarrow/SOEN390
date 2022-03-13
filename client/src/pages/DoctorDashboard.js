@@ -4,6 +4,13 @@ import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
 import {Navigate} from "react-router-dom";
 
+import {
+  ArgumentAxis,
+  ValueAxis,
+  Chart,
+  BarSeries,
+} from '@devexpress/dx-react-chart-material-ui';
+
 
 
 function DoctorDashboard() {
@@ -161,6 +168,12 @@ function DoctorDashboard() {
     color: theme.palette.text.secondary,
   }));
 
+  const data = [
+    { argument: 'Healthy', value: 3 },
+    { argument: 'Infected', value: totalStatusCounts[1] },
+    { argument: 'Isolating', value: totalStatusCounts[2] },
+  ];
+
   return (
 
       <>
@@ -170,7 +183,22 @@ function DoctorDashboard() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} sx={{ marginBottom: '2%', padding: '2%' }} >
         <Grid item xs={8} >
-          {/* <Item>xs=8</Item> */}
+        {totalStatusCounts.map((val,key) => {
+            return(
+         <Item key={key}> 
+         <h1>Patient Statistics</h1>
+        
+         <Chart
+      data={data}
+    >
+      <ArgumentAxis />
+      <ValueAxis />
+  
+      <BarSeries valueField="value" argumentField="argument" />
+    </Chart>
+       
+         </Item>
+            )})}
         </Grid>
         <Grid item xs={4}>
           <Item><h1>Notifications</h1>
