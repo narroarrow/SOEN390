@@ -19,7 +19,7 @@ function DoctorPatientProfile() {
   
   var tempDoctorID = parseInt(localStorage.getItem('id'));
 
-  var myPatients = patientList.filter(e => e.DoctorID == tempDoctorID); //returns a filtered list of patients that are assigned to the doctor
+  var myPatients = patientList.filter(e => e.DoctorID === tempDoctorID); //returns a filtered list of patients that are assigned to the doctor
   var allPatients = patientList; //returns all patients
   
   const filterMyPatients = () => { //this function will set the useState filteredPatients to show ALL patients
