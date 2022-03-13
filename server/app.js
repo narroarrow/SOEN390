@@ -454,7 +454,7 @@ app.post("/Signup", async (req, res) => {
 // Gets validated doctor first name, last name, phone number to the admin
 app.get("/adminViewingValidatedDoctorData",(req,res) => {
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;",(err, result) => {
         if(err){
             console.log(err);
         } else {
@@ -467,7 +467,7 @@ app.get("/adminViewingValidatedDoctorData",(req,res) => {
 // Gets unvalidated doctor first name, last name, phone number to the admin
 app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
 
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;",(err, result) => {
             
         if(err){
             console.log(err);
@@ -561,19 +561,28 @@ app.post("/validateDoctor", (req,res) =>{
 app.post("/invalidateDoctor", (req,res) =>{
     //Delete from the database
     let DoctorID = req.body.DoctorID;
-    console.log(Doctor.ID);
+    console.log(DoctorID);
     // db.query("SELECT Udoctor.Email FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND D.ID = ?", [DoctorID], (err, result) => {
     //     let email = result;
     // });
 
-    // db.query("DELETE FROM 390db.users WHERE ID = ?", [DoctorID], (err, result) =>{
-    //     if(err){
-    //         console.log(err);
-    //     } else{
-    //       //  sendEmail(); This will eventually send an email to the invalidated doctor
-    //         res.send("Doctor invalidated!");
-    //     }
-    // })
+    db.query("DELETE FROM 390db.Doctors WHERE ID = ?", [DoctorID], (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+          //  sendEmail(); This will eventually send an email to the invalidated doctor
+        }
+    })
+
+    db.query("DELETE FROM 390db.Users WHERE ID = ?", [DoctorID], (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+          //  sendEmail(); This will eventually send an email to the invalidated doctor
+          console.log("Doctor invalidated successfully.");
+        }
+    })
+
  });
 
 //Gets the number of patients in each status category
