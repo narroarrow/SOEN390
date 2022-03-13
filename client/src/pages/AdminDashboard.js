@@ -187,6 +187,9 @@ useEffect(() => { //functions executed upon page render
                   <Button variant="contained" color="primary" onClick={() => validateDoctor(val.ID)} >
                   VALIDATE
                   </Button>
+                  <Button variant="contained" color="primary" onClick={() => invalidateDoctor(val.ID)} sx={{ ml: '2%' }} >
+                  DENY
+                  </Button>
                 </Item3>
               </Grid>
             )
