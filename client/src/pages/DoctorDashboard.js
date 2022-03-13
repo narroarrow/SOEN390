@@ -182,6 +182,7 @@ function DoctorDashboard() {
                       {key+1}
                     </Avatar>
                   }
+                  //display patient name and appointment time
                   title = {"Patient Name: " + val.Fname + " " + val.Lname}
                   subheader = {"Appointment Time: " + val.aptDate+ " "+val.startTime +" to "+ val.endTime}
                 />

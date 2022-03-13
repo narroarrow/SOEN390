@@ -964,7 +964,8 @@ app.post("/statusCountAllPatients", (req,res) =>{
 
  //Gets the total number of appointments
  app.post("/getAllNotificationCount", (req,res) =>{ 
-    db.query("SELECT count(*) as notificationCount FROM 390db.Appointments", (err, result) =>{
+    let doctorID = req.query["id"];
+    db.query("SELECT count(*) as notificationCount FROM 390db.Appointments A WHERE A.DoctorID = ?", [doctorID],(err, result) =>{
         if(err){
             console.log(err);
         } else{

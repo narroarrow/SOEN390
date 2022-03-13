@@ -31,7 +31,7 @@ const ResponsiveAppBar = () => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [user, setUser] = React.useState(null);
     const [pagesTest, setPagesTest] = React.useState([]);
-    const [count, setCount] = React.useState(2);
+    var [count, setCount] = React.useState(); //number of notifications set as count
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -96,9 +96,27 @@ const ResponsiveAppBar = () => {
 
         });
     }
+  //to display notifications tab if there are any notifications
+  console.log("here is count: " + count);
+  if (count!=0 && count>0){
+    settings = ['Profile', 'Account', 'Dashboard', 'Logout', 'Notifications'];
+  }
+  else{
+    count=0;
+  }
 
+  //function to get the number of notifications to be used
+  function getNotificationsCount(){
+    Axios.post("http://localhost:8080/getAllNotificationCount").then((response)=>{     
+      setCount(response.data[0].notificationCount);
+      console.log("Notification Count:");
+      console.log(response.data);  
+    });  
+  }
+    // these  functions are called when navbar is rendered
     useEffect(() => {
         instantiateNavBar();
+        getNotificationsCount();
     }, [])
 
 
