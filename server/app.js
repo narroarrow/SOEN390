@@ -436,17 +436,35 @@ app.post("/Signup", async (req, res) => {
 
             if (userRole == 'Patient') {
 
-                state = `SELECT p.DoctorID FROM 390db.patients p where p.DoctorID = any (select u.id from 390db.users u where u.Role = 'Doctor' and u.Validated = 1) Group By p.DoctorID order by Count(p.ID) asc limit 1;`;
+
+
+                state = `select id, patientCount from 390db.doctors order by patientCount asc limit 1;`;
                 db.query(state, function (err, result) {//finds the doctor with the least amount of patients
                     if (err) {
                         console.log(err)
                     } else {
-                        let docID = result[0].DoctorID
+                        let docID = result[0]["id"]
 
-                        let patientState = `INSERT INTO 390db.patients (ID, DoctorID, Flagged) VALUES (?,?,?);`;
+                        let patientState = `INSERT INTO 390db.patients (ID, DoctorID, Flagged) VALUES (?,?,?); `;
                         db.query(patientState, [uid, docID, 0], function (err, result) {//inserts a new patient with an auto assigned doctor
                             if (err) {
                                 console.log("\ninserting into patient \n" + err)
+                            }
+                        })
+                    }
+                })
+
+                db.query(state, function (err, result) {//finds the doctor with the least amount of patients
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        let docID = result[0]["id"]
+                        let countP = result[0]["patientCount"]+1
+
+                        let patientState = `Update doctors set patientCount = ? where id = ?;`;
+                        db.query(patientState, [countP, docID], function (err, result) {//inserts a new patient with an auto assigned doctor
+                            if (err) {
+                                console.log("\nupdating patient count of a doctor\t" + err)
                             }
                         })
                     }
@@ -456,7 +474,7 @@ app.post("/Signup", async (req, res) => {
                 db.promise().query(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "390db" AND TABLE_NAME = "users"`, [], async (err, result) => {
                     uid = result.AUTO_INCREMENT;
                 }).then(() => {
-                    let doctorState = `INSERT INTO 390db.doctors (ID, License) VALUES (?,?);`;
+                    let doctorState = `INSERT INTO 390db.doctors (ID, License,patientCount) VALUES (?,?,0);`;
                     db.query(doctorState, [uid, req.body.medicalLicense], function (err, result) {//inserts a new patient with an auto assigned doctor
                         if (err) {
                             console.log("\ninserting into doctors \n" + err)
