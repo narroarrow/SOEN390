@@ -523,11 +523,13 @@ app.get("/adminViewingUnvalidatedDoctorData",(req,res) => {
             res.send(result);
         }
     });
+});
 
 
 // Gets patient first name, last name, phone number to the admin
 app.get("/adminViewingPatientData",(req,res) => {
     db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;",(err, result) => {
+        if (err) {
             console.log(err);
         } else {
         }
@@ -547,6 +549,7 @@ app.get("/doctorViewingTheirPatientData", (req,res) =>{
             res.send(result);
         }
     });
+})
 
 //Gets all doctor information to other doctors
 app.get("/doctorViewingAllDoctors", (req,res) =>{
@@ -583,19 +586,6 @@ app.get("/doctorViewingAllPatientData", (req,res) =>{
             res.send(result);
         }
     });
-});
-
-app.post("/validateDoctor", (req, res) => {
-    let DoctorID = req.body.DoctorID;
-
-
-    db.query("UPDATE 390db.users SET Validated = 1 WHERE ID = ?", [DoctorID], (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send("Doctor validated!");
-        }
-    })
 });
 
 //Finds the next day in the calenda
@@ -754,7 +744,7 @@ app.post("/makeAppointments", (req,res) => {
 }
 )
 
-app.get('/*', function (req, res) {
+// app.get('/*', function (req, res) {
 
 //Post to validate doctor in database
 app.post("/validateDoctor", (req,res) =>{
@@ -843,51 +833,51 @@ app.post("/statusCountAllPatients", (req,res) =>{
     })
  });
 
- //Gets top 5 doctors with least to most patients
- app.post("/doctorsWithLeastPatients", (req,res) =>{ 
-    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
-    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
-   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
-    "GROUP BY D.ID " + 
-    "ORDER BY countPatients ASC " + //Ordered by least to most
-    "LIMIT 5) " +
-    "UNION " +
-    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
-    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-    "FROM 390db.Patients P1) AND D.ID = U.ID " +
-    "ORDER BY countPatients ASC " +
-    "LIMIT 5;", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
+//  //Gets top 5 doctors with least to most patients
+//  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
+//     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+//    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+//     "GROUP BY D.ID " + 
+//     "ORDER BY countPatients ASC " + //Ordered by least to most
+//     "LIMIT 5) " +
+//     "UNION " +
+//     "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+//     "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+//     "FROM 390db.Patients P1) AND D.ID = U.ID " +
+//     "ORDER BY countPatients ASC " +
+//     "LIMIT 5;", (err, result) =>{
+//         if(err){
+//             console.log(err);
+//         } else{
+//             res.send(result);
+//         }
+//     })
+//  });
 
-  //Gets top 5 doctors with least to most patients
-  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
-    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
-    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
-   "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
-    "GROUP BY D.ID " + 
-    "ORDER BY countPatients ASC " + //Ordered by least to most
-    "LIMIT 5) " +
-    "UNION " +
-    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-    "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
-    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-    "FROM 390db.Patients P1) AND D.ID = U.ID " +
-    "ORDER BY countPatients ASC " +
-    "LIMIT 5;", (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send(result);
-        }
-    })
- });
+//   //Gets top 5 doctors with least to most patients
+//   app.post("/doctorsWithLeastPatients", (req,res) =>{ 
+//     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
+//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
+//    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
+//     "GROUP BY D.ID " + 
+//     "ORDER BY countPatients ASC " + //Ordered by least to most
+//     "LIMIT 5) " +
+//     "UNION " +
+//     "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+//     "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+//     "FROM 390db.Patients P1) AND D.ID = U.ID " +
+//     "ORDER BY countPatients ASC " +
+//     "LIMIT 5;", (err, result) =>{
+//         if(err){
+//             console.log(err);
+//         } else{
+//             res.send(result);
+//         }
+//     })
+//  });
 
   //Gets top 5 doctors with least to most patients
   app.post("/doctorsWithLeastPatients", (req,res) =>{ 
@@ -960,7 +950,8 @@ app.post("/statusCountAllPatients", (req,res) =>{
 
 //Gets patient name, and appointment time
  app.post("/retrieveAllNotifications", (req,res) =>{ 
-    db.query("SELECT Upatient.Fname, Upatient.Lname, A.Datetime as appointmentTime " +
+    // A.Datetime as appointmentTime 
+    db.query("SELECT Upatient.Fname, Upatient.Lname " +
     "FROM 390db.Appointments A, 390db.Users Upatient " +
     "Where A.PatientID = Upatient.ID;", (err, result) =>{
         if(err){
