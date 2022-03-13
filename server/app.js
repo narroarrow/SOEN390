@@ -219,7 +219,7 @@ app.get('/patientProfileData', (req, res) => {
 
     //combinations.
 
-    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName, P.ChatRequested, P.ChatPermission FROM patients P, doctors D, users U, users U2 WHERE P.id=1 AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", (err, result) => {
+    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName, P.ChatRequested FROM patients P, doctors D, users U, users U2 WHERE P.ID=? AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", [req.cookies.id], (err, result) => {
         if (err) {
             console.log(err);
         } else {
