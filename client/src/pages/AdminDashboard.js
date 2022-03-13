@@ -1,6 +1,7 @@
 import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled, TextField } from '@mui/material';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
+import {Navigate} from "react-router-dom";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -88,6 +89,7 @@ function AdminDashboard() {
     if(!window.confirm("Are you sure you would like to deny this account? This will permanently delete the account from the system and inform the contact by email.")){
       return;
     }
+
     Axios.post("http://localhost:8080/invalidateDoctor", {
       DoctorID: ID
     }).then(()=>{
@@ -102,6 +104,7 @@ function AdminDashboard() {
     });
   }
 
+
 let stopeffect = 1;
 
 useEffect(() => { //functions executed upon page render
@@ -109,9 +112,14 @@ useEffect(() => { //functions executed upon page render
   getUnvalidatedDoctors();
   getPatients();
   //sendEmail();
+
 },[stopeffect]);
 
   return (
+      <>
+          {
+              localStorage.getItem("role")!='Admin' && <Navigate to={"/"} refresh={true}/>
+          }
     <div>
       <CardHeader
         avatar={
@@ -230,7 +238,7 @@ useEffect(() => { //functions executed upon page render
           )}
         </Grid> 
       </Container>
-    </div>
+    </div> </>
   );
 }
 export default AdminDashboard;
