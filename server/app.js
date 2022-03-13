@@ -436,7 +436,7 @@ app.post("/Signup", async (req, res) => {
 
             if (userRole == 'Patient') {
 
-                state = `SELECT p.DoctorID FROM 390db.patients p Group By p.DoctorID order by Count(p.ID) asc Limit 1;`;
+                state = `SELECT p.DoctorID FROM 390db.patients p where p.DoctorID = any (select u.id from 390db.users u where u.Role = 'Doctor' and u.Validated = 1) Group By p.DoctorID order by Count(p.ID) asc limit 1;`;
                 db.query(state, function (err, result) {//finds the doctor with the least amount of patients
                     if (err) {
                         console.log(err)
