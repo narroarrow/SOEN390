@@ -565,9 +565,7 @@ app.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
           }
         });
     }
-    )
-}
-);
+    );
 
 
 // Gets patient first name, last name, phone number to the admin
