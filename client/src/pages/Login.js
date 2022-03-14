@@ -17,7 +17,7 @@ import Axios from 'axios';
 import {useState, Component} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
 
-import Common from "./Common";
+import Common from "../components/Common";
 import axios from "axios";
 
 

@@ -19,7 +19,7 @@ import axios from "axios";
 import {useEffect} from "react";
 import Cookies from 'js-cookie';
 import Axios from "axios";
-import Common from "../pages/Common";
+import Common from "./Common";
 import Login from "../pages/Login";
 
 let pages = [];

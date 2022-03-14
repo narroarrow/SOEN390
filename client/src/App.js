@@ -22,7 +22,7 @@ import DoctorSchedule from './pages/DoctorSchedule';
 import PatientAppointment from './pages/PatientAppointment';
 
 import Cookies from 'js-cookie';
-import Common from './pages/Common'
+import Common from './components/Common'
 
 function App() {
 
