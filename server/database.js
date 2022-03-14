@@ -1,35 +1,17 @@
 const mysql = require('mysql2');
+require('dotenv').config()
 
 // below comments are to setup your local database
 
-
-// try {
-//     setTimeout(function () {
-//
-//         const connection = mysql.createConnection({
-//             host: 'mysql_server',
-//             user: 'root',
-//             password: 'password',
-//             database: '390db',
-//             port: '3306'
-//
-//
-//         })
-//         connection.connect(function (err) {
-//             if (err) throw err;
-//             console.log("Database Connected!");
-//         });
-//
-//     }, 5 * 1000);
-// } finally {console.log('ok')}
-
+// SETUP ENV VARIABLES IN A .env FILE IN SAME SERVER DIRECTORY
+// WRITE THEM AS SUCH: DB_PASSWORD = password
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: '390db',
-    port: '3306'
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || 'password',
+    database: process.env.DB_NAME || '390db',
+    port: process.env.DB_PORT || '3306'
 })
 
 connection.connect();
