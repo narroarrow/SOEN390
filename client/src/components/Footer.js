@@ -1,39 +1,33 @@
-import * as React from 'react';
-
 import {Container, Box, CssBaseline,Link, Typography} from '@mui/material';
 
-function Copyright() {
+function StickyFooter() {
   return (
-    <Typography variant="body2" color="text.secondary">
-      {'Copyright © '}
-      <Link color="inherit" href='#'>
-        Github
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-export default function StickyFooter() {
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', textAlign: 'center'}}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '10vh', textAlign: 'center'}}>
       <CssBaseline />
-      
+      {/* Adding the theme for the footer */}
       <Box component="footer" sx={{ py: 3, px: 2, mt: 'auto',
           backgroundColor: (theme) =>
             theme.palette.mode === 'light'
               ? theme.palette.grey[200]
               : theme.palette.grey[800],
-        }}
-      >
+        }}>
+        {/* Displaying the footer */}
         <Container maxWidth="sm">
           <Typography variant="body1">
-            COVID-19 Application :)
+            COVID-19 Application
           </Typography>
-          <Copyright />
+          <Typography variant="body2" color="text.secondary">
+            {'Copyright © '}
+            {/* The copyright leads to the github */}
+            <Link color="inherit" href='https://github.com/JeffreyCHChan/SOEN390'>
+              SOENXCLUSIVE
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+          </Typography>
         </Container>
       </Box>
     </Box>
   );
 }
+export default StickyFooter;
