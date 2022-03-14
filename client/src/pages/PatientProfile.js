@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Grid, CssBaseline, Button, Card, styled, Paper } from '@mui/material';
+import { Container, Box, Grid, CssBaseline, Button, Card, styled, Paper, Typography, TextField } from '@mui/material';
 import Axios from 'axios';
 import { Navigate } from "react-router-dom";
 
@@ -63,6 +63,101 @@ function PatientProfile() {
             {
                 localStorage.getItem("role") != 'Patient' && <Navigate to={"/"} refresh={true} />
             }
+
+            <Container component="main" >
+                <CssBaseline />
+                <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
+                    <Typography component="h1" variant="h2">
+                        Patient Profile
+                    </Typography>
+                    <Box sx={{ mt: 15 }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sx={{display:"flex",justifyContent:"center"}}>
+                                <Typography component="h1" variant="h5">
+                                    Medical Information
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Item>
+                                    Name:<br/> {patientData.map((val, key) => {return " " + val.FName + " " + val.LName})}
+                                </Item>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Item>
+                                    Patient ID:<br/>{patientData.map((val, key) => {return " " + val.ID})}
+                                </Item>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Item>
+                                    Doctor:<br/>{patientData.map((val, key) => {return " " + val.DFName + " " + val.DLName})}
+                                </Item>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    <Box sx={{ mt: 7 }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sx={{display:"flex",justifyContent:"center"}}>
+                                <Typography component="h1" variant="h5">
+                                    General Patient Information
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Item>
+                                    Birthdate:<br/>{patientData.map((val, key) => {return " " + val.Birthday})}
+                                </Item>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Item>
+                                    Health Insurance:<br/> {patientData.map((val, key) => {return " " + val.HealthInsurance})}
+                                </Item>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Item>
+                                    Email Address:<br/>{patientData.map((val, key) => {return " " + val.Email})}
+                                </Item>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    <Box sx={{ mt: 10 }}>
+                        <Grid container fullwidth spacing={1}>
+                            
+                                <Button  xs={12} sm={3} sx={{margin: 1}} variant="contained" href="/EditInfoForm" >
+                                    EDIT INFO
+                                </Button>
+                                
+                                <Button xs={12} sm={3} sx={{margin: 1}} variant="contained"  href="/PatientCovidStatus" >
+                                    Edit CURRENT STATUS
+                                </Button>
+
+                                <Button xs={12} sm={3} sx={{margin: 1}} variant="contained"  href="/SymptomForm">
+                                    SYMPTOM FORM
+                                </Button>
+                            
+
+                        </Grid>
+                    </Box>
+                    <Box sx={{ mt: 1 }}>
+                        <Grid container fullwidth spacing={1}>
+                            
+                                <Button xs={12} sm={3} sx={{margin: 1}} variant="contained"  href="/PatientAppointment" >
+                                    BOOK APPOINTMENT
+                                </Button>
+
+                                {isChatRequested ? (<Button xs={12} sm={3} sx={{margin: 1}} variant="contained"disabled>CHAT REQUESTED</Button>) :
+                                (<Button xs={12} sm={3} sx={{margin: 1}} variant="contained"onClick={requestChat} >REQUEST CHAT</Button>)}
+
+                                {chatGranted ? (<Button xs={12} sm={3} sx={{margin: 1}} variant="contained">OPEN CHAT</Button>) :
+                                (<Button xs={12} sm={3} sx={{margin: 1}} variant="contained" disabled> OPEN CHAT</Button>)}
+
+                        </Grid>
+                    </Box>
+                    
+                </Box>
+            </Container>
+            <br/><br/>
+
+{/* 
+            <br/><br/><br/><br/><br/><br/><br/>
             <div>
                 <Container component="main">
                     <CssBaseline />
@@ -170,7 +265,7 @@ function PatientProfile() {
                     </Box>
                 </Container>
 
-            </div>
+            </div> */}
         </>
     );
 }
