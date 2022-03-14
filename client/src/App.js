@@ -18,6 +18,7 @@ import ImmigrationOfficerPatientProfile from './pages/ImmigrationOfficerPatientP
 import ImmigrationOfficerViewingPatient from './pages/ImmigrationOfficerViewingPatient.js';
 import EditInfoForm from './pages/EditInfoForm';
 import PatientCovidStatus from './pages/PatientCovidStatus';
+import DoctorSchedule from './pages/DoctorSchedule';
 import PatientAppointment from './pages/PatientAppointment';
 
 import Cookies from 'js-cookie';
@@ -72,7 +73,7 @@ function App() {
                     <Route path='/PatientCovidStatus' element={<PatientCovidStatus/>}/>
                     <Route path='/SymptomForm' element={<SymptomForm/>}/>
                     <Route path='/PatientAppointment' element={<PatientAppointment/>}/>
-
+                    <Route path='/DoctorSchedule' element={<DoctorSchedule/>}/>
 
 
                 </Routes>

@@ -202,6 +202,7 @@ function DoctorDashboard() {
             </Chart>
           </Item>
           )})}
+
         </Grid>
         <Grid item xs={4}>
           <Item><h1>Notifications</h1>
@@ -222,6 +223,7 @@ function DoctorDashboard() {
           )}
           </Item>
         </Grid>
+
         <Grid item xs={6} >
           <List>
             <Item>
