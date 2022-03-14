@@ -1,8 +1,21 @@
-import { Avatar, IconButton, Button, Box, Grid, CardHeader,Paper, Typography} from '@mui/material';
+import { Avatar, Box, Grid, CardHeader,Paper, List, ListItem} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
 import {Navigate} from "react-router-dom";
+import AccessibilityIcon from '@mui/icons-material/Accessibility';
+import FlagIcon from '@mui/icons-material/Flag';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import MedicationIcon from '@mui/icons-material/Medication';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import EmailIcon from '@mui/icons-material/Email';
+
+import {
+  ArgumentAxis,
+  ValueAxis,
+  Chart,
+  BarSeries,
+} from '@devexpress/dx-react-chart-material-ui';
 
 
 
@@ -124,7 +137,11 @@ function DoctorDashboard() {
   };
 
   function getAllNotifications(){//This will return patient name, and appointment time
-    Axios.post("http://localhost:8080/retrieveAllNotifications").then((response)=>{
+    Axios.post("http://localhost:8080/retrieveAllNotifications", {
+      params: {
+        id: localStorage.getItem('id')
+      }
+    }).then((response)=>{
       setNotificationsList(response.data);
       console.log("Notification List:");
       console.log(response.data);  
@@ -157,8 +174,16 @@ function DoctorDashboard() {
     color: theme.palette.text.secondary,
   }));
 
-  return (
+  const data = [
+    { argument: 'Healthy', value: totalStatusCounts.map((val,key) => {
+      return(val.healthyCount)}) },
+    { argument: 'Dead', value: totalStatusCounts.map((val,key) => {
+      return(val.deadCount)}) },
+    { argument: 'Infected', value: totalStatusCounts.map((val,key) => {
+      return(val.infectedCount)}) },
+  ];
 
+  return (
       <>
         {
           localStorage.getItem("role")!='Doctor' && <Navigate to={"/"} refresh={true}/>
@@ -166,7 +191,18 @@ function DoctorDashboard() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} sx={{ marginBottom: '2%', padding: '2%' }} >
         <Grid item xs={8} >
-          {/* <Item>xs=8</Item> */}
+          {totalStatusCounts.map((val,key) => {
+              return(
+          <Item key={key}> 
+            <h1>Patient Registration Statistics</h1>
+            <Chart data={data}>
+              <ArgumentAxis />
+              <ValueAxis />
+              <BarSeries valueField="value" argumentField="argument" />
+            </Chart>
+          </Item>
+          )})}
+
         </Grid>
         <Grid item xs={4}>
           <Item><h1>Notifications</h1>
@@ -178,17 +214,97 @@ function DoctorDashboard() {
                       {key+1}
                     </Avatar>
                   }
+                  //display patient name and appointment time
                   title = {"Patient Name: " + val.Fname + " " + val.Lname}
-                  subheader = {"Appointment Time: " + val.appointmentTime.substring(0,10) + " " + val.appointmentTime.substring(11,19)}
+                  subheader = {"Appointment Time: " + val.aptDate+ " "+val.startTime +" to "+ val.endTime}
                 />
             )
           }
           )}
           </Item>
         </Grid>
+
+        <Grid item xs={6} >
+          <List>
+            <Item>
+              <h1>Doctor Registration Statistics</h1> 
+              <hr></hr>
+              {totalDoctorCount.map((val,key) => {
+              return(
+                <ListItem key={key}>
+                 <LocalHospitalIcon></LocalHospitalIcon> Total Number of Registered Doctors: {val.allRegisteredDoctorsCount}
+                </ListItem> 
+              )})}
+                <hr></hr>
+              <ListItem><MedicationIcon></MedicationIcon>Doctors with Most Assigned Patients:</ListItem>
+              {doctorsWithMostPatientsList.map((val,key) => {
+              return(
+                <ListItem key={key}>
+                  {val.Fname} {val.LName} |  <EmailIcon fontSize='small'></EmailIcon> {val.Email} | <LocalPhoneIcon fontSize='small'></LocalPhoneIcon> {val.Phone} 
+                </ListItem>
+              )})}
+               <hr></hr>
+               <ListItem><MedicationIcon></MedicationIcon>Doctors with Least Assigned Patients:</ListItem>
+              {doctorsWithLeastPatientsList.map((val,key) => {
+              return(
+                <ListItem key={key}>
+                  {val.Fname} {val.LName} | <EmailIcon fontSize='small'></EmailIcon> {val.Email} | <LocalPhoneIcon fontSize='small'></LocalPhoneIcon> {val.Phone}
+                </ListItem>
+              )})}
+               <hr></hr>
+            </Item>
+          </List>
+        </Grid>
+        <Grid item xs={6} >
+          <List>
+            <Item>
+              <h1>Patients Active Assistance Required</h1> 
+              <hr></hr>
+              {totalPatientCount.map((val,key) => {
+              return(
+                <ListItem key={key}>
+                 <AccessibilityIcon></AccessibilityIcon>Total Number of Registered Patients: {val.allPatientCount}
+                </ListItem>
+              )})}
+              {totalFlaggedPatientCount.map((val,key) => {
+              return(
+                <ListItem key={key}>
+                 <FlagIcon></FlagIcon>Total Number of Flagged Patients: {val.allFlaggedPatientCount}
+                </ListItem>
+              )})}
+                <hr></hr>
+                <ListItem><AccessibilityIcon></AccessibilityIcon>Patients Flagged and Not Viewed:</ListItem>
+              {patientsFlaggedNotViewedList.map((val,key) => {
+              return(
+                <ListItem key={key}>
+                 {val.Fname} {val.Lname} |  <EmailIcon fontSize='small'></EmailIcon> {val.Email} | <LocalPhoneIcon fontSize='small'></LocalPhoneIcon> {val.Phone} 
+                </ListItem>
+              )})}
+               <hr></hr>
+               <ListItem><AccessibilityIcon></AccessibilityIcon>Patients Least Recently Viewed:</ListItem>
+              {patientsFlaggedLeastViewedList.map((val,key) => {
+              return(
+                <ListItem key={key}>
+                 {val.Fname} {val.Lname} |  <EmailIcon fontSize='small'></EmailIcon> {val.Email} | <LocalPhoneIcon fontSize='small'></LocalPhoneIcon> {val.Phone} 
+                </ListItem>
+              )})}
+               <hr></hr>
+               <ListItem><AccessibilityIcon></AccessibilityIcon>Patients Flagged and Require Form Response Immediately:</ListItem>
+               {patientsFlaggedNoSymptomFormResponse.map((val,key) => {
+              return(
+                <ListItem key={key}>
+                 {val.Fname} {val.Lname} |  <EmailIcon fontSize='small'></EmailIcon> {val.Email} | <LocalPhoneIcon fontSize='small'></LocalPhoneIcon> {val.Phone} 
+                </ListItem>
+              )})}
+               <hr></hr>
+
+            </Item>
+          </List>
+        </Grid>
+        
       </Grid>
     </Box>
-     </>
+ </>
   );
 }
 

@@ -554,18 +554,15 @@ app.get("/adminViewingValidatedDoctorData", (req, res) => {
 
 // Gets unvalidated doctor first name, last name, phone number to the admin
 app.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;", (err, result) => {
+      db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;", (err, result) => {
 
+          if (err) {
 
-        db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;", (err, result) => {
-
-            if (err) {
-
-                console.log(err);
-            } else {
-                console.log(result);
-                res.send(result);
-            }
+              console.log(err);
+          } else {
+              console.log(result);
+              res.send(result);
+          }
         });
     }
     )
@@ -576,8 +573,6 @@ app.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
 // Gets patient first name, last name, phone number to the admin
 app.get("/adminViewingPatientData", (req, res) => {
     db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;", (err, result) => {
-
-
         if (err) {
             console.log(err);
         } else {
@@ -599,9 +594,8 @@ app.get("/doctorViewingTheirPatientData", (req, res) => {
             res.send(result);
         }
     });
-}
-);
 
+});
 
 
 //Gets all doctor information to other doctors
@@ -801,6 +795,27 @@ app.post("/makeAppointments", (req, res) => {
 // app.get('/*', function (req, res) {
 
 
+
+//Gets the number of patients in each status category
+app.post("/statusCountAllPatients", (req,res) =>{
+    db.query("  SELECT healthyCount, deadCount, infectedCount " + 
+               "FROM (  SELECT count(*) as healthyCount " + 
+                "FROM 390db.Patients P " +
+                "WHERE P.Status = 'Normal') as healthyCount, " + 
+                "(  SELECT count(*) as deadCount " + 
+                "FROM 390db.Patients P " +
+                "WHERE P.Status = 'Dead') as deadCount, " + 
+                "(  SELECT count(*) as infectedCount " + 
+                "FROM 390db.Patients P " +
+                "WHERE P.Status = 'COVID') as infectedCount;", (err, result) =>{
+        if(err){
+           console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
+
 //Post to validate doctor in database
 app.post("/validateDoctor", (req, res) => {
     let DoctorID = req.body.DoctorID;
@@ -848,7 +863,9 @@ app.post("/invalidateDoctor", (req, res) => {
             sendEmail(fName, lName, email); //This will eventually send an email to the invalidated doctor
         }
     })
-});
+ });
+
+
 
 app.post("/doctorAvailbility", (req, res) => {
     let gridSlots = req.body["backendTimeSlots"];
@@ -917,6 +934,7 @@ app.post("/statusCountAllPatients", (req, res) => {
 app.post("/countAllPatients", (req, res) => {
     db.query("SELECT count(*) as allPatientCount FROM 390db.Patients P", (err, result) => {
         if (err) {
+
             console.log(err);
         } else {
             res.send(result);
@@ -1092,24 +1110,25 @@ app.post("/patientsFlaggedNoSymptomFormResponse", (req, res) => {
 });
 
 //Gets patient name, and appointment time
-app.post("/retrieveAllNotifications", (req, res) => {
 
-    // A.Datetime as appointmentTime 
-    db.query("SELECT Upatient.Fname, Upatient.Lname " +
-        "FROM 390db.Appointments A, 390db.Users Upatient " +
-        "Where A.PatientID = Upatient.ID;", (err, result) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.send(result);
-            }
-        })
-});
+ app.post("/retrieveAllNotifications", (req,res) =>{ 
+    let doctorID = req.query["id"];
+    db.query("SELECT Upatient.Fname, Upatient.Lname, A.aptDate, A.startTime, A.endTime " +
+    "FROM 390db.Appointments A, 390db.Users Upatient, 390db.Doctors D, 390db.Patients P " +
+    "Where A.PatientID = Upatient.ID AND A.doctorID = ? AND P.id=Upatient.id AND P.doctorID = D.id;", [doctorID], (err, result) =>{
+        if(err){
+            console.log(err);
+        } else{
+            res.send(result);
+        }
+    })
+ });
 
-//Gets the total number of appointments
-app.post("/getAllNotificationCount", (req, res) => {
-    db.query("SELECT count(*) as notificationCount FROM 390db.Appointments", (err, result) => {
-        if (err) {
+ //Gets the total number of appointments
+ app.post("/getAllNotificationCount", (req,res) =>{ 
+    let doctorID = req.query["id"];
+    db.query("SELECT count(*) as notificationCount FROM 390db.Appointments A WHERE A.DoctorID = ?", [doctorID],(err, result) =>{
+        if(err){
             console.log(err);
         } else {
             res.send(result);
