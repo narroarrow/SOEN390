@@ -48,23 +48,23 @@ function PatientCovidStatus() {
             sx={{ mb: 5 }}
           >
             <FormControlLabel
-              value="1"
+              value="Healthy"
               control={<Radio required={true} />}
-              label="1 (Healthy)"
+              label="Healthy"
               labelPlacement="top"
             />
 
             <FormControlLabel
-              value="2"
+              value="Isolating"
               control={<Radio required={true} />}
-              label="2 (Isolating)"
+              label="Isolating"
               labelPlacement="top"
             />
 
             <FormControlLabel
-              value="3"
+              value="Infected"
               control={<Radio required={true} />}
-              label="3 (Infected)"
+              label="Infected"
               labelPlacement="top"
               sx={{ ml: 0.5 }}
             />
