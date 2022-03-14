@@ -32,11 +32,11 @@ const TimeSlotDayTable = (props) => {
 };
 
 const TimeSlotCalendar = () => {
-    const DAYS_TO_DISPLAY = 5; // update this to change how many days you show automatically
-    const TIME_SLOT_INTERVAL_IN_MINUTES = 30;
-    const currentDate = moment().isoWeekday(0).startOf("day");
+    const DAYS_TO_DISPLAY = 5; // Number of days being displayed on the page
+    const TIME_SLOT_INTERVAL_IN_MINUTES = 30; // Size (in minutes) of how large the time interval is of each checkbox
+    const currentDate = moment().isoWeekday(0).startOf("day"); // Setting the reference date to equal Sunday
     const [timeSlotsPerDay, setTimeSlotsPerDay] = useState([]);
-    const selectedTimeSlots = [];
+    const selectedTimeSlots = []; // An array storing the data of each selected slot.
 
     const handleChange = (event, timeSlot) => {
 
@@ -50,10 +50,14 @@ const TimeSlotCalendar = () => {
         }
     };
 
+    // Creates the collumn for each day - associates the day name ex. "Monday" with the time slots
     const calculateTimeSlots = (startHour, endHour) => {
+        
         const calculatedTimeSlots = [];
         // 17 - 8 = 9, 9 / 0.5 = 18 - 2 = 16, since you don't want to count 8 and 17 hours,
         const numberOfTimeSlots = (endHour - startHour) / (TIME_SLOT_INTERVAL_IN_MINUTES / 60);
+
+        // Loop that creates the day ex: "Monday" and each interation increments the day to store the next day.
         for (var i = 0; i < DAYS_TO_DISPLAY; i++) {
             let day = currentDate.add(1, "days");
 
@@ -67,6 +71,7 @@ const TimeSlotCalendar = () => {
             // the date will be Date-00-00-00, whatever, midnight, so add enough hours to get to your start time, so 8 am
             let incrementedTime = moment(day).add(startHour, "h");
 
+            // Loop to create the interval times aka 08:00 - 17:00 and stores them into an array of timeSlots, each interation of the loop increases the "startTime" by 30 minutes.
             for (var j = 0; j < numberOfTimeSlots; j++) {
                 let intervalEnd = moment(incrementedTime).add(TIME_SLOT_INTERVAL_IN_MINUTES, "m");
 
@@ -80,11 +85,14 @@ const TimeSlotCalendar = () => {
                 incrementedTime.add(TIME_SLOT_INTERVAL_IN_MINUTES, "m");
             }
 
+            // Pushing the data of the time slots for the day to a larger array, which will contain the times slots for each day
             calculatedTimeSlots.push(timeSlots);
         }
         setTimeSlotsPerDay(calculatedTimeSlots);
     };
     const submit = () => {
+
+        // Iterates through each selected time slot and sends the data to the database
 
         let backendTimeSlots = [];
         selectedTimeSlots.forEach(timeSlot => {
@@ -109,6 +117,8 @@ const TimeSlotCalendar = () => {
         calculateTimeSlots(8, 17);
     }, []);
 
+
+    // Returning the page - displaying each element such as day name, and all checkbox containers after passing in the data to TimeSLotDayTable which creates the HTML / MUI components
     return <Box sx={{ p: 10 }}>
         {timeSlotsPerDay.length > 0 && timeSlotsPerDay.map((timeSlotsOnDay, index) => <TimeSlotDayTable
             handleChange={handleChange} key={`${index}`} day={timeSlotsOnDay.day} slots={timeSlotsOnDay.slots}/>)}
