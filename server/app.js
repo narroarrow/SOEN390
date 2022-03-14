@@ -760,20 +760,19 @@ app.post("/validateDoctor", (req,res) =>{
 
 //Gets the number of patients in each status category
 app.post("/statusCountAllPatients", (req,res) =>{
-    db.query("  SELECT healthyCount, isolatingCount, infectedCount " + 
+    db.query("  SELECT healthyCount, deadCount, infectedCount " + 
                "FROM (  SELECT count(*) as healthyCount " + 
                 "FROM 390db.Patients P " +
                 "WHERE P.Status = 'Normal') as healthyCount, " + 
-                "(  SELECT count(*) as isolatingCount " + 
+                "(  SELECT count(*) as deadCount " + 
                 "FROM 390db.Patients P " +
-                "WHERE P.Status = 'Dead') as isolatingCount, " + 
+                "WHERE P.Status = 'Dead') as deadCount, " + 
                 "(  SELECT count(*) as infectedCount " + 
                 "FROM 390db.Patients P " +
                 "WHERE P.Status = 'COVID') as infectedCount;", (err, result) =>{
         if(err){
             console.log(err);
         } else{
-            console.log(result)
             res.send(result);
         }
     })
@@ -818,14 +817,14 @@ app.post("/statusCountAllPatients", (req,res) =>{
    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
     "GROUP BY D.ID " + 
     "ORDER BY countPatients DESC " + //Ordered by most to least
-    "LIMIT 5) " +
+    "LIMIT 3) " +
     "UNION " +
     "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
     "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
     "FROM 390db.Patients P1) AND D.ID = U.ID " +
     "ORDER BY countPatients DESC " +
-    "LIMIT 5;", (err, result) =>{
+    "LIMIT 3;", (err, result) =>{
         if(err){
             console.log(err);
         } else{
@@ -887,14 +886,14 @@ app.post("/statusCountAllPatients", (req,res) =>{
    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
     "GROUP BY D.ID " + 
     "ORDER BY countPatients ASC " + //Ordered by least to most
-    "LIMIT 5) " +
+    "LIMIT 3) " +
     "UNION " +
     "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
     "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
     "FROM 390db.Patients P1) AND D.ID = U.ID " +
     "ORDER BY countPatients ASC " +
-    "LIMIT 5;", (err, result) =>{
+    "LIMIT 3;", (err, result) =>{
         if(err){
             console.log(err);
         } else{
