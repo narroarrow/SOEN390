@@ -1,6 +1,7 @@
 import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled, TextField } from '@mui/material';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
+import {Navigate} from "react-router-dom";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -79,22 +80,46 @@ function AdminDashboard() {
     Axios.post("http://localhost:8080/validateDoctor", {
       DoctorID: ID
     }).then(()=>{
-      console.log("success")
+      console.log("successfully validated doctor!")
     });
     window.location.reload(false);
   };
 
-let stopeffect = 1;
+  let invalidateDoctor = (ID) => { //This function will update the validate attribute in the users table
+    if(!window.confirm("Are you sure you would like to deny this account? This will permanently delete the account from the system and inform the contact by email.")){
+      return;
+    }
 
+    Axios.post("http://localhost:8080/invalidateDoctor", {
+      DoctorID: ID
+    }).then(()=>{
+      console.log("successfully invalidated doctor!")
+    });
+    window.location.reload(false);
+  };
+
+  function sendEmail(){
+    Axios.post("http://localhost:8080/sendEmail").then(()=>{
+      console.log("Sent Email!")
+    });
+  }
+
+
+let stopeffect = 1;
 
 useEffect(() => { //functions executed upon page render
   getValidatedDoctors();
   getUnvalidatedDoctors();
   getPatients();
- 
+  //sendEmail();
+
 },[stopeffect]);
 
   return (
+      <>
+          {
+              localStorage.getItem("role")!='Admin' && <Navigate to={"/"} refresh={true}/>
+          }
     <div>
       <CardHeader
         avatar={
@@ -177,8 +202,12 @@ useEffect(() => { //functions executed upon page render
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
-                  <Button variant="contained" color="primary" onClick={() => validateDoctor(val.ID)} >
+                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%', color: 'black'}}>Doctor License: ${val.License}</Typography>
+                  <Button  sx={{ marginLeft: '20%'}} variant="contained" color="primary" onClick={() => validateDoctor(val.ID)} >
                   VALIDATE
+                  </Button>
+                  <Button variant="contained" color="primary" onClick={() => invalidateDoctor(val.ID)} sx={{ ml: '2%' }} >
+                  DENY
                   </Button>
                 </Item3>
               </Grid>
@@ -201,6 +230,7 @@ useEffect(() => { //functions executed upon page render
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
+                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}>Doctor License: ${val.License}</Typography>
                 </Item>
               </Grid>
             )
@@ -208,7 +238,7 @@ useEffect(() => { //functions executed upon page render
           )}
         </Grid> 
       </Container>
-    </div>
+    </div> </>
   );
 }
 export default AdminDashboard;
