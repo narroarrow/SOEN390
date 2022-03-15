@@ -9,8 +9,7 @@ services:
   - mysql
 
 before_install: 
-  - mysql -u travis --password=""
-  - mysql -e 'CREATE DATABASE 390db;'
+  - mysql -u travis --password="" < test/travis.sql
 
 install:
   - npm ci
