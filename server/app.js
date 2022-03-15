@@ -94,7 +94,7 @@ app.get("/Viewed", (req, res) => {
 
     // ERIC CHANGE: REMOVED WHERE P.ID = H.PATIENTID BECAUSE OTHERWISE MARK AS REVIEWED NEVER WORKS UNLESS WE CREATE A HEALTH INFORMATION FOR THE PATIENT 
 
-    db.query("SELECT P.ID FROM 390db.patients P, 390db.healthinformation H, 390db.viewed V WHERE P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
+    db.query("SELECT P.ID FROM 390db.patients P, 390db.HealthInformation H, 390db.viewed V WHERE P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -157,7 +157,7 @@ app.post("/createSymptomForm", (req, res) => {
     //our Health Information table which holds the information of all the symptom
     //forms. Every symptom form will be related to the patient that submitted it.
     db.query(
-        "INSERT INTO 390db.healthinformation (PatientID, Timestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO 390db.HealthInformation (PatientID, Timestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
         [patientid, timestamp, weight, temperature, breathing, chest_pain, fatigue, fever, cough, smell, taste, other],
         (err, results) => {
             if (err) {
