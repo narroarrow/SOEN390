@@ -177,8 +177,8 @@ function DoctorDashboard() {
   const data = [
     { argument: 'Healthy', value: totalStatusCounts.map((val,key) => {
       return(val.healthyCount)}) },
-    { argument: 'Dead', value: totalStatusCounts.map((val,key) => {
-      return(val.deadCount)}) },
+    { argument: 'Isolated', value: totalStatusCounts.map((val,key) => {
+      return(val.isolatedCount)}) },
     { argument: 'Infected', value: totalStatusCounts.map((val,key) => {
       return(val.infectedCount)}) },
   ];

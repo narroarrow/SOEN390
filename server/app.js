@@ -796,16 +796,16 @@ app.post("/makeAppointments", (req, res) => {
 
 //Gets the number of patients in each status category
 app.post("/statusCountAllPatients", (req,res) =>{
-    db.query("  SELECT healthyCount, deadCount, infectedCount " + 
+    db.query("  SELECT healthyCount, isolatedCount, infectedCount " + 
                "FROM (  SELECT count(*) as healthyCount " + 
                 "FROM 390db.Patients P " +
-                "WHERE P.Status = 'Normal') as healthyCount, " + 
-                "(  SELECT count(*) as deadCount " + 
+                "WHERE P.Status = 'Healthy') as healthyCount, " + 
+                "(  SELECT count(*) as isolatedCount " + 
                 "FROM 390db.Patients P " +
-                "WHERE P.Status = 'Dead') as deadCount, " + 
+                "WHERE P.Status = 'Isolated') as isolatedCount, " + 
                 "(  SELECT count(*) as infectedCount " + 
                 "FROM 390db.Patients P " +
-                "WHERE P.Status = 'COVID') as infectedCount;", (err, result) =>{
+                "WHERE P.Status = 'Infected') as infectedCount;", (err, result) =>{
         if(err){
            console.log(err);
         } else{
