@@ -2,6 +2,8 @@ language: node_js
 node_js: 
   - 16.13
 
+sudo: required
+
 
 cache: npm
 
@@ -12,7 +14,10 @@ install:
   - npm ci
 
 before_script:
-  - mysql -u root --pasword="root" -e 'CREATE DATABASE 390db;'
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade
+  - sudo service mysql restart
+  - mysql -u root -e 'CREATE DATABASE 390db;'
   - mysql -u root 390db < test/travis.sql
 
 script:
