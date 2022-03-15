@@ -8,11 +8,12 @@ cache: npm
 services:
   - mysql
 
-before_install: 
-  - mysql -u travis --password="" < test/travis.sql
-
 install:
   - npm ci
+
+before_script:
+  - mysql -u root -e 'CREATE DATABASE 390db;'
+  - mysql -u root 390db < test/travis.sql
 
 script:
   - cd server
@@ -21,7 +22,7 @@ script:
   - cd client
   - npm i
   - cd src
-  - npm test
+  - npm test API_methods.test.js
 
 
 deploy:
