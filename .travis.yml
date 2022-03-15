@@ -25,7 +25,7 @@ script:
   - npm i
   - cd src
   - cd __tests__
-  - npm citest API_methods.test.js 
+  - npm run citest API_methods.test.js 
 
 
 
