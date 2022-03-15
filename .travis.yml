@@ -25,7 +25,7 @@ script:
   - cd client
   - npm i
   - cd src
-  - npm test API_methods.test.js
+  - npm test
 
 
 deploy:
