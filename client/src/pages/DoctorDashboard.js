@@ -43,7 +43,7 @@ function DoctorDashboard() {
       setPatientList(response.data);
       console.log("Logged In Doctor Patients:");
       console.log(response.data);
-    });
+    }).catch(alert);
   };
 
   function getPatientsPerDoctor(){ //returns all patient information organized by doctor using GET
@@ -51,7 +51,7 @@ function DoctorDashboard() {
       setPatientPerDoctorList(response.data);
       console.log("Patients Organized By Doctor:");
       console.log(response.data);
-    });
+    }).catch(alert);
   };
 
   
@@ -60,7 +60,7 @@ function DoctorDashboard() {
       setAllPatientList(response.data);
       console.log("All Patients:");
       console.log(response.data);
-    });  
+    }).catch(alert);  
   };
 
   function getStatusCountAllPatients(){// This will return the number of patients classified under each status
@@ -68,7 +68,7 @@ function DoctorDashboard() {
       setTotalStatusCounts(response.data);
       console.log("Counts:");
       console.log(response.data)  
-  });
+  }).catch(alert);
   };
 
   function getDoctorsWithMostPatients(){ //This will return the top 5 doctors with most to least patients
@@ -76,7 +76,7 @@ function DoctorDashboard() {
       setDoctorsWithMostPatientsList(response.data);
       console.log("Doctors With Most Patients:");
       console.log(response.data)  
-  });  
+  }).catch(alert);  
   };
 
   function getDoctorsWithLeastPatients(){ //This will return the top 5 doctors with least to most patients
@@ -84,7 +84,7 @@ function DoctorDashboard() {
       setDoctorsWithLeastPatientsList(response.data);
       console.log("Doctors With Least Patients:");
       console.log(response.data)  
-  }); 
+  }).catch(alert); 
   };
 
   function getTotalNumberOfDoctors(){ //This will return the total number of validated doctors
@@ -92,7 +92,7 @@ function DoctorDashboard() {
       setValidatedDoctorCount(response.data);
       console.log("Total Number of Doctors:");
       console.log(response.data)  
-  });  
+  }).catch(alert);  
   };
 
   function getTotalNumberOfPatients(){ //This will return the total number of validated doctors
@@ -100,7 +100,7 @@ function DoctorDashboard() {
       setTotalPatientCount(response.data);
       console.log("Total Number of Patients:");
       console.log(response.data)  
-  });  
+  }).catch(alert);  
   }; 
   
 
@@ -109,7 +109,7 @@ function DoctorDashboard() {
       setTotalFlaggedPatientCount(response.data);
       console.log("Total Number of Flagged Patients:");
       console.log(response.data)  
-  });  
+  }).catch(alert);  
   };
 
   function getFlaggedPatientsNotViewed(){ //This will return the list of patients that have submitted a form but have not been reviewed
@@ -117,7 +117,7 @@ function DoctorDashboard() {
       setPatientsFlaggedNotViewedList(response.data);
       console.log("Flagged Patients Not Viewed");
       console.log(response.data)  
-  });  
+  }).catch(alert);  
   };
 
   function getFlaggedPatientsLeastViewed(){ //This will return the list of patients whose form has been reviewed from longest to most recent
@@ -125,7 +125,7 @@ function DoctorDashboard() {
       setpatientsFlaggedLeastViewedList(response.data);
       console.log("Patients Flagged Least Viewed");
       console.log(response.data)  
-  });  
+  }).catch(alert);  
   };
 
   function getFlaggedPatientsNoSymptomFormResponse(){ //This will return the list of patients that have been sent a form to fill out but have not done so
@@ -133,7 +133,7 @@ function DoctorDashboard() {
       setpatientsFlaggedNoSymptomFormResponseList(response.data);
       console.log("Patients Flagged No Symptom Form Response:");
       console.log(response.data)  
-  });  
+  }).catch(alert);  
   };
 
   function getAllNotifications(){//This will return patient name, and appointment time
@@ -145,7 +145,7 @@ function DoctorDashboard() {
       setNotificationsList(response.data);
       console.log("Notification List:");
       console.log(response.data);  
-  });  
+  }).catch(alert);  
   }
 
   let stopeffect = 1;
