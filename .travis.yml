@@ -15,7 +15,11 @@ install:
   - npm ci
 
 script:
+  - cd server
+  - npm i
+  - cd .. 
   - cd client
+  - npm i
   - cd src
   - npm test
 
