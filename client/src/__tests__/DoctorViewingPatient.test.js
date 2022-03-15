@@ -3,12 +3,12 @@ import DoctorViewingPatient from '../pages/DoctorViewingPatient';
 import { BrowserRouter } from 'react-router-dom';
 
 //This tests will pass if the DoctorViewingPatient page renders correctly
-// test('Renders the DoctorViewingPatient page', () => {
+test('Renders the DoctorViewingPatient page', () => {
 
-//   localStorage.setItem('role', 'Doctor');
+  localStorage.setItem('role', 'Doctor');
 
-//   render(
-//     <BrowserRouter>
-//       <DoctorViewingPatient />
-//     </BrowserRouter>);
-// });
+  render(
+    <BrowserRouter>
+      <DoctorViewingPatient />
+    </BrowserRouter>);
+});

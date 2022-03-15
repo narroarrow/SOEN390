@@ -113,7 +113,7 @@ CREATE TABLE `390db`.`inforequest` (
     );
 
 
-CREATE TABLE 390db.healthinformation (   
+CREATE TABLE 390db.HealthInformation (   
   `PatientID` INT NOT NULL,   
   `Timestamp` VARCHAR(18) NOT NULL,   
   `Weight` DOUBLE,   
