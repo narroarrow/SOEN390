@@ -26,6 +26,8 @@ script:
   - cd src
   - cd __tests__
   - npm test API_methods.test.js
+  - ^C
+
 
 
 deploy:
