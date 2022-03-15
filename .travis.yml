@@ -27,6 +27,12 @@ script:
   - cd __tests__
   - CI=true npm test API_methods.test.js 
 
+after_script:
+ - cd ..
+ - cd ..
+ - cd .. 
+ - cd server
+
 
 
 deploy:
