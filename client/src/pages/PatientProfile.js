@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Box, Grid, CssBaseline, Button, Card, styled, Paper, Typography, TextField } from '@mui/material';
+import { Container, Box, Grid, CssBaseline, Button, styled, Paper, Typography } from '@mui/material';
 import Axios from 'axios';
 import { Navigate } from "react-router-dom";
 
+//Styling for the Item tag
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     padding: theme.spacing(1),
@@ -12,13 +13,12 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function PatientProfile() {
-
     //These variables are used to get the current patient's data.
     //The const allows us to store the data in a variable using useState()
-    //and the stopeffect will make sure that our useEffect() will only 
+    //and the stopEffect will make sure that our useEffect() will only 
     //run one time.
     const [patientData, setPatientData] = useState([]);
-    let stopeffect = 1;
+    let stopEffect = 1;
 
     //This useEffect() will run after the page renders. It will
     //get the patients data by using a get and going to the 
@@ -28,7 +28,7 @@ function PatientProfile() {
             setPatientData(response.data);
             console.log(response);
         })
-    }, [stopeffect]);
+    }, [stopEffect]);
 
     let requestChat = () => { //When clicking the REQUEST CHAT button, this will update the ChatRequested attribute in the patient tale to true
         Axios.post("http://localhost:8080/RequestChat", {
@@ -45,7 +45,6 @@ function PatientProfile() {
     if (isChatRequestedArray[0] === 1) {
         isChatRequested = true;
     }
-
 
 
     let chatGranted = false; //variable to verify if patient has permission to chat with doctor, to be used for disabling or enabling OPEN CHAT button
@@ -66,82 +65,84 @@ function PatientProfile() {
 
             <Container component="main" >
                 <CssBaseline />
-                <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
+                <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
                     <Typography component="h1" variant="h2">
                         Patient Profile
                     </Typography>
-                    <Box sx={{ mt: 15 }}>
+                    {/* Displays the first block related to Medical Information */}
+                    <Box sx={{ mt: 10 }}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sx={{display:"flex",justifyContent:"center"}}>
+                            <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
                                 <Typography component="h1" variant="h5">
                                     Medical Information
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={6} md={4}>
                                 <Item>
-                                    Name:<br/> {patientData.map((val, key) => {return " " + val.FName + " " + val.LName})}
+                                    Name:<br /> {patientData.map((val, key) => { return " " + val.FName + " " + val.LName })}
                                 </Item>
                             </Grid>
                             <Grid item xs={12} sm={6} md={4}>
                                 <Item>
-                                    Patient ID:<br/>{patientData.map((val, key) => {return " " + val.ID})}
+                                    Patient ID:<br />{patientData.map((val, key) => { return " " + val.ID })}
                                 </Item>
                             </Grid>
                             <Grid item xs={12} sm={6} md={4}>
                                 <Item>
-                                    Doctor:<br/>{patientData.map((val, key) => {return " " + val.DFName + " " + val.DLName})}
+                                    Doctor:<br />{patientData.map((val, key) => { return " " + val.DFName + " " + val.DLName })}
                                 </Item>
                             </Grid>
                         </Grid>
-                    </Box>
-                    <Box sx={{ mt: 7 }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sx={{display:"flex",justifyContent:"center"}}>
+                        {/* Displays the second block related to Patient Information */}
+                        <Grid container spacing={2} sx={{mt: 7}}>
+                            <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
                                 <Typography component="h1" variant="h5">
                                     General Patient Information
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={6} md={4}>
                                 <Item>
-                                    Birthdate:<br/>{patientData.map((val, key) => {return " " + val.Birthday})}
+                                    Birthdate:<br />{patientData.map((val, key) => { return " " + val.Birthday })}
                                 </Item>
                             </Grid>
                             <Grid item xs={12} sm={6} md={4}>
                                 <Item>
-                                    Health Insurance:<br/> {patientData.map((val, key) => {return " " + val.HealthInsurance})}
+                                    Health Insurance:<br /> {patientData.map((val, key) => { return " " + val.HealthInsurance })}
                                 </Item>
                             </Grid>
                             <Grid item xs={12} sm={6} md={4}>
                                 <Item>
-                                    Email Address:<br/>{patientData.map((val, key) => {return " " + val.Email})}
+                                    Email Address:<br />{patientData.map((val, key) => { return " " + val.Email })}
                                 </Item>
                             </Grid>
                         </Grid>
                     </Box>
+                    {/* Displays the third block related to the clickable buttons */}
                     <Box sx={{ mt: 10 }}>
                         <Grid container fullwidth spacing={1}>
-                                <Button  xs={12} sm={3} sx={{margin: 1}} variant="contained" href="/EditInfoForm" >
-                                    EDIT INFO
-                                </Button>
-                                <Button xs={12} sm={3} sx={{margin: 1}} variant="contained"  href="/PatientCovidStatus" >
-                                    Edit CURRENT STATUS
-                                </Button>
-                                <Button xs={12} sm={3} sx={{margin: 1}} variant="contained"  href="/SymptomForm">
-                                    SYMPTOM FORM
-                                </Button>
+                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/EditInfoForm" >
+                                EDIT INFO
+                            </Button>
+                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/PatientCovidStatus" >
+                                Edit CURRENT STATUS
+                            </Button>
+                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/SymptomForm">
+                                SYMPTOM FORM
+                            </Button>
                         </Grid>
                     </Box>
                     <Box sx={{ mt: 1 }}>
-                        <Grid container fullwidth spacing={1}>                       
-                                <Button xs={12} sm={3} sx={{margin: 1}} variant="contained"  href="/PatientAppointment" >
-                                    BOOK APPOINTMENT
-                                </Button>
-                                {isChatRequested ? (<Button xs={12} sm={3} sx={{margin: 1}} variant="contained"disabled>CHAT REQUESTED</Button>) :
-                                (<Button xs={12} sm={3} sx={{margin: 1}} variant="contained"onClick={requestChat} >REQUEST CHAT</Button>)}
-                                {chatGranted ? (<Button xs={12} sm={3} sx={{margin: 1}} variant="contained">OPEN CHAT</Button>) :
-                                (<Button xs={12} sm={3} sx={{margin: 1}} variant="contained" disabled> OPEN CHAT</Button>)}
+                        <Grid container fullwidth spacing={1}>
+                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/PatientAppointment" >
+                                BOOK APPOINTMENT
+                            </Button>
+                            {/* This will display the approriate button based on this users status in the database */}
+                            {isChatRequested ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled>CHAT REQUESTED</Button>) :
+                                (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={requestChat} >REQUEST CHAT</Button>)}
+                            {chatGranted ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained">OPEN CHAT</Button>) :
+                                (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled> OPEN CHAT</Button>)}
                         </Grid>
-                    </Box>       
+                    </Box>
                 </Box>
             </Container>
         </>

@@ -74,12 +74,17 @@ const ResponsiveAppBar = () => {
                 pages.push('DoctorSchedule');
                 
             }
-            if (localStorage.getItem('role') != null) {
-                pages.push('Logout');
+            if (localStorage.getItem('role') == 'Health Official') {
+                pages.push('HealthOfficialPatientProfile');
+                
             }
             if (localStorage.getItem('role') == 'Immigration Officer') {
                 pages.push('ImmigrationOfficerPatientProfile');
             }
+            if (localStorage.getItem('role') != null) {
+                pages.push('Logout');
+            }
+            
 
 
         }

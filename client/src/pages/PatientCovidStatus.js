@@ -1,5 +1,5 @@
-import { Paper, FormControlLabel, FormControl, FormLabel, Radio, RadioGroup, Button } from '@mui/material'; 
-import React from 'react'; 
+import { Paper, FormControlLabel, FormControl, Typography, Radio, RadioGroup, Button } from '@mui/material';
+import React from 'react';
 import Axios from 'axios';
 import { Navigate } from 'react-router-dom';
 
@@ -15,74 +15,40 @@ let submitPatientCovidStatus = (event) => {
     status: data.get('covidStatus')
   }).then(() => {
     console.log('success');
-    window.location.href="/PatientProfile";
+    window.location.href = "/PatientProfile";
   });
 };
 
 function PatientCovidStatus() {
 
   // Takes users input for Covid status, either selects: healthy, isolating, or infected.
-  
-  
-
   return (
     <>
+      {/* Make sure the user signed in is a patient */}
       {
         localStorage.getItem("role") != 'Patient' && <Navigate to={"/"} refresh={true} />
       }
-      
-    <div align="Center">
-      <Paper elevation={24} component="form" onSubmit={submitPatientCovidStatus} sx={{ width: 700, height: 500, mt: 10 }}>
-        <h1>Covid Status</h1>
 
-        <FormControl>
-          <FormLabel id="covidStatus" sx={{ mb: 3 }}>
+      <div align="Center">
+        <Paper elevation={24} component="form" onSubmit={submitPatientCovidStatus} sx={{ width: 600, height: 500, mt: 10 }}>
+          <Typography component="h1" variant="h2" sx={{ mt: 3, mb: 10 }}>
             Covid Status
-          </FormLabel>
-
-          <RadioGroup
-            row
-            aria-labelledby="covidStatus"
-            name="covidStatus"
-            defaultValue="top"
-            sx={{ mb: 5 }}
-          >
-            <FormControlLabel
-              value="1"
-              control={<Radio required={true} />}
-              label="1 (Healthy)"
-              labelPlacement="top"
-            />
-
-            <FormControlLabel
-              value="2"
-              control={<Radio required={true} />}
-              label="2 (Isolating)"
-              labelPlacement="top"
-            />
-
-            <FormControlLabel
-              value="3"
-              control={<Radio required={true} />}
-              label="3 (Infected)"
-              labelPlacement="top"
-              sx={{ ml: 0.5 }}
-            />
-
-          </RadioGroup>
-        </FormControl>
-
-        <br></br>
-
-        <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Submit
-        </Button>
-
-      </Paper>
-
-    </div>
+          </Typography>
+          {/* The form with the radio buttons to select your status */}
+          <FormControl>
+            <RadioGroup row aria-labelledby="covidStatus" name="covidStatus" defaultValue="top" sx={{ mb: 5 }}>
+              <FormControlLabel value="1" control={<Radio required={true} />} label="1 (Healthy)" labelPlacement="top" />
+              <FormControlLabel value="2" control={<Radio required={true} />} label="2 (Isolating)" labelPlacement="top" />
+              <FormControlLabel value="3" control={<Radio required={true} />} label="3 (Infected)" labelPlacement="top" />
+            </RadioGroup>
+          </FormControl>
+          <br></br>
+          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            Submit
+          </Button>
+        </Paper>
+      </div>
     </>
   );
 }
-
 export default PatientCovidStatus;

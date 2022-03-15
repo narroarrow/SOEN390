@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Avatar, IconButton, Button, Box, Grid, CardHeader, } from '@mui/material';
+import { Avatar, IconButton, Button, Box, Grid, CardHeader, Typography } from '@mui/material';
 import FlagIcon from '@mui/icons-material/Flag';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -46,39 +46,37 @@ function ImmigrationOfficerPatientProfile() {
   }, [stopeffect]);
 
   return (
-
-    <>
-
+<>
       {
-        localStorage.getItem("role") != ('Immigration Officer') && <Navigate to={"/"} refresh={true} />
+        localStorage.getItem("role") != ('Immigration Officer' || 'Admin') && <Navigate to={"/"} refresh={true} />
       }
-
       <div>
         <Box sx={{ padding: 5 }}>
-          <h1>Patient Profile Page (Immigration Officer)
-            <Button value='All Patients' name='All Patients' variant='outlined' href='#outlined-buttons' onClick={() => filterAllPatients()} sx={{ textAlign: 'right', right: 0, display: 'inline-block', float: 'right' }}>
-              All Patients
-            </Button>
-          </h1>
+          <Typography component="h1" variant="h2">
+            Patient List
+          </Typography>
         </Box>
-        <Box sx={{ flexGrow: 1 }} textAlign='center'>
-          <Grid container spacing={5} columns={12}>
+        <Box sx={{ flexGrow: 1, padding: 5 }} textAlign='left'>
+          <Grid container spacing={2} columns={12}>
+            {/* Runs a loop for each patient in the database */}
             {filteredPatients.map((val, key) => {
               let isFlagged = val.Flagged; //checks if patient has been flagged
               let isViewed = false; //patient health information is not viewed unless doctor specifies
               if (viewedList.map(el => el.ID).includes(val.ID)) { //if the PatientID is present in the list of Viewed Patients then set isViewed to true
                 isViewed = true;
               }
+
               return (
-                <Grid item md={4} key={key}>
+                <Grid item xs={12} sm={6} md={4} key={key}>
+                  {/* The link tag creates the box in the display */}
                   <Link to='/ImmigrationOfficerViewingPatient' state={{ ID: val.ID }} style={{ textDecoration: 'none' }}>
-                    <Button variant='outlined' href='/ImmigrationOfficerViewingPatient'>
-                      <CardHeader
-                        avatar={
-                          <Avatar aria-label="">
-                            P{key}
-                          </Avatar>
-                        }
+                    <Button variant='outlined' href='/ImmigrationOfficerViewingPatient' fullWidth>
+                      <CardHeader fullwidth avatar={
+                        // Avatar for each patient
+                        <Avatar aria-label="">
+                          P{key}
+                        </Avatar>
+                      }
                         action={
                           <IconButton aria-label=""></IconButton>
                         }
@@ -88,7 +86,6 @@ function ImmigrationOfficerPatientProfile() {
 
                       {isViewed ? (<VisibilityIcon />) : (<VisibilityOutlinedIcon />)} {/* If a patients health information has been reviewed the eye icon will be filled */}
                       {isFlagged ? (<FlagIcon color='secondary' />) : (<FlagOutlinedIcon />)} {/* If a patient is flagged the flag icon will be red */}
-
                     </Button>
                   </Link>
                 </Grid>
@@ -96,13 +93,13 @@ function ImmigrationOfficerPatientProfile() {
             })}
           </Grid>
         </Box>
-        <Box sx={{ padding: 10 }}>
-          <Button variant='outlined' href='#outlined-buttons' sx={{ textAlign: 'right', position: 'absolute', right: '9%' }}>
+        {/* Feature not yet implemented */}
+        <Box sx={{ padding: 5 }}>
+          <Button variant='contained' href='#outlined-buttons' sx={{ textAlign: 'right', display: 'inline-block', float: 'right' }}>
             Review Medical Checklist
           </Button>
         </Box>
       </div>
-
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Box, Grid, CssBaseline, Button, Card, styled, Paper, formHelperTextClasses } from '@mui/material';
+import { Container, Box, Grid, CssBaseline, Button, Typography, styled, Paper } from '@mui/material';
 import Axios from 'axios';
 import { useLocation, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -45,85 +45,105 @@ function ImmigrationOfficerViewingPatient() {
     let unflagPatient = () => { //When clicking the UNFLAG button, this will update the Flagged attribute in the patient tale to false
         Axios.post("http://localhost:8080/unflagPatient", {
             PatientID: location.state.ID //The patient ID is being passed to the post method
-        }).then(()=>{
+        }).then(() => {
             console.log("success")
         });
     }
 
     let isFlagged = false; //variable to verify if patient has already been flagged, to be used for displaying either the FLAG or UNFLAG butttons
-    let isFlaggedArray = patientData.map((val, key) => {return val.Flagged});
-    if (isFlaggedArray[0] === 1){
+    let isFlaggedArray = patientData.map((val, key) => { return val.Flagged });
+    if (isFlaggedArray[0] === 1) {
         isFlagged = true;
     }
 
     return (
-
         <>
-
             {
-                localStorage.getItem("role") != ('Immigration Officer') && <Navigate to={"/"} refresh={true} />
+                localStorage.getItem("role") != ('Immigration Officer' || 'Admin') && <Navigate to={"/"} refresh={true} />
             }
-            <div>
-                <Container component='main'>
-                    <CssBaseline />
-                    <Box sx={{ padding: 5 }}>
-
-                        <Card sx={{ maxWidth: 275, textAlign: 'center' }}><h1>Patient Profile </h1></Card>
-                    </Box>
-                    <Container>
-                        {patientData.map((val, key) => {
-                            return (
-                                <Grid container spacing={2} key={key}>
-                                    <Grid item xs={4}>
-                                        <Item>Patient Name: {val.Fname + " " + val.Lname}</Item>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Item>Patient ID: {val.ID}</Item>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Item>Covid-19 Status: {val.Status}</Item>
-                                    </Grid>
-                                    <br></br>
-                                    <Grid item xs={4}>
-                                        <Item>Doctor: {val.DoctorFirst + " " + val.DoctorLast}</Item>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Item>Email: {val.Email}</Item>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Item>Phone Number: {val.Phone}</Item>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Item>Birthday: {val.Birthday.substring(0, 10)}</Item>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Item>Address: {val.Address}</Item>
-                                    </Grid>
+            <Container component="main" >
+                <CssBaseline />
+                {patientData.map((val, key) => {
+                    return (
+                        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
+                            <Typography component="h1" variant="h2">
+                                Patient Profile
+                            </Typography>
+                            {/* Displays the first block related to Patient Information */}
+                            <Grid container spacing={2} sx={{ mt: 5 }}>
+                                <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+                                    <Typography component="h1" variant="h5">
+                                        Medical Information
+                                    </Typography>
                                 </Grid>
-                            )
-                        })}
-                    </Container>
+                                <Grid item xs={12} md={4}>
+                                    <Item>
+                                        Patient Name:<br /> {val.Fname + " " + val.Lname}
+                                    </Item>
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <Item>
+                                        Patient ID:<br /> {val.ID}
+                                    </Item>
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <Item>
+                                        Covid-19 Status:<br /> {val.Status}
+                                    </Item>
+                                </Grid>
+                            </Grid>
+                            {/* Displays the second block related to Patient Information */}
+                            <Grid container spacing={2} sx={{ mt: 5 }}>
+                                <Grid item xs={12} md={4}>
+                                    <Item>
+                                        Doctor:<br /> {val.DoctorFirst + " " + val.DoctorLast}
+                                    </Item>
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <Item>
+                                        Email:<br /> {val.Email}
+                                    </Item>
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <Item>
+                                        Phone Number:<br /> {val.Phone}
+                                    </Item>
+                                </Grid>
+                            </Grid>
+                            {/* Displays the third block related to Patient Information */}
+                            <Grid container spacing={2} sx={{ mt: 5 }}>
+                                <Grid item xs={12} md={6} >
+                                    <Item>
+                                        Birthday:<br /> {val.Birthday ? val.Birthday.substring(0, 10) : '19/19/1999'}
+                                    </Item>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <Item>
+                                        Address:<br /> {val.Address}
+                                    </Item>
+                                </Grid>
+                            </Grid>
+                            {/* Displays the last block related to the clickable buttons */}
+                            <Box sx={{ mt: 10 }}>
+                                <Grid container fullwidth spacing={1}>
+                                    {/* Displaying the appropriate button base on if the patient is flagged or not */}
+                                    <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={flagPatient} href='/ImmigrationOfficerPatientProfile'>
+                                        FLAG PATIENT
+                                    </Button>
 
-                    <Box sx={{ padding: 5 }}>
-
-                        {/* I'm thinking that we make a new page called PreviousSymptoms where all
-                of the symptom forms will be sent.*/}
-                        <Button sx={{ ml: 48 }} variant='outlined' onClick={previousSymptoms} href='/PreviousSymptoms'>
-                            VIEW PREVIOUS SYMPTOM FORMS
-                        </Button>
-                        <br></br><br></br>
-                        {isFlagged ? (<Button sx={{ml: 56}} variant='outlined' onClick={unflagPatient} href='/ImmigrationOfficerViewingPatient'>UNFLAG PATIENT</Button>) : 
-                                     (<Button sx={{ml: 58}} variant='outlined' onClick={flagPatient} href='/ImmigrationOfficerViewingPatient'>FLAG PATIENT</Button>)}
-
-                    </Box>
-                </Container>
-
-            </div>
-
+                                    {/* Feature has not yet been implemented*/}
+                                    <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
+                                        PREVIOUS SYMPTOM FORMS
+                                    </Button>
+                                </Grid>
+                            </Box>
+                        </Box>
+                    )
+                })};
+            </Container>
         </>
     );
 
 }
-
 
 export default ImmigrationOfficerViewingPatient;

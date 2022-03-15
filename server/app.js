@@ -1109,7 +1109,7 @@ app.post("/patientsFlaggedNoSymptomFormResponse", (req, res) => {
 
 //Gets patient name, and appointment time
 
- app.post("/retrieveAllNotifications", (req,res) =>{ 
+ app.get("/retrieveAllNotifications", (req,res) =>{ 
     let doctorID = req.query["id"];
     db.query("SELECT Upatient.Fname, Upatient.Lname, A.aptDate, A.startTime, A.endTime " +
     "FROM 390db.Appointments A, 390db.Users Upatient, 390db.Doctors D, 390db.Patients P " +

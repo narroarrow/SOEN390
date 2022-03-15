@@ -1,16 +1,17 @@
-import {Container, Box, CssBaseline,Link, Typography} from '@mui/material';
+import { Container, Box, CssBaseline, Link, Typography } from '@mui/material';
 
 function StickyFooter() {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '10vh', textAlign: 'center'}}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '30vh', textAlign: 'center' }}>
       <CssBaseline />
       {/* Adding the theme for the footer */}
-      <Box component="footer" sx={{ py: 3, px: 2, mt: 'auto',
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[200]
-              : theme.palette.grey[800],
-        }}>
+      <Box component="footer" sx={{
+        py: 6, px: 2, mt: 'auto',
+        backgroundColor: (theme) =>
+          theme.palette.mode === 'light'
+            ? theme.palette.grey[200]
+            : theme.palette.grey[800],
+      }}>
         {/* Displaying the footer */}
         <Container maxWidth="sm">
           <Typography variant="body1">
