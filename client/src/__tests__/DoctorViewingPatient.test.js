@@ -12,5 +12,5 @@ test('Renders the DoctorViewingPatient page', () => {
   //     <DoctorViewingPatient />
   //   </BrowserRouter>);
 
-  console.log(test);
+  console.log('test');
 });
