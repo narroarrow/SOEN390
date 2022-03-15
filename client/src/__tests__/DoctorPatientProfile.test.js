@@ -6,10 +6,12 @@ import * as React from 'react';
 //This tests will pass if the DoctorPatientProfile page renders correctly
 test('Renders the DoctorPatientProfile page', () => {
 
+
     localStorage.setItem('role', 'Doctor');
 
     render(
       <BrowserRouter>
         <DoctorPatientProfile />
       </BrowserRouter>);
+
 });
