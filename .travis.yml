@@ -4,5 +4,5 @@ node_js:
 
 
 script: 
-- let test=true
+- npm test
 
