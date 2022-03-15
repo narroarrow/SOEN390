@@ -25,8 +25,7 @@ script:
   - npm i
   - cd src
   - cd __tests__
-  - npm test API_methods.test.js
-  - ^C
+  - npm test API_methods.test.js -- --watchAll=false
 
 
 
