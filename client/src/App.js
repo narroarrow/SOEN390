@@ -20,6 +20,7 @@ import EditInfoForm from './pages/EditInfoForm';
 import PatientCovidStatus from './pages/PatientCovidStatus';
 import DoctorSchedule from './pages/DoctorSchedule';
 import PatientAppointment from './pages/PatientAppointment';
+import Home from './pages/Home';
 
 import Cookies from 'js-cookie';
 import Common from './components/Common'
@@ -52,6 +53,7 @@ function App() {
                 <Navbar />
                 {/* Linking url paths to proper React components */}
                 <Routes>
+                    <Route path='/' element={<Home />} />
                     <Route path='/login' element={<Login />} checkAuth={checkAuth()} />
                     <Route path='/Signup' element={<Signup />} />
                     <Route path='/DoctorDashboard' element={<DoctorDashboard />} />

@@ -13,6 +13,7 @@ import {
     Tooltip,
     MenuItem,
     Badge,
+    Link,
 } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import axios from "axios";
@@ -57,7 +58,7 @@ const ResponsiveAppBar = () => {
 
             if (localStorage.getItem('role') == null) {
                 pages.push('Login');
-                pages.push('Signup')
+                pages.push('Signup');
             }
             if (localStorage.getItem('role') == 'Patient') {
                 pages.push('PatientProfile');
@@ -131,13 +132,13 @@ const ResponsiveAppBar = () => {
 
 
     return (
-        <AppBar position="static">
+        <AppBar position="sticky">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Typography variant="h6" noWrap component="div" sx={{mr: 2, display: {xs: 'none', md: 'flex'}}}>
-                        COVID-19 App
-                    </Typography>
-
+                    <Button variant="h6" noWrap component="div" sx={{mr: 2, display: {xs: 'none', md: 'flex'}}} >
+                        <Link href = '/' sx = {{color: 'white', textDecoration: 'none' }}>COVID-19 App</Link>
+                    </Button>
+                    
                     <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
                         <IconButton size="large" aria-label="account of current user" aria-controls="menu-appbar"
                                     aria-haspopup="true" onClick={handleOpenNavMenu} color="inherit">
