@@ -334,3 +334,9 @@ describe('testing /getAllNotificationCount', () => {
     expect(res.statusCode).toEqual(200);
   })
 });
+
+afterAll(async done => {
+  // Closing the DB connection allows Jest to exit successfully.
+  changeUser.close();
+  done();
+});
