@@ -38,13 +38,13 @@ function DoctorPatientProfile() {
         setFilteredPatients(response.data);
         setExecuted(true);
       }
-    });  
+    }).catch(alert);  
   };
 
   const getViewed = () => { //this function is called when the doctor patient profile page is loaded. It sets the useState patientList to the query result for patient info
     Axios.get("http://localhost:8080/Viewed").then((response) => {
       setViewedList(response.data);
-    });  
+    }).catch(alert);  
   };
   
   let stopeffect = 1;
