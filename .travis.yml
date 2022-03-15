@@ -1,6 +1,6 @@
-language: javascript
-javascript: 
-  -"6.0.0"
+language: node_js
+node_js: 
+  -"16.13.2"
 
 
 script: 
