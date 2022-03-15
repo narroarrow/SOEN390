@@ -1,5 +1,3 @@
-CREATE DATABASE `390db`;
-
 
 CREATE TABLE `390db`.`users` (
   `ID` int NOT NULL AUTO_INCREMENT,
