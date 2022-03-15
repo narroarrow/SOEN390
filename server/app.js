@@ -1173,6 +1173,7 @@ app.post("/acceptChat", (req, res) => {
             if (err) {
                 console.log(err);
             } else {
+                console.log("Chat accepted");
                 res.send("Chat Accepted!");
             }
         }
