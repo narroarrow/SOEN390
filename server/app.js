@@ -798,13 +798,13 @@ app.post("/makeAppointments", (req, res) => {
 app.post("/statusCountAllPatients", (req,res) =>{
     db.query("  SELECT healthyCount, isolatedCount, infectedCount " + 
                "FROM (  SELECT count(*) as healthyCount " + 
-                "FROM 390db.Patients P " +
+                "FROM 390db.patients P " +
                 "WHERE P.Status = 'Healthy') as healthyCount, " + 
                 "(  SELECT count(*) as isolatedCount " + 
-                "FROM 390db.Patients P " +
+                "FROM 390db.patients P " +
                 "WHERE P.Status = 'Isolated') as isolatedCount, " + 
                 "(  SELECT count(*) as infectedCount " + 
-                "FROM 390db.Patients P " +
+                "FROM 390db.patients P " +
                 "WHERE P.Status = 'Infected') as infectedCount;", (err, result) =>{
         if(err){
            console.log(err);
@@ -834,7 +834,7 @@ app.post("/invalidateDoctor", (req, res) => {
     var fName;
     var lName;
     var email;
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Email FROM 390db.Users Udoctor, 390db.Doctors D WHERE Udoctor.ID = D.ID AND D.ID = ?", [DoctorID], (err, result) => {
+    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Email FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND D.ID = ?", [DoctorID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -853,7 +853,7 @@ app.post("/invalidateDoctor", (req, res) => {
         }
     })
 
-    db.query("DELETE FROM 390db.Users WHERE ID = ?", [DoctorID], (err, result) => {
+    db.query("DELETE FROM 390db.users WHERE ID = ?", [DoctorID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -913,13 +913,13 @@ app.post("/doctorAvailbility", (req, res) => {
 app.post("/statusCountAllPatients", (req, res) => {
     db.query("  SELECT healthyCount, isolatingCount, infectedCount " +
         "FROM (  SELECT count(*) as healthyCount " +
-        "FROM 390db.Patients P " +
+        "FROM 390db.patients P " +
         "WHERE P.Status = 'Healthy') as healthyCount, " +
         "(  SELECT count(*) as isolatingCount " +
-        "FROM 390db.Patients P " +
+        "FROM 390db.patients P " +
         "WHERE P.Status = 'Isolating') as isolatingCount, " +
         "(  SELECT count(*) as infectedCount " +
-        "FROM 390db.Patients P " +
+        "FROM 390db.patients P " +
         "WHERE P.Status = 'Infected') as infectedCount;", (err, result) => {
             if (err) {
                 console.log(err);
@@ -930,7 +930,7 @@ app.post("/statusCountAllPatients", (req, res) => {
 });
 //Gets the total number of patients
 app.post("/countAllPatients", (req, res) => {
-    db.query("SELECT count(*) as allPatientCount FROM 390db.Patients P", (err, result) => {
+    db.query("SELECT count(*) as allPatientCount FROM 390db.patients P", (err, result) => {
         if (err) {
 
             console.log(err);
@@ -942,7 +942,7 @@ app.post("/countAllPatients", (req, res) => {
 
 //Gets the total number of flagged patients
 app.post("/countAllFlaggedPatients", (req, res) => {
-    db.query("SELECT count(*) as allFlaggedPatientCount FROM 390db.Patients P WHERE P.Flagged = 1", (err, result) => {
+    db.query("SELECT count(*) as allFlaggedPatientCount FROM 390db.patients P WHERE P.Flagged = 1", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -958,7 +958,7 @@ app.post("/sendEmail", (req, res) => {
 
 //Gets the total number of registered doctors
 app.post("/countAllValidatedDoctors", (req, res) => {
-    db.query("SELECT count(*) as allRegisteredDoctorsCount FROM 390db.Users U WHERE U.Validated = 1 AND U.Role = 'Doctor'", (err, result) => {
+    db.query("SELECT count(*) as allRegisteredDoctorsCount FROM 390db.users U WHERE U.Validated = 1 AND U.Role = 'Doctor'", (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -970,16 +970,16 @@ app.post("/countAllValidatedDoctors", (req, res) => {
 //Gets top 5 doctors with most to least patients
 app.post("/doctorsWithMostPatients", (req, res) => {
     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
-        "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
         "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
         "GROUP BY D.ID " +
         "ORDER BY countPatients DESC " + //Ordered by most to least
         "LIMIT 5) " +
         "UNION " +
         "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-        "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
         "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-        "FROM 390db.Patients P1) AND D.ID = U.ID " +
+        "FROM 390db.patients P1) AND D.ID = U.ID " +
         "ORDER BY countPatients DESC " +
         "LIMIT 5;", (err, result) => {
             if (err) {
@@ -1041,16 +1041,16 @@ app.post("/doctorsWithMostPatients", (req, res) => {
 //Gets top 5 doctors with least to most patients
 app.post("/doctorsWithLeastPatients", (req, res) => {
     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
-        "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
         "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
         "GROUP BY D.ID " +
         "ORDER BY countPatients ASC " + //Ordered by least to most
         "LIMIT 5) " +
         "UNION " +
         "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-        "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
+        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
         "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-        "FROM 390db.Patients P1) AND D.ID = U.ID " +
+        "FROM 390db.patients P1) AND D.ID = U.ID " +
         "ORDER BY countPatients ASC " +
         "LIMIT 5;", (err, result) => {
             if (err) {
@@ -1064,10 +1064,10 @@ app.post("/doctorsWithLeastPatients", (req, res) => {
 //Gets the list of patients that are flagged but whose file has not been viewed
 app.post("/patientsFlaggedNotViewed", (req, res) => {
     db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email " +
-        "FROM 390db.Users Upatient, 390db.Patients P, 390db.InfoRequest IR, 390db.HealthInformation HI, 390db.Viewed V " +
+        "FROM 390db.users Upatient, 390db.patients P, 390db.inforequest IR, 390db.HealthInformation HI, 390db.viewed V " +
         "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.Timestamp AND P.ID IN " +
         "(SELECT P1.ID " +
-        "FROM 390db.Patients P1, 390db. HealthInformation H1, 390db.Viewed V1 " +
+        "FROM 390db.patients P1, 390db. HealthInformation H1, 390db.viewed V1 " +
         "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.Timestamp > V1.Timestamp);", (err, result) => {
             if (err) {
                 console.log(err);
@@ -1080,9 +1080,9 @@ app.post("/patientsFlaggedNotViewed", (req, res) => {
 //Gets the list of patients that are flagged and have been viewed from latest to most recent
 app.post("/patientsFlaggedLeastViewed", (req, res) => {
     db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, V.Timestamp as verifiedTime, P.ID " +
-        "FROM 390db.Patients P, 390db.Users Upatient, 390db.HealthInformation H , 390db.Viewed V " +
+        "FROM 390db.patients P, 390db.users Upatient, 390db.HealthInformation H , 390db.viewed V " +
         "WHERE Upatient.ID = P.ID AND H.PatientID = P.ID AND P.Flagged = 1 AND P.ID = V.PatientID AND H.Timestamp < (SELECT MAX(V1.Timestamp) " +
-        "FROM 390db.Viewed V1 " +
+        "FROM 390db.viewed V1 " +
         "WHERE P.ID = V1.PatientID) " +
         "ORDER BY verifiedTime;", (err, result) => {
             if (err) {
@@ -1096,7 +1096,7 @@ app.post("/patientsFlaggedLeastViewed", (req, res) => {
 //Gets the list of patients that have been flagged and have not submitted their symptom form upion receiving a request from their doctor
 app.post("/patientsFlaggedNoSymptomFormResponse", (req, res) => {
     db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, IR.Timestamp as requestTime, P.ID " +
-        "FROM 390db.Patients P, 390db.Users Upatient, 390db.InfoRequest IR, 390db.HealthInformation IH " +
+        "FROM 390db.patients P, 390db.users Upatient, 390db.inforequest IR, 390db.HealthInformation IH " +
         "WHERE P.Flagged = 1 AND P.ID = Upatient.ID AND IR.PatientID = P.ID  AND IR.PatientID = IH.PatientID AND IR.Timestamp > IH.Timestamp " +
         "ORDER BY requestTime ASC;", (err, result) => {
             if (err) {
@@ -1112,7 +1112,7 @@ app.post("/patientsFlaggedNoSymptomFormResponse", (req, res) => {
  app.get("/retrieveAllNotifications", (req,res) =>{ 
     let doctorID = req.query["id"];
     db.query("SELECT Upatient.Fname, Upatient.Lname, A.aptDate, A.startTime, A.endTime " +
-    "FROM 390db.Appointments A, 390db.Users Upatient, 390db.Doctors D, 390db.Patients P " +
+    "FROM 390db.appointments A, 390db.users Upatient, 390db.doctors D, 390db.patients P " +
     "Where A.PatientID = Upatient.ID AND A.doctorID = ? AND P.id=Upatient.id AND P.doctorID = D.id;", [doctorID], (err, result) =>{
         if(err){
             console.log(err);
@@ -1125,7 +1125,7 @@ app.post("/patientsFlaggedNoSymptomFormResponse", (req, res) => {
  //Gets the total number of appointments
  app.post("/getAllNotificationCount", (req,res) =>{ 
     let doctorID = req.query["id"];
-    db.query("SELECT count(*) as notificationCount FROM 390db.Appointments A WHERE A.DoctorID = ?", [doctorID],(err, result) =>{
+    db.query("SELECT count(*) as notificationCount FROM 390db.appointments A WHERE A.DoctorID = ?", [doctorID],(err, result) =>{
         if(err){
             console.log(err);
         } else {
