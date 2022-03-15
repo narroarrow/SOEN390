@@ -1139,11 +1139,12 @@ app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 });
 
+//Sets ChatRequested attribute in the patient table to 1
 app.post("/RequestChat", (req, res) => {
-    let patientid = req.body.patientid;
+    let patientID = req.body.patientid; //this PatientID is used in the query to specify which patient tuple to edit
 
     db.query("UPDATE 390db.patients SET ChatRequested=1 WHERE ID=?",
-        [patientid],
+        [patientID],
         (err, results) => {
             if (err) {
                 console.log(err);
@@ -1154,13 +1155,12 @@ app.post("/RequestChat", (req, res) => {
     );
 });
 
+//Sets the ChatPermission attribute in the patient table to 1 and ChatRequested attribute to 0
 app.post("/acceptChat", (req, res) => {
-    console.log("hello");
-    let pid = req.body.PatientID;
-    console.log(pid);
-    console.log("test");
+    let patientID = req.body.PatientID; //this PatientID is used in the query to specify which patient tuple to edit
+
     db.query("UPDATE 390db.patients SET ChatRequested=false WHERE ID=?",
-        [pid],
+        [patientID],
         (err, results) => {
             if (err) {
                 console.log(err);
@@ -1168,7 +1168,7 @@ app.post("/acceptChat", (req, res) => {
         }
     );
     db.query("UPDATE 390db.patients SET ChatPermission=true WHERE ID=?",
-        [pid],
+        [patientID],
         (err, results) => {
             if (err) {
                 console.log(err);
@@ -1179,10 +1179,11 @@ app.post("/acceptChat", (req, res) => {
     );
 });
 
+//Sets the Flagged attribute of the patient DB to 0
 app.post("/unflagPatient", (req, res) => {
-    let PatientID = req.body.PatientID;
+    let patientID = req.body.PatientID; //this PatientID is used in the query to specify which patient tuple to edit
 
-    db.query("UPDATE 390db.patients SET Flagged=false where ID=?", [PatientID], (err, result) => {
+    db.query("UPDATE 390db.patients SET Flagged=false where ID=?", [patientID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
