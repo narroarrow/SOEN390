@@ -1,7 +1,7 @@
 import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled, TextField } from '@mui/material';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import {Navigate} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 //Paper Styling for Tiles
 const TilePaper = styled(Paper)(({ theme }) => ({
@@ -29,29 +29,29 @@ const UrgentPaper = styled(Paper)(({ theme }) => ({
 
 function AdminDashboard() {
 
-    const [patientList, setPatientList] = useState([]); //all patient info
-    const [filteredPatientList, setFilteredPatientList] = useState([]); //all patient info
-    const [doctorListValidated, setDoctorListValidated] = useState([]); //all doctor info
-    const [doctorListUnvalidated, setDoctorListUnvalidated] = useState([]); //all doctor info
+  const [patientList, setPatientList] = useState([]); //all patient info
+  const [filteredPatientList, setFilteredPatientList] = useState([]); //all patient info
+  const [doctorListValidated, setDoctorListValidated] = useState([]); //all doctor info
+  const [doctorListUnvalidated, setDoctorListUnvalidated] = useState([]); //all doctor info
 
-    var ptSearch = "";
-    var patientsOf = patientList.filter(e => e.Fname.includes(ptSearch) ); //returns a filtered list of patients based on search
-    var allPatients = patientList;
+  var ptSearch = "";
+  var patientsOf = patientList.filter(e => e.Fname.includes(ptSearch)); //returns a filtered list of patients based on search
+  var allPatients = patientList;
 
-    var docSearch = "";
-    var docOf = doctorListValidated.filter(e => e.Fname.includes(docSearch) ); //returns a filtered list of doctors based on search
+  var docSearch = "";
+  var docOf = doctorListValidated.filter(e => e.Fname.includes(docSearch)); //returns a filtered list of doctors based on search
 
-    const filterMyPatients = () => { //this function will set the useState filteredPatients to show ALL patients
-      setPatientList(patientsOf)
-    };
+  const filterMyPatients = () => { //this function will set the useState filteredPatients to show ALL patients
+    setPatientList(patientsOf)
+  };
 
-    const filterAllPatients = () => { //this function will set the useState filteredPatients to show the patients assigned specifically to the doctor who is logged in
-      setFilteredPatientList(allPatients)
-    };
+  const filterAllPatients = () => { //this function will set the useState filteredPatients to show the patients assigned specifically to the doctor who is logged in
+    setFilteredPatientList(allPatients)
+  };
 
-    const filterMyDoc = () => { //this function will set the useState filteredPatients to show the patients assigned specifically to the doctor who is logged in
-      setDoctorListValidated(docOf)
-    };
+  const filterMyDoc = () => { //this function will set the useState filteredPatients to show the patients assigned specifically to the doctor who is logged in
+    setDoctorListValidated(docOf)
+  };
 
   function getValidatedDoctors() { //this function will return all information associated to validated doctors
     Axios.get("http://localhost:8080/adminViewingValidatedDoctorData").then((response) => {
@@ -81,47 +81,49 @@ function AdminDashboard() {
   let validateDoctor = (ID) => { //this function will validate doctors on click
     Axios.post("http://localhost:8080/validateDoctor", {
       DoctorID: ID
-    }).then(()=>{
+    }).then(() => {
       console.log("successfully validated doctor!")
     });
     window.location.reload(false);
   };
 
   let invalidateDoctor = (ID) => { //This function will update the validate attribute in the users table
-    if(!window.confirm("Are you sure you would like to deny this account? This will permanently delete the account from the system and inform the contact by email.")){
+    if (!window.confirm("Are you sure you would like to deny this account? This will permanently delete the account from the system and inform the contact by email.")) {
       return;
     }
 
+    //This request will invalidate a doctor
     Axios.post("http://localhost:8080/invalidateDoctor", {
       DoctorID: ID
-    }).then(()=>{
+    }).then(() => {
       console.log("successfully invalidated doctor!")
     });
     window.location.reload(false);
   };
 
-  function sendEmail(){
-    Axios.post("http://localhost:8080/sendEmail").then(()=>{
+  //Feature to be implemented sppn
+  function sendEmail() {
+    Axios.post("http://localhost:8080/sendEmail").then(() => {
       console.log("Sent Email!")
     });
   }
 
 
-let stopeffect = 1;
+  let stopeffect = 1;
 
-useEffect(() => { //functions executed upon page render
-  getValidatedDoctors();
-  getUnvalidatedDoctors();
-  getPatients();
-  //sendEmail();
+  useEffect(() => { //functions executed upon page render
+    getValidatedDoctors();
+    getUnvalidatedDoctors();
+    getPatients();
+    //sendEmail();
 
-},[stopeffect]);
+  }, [stopeffect]);
 
   return (
-      <>
-          {
-              localStorage.getItem("role")!='Admin' && <Navigate to={"/"} refresh={true}/>
-          }
+    <>
+      {
+        localStorage.getItem("role") != 'Admin' && <Navigate to={"/"} refresh={true} />
+      }
     <div>
       <CardHeader
         avatar={
@@ -143,9 +145,6 @@ useEffect(() => { //functions executed upon page render
                 Patients
               </Typography>
             </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <TextField id="ptSearch" label="Search" variant="filled" onChange={() => filterMyPatients()}>{ptSearch}</TextField>
           </Grid>
         </Grid>
         {/* Grid Sizing for Patient Paper Tiles */}
@@ -184,9 +183,6 @@ useEffect(() => { //functions executed upon page render
                 Doctors
               </Typography>
             </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <TextField id="docSearch" label="Search" variant="filled" onChange={() => filterMyDoc()}>{docSearch}</TextField>
           </Grid>
         </Grid>
         {/*  Grid Sizing for Doctor Invalid Accounts Paper Tiles */}

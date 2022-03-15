@@ -71,7 +71,7 @@ function EditInfoForm() {
           <FormLabel id="firstName" sx={{ mb: 3 }}>
             Please enter your first name
           </FormLabel>
-          <TextField id="firstName" name="firstName" required label="First Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
+          <TextField id="firstName" name="firstName" placeholder='Alex' required label="First Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
         </FormControl>
 
         <br></br>
