@@ -92,8 +92,7 @@ function AdminDashboard() {
       return;
     }
 
-    //This request will invalidate a doctor
-    Axios.post("http://localhost:8080/invalidateDoctor", {
+    Axios.post("http://localhost:8080/invalidateDoctor", { //This request will invalidate a doctor
       DoctorID: ID
     }).then(() => {
       console.log("successfully invalidated doctor!")
@@ -101,8 +100,7 @@ function AdminDashboard() {
     window.location.reload(false);
   };
 
-  //Feature to be implemented sppn
-  function sendEmail() {
+  function sendEmail() { //Feature to be implemented soon
     Axios.post("http://localhost:8080/sendEmail").then(() => {
       console.log("Sent Email!")
     });
@@ -139,13 +137,17 @@ function AdminDashboard() {
       {/* Title Patient Block and Standard Grid Sizing */}
       <Container maxWidth="md" sx={{ pb: '2%' }}>
         <Grid container spacing={2} >
-          <Grid item xs={8}>
+          <Grid item xs={12}>
             <Card container sx={{ marginBottom: '2%', padding: '3%' }}>
               <Typography variant="body1" color="initial" >
                 Patients
               </Typography>
             </Card>
           </Grid>
+          {/* SEARCH BAR TOO IMPLEMENT NEXT SPRINT */}
+          {/* <Grid item xs={4}>
+            <TextField id="ptSearch" label="Search" variant="filled" onChange={() => filterMyPatients()}>{ptSearch}</TextField>
+          </Grid> */}
         </Grid>
         {/* Grid Sizing for Patient Paper Tiles */}
         <Grid container spacing={2} >
@@ -177,13 +179,17 @@ function AdminDashboard() {
       <Container maxWidth="md" sx={{ padding: '2%' }}>
         {/* Title Doctor Block and Standard Grid Sizing */}
         <Grid container spacing={2} >
-          <Grid item xs={8}>
+          <Grid item xs={12}>
             <Card container sx={{ marginBottom: '2%', padding: '3%' }}>
               <Typography variant="body1" color="initial" >
                 Doctors
               </Typography>
             </Card>
           </Grid>
+          {/* SEARCH BAR TOO IMPLEMENT NEXT SPRINT */}
+          {/* <Grid item xs={4}>
+            <TextField id="docSearch" label="Search" variant="filled" onChange={() => filterMyDoc()}>{docSearch}</TextField>
+          </Grid> */}
         </Grid>
         {/*  Grid Sizing for Doctor Invalid Accounts Paper Tiles */}
         <Grid container spacing={2} >
