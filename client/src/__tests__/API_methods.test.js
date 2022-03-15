@@ -8,7 +8,6 @@ describe('testing /doctorViewingPatientData', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).get('/doctorViewingPatientData', { params: {id: 1}});
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -18,7 +17,6 @@ describe('testing /doctorViewingPreviousSymptoms', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).get('/doctorViewingPreviousSymptoms', { params: {id: 1}});
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -28,7 +26,6 @@ describe('testing /markViewed', () => {
   it('returns a status code of 200 indicating that the post worked', async () => {
     let res = await request(app).post('/markViewed').send({ PatientID: 1, DoctorID: 6, datetime: '2022-04-03 00:00:00'});
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -38,7 +35,6 @@ describe('testing /requestForm', () => {
   it('returns a status code of 200 indicating that the post worked', async () => {
     let res = await request(app).post('/requestForm').send({ PatientID: 1});
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -48,7 +44,6 @@ describe('testing /flagPatient', () => {
   it('returns a status code of 200 indicating that the post worked', async () => {
     let res = await request(app).post('/flagPatient').send({ PatientID: 1});
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -58,7 +53,6 @@ describe('testing /Viewed', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).get('/Viewed');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -68,7 +62,6 @@ describe('testing /DoctorPatientProfile', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).get('/DoctorPatientProfile');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -90,7 +83,6 @@ describe('testing /createPatientCovidStatus', () => {
     it('returns a status code of 200 indicating that the post worked', async () => {
         let res = await request(app).post('/createPatientCovidStatus').send({ status: 2 });
         expect(res.statusCode).toEqual(200);
-        done();
     })
 });
 
@@ -101,7 +93,6 @@ describe('testing /editedPatientData', () => {
     it('returns a status code of 200 indicating that the post worked', async () => {
         let res = await request(app).post('/editedPatientData').send({ fname: 'Maxime', lname: 'Giroux', email: 'giroux2000@gmail.com', phone: '514 514 5145', healthinsurance: 'test'});
         expect(res.statusCode).toEqual(200);
-        done();
     })
 });
 
@@ -112,7 +103,6 @@ describe('testing /patientProfileData', () => {
     it('returns a status code of 200 indicating that the post worked', async () => {
         let res = await request(app).get('/patientProfileData');
         expect(res.statusCode).toEqual(200);
-        done();
     })
 });
 
@@ -123,7 +113,6 @@ describe('testing /editPatientProfileData', () => {
     it('returns a status code of 200 indicating that the post worked', async () => {
         let res = await request(app).get('/editPatientProfileData');
         expect(res.statusCode).toEqual(200);
-        done();
     })
 });
 
@@ -190,7 +179,6 @@ describe('testing /statusCountAllPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/statusCountAllPatients');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -199,7 +187,6 @@ describe('testing /countAllPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/countAllPatients');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -208,7 +195,6 @@ describe('testing /countAllFlaggedPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/countAllFlaggedPatients');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -217,7 +203,6 @@ describe('testing /countAllValidatedDoctors', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/countAllValidatedDoctors');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -226,7 +211,6 @@ describe('testing /doctorsWithMostPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/doctorsWithMostPatients');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -235,7 +219,6 @@ describe('testing /doctorsWithLeastPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/doctorsWithLeastPatients');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -244,7 +227,6 @@ describe('testing /patientsFlaggedNotViewed', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/patientsFlaggedNotViewed');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -253,7 +235,6 @@ describe('testing /patientsFlaggedLeastViewed', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/patientsFlaggedLeastViewed');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -263,7 +244,6 @@ describe('testing /adminViewingValidatedDoctorData', () => {
     it('returns a status code of 200 indicating that the get worked', async () => {
       let res = await request(app).get('/adminViewingValidatedDoctorData');
       expect(res.statusCode).toEqual(200);
-      done();
     })
   });
 
@@ -273,7 +253,6 @@ describe('testing /adminViewingValidatedDoctorData', () => {
     it('returns a status code of 200 indicating that the get worked', async () => {
       let res = await request(app).get('/adminViewingUnvalidatedDoctorData');
       expect(res.statusCode).toEqual(200);
-      done();
     })
   });
 
@@ -283,7 +262,6 @@ describe('testing /adminViewingValidatedDoctorData', () => {
     it('returns a status code of 200 indicating that the get worked', async () => {
       let res = await request(app).get('/adminViewingPatientData');
       expect(res.statusCode).toEqual(200);
-      done();
     })
   });
 
@@ -293,7 +271,6 @@ describe('testing /adminViewingValidatedDoctorData', () => {
     it('returns a status code of 200 indicating that the get worked', async () => {
       let res = await request(app).get('/doctorViewingTheirPatientData');
       expect(res.statusCode).toEqual(200);
-      done();
     })
   });
 
@@ -303,7 +280,6 @@ describe('testing /adminViewingValidatedDoctorData', () => {
     it('returns a status code of 200 indicating that the get worked', async () => {
       let res = await request(app).get('/doctorViewingAllDoctors');
       expect(res.statusCode).toEqual(200);
-      done();
     })
   });
 
@@ -313,7 +289,6 @@ describe('testing /adminViewingValidatedDoctorData', () => {
     it('returns a status code of 200 indicating that the get worked', async () => {
       let res = await request(app).get('/doctorViewingDoctorPatients');
       expect(res.statusCode).toEqual(200);
-      done();
     })
   });
 
@@ -323,7 +298,6 @@ describe('testing /adminViewingValidatedDoctorData', () => {
     it('returns a status code of 200 indicating that the get worked', async () => {
       let res = await request(app).get('/doctorViewingAllPatientData');
       expect(res.statusCode).toEqual(200);
-      done();
     })
   });
 
@@ -333,7 +307,6 @@ describe('testing /validateDoctor', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/validateDoctor').send({DoctorID: 6});
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -343,7 +316,6 @@ describe('testing /patientsFlaggedNoSymptomFormResponse', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/patientsFlaggedNoSymptomFormResponse');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -352,7 +324,6 @@ describe('testing /retrieveAllNotifications', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).get('/retrieveAllNotifications');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
@@ -361,7 +332,6 @@ describe('testing /getAllNotificationCount', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
     let res = await request(app).post('/getAllNotificationCount');
     expect(res.statusCode).toEqual(200);
-    done();
   })
 });
 
