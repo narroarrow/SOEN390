@@ -12,7 +12,7 @@ install:
   - npm ci
 
 before_script:
-  - mysql -u root -e 'CREATE DATABASE 390db;'
+  - mysql -u root --pasword="root" -e 'CREATE DATABASE 390db;'
   - mysql -u root 390db < test/travis.sql
 
 script:
