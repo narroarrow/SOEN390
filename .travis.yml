@@ -5,7 +5,11 @@ node_js:
 
 cache: npm
 
+services:
+  - mysql
+
 before_install: 
+  - mysql -u travis --password=""
   - mysql -e 'CREATE DATABASE 390db;'
 
 install:
@@ -13,17 +17,9 @@ install:
 
 script:
   - cd client
-  - npm i
-  - cd .. 
-  - cd server
-  - npm i
-  - cd ..
-  - cd client
   - cd src
   - npm test
 
-services:
-  - mysql
 
 deploy:
   provider: pages
