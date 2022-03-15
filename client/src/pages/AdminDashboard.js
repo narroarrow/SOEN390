@@ -3,22 +3,24 @@ import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
 import {Navigate} from "react-router-dom";
 
-
-const Item = styled(Paper)(({ theme }) => ({
+//Paper Styling for Tiles
+const TilePaper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
   color: theme.palette.text.primary,
 }));
 
-const Item2 = styled(Paper)(({ theme }) => ({
+//Paper Styling for Inactive Accounts
+const InactivePaper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
   backgroundColor: '#d3d3d3',
 }));
 
-const Item3 = styled(Paper)(({ theme }) => ({
+//Paper Styling for Urgent Accounts
+const UrgentPaper = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -132,6 +134,7 @@ useEffect(() => { //functions executed upon page render
         title="Welcome Admin"
         subheader="Admin"
       />
+      {/* Title Patient Block and Standard Grid Sizing */}
       <Container maxWidth="md" sx={{ pb: '2%' }}>
         <Grid container spacing={2} >
           <Grid item xs={8}>
@@ -145,12 +148,12 @@ useEffect(() => { //functions executed upon page render
             <TextField id="ptSearch" label="Search" variant="filled" onChange={() => filterMyPatients()}>{ptSearch}</TextField>
           </Grid>
         </Grid>
-
+        {/* Grid Sizing for Patient Paper Tiles */}
         <Grid container spacing={2} >
           {filteredPatientList.map((val,key) => {
             return(
               <Grid item xs={4} key={key}>
-              <Item>
+              <TilePaper>
                 <CardHeader
                   avatar={
                     <Avatar aria-label="">
@@ -163,8 +166,8 @@ useEffect(() => { //functions executed upon page render
                   title = {val.Fname + " " + val.Lname} 
                   subheader = {`Doctor: ${val.docFname} ${val.docLname}`} 
                 />
-                 <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}>Contact: ${val.Phone}</Typography>
-              </Item>
+                 <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}>Contact: {val.Phone}</Typography>
+              </TilePaper>
               </Grid>
             )
           }
@@ -173,6 +176,7 @@ useEffect(() => { //functions executed upon page render
       </Container>
       <hr></hr>
       <Container maxWidth="md" sx={{ padding: '2%' }}>
+        {/* Title Doctor Block and Standard Grid Sizing */}
         <Grid container spacing={2} >
           <Grid item xs={8}>
             <Card container sx={{ marginBottom: '2%', padding: '3%' }}>
@@ -185,11 +189,12 @@ useEffect(() => { //functions executed upon page render
             <TextField id="docSearch" label="Search" variant="filled" onChange={() => filterMyDoc()}>{docSearch}</TextField>
           </Grid>
         </Grid>
+        {/*  Grid Sizing for Doctor Invalid Accounts Paper Tiles */}
         <Grid container spacing={2} >
         {doctorListUnvalidated.map((val,key) => {
             return(
               <Grid item xs={4} key={key}>
-                <Item3>
+                <UrgentPaper>
                   <CardHeader
                     avatar={
                       <Avatar aria-label="">
@@ -202,22 +207,23 @@ useEffect(() => { //functions executed upon page render
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
-                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%', color: 'black'}}>Doctor License: ${val.License}</Typography>
+                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%', color: 'black'}}>Doctor License: {val.License}</Typography>
                   <Button  sx={{ marginLeft: '20%'}} variant="contained" color="primary" onClick={() => validateDoctor(val.ID)} >
                   VALIDATE
                   </Button>
                   <Button variant="contained" color="primary" onClick={() => invalidateDoctor(val.ID)} sx={{ ml: '2%' }} >
                   DENY
                   </Button>
-                </Item3>
+                </UrgentPaper>
               </Grid>
             )
           }
           )}
+           {/*  Grid Sizing for Doctor Invalid Accounts Paper Tiles */}
           {doctorListValidated.map((val,key) => {
             return(
               <Grid item xs={4} key={key}>
-                <Item>
+                <TilePaper>
                   <CardHeader
                     avatar={
                       <Avatar aria-label="">
@@ -230,8 +236,8 @@ useEffect(() => { //functions executed upon page render
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
-                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}>Doctor License: ${val.License}</Typography>
-                </Item>
+                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}>Doctor License: {val.License}</Typography>
+                </TilePaper>
               </Grid>
             )
           }
