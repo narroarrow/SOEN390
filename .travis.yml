@@ -5,6 +5,9 @@ node_js:
 
 cache: npm
 
+before_install: 
+  - mysql -e 'CREATE DATABASE 390db;'
+
 install:
   - npm ci
 
@@ -18,6 +21,9 @@ script:
   - cd client
   - cd src
   - npm test
+
+services:
+  - mysql
 
 deploy:
   provider: pages
