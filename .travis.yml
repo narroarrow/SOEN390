@@ -3,5 +3,6 @@ javascript:
   -"6.0.0"
 
 
-services:
-          - mysql 
+script: 
+- let test=true
+
