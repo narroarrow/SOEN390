@@ -1,8 +1,37 @@
-language: javascript
-javascript: 
-  -"6.0.0"
+language: node_js
+node_js: 
+  - 16.13
+
+sudo: required
 
 
-script: 
-- let test=true
+cache: npm
+
+services:
+  - mysql
+
+install:
+  - npm ci
+
+before_script:
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('root') where User='root'; FLUSH PRIVILEGES;"
+  - sudo mysql -u root -proot -e 'CREATE DATABASE 390db;'
+  - sudo mysql -u root -proot 390db < test/travis.sql
+
+script:
+  - cd server
+  - npm i
+  - cd .. 
+  - cd client
+  - npm i
+  - cd src
+  - npm test
+
+
+deploy:
+  provider: pages
+  local_dir: build
+  on:
+    branch: main
+
 
