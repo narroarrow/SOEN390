@@ -16,7 +16,7 @@ let submitSymptomForm = (event) => {
     patientid: localStorage.getItem('id'),
     timestamp: Date.now(),
     weight: data.get('weight'),
-    temperature: data.get('weight'),
+    temperature: data.get('temperature'),
     breathing: data.get('breathing'),
     chest: data.get('chest'),
     fatigue: data.get('fatigue'),

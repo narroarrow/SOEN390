@@ -1,4 +1,4 @@
-import { Paper, FormControl, FormLabel, TextField, Button } from '@mui/material';
+import { Paper, FormControl, FormLabel, TextField, Button, Typography } from '@mui/material';
 import Axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -21,7 +21,7 @@ let submitEditInfoForm = (event) => {
     healthinsurance: data.get('patientHI'),
   }).then(() => {
     console.log('success');
-    window.location.href="/PatientProfile";
+    window.location.href = "/PatientProfile";
   });
 };
 
@@ -40,8 +40,8 @@ function EditInfoForm() {
   //server.js file to execute the code to query for the current data.
   useEffect(() => {
     Axios.get('http://localhost:8080/editPatientProfileData', {
-      withCredentials: true, 
-      params: {id: localStorage.getItem('id')}
+      withCredentials: true,
+      params: { id: localStorage.getItem('id') }
     }).then((response) => {
       setEditPatientData(response.data);
       console.log(response);
@@ -57,34 +57,31 @@ function EditInfoForm() {
   // Allows patients to edit their information adding appropriate info in the text fields
 
   return (
-
     <>
       {
         localStorage.getItem("role") != 'Patient' && <Navigate to={"/"} refresh={true} />
       }
-
-    <div align="Center">
-      <Paper elevation={24} component="form" onLoad onSubmit={submitEditInfoForm} sx={{ width: 700, height: 1000, mt: 10 }}>
-        <h1>Edit Profile Information</h1>
-
-        <FormControl>
-          <FormLabel id="firstName" sx={{ mb: 3 }}>
-            Please enter your first name
-          </FormLabel>
-          <TextField id="firstName" name="firstName" placeholder='Alex' required label="First Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
-        </FormControl>
-
-        <br></br>
-
-        <FormControl>
-          <FormLabel id="lastName" sx={{ mb: 3 }}>
-            Please enter your last name
-          </FormLabel>
-          <TextField id="lastName" name="lastName" required label="Last Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
-        </FormControl>
-
-        <br></br>
-
+      <div align="Center">
+        <Paper elevation={15} component="form" onLoad onSubmit={submitEditInfoForm} sx={{ width: 700, height: 1000, mt: 10 }}>
+          <Typography component="h1" variant="h2" sx={{mt: 5, mb: 5}}>
+            Edit Profile Information
+          </Typography>
+          {/* Asks the user for all their input in order to update the server */}
+          <FormControl>
+            <FormLabel id="firstName" sx={{ mb: 3 }}>
+              Please enter your first name
+            </FormLabel>
+            <TextField id="firstName" name="firstName" placeholder={patientFName} required label="First Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
+          </FormControl>
+          <br></br>
+          <FormControl>
+            <FormLabel id="lastName" sx={{ mb: 3 }}>
+              Please enter your last name
+            </FormLabel>
+            <TextField id="lastName" name="lastName" placeholder={patientLName} required label="Last Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
+          </FormControl>
+          <br></br>
+          {/* Asks user for their birthday, feature to be implemented *}
         {/* <FormControl>
           <FormLabel id="birthday" sx={{ mb: 3 }}>
             Please enter your birthday
@@ -94,43 +91,32 @@ function EditInfoForm() {
             <TextField id="birthday" label="Birthday" type="date" defaultValue="2022-02-24" sx={{ width: 220, textAlign: 'center' }} InputLabelProps={{ shrink: true, }}
             /></Stack>
         </FormControl> */}
-
-        <br></br>
-
-        <FormControl>
-          <FormLabel id="patientHI" sx={{ mb: 3 }}>
-            Health Insurance Number
-          </FormLabel>
-          <TextField id="patientHI" name="patientHI" required label="Health Insurance" variant="filled" type="text" inputProps={{ maxLength: 10 }} sx={{ mb: 5 }} />
-        </FormControl>
-
-        <br></br>
-
-        <FormControl>
-          <FormLabel id="patientPhone" sx={{ mb: 3 }}>
-            Please enter your phone number
-          </FormLabel>
-          <TextField id="patientPhone" name="patientPhone" required label="Phone number" variant="filled" type="number" inputProps={{ maxLength: 9 }} sx={{ mb: 5 }} />
-        </FormControl>
-
-        <br></br>
-
-        <FormControl>
-          <FormLabel id="patientEmail" sx={{ mb: 3 }}>
-            Please enter your email address
-          </FormLabel>
-          <TextField id="patientEmail" name="patientEmail" required label="Email address" variant="filled" type="text" inputProps={{ maxLength: 240 }} sx={{ mb: 5 }} />
-        </FormControl>
-
-        <br></br>
-
-        <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Submit
-        </Button>
-
-      </Paper>
-
-    </div>
+          <FormControl>
+            <FormLabel id="patientHI" sx={{ mb: 3 }}>
+              Health Insurance Number
+            </FormLabel>
+            <TextField id="patientHI" name="patientHI" placeholder={patientHealthInsurance} required label="Health Insurance" variant="filled" type="text" inputProps={{ maxLength: 10 }} sx={{ mb: 5 }} />
+          </FormControl>
+          <br></br>
+          <FormControl>
+            <FormLabel id="patientPhone" sx={{ mb: 3 }}>
+              Please enter your phone number
+            </FormLabel>
+            <TextField id="patientPhone" name="patientPhone" placeholder={patientPhoneNumber} required label="Phone number" variant="filled" type="number" inputProps={{ maxLength: 9 }} sx={{ mb: 5 }} />
+          </FormControl>
+          <br></br>
+          <FormControl>
+            <FormLabel id="patientEmail" sx={{ mb: 3 }}>
+              Please enter your email address
+            </FormLabel>
+            <TextField id="patientEmail" name="patientEmail" placeholder={patientEmail} required label="Email address" variant="filled" type="text" inputProps={{ maxLength: 240 }} sx={{ mb: 5 }} />
+          </FormControl>
+          <br></br>
+          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            Submit
+          </Button>
+        </Paper>
+      </div>
     </>
   );
 }
