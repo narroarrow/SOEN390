@@ -211,36 +211,124 @@ const { changeUser } = require('../../../server/database.js');
 //   })
 // });
 
-describe('testing /seeOpenAppointments', () => {
-  it('returns an array when looking for appointment slots', async () => {
-    let res = await request(app).get('/seeOpenAppointments');
-    expect(res.body).anything();
-  })
-});
+// describe('testing /seeOpenAppointments', () => {
+//   it('returns an array when looking for appointment slots', async () => {
+//     let res = await request(app).get('/seeOpenAppointments');
+//     expect(res.body).anything();
+//   })
+// });
 
-//Here we update the Flagged attribute in the patient table of the DB to 0
-//If the post is successful, a 200 status code will be returned to make the test pass.
-describe('testing /unflagPatient', () => {
+// //Here we update the Flagged attribute in the patient table of the DB to 0
+// //If the post is successful, a 200 status code will be returned to make the test pass.
+// describe('testing /unflagPatient', () => {
+//   it('returns a status code of 200 indicating that the get worked', async () => {
+//     let res = await request(app).post('/unflagPatient').send({PatientID: 1});
+//     expect(res.statusCode).toEqual(200);
+//   })
+// });
+
+// //Here we update the ChatPermission attribute in the patient table of the DB to 1 and the ChatRequested attribute to 0
+// //If the post is succesfull, a 200 status code will be returned to make the test pass.
+// describe('testing /acceptChat', () => {
+//   it('returns a status code of 200 indicating that the get worked', async () => {
+//     let res = await request(app).post('/acceptChat').send({PatientID: 1});
+//     expect(res.statusCode).toEqual(200);
+//   })
+// });
+
+// //Here we update the ChatRequested attribute in the patient table of the DB to 1
+// //If the post is succesfull, a 200 status code will be returned to make the test pass.
+// describe('testing /RequestChat', () => {
+//   it('returns a status code of 200 indicating that the get worked', async () => {
+//     let res = await request(app).post('/RequestChat');
+//     expect(res.statusCode).toEqual(200);
+//   })
+// });
+
+//This test verifies we are able to retrieve the status of all patients and their count
+describe('testing /statusCountAllPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/unflagPatient').send({PatientID: 1});
+    let res = await request(app).post('/statusCountAllPatients');
     expect(res.statusCode).toEqual(200);
   })
 });
 
-//Here we update the ChatPermission attribute in the patient table of the DB to 1 and the ChatRequested attribute to 0
-//If the post is succesfull, a 200 status code will be returned to make the test pass.
-describe('testing /acceptChat', () => {
+//Verifies total patient count command
+describe('testing /countAllPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/acceptChat').send({PatientID: 1});
+    let res = await request(app).post('/countAllPatients');
     expect(res.statusCode).toEqual(200);
   })
 });
 
-//Here we update the ChatRequested attribute in the patient table of the DB to 1
-//If the post is succesfull, a 200 status code will be returned to make the test pass.
-describe('testing /RequestChat', () => {
+//Verifies total flagged patient count command
+describe('testing /countAllFlaggedPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/RequestChat');
+    let res = await request(app).post('/countAllFlaggedPatients');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Verfies total validated doctors command
+describe('testing /countAllValidatedDoctors', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/countAllValidatedDoctors');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Verifies doctors with most patients command
+describe('testing /doctorsWithMostPatients', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/doctorsWithMostPatients');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Verifies doctors with least patients commands
+describe('testing /doctorsWithLeastPatients', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/doctorsWithLeastPatients');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Verifies patients flagged but not viewed by doctor command
+describe('testing /patientsFlaggedNotViewed', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/patientsFlaggedNotViewed');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Verifies patients flagged that have been viewed in decreasing order command
+describe('testing /patientsFlaggedLeastViewed', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/patientsFlaggedLeastViewed');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Verifies patients flagged that have no filled out symptom form command
+describe('testing /patientsFlaggedNoSymptomFormResponse', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/patientsFlaggedNoSymptomFormResponse');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Verifies retrieve all notifications command
+describe('testing /retrieveAllNotifications', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/retrieveAllNotifications');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Verifies get the total number of notifications command
+describe('testing /getAllNotificationCount', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/getAllNotificationCount');
     expect(res.statusCode).toEqual(200);
   })
 });
