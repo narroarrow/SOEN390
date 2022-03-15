@@ -199,11 +199,11 @@ INSERT INTO `390db`.`contacts` (`PatientID1`, `PatientID2`) VALUES ('2', '4');
 INSERT INTO `390db`.`contacts` (`PatientID1`, `PatientID2`) VALUES ('4', '2');
 
 
-INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('1', 1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nothing');
-INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('2', 1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'headache');
-INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('3', 1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nausea');
-INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('4',  1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'cannot sleep');
-INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('5',  1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'migraine');
+INSERT INTO `390db`.`HealthInformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('1', 1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nothing');
+INSERT INTO `390db`.`HealthInformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('2', 1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'headache');
+INSERT INTO `390db`.`HealthInformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('3', 1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nausea');
+INSERT INTO `390db`.`HealthInformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('4',  1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'cannot sleep');
+INSERT INTO `390db`.`HealthInformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('5',  1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'migraine');
 
 
 
