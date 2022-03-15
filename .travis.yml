@@ -9,6 +9,8 @@ install:
   - npm ci
 
 script:
+  - cd client
+  - cd src
   - npm test
 
 deploy:
