@@ -25,13 +25,8 @@ script:
   - npm i
   - cd src
   - cd __tests__
-  - CI=true npm test API_methods.test.js 
+  - npm test API_methods.test.js --watchAll=false
 
-after_script:
- - cd ..
- - cd ..
- - cd .. 
- - cd server
 
 
 
