@@ -57,7 +57,7 @@ function DoctorPatientProfile() {
   return (
     <>
       {
-        localStorage.getItem("role") != ('Doctor' && 'Admin') && <Navigate to={"/"} refresh={true} />
+        localStorage.getItem("role") != ('Doctor' || 'Admin') && <Navigate to={"/"} refresh={true} />
       }
       <div>
         <Box sx={{ padding: 5 }}>
