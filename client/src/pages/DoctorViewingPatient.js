@@ -110,6 +110,13 @@ function DoctorViewingPatient() {
         isFlagged = true;
     }
 
+    let patientsDoctorID = patientData.map((val, key) => { return val.DoctorID })[0];
+
+    let viewingDoctorsPatient = false;
+    if(patientsDoctorID === parseInt(localStorage.getItem("id"))){
+        viewingDoctorsPatient = true;
+    }
+
     return (
         <>
             {
@@ -192,13 +199,13 @@ function DoctorViewingPatient() {
                                     <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
                                         PREVIOUS SYMPTOM FORMS
                                     </Button>
-
+                                    
                                     {/* If patient profile has been reviewed already, the MARK AS REVIEWED button will be disabled */}
-                                    {(!isViewed || isNewPatient) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={markAsReviewed} href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) :
+                                    {((!isViewed || isNewPatient) && viewingDoctorsPatient) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={markAsReviewed} href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) :
                                         (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>)}
                                     {/* This button will allow the docotr to accept a chat from a patient, initially  the chat is disabled */}
-                                    {isChatAccepted ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) :
-                                        (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}
+                                    {(isChatAccepted && viewingDoctorsPatient) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) :
+                                        (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}
                                 </Grid>
                             </Box>
                         </Box>
