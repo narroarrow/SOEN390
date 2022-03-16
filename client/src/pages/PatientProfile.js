@@ -137,7 +137,7 @@ function PatientProfile() {
                                 BOOK APPOINTMENT
                             </Button>
                             {/* This will display the approriate button based on this users status in the database */}
-                            {isChatRequested ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled>CHAT REQUESTED</Button>) :
+                            {(isChatRequested || chatGranted) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled>CHAT REQUESTED</Button>) :
                                 (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={requestChat} >REQUEST CHAT</Button>)}
                             {chatGranted ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained">OPEN CHAT</Button>) :
                                 (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled> OPEN CHAT</Button>)}

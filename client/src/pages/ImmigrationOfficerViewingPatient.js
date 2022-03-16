@@ -139,7 +139,7 @@ function ImmigrationOfficerViewingPatient() {
                             </Box>
                         </Box>
                     )
-                })};
+                })}
             </Container>
         </>
     );

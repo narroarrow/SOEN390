@@ -94,7 +94,8 @@ app.get("/Viewed", (req, res) => {
 
     // ERIC CHANGE: REMOVED WHERE P.ID = H.PATIENTID BECAUSE OTHERWISE MARK AS REVIEWED NEVER WORKS UNLESS WE CREATE A HEALTH INFORMATION FOR THE PATIENT 
 
-    db.query("SELECT P.ID FROM 390db.patients P, 390db.healthinformation H, 390db.viewed V WHERE P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.InfoTimestamp);", (err, result) => {
+    db.query("SELECT P.ID FROM 390db.patients P, 390db.HealthInformation H, 390db.viewed V WHERE P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
+
         if (err) {
             console.log(err);
         } else {
@@ -157,7 +158,7 @@ app.post("/createSymptomForm", (req, res) => {
     //our Health Information table which holds the information of all the symptom
     //forms. Every symptom form will be related to the patient that submitted it.
     db.query(
-        "INSERT INTO 390db.healthinformation (PatientID, Timestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO 390db.HealthInformation (PatientID, Timestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
         [patientid, timestamp, weight, temperature, breathing, chest_pain, fatigue, fever, cough, smell, taste, other],
         (err, results) => {
             if (err) {
@@ -242,7 +243,7 @@ app.get('/patientProfileData', (req, res) => {
 
     //combinations.
 
-    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName, P.ChatRequested FROM patients P, doctors D, users U, users U2 WHERE P.ID=? AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", [req.cookies.id], (err, result) => {
+    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName, P.ChatRequested, P.ChatPermission FROM patients P, doctors D, users U, users U2 WHERE P.ID=? AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", [req.cookies.id], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -1173,6 +1174,7 @@ app.post("/acceptChat", (req, res) => {
             if (err) {
                 console.log(err);
             } else {
+                console.log("Chat accepted");
                 res.send("Chat Accepted!");
             }
         }

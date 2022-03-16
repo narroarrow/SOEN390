@@ -37,7 +37,7 @@ function DoctorDashboard() {
       setPatientList(response.data);
       console.log("Logged In Doctor Patients:");
       console.log(response.data);
-    });
+    }).catch(alert);
   };
 
   function getPatientsPerDoctor() { //returns all patient information organized by doctor using GET
@@ -45,7 +45,7 @@ function DoctorDashboard() {
       setPatientPerDoctorList(response.data);
       console.log("Patients Organized By Doctor:");
       console.log(response.data);
-    });
+    }).catch(alert);
   };
 
 
@@ -54,80 +54,79 @@ function DoctorDashboard() {
       setAllPatientList(response.data);
       console.log("All Patients:");
       console.log(response.data);
-    });
+    }).catch(alert);  
   };
 
   function getStatusCountAllPatients() {// This will return the number of patients classified under each status
     Axios.post("http://localhost:8080/statusCountAllPatients").then((response) => {
       setTotalStatusCounts(response.data);
       console.log("Counts:");
-      console.log(response.data)
-    });
+      console.log(response.data)  
+  }).catch(alert);
   };
 
   function getDoctorsWithMostPatients() { //This will return the top 5 doctors with most to least patients
     Axios.post("http://localhost:8080/doctorsWithMostPatients").then((response) => {
       setDoctorsWithMostPatientsList(response.data);
       console.log("Doctors With Most Patients:");
-      console.log(response.data)
-    });
+      console.log(response.data)  
+  }).catch(alert);  
   };
 
   function getDoctorsWithLeastPatients() { //This will return the top 5 doctors with least to most patients
     Axios.post("http://localhost:8080/doctorsWithLeastPatients").then((response) => {
       setDoctorsWithLeastPatientsList(response.data);
       console.log("Doctors With Least Patients:");
-      console.log(response.data)
-    });
+      console.log(response.data)  
+  }).catch(alert); 
   };
 
   function getTotalNumberOfDoctors() { //This will return the total number of validated doctors
     Axios.post("http://localhost:8080/countAllValidatedDoctors").then((response) => {
       setValidatedDoctorCount(response.data);
       console.log("Total Number of Doctors:");
-      console.log(response.data)
-    });
+      console.log(response.data)  
+  }).catch(alert);  
   };
 
   function getTotalNumberOfPatients() { //This will return the total number of validated doctors
     Axios.post("http://localhost:8080/countAllPatients").then((response) => {
       setTotalPatientCount(response.data);
       console.log("Total Number of Patients:");
-      console.log(response.data)
-    });
-  };
-
+      console.log(response.data)  
+  }).catch(alert);  
+  }; 
 
   function getTotalNumberOfFlaggedPatients() { //This will return the total number of validated doctors
     Axios.post("http://localhost:8080/countAllFlaggedPatients").then((response) => {
       setTotalFlaggedPatientCount(response.data);
       console.log("Total Number of Flagged Patients:");
-      console.log(response.data)
-    });
+      console.log(response.data)  
+  }).catch(alert);  
   };
 
   function getFlaggedPatientsNotViewed() { //This will return the list of patients that have submitted a form but have not been reviewed
     Axios.post("http://localhost:8080/patientsFlaggedNotViewed").then((response) => {
       setPatientsFlaggedNotViewedList(response.data);
       console.log("Flagged Patients Not Viewed");
-      console.log(response.data)
-    });
+      console.log(response.data)  
+  }).catch(alert);  
   };
 
   function getFlaggedPatientsLeastViewed() { //This will return the list of patients whose form has been reviewed from longest to most recent
     Axios.post("http://localhost:8080/patientsFlaggedLeastViewed").then((response) => {
       setpatientsFlaggedLeastViewedList(response.data);
       console.log("Patients Flagged Least Viewed");
-      console.log(response.data)
-    });
+      console.log(response.data)  
+  }).catch(alert);  
   };
 
   function getFlaggedPatientsNoSymptomFormResponse() { //This will return the list of patients that have been sent a form to fill out but have not done so
     Axios.post("http://localhost:8080/patientsFlaggedNoSymptomFormResponse").then((response) => {
       setpatientsFlaggedNoSymptomFormResponseList(response.data);
       console.log("Patients Flagged No Symptom Form Response:");
-      console.log(response.data)
-    });
+      console.log(response.data)  
+  }).catch(alert);  
   };
 
   function getAllNotifications() {//This will return patient name, and appointment time
@@ -138,8 +137,8 @@ function DoctorDashboard() {
     }).then((response) => {
       setNotificationsList(response.data);
       console.log("Notification List:");
-      console.log(response.data);
-    });
+      console.log(response.data);  
+  }).catch(alert);  
   }
 
   let stopeffect = 1;
