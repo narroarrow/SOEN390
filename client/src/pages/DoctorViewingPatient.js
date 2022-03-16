@@ -203,7 +203,7 @@ function DoctorViewingPatient() {
                             </Box>
                         </Box>
                     )
-                })};
+                })}
             </Container>
         </>
     );
