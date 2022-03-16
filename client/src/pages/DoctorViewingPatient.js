@@ -110,9 +110,9 @@ function DoctorViewingPatient() {
         isFlagged = true;
     }
 
-    let patientsDoctorID = patientData.map((val, key) => { return val.DoctorID })[0];
+    let patientsDoctorID = patientData.map((val, key) => { return val.DoctorID })[0]; //retrieving the id of the patient's doctor
 
-    let viewingDoctorsPatient = false;
+    let viewingDoctorsPatient = false; //variable to validate whether the doctor is viewing one of their own patients to restrict some actions.
     if(patientsDoctorID === parseInt(localStorage.getItem("id"))){
         viewingDoctorsPatient = true;
     }
@@ -200,10 +200,12 @@ function DoctorViewingPatient() {
                                         PREVIOUS SYMPTOM FORMS
                                     </Button>
                                     
-                                    {/* If patient profile has been reviewed already, the MARK AS REVIEWED button will be disabled */}
+                                    {/* If the patient has not been viewed since an update or is a new patient, the doctors will be able
+                                    to mark them as reviewed. The act of marking a patient as reviewed will only be allowed for their own doctor. */}
                                     {((!isViewed || isNewPatient) && viewingDoctorsPatient) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={markAsReviewed} href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>) :
                                         (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>)}
-                                    {/* This button will allow the docotr to accept a chat from a patient, initially  the chat is disabled */}
+                                    {/* This button will allow the doctor to accept a chat from a patient, initially  the chat is disabled.
+                                    This action can only be performed by the patients own doctor. */}
                                     {(isChatAccepted && viewingDoctorsPatient) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) :
                                         (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}
                                 </Grid>
