@@ -802,7 +802,7 @@ app.post("/statusCountAllPatients", (req,res) =>{
                 "WHERE P.Status = 'Healthy') as healthyCount, " + 
                 "(  SELECT count(*) as isolatedCount " + 
                 "FROM 390db.patients P " +
-                "WHERE P.Status = 'Isolated') as isolatedCount, " + 
+                "WHERE P.Status = 'Isolated') as isolatedCount, " +
                 "(  SELECT count(*) as infectedCount " + 
                 "FROM 390db.patients P " +
                 "WHERE P.Status = 'Infected') as infectedCount;", (err, result) =>{
