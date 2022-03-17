@@ -991,53 +991,6 @@ app.post("/doctorsWithMostPatients", (req, res) => {
 });
 
 
-//  //Gets top 5 doctors with least to most patients
-//  app.post("/doctorsWithLeastPatients", (req,res) =>{ 
-//     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
-//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
-//    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
-//     "GROUP BY D.ID " + 
-//     "ORDER BY countPatients ASC " + //Ordered by least to most
-//     "LIMIT 5) " +
-//     "UNION " +
-//     "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
-//     "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-//     "FROM 390db.Patients P1) AND D.ID = U.ID " +
-//     "ORDER BY countPatients ASC " +
-//     "LIMIT 5;", (err, result) =>{
-//         if(err){
-//             console.log(err);
-//         } else{
-//             res.send(result);
-//         }
-//     })
-//  });
-
-//   //Gets top 5 doctors with least to most patients
-//   app.post("/doctorsWithLeastPatients", (req,res) =>{ 
-//     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " + 
-//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " + 
-//    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " + 
-//     "GROUP BY D.ID " + 
-//     "ORDER BY countPatients ASC " + //Ordered by least to most
-//     "LIMIT 5) " +
-//     "UNION " +
-//     "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-//     "FROM 390db.Doctors D, 390db.Patients P, 390db.Users U " +
-//     "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-//     "FROM 390db.Patients P1) AND D.ID = U.ID " +
-//     "ORDER BY countPatients ASC " +
-//     "LIMIT 5;", (err, result) =>{
-//         if(err){
-//             console.log(err);
-//         } else{
-//             res.send(result);
-//         }
-//     })
-//  });
-
-
 //Gets top 5 doctors with least to most patients
 app.post("/doctorsWithLeastPatients", (req, res) => {
     db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
