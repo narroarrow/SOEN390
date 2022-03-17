@@ -38,7 +38,7 @@ function PatientCovidStatus() {
           <FormControl>
             <RadioGroup row aria-labelledby="covidStatus" name="covidStatus" defaultValue="top" sx={{ mb: 5 }}>
               <FormControlLabel value="Healthy" control={<Radio required={true} />} label="Healthy" labelPlacement="top" />
-              <FormControlLabel value="Isolating" control={<Radio required={true} />} label="Isolating" labelPlacement="top" />
+              <FormControlLabel value="Isolated" control={<Radio required={true} />} label="Isolated" labelPlacement="top" />
               <FormControlLabel value="Infected" control={<Radio required={true} />} label="Infected" labelPlacement="top" />
             </RadioGroup>
           </FormControl>
