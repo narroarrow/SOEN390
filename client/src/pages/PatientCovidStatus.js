@@ -10,7 +10,7 @@ import { Navigate } from 'react-router-dom';
 let submitPatientCovidStatus = (event) => {
   event.preventDefault();
   const data = new FormData(event.currentTarget);
-  Axios.post('http://localhost:8080/createPatientCovidStatus', {
+  Axios.post('https://sunlit-form-338718.nn.r.appspot.com/createPatientCovidStatus', {
     patientid: localStorage.getItem('id'),
     status: data.get('covidStatus')
   }).then(() => {

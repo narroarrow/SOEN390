@@ -4,7 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser')
 const db = require('./database')
 const mysql = require("mysql2");
-const cors = require('cors');
+// const cors = require('cors');
 const { request } = require('http');
 const mail = require('nodemailer');
 
@@ -12,7 +12,7 @@ const mail = require('nodemailer');
 var cookieParser = require('cookie-parser')
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+// app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(express.static(__dirname + "../client/public/"));
@@ -27,7 +27,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Origin", "https://sunlit-form-338718.nn.r.appspot.com");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
@@ -77,7 +77,7 @@ app.get('/users', (req, res) => {
 
 /* This get method will be executed when rendering the DoctorPatientProfile page. The database will be querries to get the patients names, ID, status and whether they have been
 flagged or not. The returned list is a list of all patients in the database. */
-app.get("/DoctorPatientProfile", (req, res) => {
+app.get("/DoctorPatientProfileApi", (req, res) => {
     db.query("SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID, P.ChatRequested, P.NewPatient FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;", (err, result) => {
         if (err) {
             console.log(err);
@@ -349,7 +349,7 @@ app.get('/checkAuth', function (req, res) {
 
 
 //getting the email and passowrd from the form
-app.post("/Login", async (req, res) => {
+app.post("/LoginApi", async (req, res) => {
     try {
         //fields were provided by the front end form
         if (!req.body.email || !req.body.password) {
@@ -420,7 +420,7 @@ app.post('/Logout', ((req, res) => {
 }));
 
 //getting the email and passowrd from the form
-app.post("/Signup", async (req, res) => {
+app.post("/SignupApi", async (req, res) => {
     let existing = false;
     let uid;
     db.query("SELECT * FROM 390db.users U WHERE U.email = ?", [req.body.email], async (err, result) => {

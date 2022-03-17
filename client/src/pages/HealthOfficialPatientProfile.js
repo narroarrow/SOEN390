@@ -22,7 +22,7 @@ function HealthOfficialPatientProfile() {
   };
 
   function getPatients() { //this function is called when the doctor patient profile page is loaded. It sets the useState patientList to the query result for patient info
-    Axios.get("http://localhost:8080/DoctorPatientProfile").then((response) => {
+    Axios.get("https://sunlit-form-338718.nn.r.appspot.com/DoctorPatientProfileApi").then((response) => {
       setPatientList(response.data);
       console.log(patientList);
       if (!executed) {
@@ -33,7 +33,7 @@ function HealthOfficialPatientProfile() {
   };
 
   const getViewed = () => { //this function is called when the doctor patient profile page is loaded. It sets the useState patientList to the query result for patient info
-    Axios.get("http://localhost:8080/Viewed").then((response) => {
+    Axios.get("https://sunlit-form-338718.nn.r.appspot.com/Viewed").then((response) => {
       setViewedList(response.data);
     }).catch(alert);  
   };

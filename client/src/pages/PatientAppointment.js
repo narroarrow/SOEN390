@@ -17,7 +17,7 @@ function PatientAppointment() {
     event.preventDefault();
     console.log(value);
     if (value != '') {
-      Axios.post('http://localhost:8080/makeAppointments', {
+      Axios.post('https://sunlit-form-338718.nn.r.appspot.com/makeAppointments', {
         patientID: localStorage.getItem('id'),
         appointmentTime: value
       }, { withCredentials: true }).then(() => {
@@ -39,7 +39,7 @@ function PatientAppointment() {
 
   //This will automatically get the appointment slots available for the doctor to which the patient is assigned to
   useEffect(() => {
-    Axios.get("http://localhost:8080/seeOpenAppointments", {
+    Axios.get("https://sunlit-form-338718.nn.r.appspot.com/seeOpenAppointments", {
       params: {
         id: localStorage.getItem('id')
       }

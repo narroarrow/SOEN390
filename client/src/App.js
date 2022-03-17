@@ -31,7 +31,7 @@ function App() {
     function checkAuth() {
         return new Promise(((resolve, reject) => {
             axios.get(
-                "http://localhost:8080/checkAuth", { withCredentials: true }).then(res => {
+                "https://sunlit-form-338718.nn.r.appspot.com/checkAuth", { withCredentials: true }).then(res => {
                     localStorage.setItem("role", res.data.role)
                     localStorage.setItem("id", res.data.id)
                     resolve(res.data);

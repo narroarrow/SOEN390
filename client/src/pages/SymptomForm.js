@@ -12,7 +12,7 @@ let submitSymptomForm = (event) => {
   const data = new FormData(event.currentTarget);
   const currentDate = new Date();
   const timestamp = currentDate.getTime();
-  Axios.post('http://localhost:8080/createSymptomForm', {
+  Axios.post('https://sunlit-form-338718.nn.r.appspot.com/createSymptomForm', {
     patientid: localStorage.getItem('id'),
     timestamp: Date.now(),
     weight: data.get('weight'),

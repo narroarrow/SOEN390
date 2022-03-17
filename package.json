@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
-    "build": "react-scripts build",
+    "build": "node_modules/.bin/react-scripts build",
     "dev": "server/node_modules/.bin/nodemon server"
   },
   "keywords": [],
@@ -16,7 +16,8 @@
     "@testing-library/dom": "^8.11.3",
     "cors": "^2.8.5",
     "nodemon": "^2.0.15",
-    "supertest": "^6.2.2"
+    "supertest": "^6.2.2",
+    "jest": "^27.5.1"
   },
   "dependencies": {
     "@mui/icons-material": "^5.4.2",
@@ -24,6 +25,11 @@
     "express": "^4.17.2",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
-    "react-scripts": "^5.0.0"
+    "react-scripts": "^5.0.0",
+    "supertest": "^6.2.2",
+    "nodemailer": "6.7.2",
+    "jsonwebtoken": "^8.5.1",
+    "cookie-parser": "^1.4.6",
+    "bcrypt": "^5.0.1"
   }
 }

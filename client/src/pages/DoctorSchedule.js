@@ -76,7 +76,7 @@ const TimeSlotCalendar = () => {
 
         // Posts the json object containing the doctor's times to the server and awaits a confirmation response
         let doctorScheduleData = { backendTimeSlots }
-        Axios.post('http://localhost:8080/doctorAvailbility', doctorScheduleData, { withCredentials: true }).then(res => {
+        Axios.post('https://sunlit-form-338718.nn.r.appspot.com/doctorAvailbility', doctorScheduleData, { withCredentials: true }).then(res => {
             console.log(res)
             alert("New time slots properly registered");
             window.location.href = "/"

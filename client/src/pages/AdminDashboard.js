@@ -54,7 +54,7 @@ function AdminDashboard() {
   };
 
   function getValidatedDoctors() { //this function will return all information associated to validated doctors
-    Axios.get("http://localhost:8080/adminViewingValidatedDoctorData").then((response) => {
+    Axios.get("https://sunlit-form-338718.nn.r.appspot.com/adminViewingValidatedDoctorData").then((response) => {
       setDoctorListValidated(response.data);
       console.log("Validated Doctors:");
       console.log(response.data);
@@ -62,7 +62,7 @@ function AdminDashboard() {
   };
 
   function getUnvalidatedDoctors() { //this function will return all information associated to unvalidated doctors
-    Axios.get("http://localhost:8080/adminViewingUnvalidatedDoctorData").then((response) => {
+    Axios.get("https://sunlit-form-338718.nn.r.appspot.com/adminViewingUnvalidatedDoctorData").then((response) => {
       setDoctorListUnvalidated(response.data);
       console.log("Unvalidated Doctors:");
       console.log(response.data);
@@ -70,7 +70,7 @@ function AdminDashboard() {
   };
 
   function getPatients() { //this function will return all information associated to patients
-    Axios.get("http://localhost:8080/adminViewingPatientData").then((response) => {
+    Axios.get("https://sunlit-form-338718.nn.r.appspot.com/adminViewingPatientData").then((response) => {
       setPatientList(response.data);
       setFilteredPatientList(response.data);
       console.log("Patients:");
@@ -79,7 +79,7 @@ function AdminDashboard() {
   };
 
   let validateDoctor = (ID) => { //this function will validate doctors on click
-    Axios.post("http://localhost:8080/validateDoctor", {
+    Axios.post("https://sunlit-form-338718.nn.r.appspot.com/validateDoctor", {
       DoctorID: ID
     }).then(() => {
       console.log("successfully validated doctor!")
@@ -92,7 +92,7 @@ function AdminDashboard() {
       return;
     }
 
-    Axios.post("http://localhost:8080/invalidateDoctor", { //This request will invalidate a doctor
+    Axios.post("https://sunlit-form-338718.nn.r.appspot.com/invalidateDoctor", { //This request will invalidate a doctor
       DoctorID: ID
     }).then(() => {
       console.log("successfully invalidated doctor!")
@@ -101,7 +101,7 @@ function AdminDashboard() {
   };
 
   function sendEmail() { //Feature to be implemented soon
-    Axios.post("http://localhost:8080/sendEmail").then(() => {
+    Axios.post("https://sunlit-form-338718.nn.r.appspot.com/sendEmail").then(() => {
       console.log("Sent Email!")
     });
   }

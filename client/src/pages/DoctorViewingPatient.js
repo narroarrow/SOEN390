@@ -30,10 +30,10 @@ function DoctorViewingPatient() {
 
 
     useEffect(() => { //When page is loaded, get requests will get patient data as well as a list of patients whose profiles have been viewed
-        Axios.get("http://localhost:8080/doctorViewingPatientData", { params: { id: location.state.ID } }).then((response) => {
+        Axios.get("https://sunlit-form-338718.nn.r.appspot.com/doctorViewingPatientData", { params: { id: location.state.ID } }).then((response) => {
             setPatientData(response.data);
         });
-        Axios.get("http://localhost:8080/Viewed").then((response) => {
+        Axios.get("https://sunlit-form-338718.nn.r.appspot.com/Viewed").then((response) => {
             setViewedList(response.data);
             console.log(response.data);
         });
@@ -44,7 +44,7 @@ function DoctorViewingPatient() {
     let markAsReviewed = () => { //When clicking the MARK AS REVIEWED button, this will send the patient and doctor information to the DB viewed table
         const currentDate = new Date();
         const timestamp = currentDate.toISOString().slice(0, 19).replace('T', ' ');
-        Axios.post("http://localhost:8080/markViewed", {
+        Axios.post("https://sunlit-form-338718.nn.r.appspot.com/markViewed", {
             PatientID: location.state.ID,
             PatientDocID: patientData.map((val, key) => { return val.DoctorID })[0],
             DoctorID: tempDoctorID,
@@ -55,7 +55,7 @@ function DoctorViewingPatient() {
     };
 
     let requestForm = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
-        Axios.post("http://localhost:8080/requestForm", {
+        Axios.post("https://sunlit-form-338718.nn.r.appspot.com/requestForm", {
             PatientID: location.state.ID
         }).then(() => {
             console.log("success")
@@ -63,13 +63,13 @@ function DoctorViewingPatient() {
     }
 
     let previousSymptoms = () => { //This function gets the list of all the patients previous symptom forms (to be rendered on a page in later sprint)
-        Axios.get("http://localhost:8080/doctorViewingPreviousSymptoms", { params: { id: location.state.ID } }).then((response) => {
+        Axios.get("https://sunlit-form-338718.nn.r.appspot.com/doctorViewingPreviousSymptoms", { params: { id: location.state.ID } }).then((response) => {
             console.log("success");
         });
     }
 
     let flagPatient = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
-        Axios.post("http://localhost:8080/flagPatient", {
+        Axios.post("https://sunlit-form-338718.nn.r.appspot.com/flagPatient", {
             PatientID: location.state.ID
         }).then(() => {
             console.log("success")
@@ -77,7 +77,7 @@ function DoctorViewingPatient() {
     }
 
     let unflagPatient = () => { //When clicking the UNFLAG button, this will update the Flagged attribute in the patient tale to false
-        Axios.post("http://localhost:8080/unflagPatient", {
+        Axios.post("https://sunlit-form-338718.nn.r.appspot.com/unflagPatient", {
             PatientID: location.state.ID //The patient ID is being passed to the post method
         }).then(() => {
             console.log("success")
@@ -85,7 +85,7 @@ function DoctorViewingPatient() {
     }
 
     let acceptChat = () => { //When clicking the ACCEPT CHAt button, this will update the ChatPermission attribute in the patient tale to true
-        Axios.post("http://localhost:8080/acceptChat", {
+        Axios.post("https://sunlit-form-338718.nn.r.appspot.com/acceptChat", {
             PatientID: location.state.ID //The patient ID is being passed to the post method
         }).then(() => {
             console.log("success")

@@ -43,7 +43,7 @@ function Signup() {
     event1.preventDefault();
     const data = new FormData(event1.currentTarget);
     if (validator.isEmail(data.get('email')) && validator.isStrongPassword(data.get('password')) && validator.isMobilePhone(data.get('PhoneNumber')) && data.get('password') == data.get('confirmPassword')) {
-      Axios.post('http://localhost:8080/Signup', {
+      Axios.post('https://sunlit-form-338718.nn.r.appspot.com/SignupApi', {
         firstName: data.get('firstName'),
         lastName: data.get('lastName'),
         email: data.get('email'),

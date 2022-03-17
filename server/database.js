@@ -1,33 +1,33 @@
-const mysql = require('mysql2');
-require('dotenv').config()
+// const mysql = require('mysql2');
+// require('dotenv').config()
 
 // below comments are to setup your local database
 
 // SETUP ENV VARIABLES IN A .env FILE IN SAME SERVER DIRECTORY
 // WRITE THEM AS SUCH: DB_PASSWORD = password
 
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'password',
-    database: process.env.DB_NAME || '390db',
-    port: process.env.DB_PORT || '3306'
-})
-
-connection.connect();
-
-
-
-
-
-module.exports = connection;
+// const connection = mysql.createConnection({
+//     host: process.env.DB_HOST || 'localhost',
+//     user: process.env.DB_USER || 'root',
+//     password: process.env.DB_PASSWORD || 'password',
+//     database: process.env.DB_NAME || '390db',
+//     port: process.env.DB_PORT || '3306'
+// })
+//
+// connection.connect();
+//
+//
+//
+//
+//
+// module.exports = connection;
 
 
 
 
 //  below comments for future deployment
 
-/*
+
 var mysql = require("mysql");
 
 const config = {
@@ -46,4 +46,3 @@ if (
 const connection = mysql.createConnection(config);
 
 module.exports = connection;
-*/

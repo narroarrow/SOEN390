@@ -5,16 +5,17 @@ env: standard
 env_variables:
   SQL_USER: root
   SQL_PASSWORD: root
-  SQL_DATABASE: cloudscratch
+  SQL_DATABASE: 390db
   #   e.g. my-awesome-project:us-central1:my-cloud-sql-instance
   INSTANCE_CONNECTION_NAME: sunlit-form-338718:northamerica-northeast1:sql-scratch-pw-root
+  ACCESS_TOKEN_SECRET: e061f7ff3c6fe008e273e70c97e1edf0ddd8963e3c0e07366646ff0e37ff4cccf16ece8728e634e8ac3158279f112bbb13443f943de717350ddf4e3d05778b0f
+
 # [END gae_mysql_env]
 
 handlers:
   - url: /
-    secure: always
-    script: auto
-
+    static_files: client/build/index.html
+    upload: client/build/index.html
   - url: /Login
     static_files: client/build/index.html
     upload: client/build/index.html
@@ -28,6 +29,39 @@ handlers:
     static_files: client/build/index.html
     upload: client/build/index.html
   - url: /AdminDashboard
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /DoctorViewingPatient
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /HealthOfficialPatientProfile
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /HealthOfficialViewingPatient
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /EditInfoForm
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /PatientCovidStatus
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /SymptomForm
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /DoctorPatientProfile
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /ImmigrationOfficerPatientProfile
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /ImmigrationOfficerViewingPatient
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /PatientAppointment
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /DoctorSchedule
     static_files: client/build/index.html
     upload: client/build/index.html
 beta_settings:

@@ -71,11 +71,11 @@ const ResponsiveAppBar = () => {
 
     function logout() {
         //Clears the local storage which contains all the user's information
-        Axios.post('http://localhost:8080/Logout', {}, { withCredentials: true }).then(() => {
+        Axios.post('https://sunlit-form-338718.nn.r.appspot.com/Logout', {}, { withCredentials: true }).then(() => {
             localStorage.clear();
             return new Promise(((resolve, reject) => {
                 axios.get(
-                    "http://localhost:8080/checkAuth", { withCredentials: true }).catch(err => {
+                    "https://sunlit-form-338718.nn.r.appspot.com/checkAuth", { withCredentials: true }).catch(err => {
                         window.location.reload();
                     })
             }))
@@ -86,7 +86,7 @@ const ResponsiveAppBar = () => {
 
     //function to get the number of notifications to be used
     function getNotificationsCount() {
-        Axios.post("http://localhost:8080/getAllNotificationCount").then((response) => {
+        Axios.post("https://sunlit-form-338718.nn.r.appspot.com/getAllNotificationCount").then((response) => {
             setCount(response.data[0].notificationCount);
             console.log("Notification Count:");
             console.log(response.data);

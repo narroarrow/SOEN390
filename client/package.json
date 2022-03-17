@@ -40,7 +40,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll --testMatch **/src/__tests__/*.test.js --coverage",
-    "citest":"react-scripts test --watchAll=false --testMatch **/src/__tests__/*.test.js --coverage",
+    "citest": "react-scripts test --watchAll=false --testMatch **/src/__tests__/*.test.js --coverage",
     "jesttest": "jest",
     "eject": "react-scripts eject"
   },
@@ -66,6 +66,7 @@
     "@babel/core": "^7.12.3",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.5",
     "axios": "^0.25.0",
-    "enzyme": "^3.11.0"
+    "enzyme": "^3.11.0",
+    "mini-css-extract-plugin": "2.4.5"
   }
 }
