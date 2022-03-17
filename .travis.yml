@@ -4,7 +4,6 @@ node_js:
 
 sudo: required
 
-
 cache: npm
 
 services:
@@ -14,9 +13,9 @@ install:
   - npm ci
 
 before_script:
-  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('root') where User='root'; FLUSH PRIVILEGES;"
-  - sudo mysql -u root -proot -e 'CREATE DATABASE 390db;'
-  - sudo mysql -u root -proot 390db < test/travis.sql
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('password') where User='root'; FLUSH PRIVILEGES;"
+  - sudo mysql -u root -ppassword -e 'CREATE DATABASE 390db;'
+  - sudo mysql -u root -ppassword 390db < test/travis.sql
 
 script:
   - cd server
@@ -25,7 +24,10 @@ script:
   - cd client
   - npm i
   - cd src
-  - npm test
+  - cd __tests__
+  - npm run citest API_methods.test.js 
+
+
 
 
 deploy:

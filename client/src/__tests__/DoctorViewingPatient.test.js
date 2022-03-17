@@ -11,4 +11,5 @@ test('Renders the DoctorViewingPatient page', () => {
     <BrowserRouter>
       <DoctorViewingPatient />
     </BrowserRouter>);
+
 });

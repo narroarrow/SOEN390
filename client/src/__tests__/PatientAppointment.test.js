@@ -12,4 +12,5 @@ test('Renders the PatientAppointment page', () => {
   <BrowserRouter>
   <PatientAppointment />
   </BrowserRouter>);
+
 });

@@ -37,9 +37,9 @@ function PatientCovidStatus() {
           {/* The form with the radio buttons to select your status */}
           <FormControl>
             <RadioGroup row aria-labelledby="covidStatus" name="covidStatus" defaultValue="top" sx={{ mb: 5 }}>
-              <FormControlLabel value="1" control={<Radio required={true} />} label="1 (Healthy)" labelPlacement="top" />
-              <FormControlLabel value="2" control={<Radio required={true} />} label="2 (Isolating)" labelPlacement="top" />
-              <FormControlLabel value="3" control={<Radio required={true} />} label="3 (Infected)" labelPlacement="top" />
+              <FormControlLabel value="Healthy" control={<Radio required={true} />} label="Healthy" labelPlacement="top" />
+              <FormControlLabel value="Isolated" control={<Radio required={true} />} label="Isolated" labelPlacement="top" />
+              <FormControlLabel value="Infected" control={<Radio required={true} />} label="Infected" labelPlacement="top" />
             </RadioGroup>
           </FormControl>
           <br></br>

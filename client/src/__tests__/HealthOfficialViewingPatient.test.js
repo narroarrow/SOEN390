@@ -10,4 +10,5 @@ test('Renders the HealthOfficialViewingPatient page', () => {
     <BrowserRouter>
       <HealthOfficialViewingPatient />
     </BrowserRouter>);
+
 });

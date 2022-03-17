@@ -334,3 +334,4 @@ describe('testing /getAllNotificationCount', () => {
     expect(res.statusCode).toEqual(200);
   })
 });
+
