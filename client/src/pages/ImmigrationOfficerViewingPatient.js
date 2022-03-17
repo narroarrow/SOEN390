@@ -127,9 +127,13 @@ function ImmigrationOfficerViewingPatient() {
                             <Box sx={{ mt: 10 }}>
                                 <Grid container fullwidth spacing={1}>
                                     {/* Displaying the appropriate button base on if the patient is flagged or not */}
-                                    <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={flagPatient} href='/ImmigrationOfficerPatientProfile'>
+                                    {(isFlagged) ? (
+                                    <Button xs={12} sm={3} sx={{ margin: 1 }} disabled variant="contained" onClick={flagPatient} href='/ImmigrationOfficerPatientProfile'>
                                         FLAG PATIENT
-                                    </Button>
+                                    </Button>) :
+                                    (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={flagPatient} href='/ImmigrationOfficerPatientProfile'>
+                                        FLAG PATIENT
+                                    </Button>)}
 
                                     {/* Feature has not yet been implemented*/}
                                     <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
