@@ -108,7 +108,7 @@ app.get("/Viewed", (req, res) => {
 and display it in the UI. */
 app.get("/doctorViewingPatientData", (req, res) => {
     let pid = req.query.id;
-    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, P.NewPatient, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, Udoctor.ID AS DoctorID, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested, P.ChatPermission, P.Flagged FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
+    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, P.NewPatient, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, Udoctor.ID AS DoctorID, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested, P.ChatPermission, P.Flagged, P.ChatRequested FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
         if (err) {
             console.log(err);
         } else {
