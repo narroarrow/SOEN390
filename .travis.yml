@@ -27,7 +27,9 @@ script:
   - cd __tests__
   - npm run citest API_methods.test.js 
 
-
+branches:
+  only:
+  - main
 
 
 deploy:
