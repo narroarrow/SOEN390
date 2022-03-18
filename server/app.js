@@ -120,7 +120,7 @@ app.get("/doctorViewingPatientData", (req, res) => {
 /* This get method will return all the previously filled in HealthInformation for a specific patient and dispay it in the UI. */
 app.get("/doctorViewingPreviousSymptoms", (req, res) => {
     let pid = req.query.id;
-    db.query("SELECT * FROM HealthInformation HI WHERE PatientID=?", [pid], (err, result) => {
+    db.query("SELECT * FROM healthinformation HI WHERE PatientID=?", [pid], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -1020,7 +1020,7 @@ app.post("/patientsFlaggedNotViewed", (req, res) => {
     "FROM 390db.users Upatient, 390db.patients P, 390db.inforequest IR, 390db.healthinformation HI, 390db.viewed V " +
     "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.InfoTimestamp AND ((P.ID IN " +
     "(SELECT P1.ID " + 
-    "FROM 390db.patients P1, 390db. HealthInformation H1, 390db.viewed V1 " + 
+    "FROM 390db.patients P1, 390db.healthinformation H1, 390db.viewed V1 " + 
     "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.Timestamp > V1.Timestamp)) " + 
     "OR (P.ID NOT IN (SELECT V1.PatientID FROM 390db.viewed V1)));", (err, result) => {
             if (err) {
