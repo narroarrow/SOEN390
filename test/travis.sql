@@ -1,4 +1,3 @@
-
 CREATE TABLE `390db`.`users` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `FName` varchar(45) DEFAULT NULL,
@@ -113,9 +112,10 @@ CREATE TABLE `390db`.`inforequest` (
     );
 
 
-CREATE TABLE 390db.HealthInformation (   
+CREATE TABLE `390db`.`healthinformation` (   
   `PatientID` INT NOT NULL,   
-  `Timestamp` VARCHAR(18) NOT NULL,   
+  `Timestamp` VARCHAR(18),
+  `InfoTimestamp` Timestamp,   
   `Weight` DOUBLE,   
   `Temperature` DOUBLE,   
   `Breathing` TINYINT NOT NULL,   
@@ -185,6 +185,7 @@ INSERT INTO `390db`.`patients` (`ID`, `DoctorID`, `HealthInsurance`, `Status`, `
 
 INSERT INTO `390db`.`doctorhours` (`StartTime`, `EndTime`, `DoctorID`, `Availability`, dayName) VALUES ('8:00', '8:30', '6', '1', 'Wed');
 INSERT INTO `390db`.`doctorhours` (`StartTime`, `EndTime`, `DoctorID`, `Availability`, dayName) VALUES ('9:00', '9:30', '6', '0', 'Wed');
+INSERT INTO `390db`.`doctorhours` (`StartTime`, `EndTime`, `DoctorID`, `Availability`, dayName) VALUES ('9:00', '9:30', '6', '1', 'Tue');
 INSERT INTO `390db`.`doctorhours` (`StartTime`, `EndTime`, `DoctorID`, `Availability`, dayName) VALUES ('11:30', '11:30', '8', '0', 'Wed');
 INSERT INTO `390db`.`doctorhours` (`StartTime`, `EndTime`, `DoctorID`, `Availability`, dayName) VALUES ('15:00', '15:30', '9', '1', 'Mon');
 INSERT INTO `390db`.`doctorhours` (`StartTime`, `EndTime`, `DoctorID`, `Availability`, dayName) VALUES ('16:00', '16:30', '10', '1', 'Wed');
@@ -199,11 +200,11 @@ INSERT INTO `390db`.`contacts` (`PatientID1`, `PatientID2`) VALUES ('2', '4');
 INSERT INTO `390db`.`contacts` (`PatientID1`, `PatientID2`) VALUES ('4', '2');
 
 
-INSERT INTO `390db`.`HealthInformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('1', 1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nothing');
-INSERT INTO `390db`.`HealthInformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('2', 1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'headache');
-INSERT INTO `390db`.`HealthInformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('3', 1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nausea');
-INSERT INTO `390db`.`HealthInformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('4',  1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'cannot sleep');
-INSERT INTO `390db`.`HealthInformation` (`PatientID`, `Timestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('5',  1, 25, 65, 1, 3, 2, 3, 3, 2, 1, 'migraine');
+INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('1', 1, '2022-2-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nothing');
+INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('2',  1, '2022-1-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'headache');
+INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('3',  1, '2022-4-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nausea');
+INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('4',   1, '2021-1-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'cannot sleep');
+INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('5',   1, '2022-3-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'migraine');
 
 
 
