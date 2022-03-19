@@ -189,29 +189,22 @@ UserController.post("/Signup", async (req, res) => {
                 })
 
             } else if (userRole == 'Doctor') {
-                db.promise().query(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "390db" AND TABLE_NAME = "users"`, [], async (err, result) => {
-                    uid = result.AUTO_INCREMENT;
-                }).then(() => {
-                    let doctorState = `INSERT INTO 390db.doctors (ID, License,patientCount) VALUES (?,?,0);`;
-                    db.query(doctorState, [uid, req.body.medicalLicense], function (err, result) {//inserts a new patient with an auto assigned doctor
-                        if (err) {
-                            console.log("\ninserting into doctors \n" + err)
-                        }
-                    })
-                });
+                let doctorState = `INSERT INTO 390db.doctors (ID, License,patientCount) VALUES (last_insert_id(),?,0);`;
+                db.query(doctorState, [req.body.medicalLicense], function (err, result) {//inserts a new patient with an auto assigned doctor
+                    if (err) {
+                        console.log("\ninserting into doctors \n" + err)
+                    }
+                })
 
 
             } else if (userRole == 'Immigration Officer' || 'Health Official') {
-                db.promise().query(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "390db" AND TABLE_NAME = "users"`, [], async (err, result) => {
-                    uid = result.AUTO_INCREMENT;
-                }).then(() => {
-                    let doctorState = `INSERT INTO 390db.otherusers (ID, Type) VALUES (?,?);`;
-                    db.query(doctorState, [uid, userRole], function (err, result) {//inserts a new patient with an auto assigned doctor
-                        if (err) {
-                            console.log("\ninserting into officials \n" + err)
-                        }
-                    })
-                });
+
+                let doctorState = `INSERT INTO 390db.otherusers (ID, Type) VALUES (last_insert_id(),?);`;
+                db.query(doctorState, [userRole], function (err, result) {//inserts a new patient with an auto assigned doctor
+                    if (err) {
+                        console.log("\ninserting into officials \n" + err)
+                    }
+                })
 
             }
             res.sendStatus(200);
