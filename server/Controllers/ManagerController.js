@@ -41,7 +41,7 @@ ManagerController.get("/doctorViewingPatientData", (req, res) => {
  as a filled in eye icon for viewed patients. */
 ManagerController.get("/Viewed", (req, res) => {
 
-    db.query("SELECT P.ID FROM 390db.patients P, 390db.HealthInformation H, 390db.viewed V WHERE P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
+    db.query("SELECT P.ID FROM 390db.patients P, 390db.healthinformation H, 390db.viewed V WHERE P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
 
         if (err) {
             console.log(err);

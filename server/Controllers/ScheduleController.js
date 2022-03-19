@@ -57,19 +57,15 @@ ScheduleController.get("/seeOpenAppointments", (req, res) => {
         //getting ID from client
         let patientID = req.query["id"];
         console.log("Patient ID: " + patientID);
-        // state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = 1) and dh.DoctorID= u.id and dh.Availability = 1;"
-        //non-hard coded
+
         state = "SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;"
 
-        //SELECT StartTime,EndTime,dh.dayName, dh.doctorID, u.FName, u.LName FROM 390db.doctorhours dh, 390db.users u WHERE dh.doctorid = (SELECT DoctorID from 390db.patients p where id = ?) and dh.DoctorID= u.id and dh.Availability = 1;
         db.query(state, [patientID], (err, result) => {
             if (err) {
                 console.log("Error: " + err);
             } else {
                 console.log("Results open: " + result);
                 res.send(arrayMaker(result));
-                // res.send(result);
-
             }
         });
     }
@@ -88,11 +84,6 @@ ScheduleController.post("/makeAppointments", (req, res) => {
         let aptDate = appointmentArray[2] + " " + appointmentArray[4] + " " + appointmentArray[6]
         let patID = req.body.patientID//JWT;
 
-        // for( var i =0; i<appointmentArray.length;i++){
-        //     console.log(i+" : "+appointmentArray[i])
-        // }
-        // console.log(dayName+"\t"+start+"\t"+ end+"\t"+patID+"\t"+aptDate)
-        //two manipulations one to update the doctorhours and another to insert the appointment.
 
         //searches for existing appointments
         state = "SELECT * FROM 390db.appointments a where a.PatientID = ? and a.DoctorID = (SELECT DoctorID from 390db.patients p where id = ?);"

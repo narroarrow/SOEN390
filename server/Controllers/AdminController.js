@@ -114,7 +114,7 @@ AdminController.post("/invalidateDoctor", (req, res) => {
         }
     });
 
-    db.query("DELETE FROM 390db.Doctors WHERE ID = ?", [DoctorID], (err, result) => {
+    db.query("DELETE FROM 390db.doctors WHERE ID = ?", [DoctorID], (err, result) => {
         if (err) {
             console.log(err);
         } else {

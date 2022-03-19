@@ -145,7 +145,7 @@ PatientController.post("/createSymptomForm", (req, res) => {
     //our Health Information table which holds the information of all the symptom
     //forms. Every symptom form will be related to the patient that submitted it.
     db.query(
-        "INSERT INTO 390db.HealthInformation (PatientID, Timestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO 390db.healthinformation (PatientID, Timestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
         [patientid, timestamp, weight, temperature, breathing, chest_pain, fatigue, fever, cough, smell, taste, other],
         (err, results) => {
             if (err) {
