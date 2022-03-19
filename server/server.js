@@ -8,6 +8,7 @@ const mysql = require("mysql2");
 const cors = require('cors');
 const bcrypt = require('bcrypt')
 var cookieParser = require('cookie-parser')
+const UserController = require("./UserController");
 require('dotenv').config()
 
 
