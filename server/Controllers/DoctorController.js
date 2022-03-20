@@ -172,16 +172,17 @@ DoctorController.post("/requestForm", (req, res) => {
 DoctorController.post("/statusCountAllPatients", (req, res) => {
     //parameters: 
     //returns: (healthyCount, isolatingCount,infectedCount)
-    db.query("  SELECT healthyCount, isolatingCount, infectedCount " +
-        "FROM (  SELECT count(*) as healthyCount " +
-        "FROM 390db.patients P " +
-        "WHERE P.Status = 'Healthy') as healthyCount, " +
-        "(  SELECT count(*) as isolatingCount " +
-        "FROM 390db.patients P " +
-        "WHERE P.Status = 'Isolated') as isolatingCount, " +
-        "(  SELECT count(*) as infectedCount " +
-        "FROM 390db.patients P " +
-        "WHERE P.Status = 'Infected') as infectedCount;", (err, result) => {
+    let state = "  SELECT healthyCount, isolatingCount, infectedCount " +
+    "FROM (  SELECT count(*) as healthyCount " +
+    "FROM 390db.patients P " +
+    "WHERE P.Status = 'Healthy') as healthyCount, " +
+    "(  SELECT count(*) as isolatingCount " +
+    "FROM 390db.patients P " +
+    "WHERE P.Status = 'Isolated') as isolatingCount, " +
+    "(  SELECT count(*) as infectedCount " +
+    "FROM 390db.patients P " +
+    "WHERE P.Status = 'Infected') as infectedCount;"
+    db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -238,19 +239,20 @@ DoctorController.post("/countAllValidatedDoctors", (req, res) => {
 DoctorController.post("/doctorsWithMostPatients", (req, res) => {
     //parameters:
     //returns: (FName of doctors, LName of doctors, email of doctors, address of doctors, number of patients assigned)
-    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
-        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
-        "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
-        "GROUP BY D.ID " +
-        "ORDER BY countPatients DESC " + //Ordered by most to least
-        "LIMIT 5) " +
-        "UNION " +
-        "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
-        "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-        "FROM 390db.patients P1) AND D.ID = U.ID " +
-        "ORDER BY countPatients DESC " +
-        "LIMIT 5;", (err, result) => {
+    let state = "(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
+    "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
+    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
+    "GROUP BY D.ID " +
+    "ORDER BY countPatients DESC " + //Ordered by most to least
+    "LIMIT 5) " +
+    "UNION " +
+    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
+    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    "FROM 390db.patients P1) AND D.ID = U.ID " +
+    "ORDER BY countPatients DESC " +
+    "LIMIT 5;"
+    db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -264,19 +266,20 @@ DoctorController.post("/doctorsWithMostPatients", (req, res) => {
 DoctorController.post("/doctorsWithLeastPatients", (req, res) => {
     //parameters:
     //returns: (FName of doctors, LName of doctors, email of doctors, address of doctors, number of patients assigned)
-    db.query("(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
-        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
-        "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
-        "GROUP BY D.ID " +
-        "ORDER BY countPatients ASC " + //Ordered by least to most
-        "LIMIT 5) " +
-        "UNION " +
-        "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
-        "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-        "FROM 390db.patients P1) AND D.ID = U.ID " +
-        "ORDER BY countPatients ASC " +
-        "LIMIT 5;", (err, result) => {
+    let state = "(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
+    "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
+    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
+    "GROUP BY D.ID " +
+    "ORDER BY countPatients ASC " + //Ordered by least to most
+    "LIMIT 5) " +
+    "UNION " +
+    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+    "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
+    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+    "FROM 390db.patients P1) AND D.ID = U.ID " +
+    "ORDER BY countPatients ASC " +
+    "LIMIT 5;"
+    db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -289,13 +292,14 @@ DoctorController.post("/doctorsWithLeastPatients", (req, res) => {
 DoctorController.post("/patientsFlaggedNotViewed", (req, res) => {
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient)
-    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email " +
-        "FROM 390db.users Upatient, 390db.patients P, 390db.inforequest IR, 390db.healthinformation HI, 390db.viewed V " +
-        "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.InfoTimestamp AND ((P.ID IN " +
-        "(SELECT P1.ID " +
-        "FROM 390db.patients P1, 390db. healthinformation H1, 390db.viewed V1 " +
-        "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.Timestamp > V1.Timestamp)) " +
-        "OR (P.ID NOT IN (SELECT V1.PatientID FROM 390db.viewed V1)));", (err, result) => {
+    let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email " +
+    "FROM 390db.users Upatient, 390db.patients P, 390db.inforequest IR, 390db.healthinformation HI, 390db.viewed V " +
+    "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.InfoTimestamp AND ((P.ID IN " +
+    "(SELECT P1.ID " +
+    "FROM 390db.patients P1, 390db. healthinformation H1, 390db.viewed V1 " +
+    "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.Timestamp > V1.Timestamp)) " +
+    "OR (P.ID NOT IN (SELECT V1.PatientID FROM 390db.viewed V1)));"
+    db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -308,10 +312,11 @@ DoctorController.post("/patientsFlaggedNotViewed", (req, res) => {
 DoctorController.post("/patientsFlaggedLeastViewed", (req, res) => {
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient, ID of patient) ,timestamp
-    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, V.Timestamp as verifiedTime, P.ID " +
-        "FROM 390db.patients P, 390db.users Upatient, 390db.viewed V " +
-        "WHERE Upatient.ID = P.ID AND P.Flagged = 1 AND P.ID = V.PatientID AND V.Timestamp = (SELECT MAX(V1.Timestamp) FROM 390db.viewed V1 WHERE V1.PatientID = P.ID) " +
-        "ORDER BY V.Timestamp ASC;", (err, result) => {
+    let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, V.Timestamp as verifiedTime, P.ID " +
+    "FROM 390db.patients P, 390db.users Upatient, 390db.viewed V " +
+    "WHERE Upatient.ID = P.ID AND P.Flagged = 1 AND P.ID = V.PatientID AND V.Timestamp = (SELECT MAX(V1.Timestamp) FROM 390db.viewed V1 WHERE V1.PatientID = P.ID) " +
+    "ORDER BY V.Timestamp ASC;"
+    db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -324,12 +329,13 @@ DoctorController.post("/patientsFlaggedLeastViewed", (req, res) => {
 DoctorController.post("/patientsFlaggedNoSymptomFormResponse", (req, res) => {
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient,time of request, ID of patient)
-    db.query("SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, IR.Timestamp as requestTime, P.ID " +
-        "FROM 390db.patients P, 390db.users Upatient, 390db.inforequest IR, 390db.healthinformation IH " +
-        "WHERE P.Flagged = 1 AND P.ID = Upatient.ID AND IR.PatientID = P.ID  AND ((IR.PatientID = IH.PatientID AND IR.Timestamp > IH.InfoTimestamp) " +
-        "OR (P.ID NOT IN (SELECT HI1.PatientID " +
-        "FROM 390db.healthinformation HI1))) " +
-        "ORDER BY requestTime ASC;", (err, result) => {
+    let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, IR.Timestamp as requestTime, P.ID " +
+    "FROM 390db.patients P, 390db.users Upatient, 390db.inforequest IR, 390db.healthinformation IH " +
+    "WHERE P.Flagged = 1 AND P.ID = Upatient.ID AND IR.PatientID = P.ID  AND ((IR.PatientID = IH.PatientID AND IR.Timestamp > IH.InfoTimestamp) " +
+    "OR (P.ID NOT IN (SELECT HI1.PatientID " +
+    "FROM 390db.healthinformation HI1))) " +
+    "ORDER BY requestTime ASC;"
+    db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {

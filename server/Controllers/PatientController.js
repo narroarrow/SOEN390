@@ -33,7 +33,8 @@ PatientController.get('/editPatientProfileData', (req, res) => {
     //It filters the database and looks for the patient with the id that we passed.
     //parameters: ID
     //returns: FName,LName,Birthday, HealthInsurance, Phone, Email
-    db.query("SELECT U.FName, U.LName, U.Birthday, P.HealthInsurance, U.Phone, U.Email FROM patients P, users U, doctors D WHERE P.id=? AND D.id=P.doctorID AND P.id=U.id", [req.cookies.id], (err, result) => {
+    let state = "SELECT U.FName, U.LName, U.Birthday, P.HealthInsurance, U.Phone, U.Email FROM patients P, users U, doctors D WHERE P.id=? AND D.id=P.doctorID AND P.id=U.id"
+    db.query(state, [req.cookies.id], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -54,7 +55,8 @@ PatientController.get('/patientProfileData', (req, res) => {
     //combinations.
     //parameters: ID
     //returns: (FName of patient, LName of patient, healthInsurance of patient,  ID of patient, first name of doctor, last name of doctor, patient of Email, phone of patient, birthday of patient, chat permission for patient, chat request from patient)
-    db.query("SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName, P.ChatRequested, P.ChatPermission FROM patients P, doctors D, users U, users U2 WHERE P.ID=? AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id", [req.cookies.id], (err, result) => {
+    let state = "SELECT U2.FName, U2.LName, P.HealthInsurance, P.ID, U2.Birthday, U2.Phone, U2.Email, U.FName AS DFName, U.LName AS DLName, P.ChatRequested, P.ChatPermission FROM patients P, doctors D, users U, users U2 WHERE P.ID=? AND D.id=P.doctorID AND U.ID=D.ID AND U2.id=P.id"
+    db.query(state, [req.cookies.id], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -80,9 +82,9 @@ PatientController.post("/editedPatientData", (req, res) => {
     //and then updates the values of certain fields.
     //parameters: ID, FName, LName, Email,Phone
     //returns:
+    let state = "UPDATE 390db.users SET FName=?, LName=?, Email=?, Phone=? WHERE ID=?"
     db.query(
-        
-        "UPDATE 390db.users SET FName=?, LName=?, Email=?, Phone=? WHERE ID=?",
+        state,
         [fname, lname, email, phone, patientid],
         (err, results) => {
             if (err) {
@@ -92,8 +94,9 @@ PatientController.post("/editedPatientData", (req, res) => {
     );
     //parameters: ID, HealthInsurance
     //returns:
+    let state2 = "UPDATE 390db.patients SET HealthInsurance=? WHERE ID=?"
     db.query(
-        "UPDATE 390db.patients SET HealthInsurance=? WHERE ID=?",
+        state2,
         [healthinsurance, patientid],
         (err, results) => {
             if (err) {
@@ -120,7 +123,8 @@ PatientController.post("/createPatientCovidStatus", (req, res) => {
     //form.
     //parameters: ID, HealthInsurance
     //returns:
-    db.query("UPDATE 390db.patients SET Status=? WHERE ID=?",
+    let state ="UPDATE 390db.patients SET Status=? WHERE ID=?"
+    db.query(state,
         [patientStatus, patientid],
         (err, results) => {
             if (err) {
