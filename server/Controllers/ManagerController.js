@@ -27,7 +27,11 @@ ManagerController.use(function (req, res, next) {
 and display it in the UI. */
 ManagerController.get("/doctorViewingPatientData", (req, res) => {
     let pid = req.query.id;
-    db.query("SELECT U.Fname, U.Lname, P.ID, P.Status, P.NewPatient, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, Udoctor.ID AS DoctorID, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested, P.ChatPermission, P.Flagged, P.ChatRequested FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;", [pid], (err, result) => {
+    //parameters: (ID of patient)
+    //returns: (FName of patient, LName of patient, ID of patient, status of patient, whether a patient is new, first name of doctor, last name of doctor,
+    //ID of doctor, patient of Email, phone of patient, birthday of patient, addresss of patient, request of symptoms from patient, chat permission for patient, flag for patient, chat request from patient)
+    let state = "SELECT U.Fname, U.Lname, P.ID, P.Status, P.NewPatient, Udoctor.Fname AS DoctorFirst, Udoctor.Lname AS DoctorLast, Udoctor.ID AS DoctorID, U.Email, U.Phone, U.Birthday, U.Address, P.SymptomRequested, P.ChatPermission, P.Flagged, P.ChatRequested FROM 390db.patients P, 390db.users U, 390db.users Udoctor WHERE P.ID = ? AND P.ID = U.ID AND P.DoctorID = Udoctor.ID;"
+    db.query(state, [pid], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -41,7 +45,10 @@ ManagerController.get("/doctorViewingPatientData", (req, res) => {
  as a filled in eye icon for viewed patients. */
 ManagerController.get("/Viewed", (req, res) => {
 
-    db.query("SELECT P.ID FROM 390db.patients P, 390db.healthinformation H, 390db.viewed V WHERE P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);", (err, result) => {
+    //parameters:
+    //returns: ID
+    let state = "SELECT P.ID FROM 390db.patients P, 390db.healthinformation H, 390db.viewed V WHERE P.ID = V.PatientID GROUP BY P.ID HAVING MAX(V.Timestamp) >= MAX(H.Timestamp);"
+    db.query(state, (err, result) => {
 
         if (err) {
             console.log(err);
@@ -56,8 +63,10 @@ ManagerController.get("/Viewed", (req, res) => {
 ManagerController.post("/flagPatient", (req, res) => {
     let PatientID = req.body.PatientID;
 
-
-    db.query("UPDATE 390db.patients SET Flagged=true where ID=?", [PatientID], (err, result) => {
+    //parameters: (ID of patient)
+    //returns:
+    let state ="UPDATE 390db.patients SET Flagged=true where ID=?"
+    db.query(state, [PatientID], (err, result) => {
 
         if (err) {
             console.log(err);
@@ -72,7 +81,10 @@ ManagerController.post("/flagPatient", (req, res) => {
 ManagerController.post("/unflagPatient", (req, res) => {
     let patientID = req.body.PatientID; //this PatientID is used in the query to specify which patient tuple to edit
 
-    db.query("UPDATE 390db.patients SET Flagged=false where ID=?", [patientID], (err, result) => {
+    //parameters: (ID of patient)
+    //returns:
+    let state = "UPDATE 390db.patients SET Flagged=false where ID=?"
+    db.query(state, [patientID], (err, result) => {
         if (err) {
             console.log(err);
         } else {

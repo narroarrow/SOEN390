@@ -26,8 +26,10 @@ ChatController.use(function (req, res, next) {
 //Sets ChatRequested attribute in the patient table to 1
 ChatController.post("/RequestChat", (req, res) => {
     let patientID = req.body.patientid; //this PatientID is used in the query to specify which patient tuple to edit
-
-    db.query("UPDATE 390db.patients SET ChatRequested=1 WHERE ID=?",
+    //parameters: ID
+    //returns:
+    state = "UPDATE 390db.patients SET ChatRequested=1 WHERE ID=?"
+    db.query(state,
         [patientID],
         (err, results) => {
             if (err) {
@@ -42,17 +44,20 @@ ChatController.post("/RequestChat", (req, res) => {
 //Sets the ChatPermission attribute in the patient table to 1 and ChatRequested attribute to 0
 ChatController.post("/acceptChat", (req, res) => {
     let patientID = req.body.PatientID; //this PatientID is used in the query to specify which patient tuple to edit
-
-    db.query("UPDATE 390db.patients SET ChatRequested=false WHERE ID=?",
-        [patientID],
+    //parameters: ID
+    //returns:
+    state = "UPDATE 390db.patients SET ChatRequested=false WHERE ID=?"
+    db.query(state, [patientID],
         (err, results) => {
             if (err) {
                 console.log(err);
             }
         }
     );
-    db.query("UPDATE 390db.patients SET ChatPermission=true WHERE ID=?",
-        [patientID],
+    state2 = "UPDATE 390db.patients SET ChatPermission=true WHERE ID=?"
+    //parameters: ID
+    //returns:
+    db.query(state2, [patientID],
         (err, results) => {
             if (err) {
                 console.log(err);

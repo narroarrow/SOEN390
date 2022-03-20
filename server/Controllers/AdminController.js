@@ -46,8 +46,11 @@ let sendEmail = (fName, lName, email) => {
 
 // Gets validated doctor first name, last name, phone number to the admin
 AdminController.get("/adminViewingValidatedDoctorData", (req, res) => {
-
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;", (err, result) => {
+    
+    let state ='SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;'
+    //parameters:
+    //returns: (doctor first name, doctor last name, doctor phone, validity state of doctor, doctor ID, doctor license)
+    db.query(state, (err, result) => {
         if (err) {
 
             console.log(err);
@@ -59,13 +62,16 @@ AdminController.get("/adminViewingValidatedDoctorData", (req, res) => {
 
 // Gets unvalidated doctor first name, last name, phone number to the admin
 AdminController.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
-        db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;", (err, result) => {
+        let state = 'SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;'
+    //parameters:
+    //returns: (doctor first name, doctor last name, doctor phone, validity state of doctor, doctor ID, doctor license)
+        db.query(state, (err, result) => {
 
             if (err) {
 
                 console.log(err);
             } else {
-                console.log(result);
+                // console.log(result);
                 res.send(result);
             }
         });
@@ -74,7 +80,10 @@ AdminController.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
 
 // Gets patient first name, last name, phone number to the admin
 AdminController.get("/adminViewingPatientData", (req, res) => {
-    db.query("SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;", (err, result) => {
+    //parameters:
+    //returns: (patient first name, patient last name, patient phone, doctor first name, doctor last name)
+    let state ='SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;'
+    db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -86,7 +95,10 @@ AdminController.get("/adminViewingPatientData", (req, res) => {
 //Post to validate doctor in database
 AdminController.post("/validateDoctor", (req, res) => {
     let DoctorID = req.body.DoctorID;
-    db.query("UPDATE 390db.users SET Validated = 1 WHERE ID = ?", [DoctorID], (err, result) => {
+    let state = 'UPDATE 390db.users SET Validated = 1 WHERE ID = ?'
+    //parameters: DoctorID
+    //returns:
+    db.query(state, [DoctorID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -103,7 +115,10 @@ AdminController.post("/invalidateDoctor", (req, res) => {
     var fName;
     var lName;
     var email;
-    db.query("SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Email FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND D.ID = ?", [DoctorID], (err, result) => {
+    //parameters: DoctorID
+    //returns:
+    let state = "SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Email FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND D.ID = ?"
+    db.query(state, [DoctorID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -113,16 +128,20 @@ AdminController.post("/invalidateDoctor", (req, res) => {
             console.log(email);
         }
     });
-
-    db.query("DELETE FROM 390db.doctors WHERE ID = ?", [DoctorID], (err, result) => {
+    //parameters: DoctorID
+    //returns:
+    let state2 = "DELETE FROM 390db.doctors WHERE ID = ?"
+    db.query(state2, [DoctorID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
             console.log("Deleted from Doctors table"); //This will eventually send an email to the invalidated doctor
         }
     })
-
-    db.query("DELETE FROM 390db.users WHERE ID = ?", [DoctorID], (err, result) => {
+    //parameters: DoctorID
+    //returns:
+    let state3 = "DELETE FROM 390db.users WHERE ID = ?"
+    db.query(state3, [DoctorID], (err, result) => {
         if (err) {
             console.log(err);
         } else {

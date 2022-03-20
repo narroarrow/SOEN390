@@ -57,7 +57,8 @@ UserController.post("/Login", async (req, res) => {
         let state = `SELECT U.Email, U.Password, U.Role, U.ID, U.Validated FROM users U WHERE U.Email = "${email}";`;
 
         //console.log(state) // used to verify the query
-
+        //parameters: Email
+        //returns: 
         db.query(state, async (err, result) => {
                 try {
                     if (err) {
@@ -78,6 +79,8 @@ UserController.post("/Login", async (req, res) => {
                                         res.status(405).send();
                                     } else {
                                         let update = `UPDATE users SET Token = "${token}" WHERE email = "${email}"`
+                                        //parameters: Token, Email
+                                        //returns: 
                                         db.query(update, async (err2, result2) => {
                                             if (err2) {
                                                 console.log("err2: " + err2)
@@ -110,14 +113,20 @@ UserController.post("/Login", async (req, res) => {
 UserController.post("/Signup", async (req, res) => {
     let existing = false;
     let uid;
-    db.query("SELECT * FROM 390db.users U WHERE U.email = ?", [req.body.email], async (err, result) => {
+    //parameters: Email
+    //returns: ID, FName, LName, Email, Password, Validated, Phone, Birthday, Address, Role, Token
+    let state = "SELECT * FROM 390db.users U WHERE U.email = ?"
+    db.query(state, [req.body.email], async (err, result) => {
 
         if (result.length !== 0) {
             existing = true;
         }
     });
     // select last auto increment
-    db.query(`SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "390db" AND TABLE_NAME = "users"`, [], async (err, result) => {
+    //parameters: 
+    //returns: ID
+    let state2 = `SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "390db" AND TABLE_NAME = "users"`
+    db.query(state2, [], async (err, result) => {
 
         uid = result.AUTO_INCREMENT;
     });
@@ -144,6 +153,8 @@ UserController.post("/Signup", async (req, res) => {
         }
 
         if (existing === false) {
+            //parameters:FName, LName, Email, Password, Validated, Phone, Role
+            //returns: 
             db.query(state, [firstName, lastName, email, hashedPassword, Validated, phoneNumber, userRole], function (err, result) {//ID might be removed since it should be auto indent
                 if (err) {
                     console.log(err)
@@ -157,6 +168,8 @@ UserController.post("/Signup", async (req, res) => {
 
 
                 state = `select id, patientCount from 390db.doctors order by patientCount asc limit 1;`;
+                //parameters:
+                //returns:  ID, (number of patients)
                 db.query(state, function (err, result) {//finds the doctor with the least amount of patients
                     if (err) {
                         console.log(err)
@@ -164,6 +177,8 @@ UserController.post("/Signup", async (req, res) => {
                         let docID = result[0]["id"]
 
                         let patientState = `INSERT INTO 390db.patients (ID, DoctorID, Flagged) VALUES (?,?,?); `;
+                        //parameters: ID, (DoctorID)
+                        //returns:
                         db.query(patientState, [uid, docID, 0], function (err, result) {//inserts a new patient with an auto assigned doctor
                             if (err) {
                                 console.log("\ninserting into patient \n" + err)
@@ -171,7 +186,8 @@ UserController.post("/Signup", async (req, res) => {
                         })
                     }
                 })
-
+                //parameters:
+                //returns:  ID, (number of patients)
                 db.query(state, function (err, result) {//finds the doctor with the least amount of patients
                     if (err) {
                         console.log(err)
@@ -180,6 +196,8 @@ UserController.post("/Signup", async (req, res) => {
                         let countP = result[0]["patientCount"] + 1
 
                         let patientState = `Update doctors set patientCount = ? where id = ?;`;
+                        //parameters: (number of patients), DoctorID
+                        //returns: 
                         db.query(patientState, [countP, docID], function (err, result) {//inserts a new patient with an auto assigned doctor
                             if (err) {
                                 console.log("\nupdating patient count of a doctor\t" + err)
@@ -190,6 +208,8 @@ UserController.post("/Signup", async (req, res) => {
 
             } else if (userRole == 'Doctor') {
                 let doctorState = `INSERT INTO 390db.doctors (ID, License,patientCount) VALUES (last_insert_id(),?,0);`;
+                //parameters: License
+                //returns:
                 db.query(doctorState, [req.body.medicalLicense], function (err, result) {//inserts a new patient with an auto assigned doctor
                     if (err) {
                         console.log("\ninserting into doctors \n" + err)
@@ -200,6 +220,8 @@ UserController.post("/Signup", async (req, res) => {
             } else if (userRole == 'Immigration Officer' || 'Health Official') {
 
                 let doctorState = `INSERT INTO 390db.otherusers (ID, Type) VALUES (last_insert_id(),?);`;
+                //parameters: Role
+                //returns:
                 db.query(doctorState, [userRole], function (err, result) {//inserts a new patient with an auto assigned doctor
                     if (err) {
                         console.log("\ninserting into officials \n" + err)
