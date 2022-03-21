@@ -177,7 +177,7 @@ describe('testing /editPatientProfileData', () => {
 //This test verifies we are able to retrieve the status of all patients and their count
 describe('testing /statusCountAllPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/statusCountAllPatients');
+    let res = await request(app).get('/statusCountAllPatients');
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -185,7 +185,7 @@ describe('testing /statusCountAllPatients', () => {
 //Verifies total patient count command
 describe('testing /countAllPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/countAllPatients');
+    let res = await request(app).get('/countAllPatients');
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -193,7 +193,7 @@ describe('testing /countAllPatients', () => {
 //Verifies total flagged patient count command
 describe('testing /countAllFlaggedPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/countAllFlaggedPatients');
+    let res = await request(app).get('/countAllFlaggedPatients');
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -201,7 +201,7 @@ describe('testing /countAllFlaggedPatients', () => {
 //Verfies total validated doctors command
 describe('testing /countAllValidatedDoctors', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/countAllValidatedDoctors');
+    let res = await request(app).get('/countAllValidatedDoctors');
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -209,7 +209,7 @@ describe('testing /countAllValidatedDoctors', () => {
 //Verifies doctors with most patients command
 describe('testing /doctorsWithMostPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/doctorsWithMostPatients');
+    let res = await request(app).get('/doctorsWithMostPatients');
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -217,7 +217,7 @@ describe('testing /doctorsWithMostPatients', () => {
 //Verifies doctors with least patients commands
 describe('testing /doctorsWithLeastPatients', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/doctorsWithLeastPatients');
+    let res = await request(app).get('/doctorsWithLeastPatients');
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -225,7 +225,7 @@ describe('testing /doctorsWithLeastPatients', () => {
 //Verifies patients flagged but not viewed by doctor command
 describe('testing /patientsFlaggedNotViewed', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/patientsFlaggedNotViewed');
+    let res = await request(app).get('/patientsFlaggedNotViewed');
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -233,7 +233,7 @@ describe('testing /patientsFlaggedNotViewed', () => {
 //Verifies patients flagged that have been viewed in decreasing order command
 describe('testing /patientsFlaggedLeastViewed', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/patientsFlaggedLeastViewed');
+    let res = await request(app).get('/patientsFlaggedLeastViewed');
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -314,7 +314,7 @@ describe('testing /validateDoctor', () => {
 //Verifies patients flagged that have no filled out symptom form command
 describe('testing /patientsFlaggedNoSymptomFormResponse', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/patientsFlaggedNoSymptomFormResponse');
+    let res = await request(app).get('/patientsFlaggedNoSymptomFormResponse');
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -330,7 +330,7 @@ describe('testing /retrieveAllNotifications', () => {
 //Verifies get the total number of notifications command
 describe('testing /getAllNotificationCount', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/getAllNotificationCount');
+    let res = await request(app).post('/getAllNotificationCount').send({id: 1});
     expect(res.statusCode).toEqual(200);
   })
 });
