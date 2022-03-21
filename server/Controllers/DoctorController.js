@@ -169,7 +169,7 @@ DoctorController.post("/requestForm", (req, res) => {
 
 
 //Gets the number of patients in each status category
-DoctorController.post("/statusCountAllPatients", (req, res) => {
+DoctorController.get("/statusCountAllPatients", (req, res) => {
     //parameters: 
     //returns: (healthyCount, isolatingCount,infectedCount)
     let state = "  SELECT healthyCount, isolatingCount, infectedCount " +
@@ -192,7 +192,7 @@ DoctorController.post("/statusCountAllPatients", (req, res) => {
 });
 
 //Gets the total number of patients
-DoctorController.post("/countAllPatients", (req, res) => {
+DoctorController.get("/countAllPatients", (req, res) => {
     //parameters:
     //returns: (count of rows)
     let state = "SELECT count(*) as allPatientCount FROM 390db.patients P"
@@ -207,7 +207,7 @@ DoctorController.post("/countAllPatients", (req, res) => {
 });
 
 //Gets the total number of flagged patients
-DoctorController.post("/countAllFlaggedPatients", (req, res) => {
+DoctorController.get("/countAllFlaggedPatients", (req, res) => {
     //parameters:
     //returns: (count of rows)
     let state = "SELECT count(*) as allFlaggedPatientCount FROM 390db.patients P WHERE P.Flagged = 1"
@@ -221,7 +221,7 @@ DoctorController.post("/countAllFlaggedPatients", (req, res) => {
 });
 
 //Gets the total number of registered doctors
-DoctorController.post("/countAllValidatedDoctors", (req, res) => {
+DoctorController.get("/countAllValidatedDoctors", (req, res) => {
     //parameters:
     //returns: (count of rows)
     let state = "SELECT count(*) as allRegisteredDoctorsCount FROM 390db.users U WHERE U.Validated = 1 AND U.Role = 'Doctor'"
@@ -236,7 +236,7 @@ DoctorController.post("/countAllValidatedDoctors", (req, res) => {
 
 
 //Gets top 5 doctors with most to least patients
-DoctorController.post("/doctorsWithMostPatients", (req, res) => {
+DoctorController.get("/doctorsWithMostPatients", (req, res) => {
     //parameters:
     //returns: (FName of doctors, LName of doctors, email of doctors, address of doctors, number of patients assigned)
     let state = "(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
@@ -263,7 +263,7 @@ DoctorController.post("/doctorsWithMostPatients", (req, res) => {
 
 
 //Gets top 5 doctors with least to most patients
-DoctorController.post("/doctorsWithLeastPatients", (req, res) => {
+DoctorController.get("/doctorsWithLeastPatients", (req, res) => {
     //parameters:
     //returns: (FName of doctors, LName of doctors, email of doctors, address of doctors, number of patients assigned)
     let state = "(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
@@ -289,7 +289,7 @@ DoctorController.post("/doctorsWithLeastPatients", (req, res) => {
 });
 
 //Gets the list of patients that are flagged but whose file has not been viewed
-DoctorController.post("/patientsFlaggedNotViewed", (req, res) => {
+DoctorController.get("/patientsFlaggedNotViewed", (req, res) => {
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient)
     let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email " +
@@ -309,7 +309,7 @@ DoctorController.post("/patientsFlaggedNotViewed", (req, res) => {
 });
 
 //Gets the list of patients that are flagged and have been viewed from latest to most recent
-DoctorController.post("/patientsFlaggedLeastViewed", (req, res) => {
+DoctorController.get("/patientsFlaggedLeastViewed", (req, res) => {
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient, ID of patient) ,timestamp
     let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, V.Timestamp as verifiedTime, P.ID " +
@@ -326,7 +326,7 @@ DoctorController.post("/patientsFlaggedLeastViewed", (req, res) => {
 });
 
 //Gets the list of patients that have been flagged and have not submitted their symptom form upion receiving a request from their doctor
-DoctorController.post("/patientsFlaggedNoSymptomFormResponse", (req, res) => {
+DoctorController.get("/patientsFlaggedNoSymptomFormResponse", (req, res) => {
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient,time of request, ID of patient)
     let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, IR.Timestamp as requestTime, P.ID " +

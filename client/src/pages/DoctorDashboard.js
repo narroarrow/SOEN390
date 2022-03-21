@@ -58,7 +58,7 @@ function DoctorDashboard() {
   };
 
   function getStatusCountAllPatients() {// This will return the number of patients classified under each status
-    Axios.post("http://localhost:8080/statusCountAllPatients").then((response) => {
+    Axios.get("http://localhost:8080/statusCountAllPatients").then((response) => {
       setTotalStatusCounts(response.data);
       console.log("Counts:");
       console.log(response.data)  
@@ -66,7 +66,7 @@ function DoctorDashboard() {
   };
 
   function getDoctorsWithMostPatients() { //This will return the top 5 doctors with most to least patients
-    Axios.post("http://localhost:8080/doctorsWithMostPatients").then((response) => {
+    Axios.get("http://localhost:8080/doctorsWithMostPatients").then((response) => {
       setDoctorsWithMostPatientsList(response.data);
       console.log("Doctors With Most Patients:");
       console.log(response.data)  
@@ -74,7 +74,7 @@ function DoctorDashboard() {
   };
 
   function getDoctorsWithLeastPatients() { //This will return the top 5 doctors with least to most patients
-    Axios.post("http://localhost:8080/doctorsWithLeastPatients").then((response) => {
+    Axios.get("http://localhost:8080/doctorsWithLeastPatients").then((response) => {
       setDoctorsWithLeastPatientsList(response.data);
       console.log("Doctors With Least Patients:");
       console.log(response.data)  
@@ -82,7 +82,7 @@ function DoctorDashboard() {
   };
 
   function getTotalNumberOfDoctors() { //This will return the total number of validated doctors
-    Axios.post("http://localhost:8080/countAllValidatedDoctors").then((response) => {
+    Axios.get("http://localhost:8080/countAllValidatedDoctors").then((response) => {
       setValidatedDoctorCount(response.data);
       console.log("Total Number of Doctors:");
       console.log(response.data)  
@@ -90,7 +90,7 @@ function DoctorDashboard() {
   };
 
   function getTotalNumberOfPatients() { //This will return the total number of validated doctors
-    Axios.post("http://localhost:8080/countAllPatients").then((response) => {
+    Axios.get("http://localhost:8080/countAllPatients").then((response) => {
       setTotalPatientCount(response.data);
       console.log("Total Number of Patients:");
       console.log(response.data)  
@@ -98,7 +98,7 @@ function DoctorDashboard() {
   }; 
 
   function getTotalNumberOfFlaggedPatients() { //This will return the total number of validated doctors
-    Axios.post("http://localhost:8080/countAllFlaggedPatients").then((response) => {
+    Axios.get("http://localhost:8080/countAllFlaggedPatients").then((response) => {
       setTotalFlaggedPatientCount(response.data);
       console.log("Total Number of Flagged Patients:");
       console.log(response.data)  
@@ -106,7 +106,7 @@ function DoctorDashboard() {
   };
 
   function getFlaggedPatientsNotViewed() { //This will return the list of patients that have submitted a form but have not been reviewed
-    Axios.post("http://localhost:8080/patientsFlaggedNotViewed").then((response) => {
+    Axios.get("http://localhost:8080/patientsFlaggedNotViewed").then((response) => {
       setPatientsFlaggedNotViewedList(response.data);
       console.log("Flagged Patients Not Viewed");
       console.log(response.data)  
@@ -114,7 +114,7 @@ function DoctorDashboard() {
   };
 
   function getFlaggedPatientsLeastViewed() { //This will return the list of patients whose form has been reviewed from longest to most recent
-    Axios.post("http://localhost:8080/patientsFlaggedLeastViewed").then((response) => {
+    Axios.get("http://localhost:8080/patientsFlaggedLeastViewed").then((response) => {
       setpatientsFlaggedLeastViewedList(response.data);
       console.log("Patients Flagged Least Viewed");
       console.log(response.data)  
@@ -122,7 +122,7 @@ function DoctorDashboard() {
   };
 
   function getFlaggedPatientsNoSymptomFormResponse() { //This will return the list of patients that have been sent a form to fill out but have not done so
-    Axios.post("http://localhost:8080/patientsFlaggedNoSymptomFormResponse").then((response) => {
+    Axios.get("http://localhost:8080/patientsFlaggedNoSymptomFormResponse").then((response) => {
       setpatientsFlaggedNoSymptomFormResponseList(response.data);
       console.log("Patients Flagged No Symptom Form Response:");
       console.log(response.data)  
