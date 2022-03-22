@@ -1,4 +1,4 @@
-import { Paper, FormControl, FormLabel, TextField, Button, Typography } from '@mui/material';
+import { Paper, FormControl, FormLabel, TextField, Button, Typography, FilledInput } from '@mui/material';
 import Axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -48,6 +48,7 @@ function EditInfoForm() {
     });
   }, [stopeffect]);
 
+
   let patientFName = editPatientData.map((val, key) => { return val.FName });
   let patientLName = editPatientData.map((val, key) => { return val.LName });
   let patientHealthInsurance = editPatientData.map((val, key) => { return val.HealthInsurance });
@@ -71,14 +72,15 @@ function EditInfoForm() {
             <FormLabel id="firstName" sx={{ mb: 3 }}>
               Please enter your first name
             </FormLabel>
-            <TextField id="firstName" name="firstName" placeholder={patientFName} required label="First Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
+            <TextField id="firstName" name="firstName" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={patientFName} required label="First Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }}/>
           </FormControl>
           <br></br>
           <FormControl>
             <FormLabel id="lastName" sx={{ mb: 3 }}>
               Please enter your last name
             </FormLabel>
-            <TextField id="lastName" name="lastName" placeholder={patientLName} required label="Last Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
+            <TextField id="lastName" name="lastName" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={patientLName} required label="Last Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
+            
           </FormControl>
           <br></br>
           {/* Asks user for their birthday, feature to be implemented *}
@@ -95,21 +97,21 @@ function EditInfoForm() {
             <FormLabel id="patientHI" sx={{ mb: 3 }}>
               Health Insurance Number
             </FormLabel>
-            <TextField id="patientHI" name="patientHI" placeholder={patientHealthInsurance} required label="Health Insurance" variant="filled" type="text" inputProps={{ maxLength: 10 }} sx={{ mb: 5 }} />
+            <TextField id="patientHI" name="patientHI" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={patientHealthInsurance} required label="Health Insurance" variant="filled" type="text" inputProps={{ maxLength: 10 }} sx={{ mb: 5 }} />
           </FormControl>
           <br></br>
           <FormControl>
             <FormLabel id="patientPhone" sx={{ mb: 3 }}>
               Please enter your phone number
             </FormLabel>
-            <TextField id="patientPhone" name="patientPhone" placeholder={patientPhoneNumber} required label="Phone number" variant="filled" type="number" inputProps={{ maxLength: 9 }} sx={{ mb: 5 }} />
+            <TextField id="patientPhone" name="patientPhone" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={patientPhoneNumber} required label="Phone number" variant="filled" type="number" inputProps={{ maxLength: 9 }} sx={{ mb: 5 }} />
           </FormControl>
           <br></br>
           <FormControl>
             <FormLabel id="patientEmail" sx={{ mb: 3 }}>
               Please enter your email address
             </FormLabel>
-            <TextField id="patientEmail" name="patientEmail" placeholder={patientEmail} required label="Email address" variant="filled" type="text" inputProps={{ maxLength: 240 }} sx={{ mb: 5 }} />
+            <TextField id="patientEmail" name="patientEmail" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={patientEmail} required label="Email address" variant="filled" type="text" inputProps={{ maxLength: 240 }} sx={{ mb: 5 }} />
           </FormControl>
           <br></br>
           <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
