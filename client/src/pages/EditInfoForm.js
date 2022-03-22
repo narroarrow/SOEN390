@@ -56,7 +56,7 @@ function EditInfoForm() {
   let patientEmail = editPatientData.map((val, key) => { return val.Email });
 
   // Allows patients to edit their information adding appropriate info in the text fields
-
+  // defaultValue is set using previous values however 'key' is needed to perform an operation to render the value each time
   return (
     <>
       {
@@ -72,14 +72,14 @@ function EditInfoForm() {
             <FormLabel id="firstName" sx={{ mb: 3 }}>
               Please enter your first name
             </FormLabel>
-            <TextField id="firstName" name="firstName" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={patientFName} required label="First Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }}/>
+            <TextField id="firstName" name="firstName" key={Math.random() * 1000} defaultValue={patientFName} required label="First Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }}/>
           </FormControl>
           <br></br>
           <FormControl>
             <FormLabel id="lastName" sx={{ mb: 3 }}>
               Please enter your last name
             </FormLabel>
-            <TextField id="lastName" name="lastName" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={patientLName} required label="Last Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
+            <TextField id="lastName" name="lastName" key={Math.random() * 1000} defaultValue={patientLName} required label="Last Name" variant="filled" type="text" inputProps={{ maxLength: 15 }} sx={{ mb: 5 }} />
             
           </FormControl>
           <br></br>
@@ -97,21 +97,21 @@ function EditInfoForm() {
             <FormLabel id="patientHI" sx={{ mb: 3 }}>
               Health Insurance Number
             </FormLabel>
-            <TextField id="patientHI" name="patientHI" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={patientHealthInsurance} required label="Health Insurance" variant="filled" type="text" inputProps={{ maxLength: 10 }} sx={{ mb: 5 }} />
+            <TextField id="patientHI" name="patientHI" key={Math.random() * 1000} defaultValue={patientHealthInsurance} required label="Health Insurance" variant="filled" type="text" inputProps={{ maxLength: 10 }} sx={{ mb: 5 }} />
           </FormControl>
           <br></br>
           <FormControl>
             <FormLabel id="patientPhone" sx={{ mb: 3 }}>
               Please enter your phone number
             </FormLabel>
-            <TextField id="patientPhone" name="patientPhone" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={patientPhoneNumber} required label="Phone number" variant="filled" type="number" inputProps={{ maxLength: 9 }} sx={{ mb: 5 }} />
+            <TextField id="patientPhone" name="patientPhone" key={Math.random() * 1000} defaultValue={patientPhoneNumber} required label="Phone number" variant="filled" type="number" inputProps={{ maxLength: 9 }} sx={{ mb: 5 }} />
           </FormControl>
           <br></br>
           <FormControl>
             <FormLabel id="patientEmail" sx={{ mb: 3 }}>
               Please enter your email address
             </FormLabel>
-            <TextField id="patientEmail" name="patientEmail" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={patientEmail} required label="Email address" variant="filled" type="text" inputProps={{ maxLength: 240 }} sx={{ mb: 5 }} />
+            <TextField id="patientEmail" name="patientEmail" key={Math.random() * 1000} defaultValue={patientEmail} required label="Email address" variant="filled" type="text" inputProps={{ maxLength: 240 }} sx={{ mb: 5 }} />
           </FormControl>
           <br></br>
           <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
