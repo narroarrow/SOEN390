@@ -41,18 +41,4 @@ let state = "SELECT Upatient.Fname, Upatient.Lname, A.aptDate, A.startTime, A.en
     })
 });
 
-//Gets the total number of appointments
-NotificationController.post("/getAllNotificationCount", (req, res) => {
-    let doctorID = req.query["id"];
-    //parameters: DoctorID
-    //returns: (count of rows)
-    let state = "SELECT count(*) as notificationCount FROM 390db.appointments A WHERE A.DoctorID = ?"
-    db.query(state, [doctorID], (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    })
-});
 module.exports = NotificationController;

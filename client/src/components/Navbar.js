@@ -86,11 +86,15 @@ const ResponsiveAppBar = () => {
 
     //function to get the number of notifications to be used
     function getNotificationsCount() {
-        Axios.post("http://localhost:8080/getAllNotificationCount").then((response) => {
-            setCount(response.data[0].notificationCount);
-            console.log("Notification Count:");
+        Axios.get("http://localhost:8080/retrieveAllNotifications", {
+            params: {
+                id: localStorage.getItem('id')
+            }
+        }).then((response) => {
+            setCount(response.data.length);
+            console.log("Notification List:");
             console.log(response.data);
-        });
+        }).catch(alert);
     }
     // these  functions are called when navbar is rendered
     useEffect(() => {
