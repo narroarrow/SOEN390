@@ -55,4 +55,30 @@ NotificationController.post("/getAllNotificationCount", (req, res) => {
         }
     })
 });
+
+while(true) {
+    let dateNow = new Date(); 
+    let timeNow = dateNow.getHours() + ":" + dateNow.getMinutes();
+    let dayNow = dateNow.getFullYear()+'-'+dateNow.getMonth()+'-'+dateNow.getDate() 
+    // if time now is 23h00 then execute query, else sleep for 30 seconds
+    if (timeNow=="23:30"){
+    let state = "select U.email, U.id from users U where U.ID not in (select U.ID from users U, healthInformation HI where U.ID = HI.PatientID and HI.InfoTimestamp =?) and U.Role = 'Patient';"
+    db.query(state, [dayNow],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+            } else {
+                //send email to all emails from results
+            }
+        }
+    );
+}
+    else {
+        console.log(timeNow);
+        setTimeout(()=> {}, 30000);
+    }
+
+}
+
+
 module.exports = NotificationController;
