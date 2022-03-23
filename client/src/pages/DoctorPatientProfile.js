@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Avatar, IconButton, Button, Box, Grid, CardHeader, Typography } from '@mui/material';
+import {Avatar, IconButton, Button, Box, Grid, CardHeader, Typography, Select, MenuItem} from '@mui/material';
 import FlagIcon from '@mui/icons-material/Flag';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -48,6 +48,7 @@ function DoctorPatientProfile() {
   };
 
   let stopeffect = 1;
+
 
   useEffect(() => { //After the page is rendered, the two functions getPatients() and getViewed() are called once
     getPatients();
@@ -108,6 +109,7 @@ function DoctorPatientProfile() {
                       />
 
                       {isViewed ? (<VisibilityIcon />) : (<VisibilityOutlinedIcon />)} {/* If a patients health information has been reviewed the eye icon will be filled */}
+
                       {isFlagged ? (<FlagIcon color='secondary' />) : (<FlagOutlinedIcon />)} {/* If a patient is flagged the flag icon will be red */}
                       {isChatRequested ? (<AnnouncementIcon />) : (<AnnouncementIcon sx={{ visibility: 'hidden' }} />)}
                       {isPatientNew ? (<FiberNewIcon />) : (<FiberNewIcon sx={{ visibility: 'hidden' }} />)}
