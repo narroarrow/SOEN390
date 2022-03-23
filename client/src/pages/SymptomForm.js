@@ -1,4 +1,4 @@
-import { Paper, FormControlLabel, FormControl, FormLabel, Radio, RadioGroup, TextField, Button, Stack } from '@mui/material';
+import { Paper, FormControlLabel, FormControl, FormLabel, Radio, RadioGroup, TextField, Button, Stack, Checkbox } from '@mui/material';
 import Axios from 'axios';
 import { useState } from "react";
 import React from 'react';
@@ -25,6 +25,7 @@ let submitSymptomForm = (event) => {
     cough: data.get('cough'),
     taste: data.get('taste'),
     symptoms: data.get('symptoms'),
+    urgent: data.get('urgent'),
   }).then(() => {
     console.log("success");
     window.location.href = "/PatientProfile";
@@ -455,6 +456,13 @@ function SymptomForm() {
                 name="symptoms"
                 sx={{ width: 350 }}
               />
+            </FormControl>
+          </div>
+
+          <div>
+            <FormControl>
+              <FormLabel id="urgent" sx={{ mb: 3 }}>Urgent</FormLabel>
+              <Checkbox id="urgent"></Checkbox>
             </FormControl>
           </div>
 
