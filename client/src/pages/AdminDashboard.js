@@ -33,6 +33,10 @@ function AdminDashboard() {
   const [filteredPatientList, setFilteredPatientList] = useState([]); //all patient info
   const [doctorListValidated, setDoctorListValidated] = useState([]); //all doctor info
   const [doctorListUnvalidated, setDoctorListUnvalidated] = useState([]); //all doctor info
+  const [healthOfficialListValidated, setHealthOfficialListValidated] = useState([]); //all validated health official info
+  const [healthOfficialListUnvalidated, setHealthOfficialListUnvalidated] = useState([]); //all unvalidated health official info
+  const [immigrationOfficerListValidated, setImmigrationOfficerListValidated] = useState([]); //all validated immigration officer info
+  const [immigrationOffficerListUnvalidated, setImmigrationOfficerListUnvalidated] = useState([]); //all unvalidated immigration officer info
 
   var ptSearch = "";
   var patientsOf = patientList.filter(e => e.Fname.includes(ptSearch)); //returns a filtered list of patients based on search
@@ -78,6 +82,38 @@ function AdminDashboard() {
     });
   };
 
+  function getValidatedHealthOfficials() {
+    Axios.get("http://localhost:8080/adminViewingValidatedHealthOfficalData").then((response) => {
+      setHealthOfficialListValidated(response.data);
+      console.log("Validated HO:");
+      console.log(response.data);
+    });
+  };
+
+  function getUnvalidatedHealthOfficials() {
+    Axios.get("http://localhost:8080/adminViewingUnvalidatedHealthOfficalData").then((response) => {
+      setHealthOfficialListUnvalidated(response.data);
+      console.log("Unvalidated HO:");
+      console.log(response.data);
+    });
+  };
+
+  function getValidatedImmigrationOfficers() {
+    Axios.get("http://localhost:8080/adminViewingValidatedImmigrationOfficerData").then((response) => {
+      setImmigrationOfficerListValidated(response.data);
+      console.log("Validated IO:");
+      console.log(response.data);
+    });
+  };
+
+  function getUnvalidatedImmigrationOfficers() {
+    Axios.get("http://localhost:8080/adminViewingUnvalidatedImmigrationOfficerData").then((response) => {
+      setImmigrationOfficerListUnvalidated(response.data);
+      console.log("Unvalidated IO:");
+      console.log(response.data);
+    });
+  };
+
   let validateDoctor = (ID) => { //this function will validate doctors on click
     Axios.post("http://localhost:8080/validateDoctor", {
       DoctorID: ID
@@ -100,6 +136,50 @@ function AdminDashboard() {
     window.location.reload(false);
   };
 
+  let validateHO = (ID) => { //this function will validate health officials on click
+    Axios.post("http://localhost:8080/validateHealthOfficial", {
+      HealthOfficialID: ID
+    }).then(() => {
+      console.log("successfully validated health official!")
+    });
+    window.location.reload(false);
+  };
+
+  let invalidateHO = (ID) => { //This function will update the validate attribute in the users table
+    if (!window.confirm("Are you sure you would like to deny this account? This will permanently delete the account from the system and inform the contact by email.")) {
+      return;
+    }
+
+    Axios.post("http://localhost:8080/invalidateHealthOfficial", { //This request will invalidate a health official
+      HealthOfficialID: ID
+    }).then(() => {
+      console.log("successfully invalidated health official!")
+    });
+    window.location.reload(false);
+  };
+
+  let validateIO = (ID) => { //this function will validate immigration officers on click
+    Axios.post("http://localhost:8080/validateImmigrationOfficer", {
+      ImmigrationOfficerID: ID
+    }).then(() => {
+      console.log("successfully validated immigration officer!")
+    });
+    window.location.reload(false);
+  };
+  
+  let invalidateIO = (ID) => { //This function will update the validate attribute in the users table
+    if (!window.confirm("Are you sure you would like to deny this account? This will permanently delete the account from the system and inform the contact by email.")) {
+      return;
+    }
+
+    Axios.post("http://localhost:8080/invalidateImmigrationOfficer", { //This request will invalidate a immigration officer
+      ImmigartionOfficerID: ID
+    }).then(() => {
+      console.log("successfully invalidated immigration officer!")
+    });
+    window.location.reload(false);
+  };
+
   function sendEmail() { //Feature to be implemented soon
     Axios.post("http://localhost:8080/sendEmail").then(() => {
       console.log("Sent Email!")
@@ -113,6 +193,10 @@ function AdminDashboard() {
     getValidatedDoctors();
     getUnvalidatedDoctors();
     getPatients();
+    getValidatedHealthOfficials();
+    getUnvalidatedHealthOfficials();
+    getValidatedImmigrationOfficers();
+    getUnvalidatedImmigrationOfficers();
     //sendEmail();
 
   }, [stopeffect]);

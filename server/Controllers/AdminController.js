@@ -78,6 +78,80 @@ AdminController.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
     }
 );
 
+// Gets validated health official first name, last name, phone number, ID, and validation status to the admin
+AdminController.get("/adminViewingValidatedHealthOfficalData", (req, res) => {
+        let state = 'SELECT Uho.Fname, Uho.Lname, Uho.Phone, Uho.Validated, Uho.ID FROM 390db.users Uho WHERE Uho.Role = "Health Official" AND Uho.Validated = 1;'
+    //parameters:
+    //returns: (health official first name, health official last name, health official phone, validity state of health official, health official ID)
+
+        db.query(state, (err, result) => {
+
+            if (err) {
+
+                console.log(err);
+            } else {
+                // console.log(result);
+                res.send(result);
+            }
+        });
+    }
+);
+
+// Gets unvalidated health official first name, last name, phone number, ID, and validation status to the admin
+AdminController.get("/adminViewingUnvalidatedHealthOfficalData", (req, res) => {
+        let state = 'SELECT Uho.Fname, Uho.Lname, Uho.Phone, Uho.Validated, Uho.ID FROM 390db.users Uho WHERE Uho.Role = "Health Official" AND Uho.Validated = 0;'
+    //parameters:
+    //returns: (health official first name, health official last name, health official phone, validity state of health official, health official ID)
+        db.query(state, (err, result) => {
+
+            if (err) {
+
+                console.log(err);
+            } else {
+                // console.log(result);
+                res.send(result);
+            }
+        });
+    }
+);
+
+// Gets validated immigration officer first name, last name, phone number, ID, and validation status to the admin
+AdminController.get("/adminViewingValidatedImmigrationOfficerData", (req, res) => {
+        let state = 'SELECT Uio.Fname, Uio.Lname, Uio.Phone, Uio.Validated, Uio.ID FROM 390db.users Uio WHERE Uio.Role = "Immigration Officer" AND Uio.Validated = 1;'
+    //parameters:
+    //returns: (immigration officer first name, immigration officer last name, immigration officer phone, validity state of immigration officer, immigration officer ID)
+        db.query(state, (err, result) => {
+
+            if (err) {
+
+                console.log(err);
+            } else {
+                // console.log(result);
+                res.send(result);
+            }
+        });
+
+    }
+);
+
+// Gets unvalidated immigration officer first name, last name, phone number, ID, and validation status to the admin
+AdminController.get("/adminViewingUnvalidatedImmigrationOfficerData", (req, res) => {
+        let state = 'SELECT Uio.Fname, Uio.Lname, Uio.Phone, Uio.Validated, Uio.ID FROM 390db.users Uio WHERE Uio.Role = "Immigration Officer" AND Uio.Validated = 0;'
+    //parameters:
+    //returns: (immigration officer first name, immigration officer last name, immigration officer phone, validity state of immigration officer, immigration officer ID)
+        db.query(state, (err, result) => {
+
+            if (err) {
+
+                console.log(err);
+            } else {
+                // console.log(result);
+                res.send(result);
+            }
+        });
+    }
+);
+
 // Gets patient first name, last name, phone number to the admin
 AdminController.get("/adminViewingPatientData", (req, res) => {
     //parameters:
@@ -147,6 +221,120 @@ AdminController.post("/invalidateDoctor", (req, res) => {
         } else {
             console.log("Deleted from Users Table");
             sendEmail(fName, lName, email); //This sends an email to the invalidated doctor
+        }
+    })
+});
+
+AdminController.post("/validateHO", (req, res) => {
+    let HealthOfficialID = req.body.HealthOfficialID;
+    let state = 'UPDATE 390db.users SET Validated = 1 WHERE ID = ?'
+    //parameters: HealthOfficialID
+    //returns:
+    db.query(state, [HealthOfficialID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Health Official validated!");
+        }
+    })
+});
+
+AdminController.post("/invalidateHealthOfficial", (req, res) => {
+    //Delete from the database
+    let HealthOfficialID = req.body.HealthOfficialID;
+    console.log(HealthOfficialID);
+    var fName;
+    var lName;
+    var email;
+    //parameters: HealthOfficialID
+    //returns:
+    let state = "SELECT Uho.Fname, Uho.Lname, Uho.Email FROM 390db.users Uho WHERE Uho.ID = ?"
+    db.query(state, [HealthOfficialID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            fName = result[0].Fname;
+            lName = result[0].Lname;
+            email = result[0].Email;
+            console.log(email);
+        }
+    });
+    //parameters: HealthOfficialID
+    //returns:
+    let state2 = "DELETE FROM 390db.otherusers WHERE ID = ?"
+    db.query(state2, [HealthOfficialID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Deleted from Other Users table"); //This will eventually send an email to the invalidated health official
+        }
+    })
+    //parameters: HealthOfficialID
+    //returns:
+    let state3 = "DELETE FROM 390db.users WHERE ID = ?"
+    db.query(state3, [HealthOfficialID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Deleted from Users Table");
+            sendEmail(fName, lName, email); //This sends an email to the invalidated health official
+        }
+    })
+});
+
+AdminController.post("/validateIO", (req, res) => {
+    let ImmigrationOfficerID = req.body.ImmigrationOfficerID;
+    let state = 'UPDATE 390db.users SET Validated = 1 WHERE ID = ?'
+    //parameters: ImmigrationOfficerID
+    //returns:
+    db.query(state, [ImmigrationOfficerID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Immigration Officer validated!");
+        }
+    })
+});
+
+AdminController.post("/invalidateImmigrationOfficer", (req, res) => {
+    //Delete from the database
+    let ImmigrationOfficerID = req.body.ImmigrationOfficerID;
+    console.log(ImmigrationOfficerID);
+    var fName;
+    var lName;
+    var email;
+    //parameters: ImmigrationOfficerID
+    //returns:
+    let state = "SELECT Uio.Fname, Uio.Lname, Uio.Email FROM 390db.users Uio WHERE Uio.ID = ?"
+    db.query(state, [ImmigrationOfficerID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            fName = result[0].Fname;
+            lName = result[0].Lname;
+            email = result[0].Email;
+            console.log(email);
+        }
+    });
+    //parameters: ImmigrationOfficerID
+    //returns:
+    let state2 = "DELETE FROM 390db.otherusers WHERE ID = ?"
+    db.query(state2, [ImmigrationOfficerID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Deleted from Other Users table"); //This will eventually send an email to the invalidated immigration officer
+        }
+    })
+    //parameters: ImmigrationOfficerID
+    //returns:
+    let state3 = "DELETE FROM 390db.users WHERE ID = ?"
+    db.query(state3, [ImmigrationOfficerID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Deleted from Users Table");
+            sendEmail(fName, lName, email); //This sends an email to the invalidated immigration officer
         }
     })
 });
