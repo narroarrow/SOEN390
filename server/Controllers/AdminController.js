@@ -225,6 +225,7 @@ AdminController.post("/invalidateDoctor", (req, res) => {
     })
 });
 
+
 AdminController.post("/validateHO", (req, res) => {
     let HealthOfficialID = req.body.HealthOfficialID;
     let state = 'UPDATE 390db.users SET Validated = 1 WHERE ID = ?'
@@ -235,6 +236,19 @@ AdminController.post("/validateHO", (req, res) => {
             console.log(err);
         } else {
             res.send("Health Official validated!");
+        }
+    })
+});  
+
+AdminController.get("/mostToLeastPatients", (req, res) => {
+    let state = "SELECT  U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients FROM 390db.doctors D, 390db.patients P, 390db.users U  WHERE D.ID = P.DoctorID AND D.ID = U.ID AND U.validated = '1' GROUP BY D.ID ORDER BY countPatients ASC"
+    //parameters:
+    //returns: returns a list of doctors from least to most patietns while providing the doctors names, email, phone, address, and patient count.
+    db.query(state, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
         }
     })
 });
@@ -335,6 +349,21 @@ AdminController.post("/invalidateImmigrationOfficer", (req, res) => {
         } else {
             console.log("Deleted from Users Table");
             sendEmail(fName, lName, email); //This sends an email to the invalidated immigration officer
+        }
+    })
+});
+AdminController.post("/reassignPatient", (req, res) => {
+    //Reasigns a patient to a new doctor in the database
+    let newDocID= req.body.DoctorID;
+    let patientID = req.body.PatientID;
+
+    let state = "UPDATE 390db.patients SET DoctorID = ? WHERE ID = ?";
+
+    db.query(state, [newDocID, patientID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Patient Reassigned!");
         }
     })
 });
