@@ -29,8 +29,6 @@ const UrgentPaper = styled(Paper)(({ theme }) => ({
 
 function AdminDashboard() {
 
-  const [patientList, setPatientList] = useState([]); //all patient info
-  const [filteredPatientList, setFilteredPatientList] = useState([]); //all patient info
   const [doctorListValidated, setDoctorListValidated] = useState([]); //all doctor info
   const [doctorListUnvalidated, setDoctorListUnvalidated] = useState([]); //all doctor info
   const [healthOfficialListValidated, setHealthOfficialListValidated] = useState([]); //all validated health official info
@@ -38,25 +36,13 @@ function AdminDashboard() {
   const [immigrationOfficerListValidated, setImmigrationOfficerListValidated] = useState([]); //all validated immigration officer info
   const [immigrationOffficerListUnvalidated, setImmigrationOfficerListUnvalidated] = useState([]); //all unvalidated immigration officer info
 
-  var ptSearch = "";
-  var patientsOf = patientList.filter(e => e.Fname.includes(ptSearch)); //returns a filtered list of patients based on search
-  var allPatients = patientList;
-
   var docSearch = "";
   var docOf = doctorListValidated.filter(e => e.Fname.includes(docSearch)); //returns a filtered list of doctors based on search
-
-  const filterMyPatients = () => { //this function will set the useState filteredPatients to show ALL patients
-    setPatientList(patientsOf)
-  };
-
-  const filterAllPatients = () => { //this function will set the useState filteredPatients to show the patients assigned specifically to the doctor who is logged in
-    setFilteredPatientList(allPatients)
-  };
-
+  
   const filterMyDoc = () => { //this function will set the useState filteredPatients to show the patients assigned specifically to the doctor who is logged in
     setDoctorListValidated(docOf)
   };
-
+  
   function getValidatedDoctors() { //this function will return all information associated to validated doctors
     Axios.get("http://localhost:8080/adminViewingValidatedDoctorData").then((response) => {
       setDoctorListValidated(response.data);
@@ -69,15 +55,6 @@ function AdminDashboard() {
     Axios.get("http://localhost:8080/adminViewingUnvalidatedDoctorData").then((response) => {
       setDoctorListUnvalidated(response.data);
       console.log("Unvalidated Doctors:");
-      console.log(response.data);
-    });
-  };
-
-  function getPatients() { //this function will return all information associated to patients
-    Axios.get("http://localhost:8080/adminViewingPatientData").then((response) => {
-      setPatientList(response.data);
-      setFilteredPatientList(response.data);
-      console.log("Patients:");
       console.log(response.data);
     });
   };
@@ -192,7 +169,6 @@ function AdminDashboard() {
   useEffect(() => { //functions executed upon page render
     getValidatedDoctors();
     getUnvalidatedDoctors();
-    getPatients();
     getValidatedHealthOfficials();
     getUnvalidatedHealthOfficials();
     getValidatedImmigrationOfficers();
@@ -218,48 +194,6 @@ function AdminDashboard() {
         title="Welcome Admin"
         subheader="Admin"
       />
-      {/* Title Patient Block and Standard Grid Sizing */}
-      <Container maxWidth="md" sx={{ pb: '2%' }}>
-        <Grid container spacing={2} >
-          <Grid item xs={12}>
-            <Card container sx={{ marginBottom: '2%', padding: '3%' }}>
-              <Typography variant="body1" color="initial" >
-                Patients
-              </Typography>
-            </Card>
-          </Grid>
-          {/* SEARCH BAR TOO IMPLEMENT NEXT SPRINT */}
-          {/* <Grid item xs={4}>
-            <TextField id="ptSearch" label="Search" variant="filled" onChange={() => filterMyPatients()}>{ptSearch}</TextField>
-          </Grid> */}
-        </Grid>
-        {/* Grid Sizing for Patient Paper Tiles */}
-        <Grid container spacing={2} >
-          {filteredPatientList.map((val,key) => {
-            return(
-              <Grid item xs={4} key={key}>
-              <TilePaper>
-                <CardHeader
-                  avatar={
-                    <Avatar aria-label="">
-                      P{key}
-                    </Avatar>
-                  }
-                  action={
-                    <IconButton aria-label=""></IconButton>
-                  }
-                  title = {val.Fname + " " + val.Lname} 
-                  subheader = {`Doctor: ${val.docFname} ${val.docLname}`} 
-                />
-                 <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}>Contact: {val.Phone}</Typography>
-              </TilePaper>
-              </Grid>
-            )
-          }
-          )}
-        </Grid> 
-      </Container>
-      <hr></hr>
       <Container maxWidth="md" sx={{ padding: '2%' }}>
         {/* Title Doctor Block and Standard Grid Sizing */}
         <Grid container spacing={2} >

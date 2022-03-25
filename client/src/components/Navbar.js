@@ -48,7 +48,7 @@ const ResponsiveAppBar = () => {
             }
             if (localStorage.getItem('role') == 'Admin') {
                 pages.push(['AdminDashboard', 'Dashboard']);
-                pages.push(['DoctorPatientProfile', 'Patients']);
+                pages.push(['AdminPatientDashboard', 'Patient Dashboard']);
             }
             if (localStorage.getItem('role') == 'Doctor') {
                 pages.push(['DoctorDashboard', 'Dashboard']);
