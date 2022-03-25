@@ -3,34 +3,39 @@ import { useEffect, useState, useRef } from 'react';
 import { ChatMessageDto } from '../components/ChatMessageDto';
 import '../components/Chat.css';
 import SendIcon from '@mui/icons-material/Send'
+import { Navigate } from "react-router-dom";
+import Axios from 'axios';
+
 
 
 function LiveChat() {
     const ENTERCODE = 13;
+    let stopEffect = 1;
     const webSocket = useRef(null);
     const scrollBottomRef = useRef(null);
-    const [chatMessages, setChatMessages] = useState([
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'),
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'),
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello'), 
-        new ChatMessageDto('Alex', 'Hello')   
-    ]); 
+    // const [chatMessages, setChatMessages] = useState([
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'),
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'),
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello'), 
+        // new ChatMessageDto('Alex', 'Hello')   
+    // ]); 
 
     
 
     const [user, setUser] = useState("") 
     const [message, setMessage] = useState("") 
+    const [allMessages, setAllMessages] = useState([]);
 
     // useEffect(() => {
     //     console.log("open web socket");
@@ -61,12 +66,22 @@ function LiveChat() {
     //     }
     })
 
+    useEffect(() => {
+        Axios.get('http://localhost:8080/liveChatMessages', { withCredentials: true, 
+        params: { id: localStorage.getItem('id') } 
+    }).then((response) => {
+            setAllMessages(response.data);
+            console.log(response);
+        })
+    }, [stopEffect]);
+
 
     const handleUserChange = (event) => {
         setUser(event.target.value)
     }
     const handleMessgaeChange = (event) => {
         setMessage(event.target.value)
+        
     }
     
     const handleEnterKey = (event) => {
@@ -76,6 +91,15 @@ function LiveChat() {
     }
 
     const sendMessage = () => {
+        Axios.post("http://localhost:8080/createLiveChatMessage", {
+            id: localStorage.getItem('id'),
+            message: message
+
+        }).then(() => {
+            console.log("success");
+            window.location.href = "/PatientProfile";
+
+        });
         // if(user&& message){
         //     console.log('Send')
         //     webSocket.current.send(
@@ -85,12 +109,27 @@ function LiveChat() {
         // }
     }
 
-    const listChatMessages = chatMessages.map((ChatMessageDto, index) =>
+
+    let listChatMessages = [];
+    allMessages.forEach((item, index) => {
+        listChatMessages.push(
         <ListItem key={index}>
-            <ListItemText primary={`${ChatMessageDto.user}: ${ChatMessageDto.message}`}/>
+            <ListItemText primary={`${item.SenderID}: ${item.Message}`}/>
         </ListItem> 
-    );
+        )
+    })
+
+
+    // const listChatMessages = allMessages.map((ChatMessageDto, index) =>
+    //     <ListItem key={index}>
+    //         <ListItemText primary={`${ChatMessageDto.user}: ${ChatMessageDto.message}`}/>
+    //     </ListItem> 
+    // );
     return (
+        <>
+        {
+          !(localStorage.getItem("role") == 'Doctor' || localStorage.getItem("role") == 'Patient')  && <Navigate to={"/"} refresh={true} />
+        }
         <div>
             <Container>
                 <Paper elevation={5}>
@@ -106,12 +145,12 @@ function LiveChat() {
                                     <ListItem ref={scrollBottomRef}></ListItem>
                                 </List>
                             </Grid>
-                            <Grid xs={2} item>
-                                <FormControl fullWidth>
-                                    <TextField onChange={handleUserChange} label="Nickname" variant='outlined' value={user}/>
-                                </FormControl>
+                            <Grid xs={1} item>
+                                <Typography variant='h6'>
+                                    Alex:    
+                                </Typography>  
                             </Grid>
-                            <Grid xs={9} item>
+                            <Grid xs={10} item>
                                 <FormControl fullWidth>
                                     <TextField onChange={handleMessgaeChange} onKeyDown={handleEnterKey} label="Type your message" variant='outlined' value={message}/>
                                 </FormControl>
@@ -127,6 +166,7 @@ function LiveChat() {
                 </Paper>
             </Container>
         </div>
+        </>
     )
 }
 export default LiveChat;
