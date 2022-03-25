@@ -30,11 +30,29 @@ LiveChatController.get("/liveChatMessages", (req, res) => {
     let patientid = req.body.patientid;
     let doctorid = req.body.doctorid;
 
-    //This query get all messages between a specific patient and doctor.
+    if(doctorid.length == 0)
+    {
+        //This query get all messages between a specific patient and doctor. This is used when a patient is logged in.
+        //parameters: PatientID
+        //returns:
+        let state1 ="SELECT LC.Message, LC.Timestamp, LC.SenderID FROM 390db.livechat LC WHERE LC.PatientID = ? ORDER BY LC.Timestamp";
+        db.query(state1,
+            [patientid],
+            (err, results) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(results);
+                }
+            }
+        );
+    } else{
+
+    //This query get all messages between a specific patient and doctor. This is used when a doctor is logged in.
     //parameters: PatientID, DoctorID
     //returns:
-    let state ="SELECT LC.Message, LC.Timestamp, LC.SenderID FROM 390db.livechat LC WHERE LC.PatientID = ?, LC.DoctorID = ? ORDER BY LC.Timestamp";
-    db.query(state,
+    let state2 ="SELECT LC.Message, LC.Timestamp, LC.SenderID FROM 390db.livechat LC WHERE LC.PatientID = ?, LC.DoctorID = ? ORDER BY LC.Timestamp";
+    db.query(state2,
         [patientid, doctorid],
         (err, results) => {
             if (err) {
@@ -44,6 +62,7 @@ LiveChatController.get("/liveChatMessages", (req, res) => {
             }
         }
     );
+    }
 });
 
 /*This post method is called when a patient or doctor sends a message through the live chat*/
