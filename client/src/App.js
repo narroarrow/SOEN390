@@ -1,6 +1,7 @@
 import Login from './pages/Login.js';
 import Signup from './pages/Signup.js';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminPatientDashboard from './pages/AdminPatientDashboard'
 import SymptomForm from './pages/SymptomForm';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Route, Routes } from 'react-router-dom';
@@ -59,6 +60,7 @@ function App() {
                     <Route path='/DoctorDashboard' element={<DoctorDashboard />} />
                     <Route path='/DoctorPatientProfile' element={<DoctorPatientProfile />} />
                     <Route path='/AdminDashboard' element={<AdminDashboard />} />
+                    <Route path='/AdminPatientDashboard' element={<AdminPatientDashboard />} />
                     <Route path='/PatientProfile' element={<PatientProfile />} />
                     <Route path='/DoctorViewingPatient' element={<DoctorViewingPatient />} />
                     <Route path='/HealthOfficialPatientProfile' element={<HealthOfficialPatientProfile />}></Route>
