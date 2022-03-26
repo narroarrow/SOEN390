@@ -1,10 +1,9 @@
-import { FormControlLabel, Checkbox, Button, Typography, Grid } from '@mui/material';
-import React, { useState, useEffect } from "react";
+import {FormControlLabel, Checkbox, Button, Typography, Grid} from '@mui/material';
+import React, {useState, useEffect} from "react";
 import * as moment from "moment";
 import Axios from "axios";
-import { Box } from '@mui/system';
-import { Navigate } from "react-router-dom";
-
+import {Box} from '@mui/system';
+import {Navigate} from "react-router-dom";
 
 
 const TimeSlotCalendar = () => {
@@ -14,30 +13,52 @@ const TimeSlotCalendar = () => {
     const [timeSlotsPerDay, setTimeSlotsPerDay] = useState([]);
     const selectedTimeSlots = []; // An array storing the data of each selected slot.
     const [previousSlots, setPreviousSlots] = useState([])
+    const [previousMonday, setPreviousMonday] = useState(Array(18).fill(false))
+    const [previousTuesday, setPreviousTuesday] = useState(Array(18).fill(false))
+    const [previousWednesday, setPreviousWednesday] = useState(Array(18).fill(false))
+    const [previousThursday, setPreviousThursday] = useState(Array(18).fill(false))
+    const [previousFriday, setPreviousFriday] = useState(Array(18).fill(false))
+    const previousDaysArray = [previousMonday, previousTuesday, previousWednesday, previousThursday, previousFriday];
+    const calculatedTimeSlots = [];
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
     // Display the appropriate time slots whenever a Docotr clicks on a checkbox
-    const handleChange = (event, timeSlot) => {
-        console.log(event.target.checked);
-        console.log(previousSlots)
-        console.log(previousSlots.findIndex(slot => slot.StartTime.substr(0,5) === timeSlot.label.substr(0,5) && slot.dayName === timeSlot.day.substr(0,3)))
-         if (event.target.checked) {
+
+    const handleChange = (event, timeSlot, index) => {
+        // changing the appropriate day boolean values according to the index
+        switch (timeSlot.day){
+            case 'Monday':
+                setPreviousMonday(prevState => prevState.map((item, idx) => idx === index ? !item : item))
+                break;
+            case 'Tuesday':
+                setPreviousTuesday(prevState => prevState.map((item, idx) => idx === index ? !item : item))
+                break;
+            case 'Wednesday':
+                setPreviousWednesday(prevState => prevState.map((item, idx) => idx === index ? !item : item))
+                break;
+            case 'Thursday':
+                setPreviousThursday(prevState => prevState.map((item, idx) => idx === index ? !item : item))
+                break;
+            case 'Friday':
+                setPreviousFriday(prevState => prevState.map((item, idx) => idx === index ? !item : item))
+                break;
+        }
+
+      if (event.target.checked) {
             selectedTimeSlots.push(timeSlot);
         } else {
-           console.log('spliced');
-            console.log(previousSlots);
-            previousSlots.splice(previousSlots.findIndex(slot => slot.StartTime.substr(0,5) === timeSlot.label.substr(0,5) && slot.dayName === timeSlot.day.substr(0,3)),1)
+            previousSlots.splice(previousSlots.findIndex(slot => slot.StartTime.substr(0, 5) === timeSlot.label.substr(0, 5) && slot.dayName === timeSlot.day.substr(0, 3)), 1)
 
-             const indexToRemove = selectedTimeSlots.indexOf(timeSlot);
+            const indexToRemove = selectedTimeSlots.indexOf(timeSlot);
             if (indexToRemove > -1) {
                 selectedTimeSlots.splice(indexToRemove, 1); // 2nd parameter means remove one item only
-            } }
-        // previousSlots.splice(previousSlots.findIndex(slot => slot.StartTime.substr(0,5) === timeSlot.label.substr(0,5) && slot.dayName === timeSlot.day.substr(0,3)))
-        console.log(selectedTimeSlots)
+            }
+        }
     };
 
     // Creates the collumn for each day - associates the day name ex. "Monday" with the time slots
     const calculateTimeSlots = (startHour, endHour) => {
 
-        const calculatedTimeSlots = [];
+
         const numberOfTimeSlots = (endHour - startHour) / (TIME_SLOT_INTERVAL_IN_MINUTES / 60);
 
         // Loop that creates the day ex: "Monday" and each interation increments the day to store the next day.
@@ -68,42 +89,59 @@ const TimeSlotCalendar = () => {
             calculatedTimeSlots.push(timeSlots);
         }
         setTimeSlotsPerDay(calculatedTimeSlots);
+
     };
     const getDoctorSchedule = () => {
-        Axios.get("http://localhost:8080/doctorFilledSlots", { params: { id: localStorage.getItem('id') } }).then((response) => {
-            setPreviousSlots(response.data);
-            console.log(response.data);
+        Axios.get("http://localhost:8080/doctorFilledSlots", {params: {id: localStorage.getItem('id')}}).then((response) => {
 
+            //array of false has a false value for each day for each possible increment (18 total increments for each day).
+            let arrayOfFalse = new Array(5);
+            for (let y = 0; y < arrayOfFalse.length; y++){
+            arrayOfFalse[y] = new Array(18).fill(false);}
+            // filtering schedule by day and then finding the indexes representing the increments that are in the day
+            days.forEach((day, index)=> {
+                let temp = []
+                temp = response.data.filter(s => s.dayName === day)
+                let dayIndexes = []
+                temp.forEach(t => {
+                    if (t) {
+                        dayIndexes.push(calculatedTimeSlots[0].slots.findIndex(s => s.label.substr(0, 5) === t.StartTime.substr(0, 5)))
+                    }
 
+                });
+                // updating the appropriate day and increment with a truth value if value is in response
+                dayIndexes.forEach((dayIdx) => arrayOfFalse[index][dayIdx] = true)
+
+            })
+           setPreviousMonday(arrayOfFalse[0]);
+            setPreviousTuesday(arrayOfFalse[1]);
+            setPreviousWednesday(arrayOfFalse[2]);
+            setPreviousThursday(arrayOfFalse[3]);
+            setPreviousFriday(arrayOfFalse[4]);
         }).catch(alert);
 
     }
-    const submit = () => {
 
+    const submit = () => {
         // Iterates through each selected time slot and sends the data to the database
         let backendTimeSlots = [];
-        selectedTimeSlots.forEach(timeSlot => {
-            backendTimeSlots.push({
-                day: timeSlot.day.substr(0, 3),
-                doctorID: localStorage.getItem('id'),
-                startTime: timeSlot.label.substr(0, 5).concat(":00"),
-                endTime: timeSlot.label.substr(8, 14).concat(":00")
+        // for each day state we check the boolean values for increments and if they are true then we push to backend array
+        previousDaysArray.forEach((previousDay, previousDayIndex) =>{
+            previousDaysArray[previousDayIndex].forEach((value, index) =>{
+                if (value === true){
+                    backendTimeSlots.push({
+                        day: timeSlotsPerDay[previousDayIndex].day.substr(0,3),
+                        doctorID: localStorage.getItem('id'),
+                        startTime: timeSlotsPerDay[previousDayIndex].slots[index].label.substr(0, 5).concat(":00"),
+                        endTime: timeSlotsPerDay[previousDayIndex].slots[index].label.substr(8, 14).concat(":00")
+                    })
+                }
             })
         })
-    console.log('yo here');
-        console.log(previousSlots)
-        previousSlots.forEach(slot => {
-            backendTimeSlots.push({
-                day: slot.dayName,
-                doctorID: localStorage.getItem('id'),
-                startTime: slot.StartTime,
-                endTime: slot.EndTime
-            })
-        })
-
+;
         // Posts the json object containing the doctor's times to the server and awaits a confirmation response
-        let doctorScheduleData = { backendTimeSlots }
-        Axios.post('http://localhost:8080/doctorAvailbility', doctorScheduleData, { withCredentials: true }).then(res => {
+        let doctorScheduleData = {backendTimeSlots}
+        Axios.post('http://localhost:8080/doctorAvailbility', doctorScheduleData, {withCredentials: true}).then(res => {
             console.log(res)
             alert("New time slots properly registered");
             window.location.href = "/"
@@ -114,18 +152,22 @@ const TimeSlotCalendar = () => {
     }
     //runs the calculateTimeSlots function whenever this page is loaded
     useEffect(() => {
+
         getDoctorSchedule();
         calculateTimeSlots(8, 17);
 
     }, []);
 
-console.log(!!previousSlots)
+    console.log(!!previousSlots)
     // Returning the page - displaying each element such as day name, and all checkbox containers after passing in the data to TimeSLotDayTable which creates the HTML / MUI components
-   while (!previousSlots){return <div> yo</div>} return <Box sx={{ p: 10 }}>
+    return <Box sx={{p: 10}}>
         {timeSlotsPerDay.length > 0 && timeSlotsPerDay.map((timeSlotsOnDay, index) =>
-        <TimeSlotDayTable handleChange={handleChange} key={`${index}`} day={timeSlotsOnDay.day} slots={timeSlotsOnDay.slots} previousSlots = {previousSlots} />)}
+            <TimeSlotDayTable dayState={timeSlotsOnDay.day === 'Monday' ? previousMonday : timeSlotsOnDay.day === 'Tuesday'
+                ? previousTuesday : timeSlotsOnDay.day === 'Wednesday' ? previousWednesday : timeSlotsOnDay.day === 'Thursday'
+                 ? previousThursday : previousFriday} handleChange={handleChange} key={`${index}`} day={timeSlotsOnDay.day}
+                              slots={timeSlotsOnDay.slots} />)}
 
-        <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, ml: 7 }} onClick={submit}>
+        <Button type="submit" variant="contained" sx={{mt: 3, mb: 2, ml: 7}} onClick={submit}>
             Submit
         </Button>
     </Box>;
@@ -133,15 +175,15 @@ console.log(!!previousSlots)
 const checkChange = e =>
     e.target.checked;
 
-function TimeSlotDayTable (props){
-    // Object destructuring, get the day and timeSlots properties from props, 
+function TimeSlotDayTable(props) {
+    // Object destructuring, get the day and timeSlots properties from props,
     //which we passed in when we used .map in the TimeSlotCalendar component
-    const { day, slots, handleChange, previousSlots } = props;
+    const {day, slots, handleChange, previousSlots, dayState} = props;
 
     return (
         <>
             {
-                localStorage.getItem("role") != 'Doctor' && <Navigate to={"/"} refresh={true} />
+                localStorage.getItem("role") != 'Doctor' && <Navigate to={"/"} refresh={true}/>
             }
 
             <Grid>
@@ -149,13 +191,13 @@ function TimeSlotDayTable (props){
                     {day}
                 </Typography>
                 <Grid>
-                    {previousSlots.length}
-                    {slots.map((timeSlot) => (
+                    {previousSlots && previousSlots.length}
+                    {slots.map((timeSlot, index) => (
                         // Displaying the checkboxes
-                        <FormControlLabel sx={{ml: 6}} key={`${day} - ${timeSlot.label}`} control={<Checkbox checked= {previousSlots && !!previousSlots.some(s => s.StartTime && s.StartTime.substr(0,5) ===
-                            timeSlot.label.substr(0,5) &&
-                            s.dayName === day.substr(0,3)) } />}
-                            onChange={(event) => handleChange(event, timeSlot)} label={timeSlot.label} />
+                        <FormControlLabel sx={{ml: 6}} key={`${day} - ${timeSlot.label}`}
+                                          control={<Checkbox checked={dayState[index]}/>}
+                                          onChange={(event) => handleChange(event, timeSlot, index)}
+                                          label={timeSlot.label}/>
                     ))}
                 </Grid>
             </Grid>
