@@ -28,14 +28,14 @@ function LiveChat() {
     })
 
 
-    // useEffect(() => {
-    //     Axios.get('http://localhost:8080/patientDoctorName', { withCredentials: true, 
-    //     params: { id: localStorage.getItem('id') } 
-    // }).then((response) => {
-    //         setPatient(response.data.patientName);
-    //         setDoctor(response.data.DoctorName);
-    //     })
-    // }, [stopEffect2])
+     useEffect(() => {
+         Axios.get('http://localhost:8080/patientDoctorName', { withCredentials: true, 
+         params: { id: localStorage.getItem('id') } 
+     }).then((response) => {
+             setPatient(response.data.patientName);
+             setDoctor(response.data.doctorName);
+         })
+     }, [stopEffect2]);
 
     useEffect(() => {
         Axios.get('http://localhost:8080/liveChatMessages', { withCredentials: true, 
@@ -110,7 +110,6 @@ function LiveChat() {
         )
         // MessageSplit=[];
     })
-
 
 
     return (
