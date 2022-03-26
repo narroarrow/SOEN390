@@ -34,6 +34,7 @@ let submitSymptomForm = (event) => {
 
 function SymptomForm() {
 
+  const storedLabels = ["Difficulty Breathing", "Chest Pain", "Fatigue", "Fever", "Cough", "Loss of Smell", "Loss of Taste"]
 
   return (
 
