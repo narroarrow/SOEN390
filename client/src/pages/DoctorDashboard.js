@@ -225,23 +225,7 @@ function DoctorDashboard() {
       }
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} sx={{ marginBottom: '2%', padding: '2%' }} >
-          <Grid item xs={8} >
-            {/* Using the totalStatusCounts to produce the graoh with corresponding values */}
-            {totalStatusCounts.map((val, key) => {
-              return (
-                <Item key={key}>
-                  <h1>All Patients Registration Statistics</h1>
-                  <Chart data={data}>
-                    <ArgumentAxis />
-                    <ValueAxis />
-                    <BarSeries valueField="value" argumentField="argument" />
-                  </Chart>
-                </Item>
-              )
-            })}
-
-          </Grid>
-          <Grid item xs={4}>
+        <Grid item xs={12} md = {12} lg = {4}>
             {/* Displaying the notifications of the logged in doctor */}
             <Item><h1>Notifications</h1>
               {notificationsList.map((val, key) => {
@@ -261,7 +245,24 @@ function DoctorDashboard() {
               )}
             </Item>
           </Grid>
-          <Grid item xs={8} >
+          <Grid item xs={12} md = {6} lg = {4}>
+            {/* Using the totalStatusCounts to produce the graoh with corresponding values */}
+            {totalStatusCounts.map((val, key) => {
+              return (
+                <Item key={key}>
+                  <h1>All Patients Registration Statistics</h1>
+                  <Chart data={data}>
+                    <ArgumentAxis />
+                    <ValueAxis />
+                    <BarSeries valueField="value" argumentField="argument" />
+                  </Chart>
+                </Item>
+              )
+            })}
+
+          </Grid>
+         
+          <Grid item xs={12} md = {6} lg = {4}>
             {/* Using the totalMyPatientsStatusCounts to produce the graoh with corresponding values */}
             {totalMyPatientsStatusCounts.map((val, key) => {
               return (
@@ -276,7 +277,7 @@ function DoctorDashboard() {
               )
             })}
           </Grid>
-          <Grid item xs={6} >
+          <Grid item xs={12} md = {6} lg = {6}>
             <List>
               <Item>
                 <h1>Doctor Registration Statistics</h1>
@@ -312,7 +313,7 @@ function DoctorDashboard() {
               </Item>
             </List>
           </Grid>
-          <Grid item xs={6} >
+          <Grid item xs={12} md = {6} lg = {6}>
             <List>
               <Item>
                 <h1>Patients Active Assistance Required</h1>
