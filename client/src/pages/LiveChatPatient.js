@@ -122,7 +122,7 @@ function LiveChat() {
             <Container>
                 <Paper elevation={5}>
                     <Box p={3}>
-                        <Typography variant='subtitle1' gutterBottom>
+                        <Typography variant='h6' gutterBottom>
                             Live Chat {doctor}
                         </Typography>
                         <Divider />
@@ -134,7 +134,7 @@ function LiveChat() {
                                 </List>
                             </Grid>
                             <Grid xs={1} item>
-                                <Typography variant='h6'>
+                                <Typography variant='subtitle1'>
                                     {patient}   
                                 </Typography>  
                             </Grid>
