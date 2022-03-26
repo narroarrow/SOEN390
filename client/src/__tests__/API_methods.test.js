@@ -335,3 +335,85 @@ describe('testing /getAllNotificationCount', () => {
   })
 });
 
+//Max
+//Verifies the command that gets validated health officials
+describe('testing /adminViewingValidatedHealthOfficalData', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/adminViewingValidatedHealthOfficalData');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Verifies the command that gets unvalidated health officials
+describe('testing /adminViewingUnvalidatedHealthOfficalData', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/adminViewingUnvalidatedHealthOfficalData');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Verifies the command that gets validated immigration officers
+describe('testing /adminViewingValidatedImmigrationOfficerData', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/adminViewingValidatedImmigrationOfficerData');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Verifies the command that gets validated immigration officers
+describe('testing /adminViewingUnvalidatedImmigrationOfficerData', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/adminViewingUnvalidatedImmigrationOfficerData');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Verifies the command validates a health official
+describe('testing /validateHO', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/validateHO').send({HealthOfficialID : 16});
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Verifies the command invalidates a health official
+// describe('testing /invalidateHO', () => {
+//   it('returns a status code of 200 indicating that the get worked', async () => {
+//     let res = await request(app).post('/validateHO').send({HealthOfficialID : 16});
+//     expect(res.statusCode).toEqual(200);
+//   })
+// });
+
+//Max
+//Need to verify if there's a way that we will implement to fake sign up
+//Verifies the command validates a immigration officer
+describe('testing /validateIO', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/validateIO').send({ImmigrationOfficerID : 14});
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Need to see if there's a way that we will implement to fake sign up
+//Verifies the command invalidates a immigration officer
+// describe('testing /invalidateIO', () => {
+//   it('returns a status code of 200 indicating that the get worked', async () => {
+//     let res = await request(app).post('/validateIO').send({ImmigrationOfficerID : 16});
+//     expect(res.statusCode).toEqual(200);
+//   })
+// });
+
+//Max
+//Verifies that patients can be reassigned
+describe('testing /reassignPatient', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/reassignPatient').send({PatientID : 1, DoctorID: 6});
+    expect(res.statusCode).toEqual(200);
+  })
+});
