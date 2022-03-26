@@ -62,11 +62,11 @@ ManagerController.get("/Viewed", (req, res) => {
 /* This post method is called when a docotr clicks the FLAG PATIENT button on a patient profile. It will update the Flagged attribute in the patient table of the DB */
 ManagerController.post("/flagPatient", (req, res) => {
     let PatientID = req.body.PatientID;
-
+    let flagPriority = req.body.FlagPriority
     //parameters: (ID of patient)
     //returns:
-    let state ="UPDATE 390db.patients SET Flagged=true where ID=?"
-    db.query(state, [PatientID], (err, result) => {
+    let state ="UPDATE 390db.patients SET Flagged=? where ID=?"
+    db.query(state, [flagPriority, PatientID], (err, result) => {
 
         if (err) {
             console.log(err);

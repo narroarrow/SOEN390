@@ -31,7 +31,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 function DoctorViewingPatient() {
-    const [flagPriority, setFlagPriority] = React.useState('');
+    const [flagPriority, setFlagPriority] = React.useState(0);
     const location = useLocation(); //get data passed on through previous page (DoctorPatientProfile page)
     const [patientData, setPatientData] = useState([]); //Patient data used in rendering of page
     const [viewedList, setViewedList] = useState([]); //list of patients whose profiles have been reviewed
@@ -89,7 +89,8 @@ function DoctorViewingPatient() {
 
     let flagPatient = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
         Axios.post("http://localhost:8080/flagPatient", {
-            PatientID: location.state.ID
+            PatientID: location.state.ID,
+            FlagPriority: flagPriority
         }).then(() => {
             console.log("success")
         });
@@ -125,7 +126,7 @@ function DoctorViewingPatient() {
 
     let isFlagged = false; //variable to verify if patient has already been flagged, to be used for displaying either the FLAG or UNFLAG butttons
     let isFlaggedArray = patientData.map((val, key) => { return val.Flagged });
-    if (isFlaggedArray[0] === 1) {
+    if (isFlaggedArray[0] !== 0) {
         isFlagged = true;
     }
 
@@ -223,19 +224,19 @@ function DoctorViewingPatient() {
                                     </Button>
                                     <Box> <FormControl fullwidth>
                                     <InputLabel>Flag Priority</InputLabel>
-                                    <Select xs={12} sm={3} sx={{ margin: 1 }}
-                                        labelId="demo-simple-select-label"
+                                    <Select  xs={12} sm={3} sx={{ margin: 1 }}
+                                        disabled ={isFlagged}
+                                             labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        defaultValue = {flagPriority}
+                                        defaultValue = {flagPriority || 1}
                                         label="flagPriority"
                                         onChange={handleChange}
                                     >
 
-                                        <MenuItem value={3}>Priority 1 <FlagIcon fontSize = "small" sx = {{color:'#f78c0a', paddingTop:'1px'}}></FlagIcon></MenuItem>
-                                        <MenuItem value={4}>Priority 1 <FlagIcon fontSize = "small" sx = {{color:'#EFD000', }}></FlagIcon></MenuItem>
+                                        <MenuItem value={3}>High Priority <FlagIcon fontSize = "small" color = 'secondary'></FlagIcon></MenuItem>
+                                        <MenuItem value={2}>Medium Priority <FlagIcon fontSize = "small" sx = {{color:'#EFD000' }}></FlagIcon></MenuItem>
+                                        <MenuItem value={1}>Low Priority <FlagIcon fontSize = "small" sx = {{color:'#00F700' }}></FlagIcon> </MenuItem>
 
-                                        <MenuItem value={0}>Twenty</MenuItem>
-                                        <MenuItem value={1}>Thirty</MenuItem>
                                     </Select>    </FormControl></Box>
 
 
