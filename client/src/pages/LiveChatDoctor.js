@@ -13,8 +13,6 @@ const socket = io.connect("http://localhost:5000");
 function LiveChat() {
     const ENTERCODE = 13;
     let stopEffect = 1;
-    let stopEffect2 = 1;
-    const webSocket = useRef(null);
     const scrollBottomRef = useRef(null);
 
     
@@ -23,7 +21,7 @@ function LiveChat() {
     const [doctor, setDoctor] = useState("Doctor's Name") 
     const [message, setMessage] = useState("") 
     const [allMessages, setAllMessages] = useState([]);
-    const [patientid, setPatientID] = useState("");
+    const [doctorid, setDoctorID] = useState("");
     const [roomid, setRoomID] = useState("");
 
     useEffect(() => {
@@ -32,7 +30,7 @@ function LiveChat() {
         }
     })
 
-
+    //to do
      useEffect(() => {
          Axios.get('http://localhost:8080/patientDoctorName', { withCredentials: true, 
          params: { id: localStorage.getItem('id') } 
@@ -40,8 +38,9 @@ function LiveChat() {
              setPatient(response.data.patientName);
              setDoctor(response.data.doctorName);
          })
-     }, [stopEffect2]);
+     }, [stopEffect]);
 
+     //to do
     useEffect(() => {
         Axios.get('http://localhost:8080/patientLiveChatMessages', { withCredentials: true, 
         params: { id: localStorage.getItem('id') } 
@@ -53,10 +52,10 @@ function LiveChat() {
 
     //On render we store either the patient or doctor's id.
     useEffect(() => {
-        if(localStorage.getItem("role") == "Patient"){
-            setPatientID(localStorage.getItem("id"));
-            console.log("Patient ID: " + localStorage.getItem("id"));
-            setRoomID(patientid);
+        if(localStorage.getItem("role") == "Doctor"){
+            setDoctorID(localStorage.getItem("id"));
+            console.log("Doctor ID: " + localStorage.getItem("id"));
+            setRoomID(doctorid);
             joinRoom(); //This will put the patient in a room so only their doctor can join
         }
 
@@ -96,7 +95,7 @@ function LiveChat() {
 
         }).then(() => {
             console.log("success");
-            window.location.href = "/PatientProfile";
+            window.location.href = "/";
 
         });
             const messageData = {
@@ -141,9 +140,9 @@ function LiveChat() {
         //     (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} variant="outlined" label={`${item.Message}`} color="primary"/>)}
         // </ListItem> 
          <ListItem key={index} justify="flex-end">
-         {(item.SenderID == item.PatientID) ?
+         {(item.SenderID == item.DoctorID) ?
          (<ListItemText/>):(<span></span>)}
-         {(item.SenderID == item.PatientID) ?
+         {(item.SenderID == item.DoctorID) ?
          (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} label={`${item.Message}`} color="primary" onClick={showMessage}/>):
          (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} variant="outlined" label={`${item.Message}`} onClick={showMessage} color="primary"/>)}
      </ListItem> 
@@ -162,7 +161,7 @@ function LiveChat() {
                 <Paper elevation={5}>
                     <Box p={3}>
                         <Typography variant='h6' gutterBottom>
-                            Live Chat {doctor}
+                            Live Chat {patient}
                         </Typography>
                         <Divider />
                         <Grid container spacing={4} alignItems="center">
@@ -174,7 +173,7 @@ function LiveChat() {
                             </Grid>
                             <Grid xs={1} item>
                                 <Typography variant='subtitle1'>
-                                    {patient}   
+                                    {doctor}   
                                 </Typography>  
                             </Grid>
                             <Grid xs={10} item>
