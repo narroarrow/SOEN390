@@ -24,6 +24,7 @@ import Home from './pages/Home';
 
 import Cookies from 'js-cookie';
 import Common from './components/Common'
+import PatientFiles from './pages/PatientFiles.js';
 
 function App() {
 
@@ -70,6 +71,7 @@ function App() {
                     <Route path='/SymptomForm' element={<SymptomForm />} />
                     <Route path='/PatientAppointment' element={<PatientAppointment />} />
                     <Route path='/DoctorSchedule' element={<DoctorSchedule />} />
+                    <Route path='/PatientFiles' element={<PatientFiles />} />
                 </Routes>
             </Common.Provider>
             <Footer />
