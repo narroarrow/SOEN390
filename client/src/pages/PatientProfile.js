@@ -129,6 +129,10 @@ function PatientProfile() {
                             <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/SymptomForm">
                                 SYMPTOM FORM
                             </Button>
+                           
+                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" component="label"> 
+                                Upload File <input type="file" hidden />
+                            </Button>
                         </Grid>
                     </Box>
                     <Box sx={{ mt: 1 }}>
