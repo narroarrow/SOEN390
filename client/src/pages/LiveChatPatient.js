@@ -1,70 +1,41 @@
-import { Container, Box, Grid, CssBaseline, Button, styled, Paper, Typography, Divider, List, ListItem, ListItemText, FormControl, TextField, IconButton } from '@mui/material';
+import { Container, Box, Grid, CssBaseline, Button, Chip, Paper, Typography, Divider, List, ListItem, ListItemText, FormControl, TextField, IconButton } from '@mui/material';
 import { useEffect, useState, useRef } from 'react';
-import { ChatMessageDto } from '../components/ChatMessageDto';
 import '../components/Chat.css';
 import SendIcon from '@mui/icons-material/Send'
 import { Navigate } from "react-router-dom";
 import Axios from 'axios';
 
 
-
 function LiveChat() {
     const ENTERCODE = 13;
     let stopEffect = 1;
+    let stopEffect2 = 1;
     const webSocket = useRef(null);
     const scrollBottomRef = useRef(null);
-    // const [chatMessages, setChatMessages] = useState([
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'),
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'),
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello'), 
-        // new ChatMessageDto('Alex', 'Hello')   
-    // ]); 
 
     
 
-    const [user, setUser] = useState("") 
+    const [patient, setPatient] = useState("Patient's Name") 
+    const [doctor, setDoctor] = useState("Doctor's Name") 
     const [message, setMessage] = useState("") 
     const [allMessages, setAllMessages] = useState([]);
 
-    // useEffect(() => {
-    //     console.log("open web socket");
-    //     webSocket.current = new WebSocket('*****PUT HOST HERE******')
-    //     webSocket.current.onopen = (event) => {
-    //         console.log("open: ", event)
-    //     }
-    //     webSocket.current.onclose = (event) => {
-    //         console.log("close: ", event)
-    //     }
-    //     return () => {
-    //         console.log("Closing websocket")
-    //         webSocket.current.close();
-    //     }
-    // }, [])
 
     useEffect(() => {
-    //     webSocket.current.onmessage = (event) => {
-    //         const chatMssageDto = JSON.parse(event.data);
-    //         console.log('Message: ', chatMssageDto);
-    //         setChatMessages([...chatMessages, {
-    //             user: chatMessageDto.user,
-    //             message: chatMessageDto.message
-    //         }]);
-                if(scrollBottomRef.current){
-                    scrollBottomRef.current.scrollIntoView({behavior: 'smooth'})
-                }
-    //     }
+        if(scrollBottomRef.current){
+            scrollBottomRef.current.scrollIntoView({behavior: 'smooth'})
+        }
     })
+
+
+    // useEffect(() => {
+    //     Axios.get('http://localhost:8080/patientDoctorName', { withCredentials: true, 
+    //     params: { id: localStorage.getItem('id') } 
+    // }).then((response) => {
+    //         setPatient(response.data.patientName);
+    //         setDoctor(response.data.DoctorName);
+    //     })
+    // }, [stopEffect2])
 
     useEffect(() => {
         Axios.get('http://localhost:8080/liveChatMessages', { withCredentials: true, 
@@ -76,12 +47,8 @@ function LiveChat() {
     }, [stopEffect]);
 
 
-    const handleUserChange = (event) => {
-        setUser(event.target.value)
-    }
     const handleMessgaeChange = (event) => {
         setMessage(event.target.value)
-        
     }
     
     const handleEnterKey = (event) => {
@@ -100,42 +67,63 @@ function LiveChat() {
             window.location.href = "/PatientProfile";
 
         });
-        // if(user&& message){
-        //     console.log('Send')
-        //     webSocket.current.send(
-        //         JSON.stringify(new ChatMessageDto(user, message))
-        //     );
             setMessage('');
-        // }
     }
 
 
+    const showMessage = (event) => {
+        console.log(event)
+        alert(event.target.innerText);
+      };
+
+    // let splitMessage=[];
     let listChatMessages = [];
+    // let MessageSplit = [];
     allMessages.forEach((item, index) => {
+    //     splitMessage=item.Message.match(/.{1,65}/g);
+        
+    //     splitMessage.forEach((element) => {
+    //         MessageSplit.push(
+    //             <div>{element}</div>
+    //         )
+    //     });
+        // console.log(splitMessage);
         listChatMessages.push(
-        <ListItem key={index}>
-            <ListItemText primary={`${item.SenderID}: ${item.Message}`}/>
-        </ListItem> 
+        // <ListItem key={index} justify="flex-end">
+        //     {(item.SenderID == item.PatientID) ?
+        //     (<ListItemText/>):(<span></span>)}
+        //     {(item.SenderID == item.PatientID) ?
+        //     (<Chip key={Math.random()} sx={{ maxWidth: 1/1, height: 'auto'}} label={(
+        //         <section>
+        //             {MessageSplit}
+        //         </section>
+        //     )} color="primary"/>):
+        //     (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} variant="outlined" label={`${item.Message}`} color="primary"/>)}
+        // </ListItem> 
+         <ListItem key={index} justify="flex-end">
+         {(item.SenderID == item.PatientID) ?
+         (<ListItemText/>):(<span></span>)}
+         {(item.SenderID == item.PatientID) ?
+         (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} label={`${item.Message}`} color="primary" onClick={showMessage}/>):
+         (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} variant="outlined" label={`${item.Message}`} onClick={showMessage} color="primary"/>)}
+     </ListItem> 
         )
+        // MessageSplit=[];
     })
 
 
-    // const listChatMessages = allMessages.map((ChatMessageDto, index) =>
-    //     <ListItem key={index}>
-    //         <ListItemText primary={`${ChatMessageDto.user}: ${ChatMessageDto.message}`}/>
-    //     </ListItem> 
-    // );
+
     return (
         <>
         {
-          !(localStorage.getItem("role") == 'Doctor' || localStorage.getItem("role") == 'Patient')  && <Navigate to={"/"} refresh={true} />
+            localStorage.getItem("role") != 'Patient' && <Navigate to={"/"} refresh={true} />
         }
         <div>
             <Container>
                 <Paper elevation={5}>
                     <Box p={3}>
-                        <Typography variant='h4' gutterBottom>
-                            Live Chat
+                        <Typography variant='subtitle1' gutterBottom>
+                            Live Chat {doctor}
                         </Typography>
                         <Divider />
                         <Grid container spacing={4} alignItems="center">
@@ -147,7 +135,7 @@ function LiveChat() {
                             </Grid>
                             <Grid xs={1} item>
                                 <Typography variant='h6'>
-                                    Alex:    
+                                    {patient}   
                                 </Typography>  
                             </Grid>
                             <Grid xs={10} item>
