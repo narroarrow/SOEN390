@@ -21,7 +21,8 @@ function DoctorDashboard() {
   const [totalPatientCount, setTotalPatientCount] = useState([]); // total patient count
   const [totalDoctorCount, setValidatedDoctorCount] = useState([]); // total doctor count
   const [totalFlaggedPatientCount, setTotalFlaggedPatientCount] = useState([]); //total flagged patient count
-  const [totalStatusCounts, setTotalStatusCounts] = useState([]); // patient status count
+  const [totalStatusCounts, setTotalStatusCounts] = useState([]); // all patient status count
+  const [totalMyPatientsStatusCounts, setTotalMyPatientsStatusCounts] = useState([]); //  my patients status count
   const [doctorsWithMostPatientsList, setDoctorsWithMostPatientsList] = useState([]); //list of doctors with most patients
   const [doctorsWithLeastPatientsList, setDoctorsWithLeastPatientsList] = useState([]); //list of doctors with least patients
   const [patientsFlaggedNotViewedList, setPatientsFlaggedNotViewedList] = useState([]); //list of patients whose forms have not been reviewed
@@ -57,12 +58,24 @@ function DoctorDashboard() {
     }).catch(alert);  
   };
 
-  function getStatusCountAllPatients() {// This will return the number of patients classified under each status
+  function getStatusCountAllPatients() {// This will return the number of patients classified under each status for ALL patients
     Axios.get("http://localhost:8080/statusCountAllPatients").then((response) => {
       setTotalStatusCounts(response.data);
       console.log("Counts:");
       console.log(response.data)  
   }).catch(alert);
+  };
+
+  function getStatusCountMyPatients() {// This will return the number of patients classified under each status for MY patients
+    Axios.get("http://localhost:8080/statusCountMyPatients", {
+      params: {
+        id: localStorage.getItem('id')
+      }
+    }).then((response) => {
+      setTotalMyPatientsStatusCounts(response.data);
+      console.log("My Patients Count:");
+      console.log(response.data);  
+  }).catch(alert);  
   };
 
   function getDoctorsWithMostPatients() { //This will return the top 5 doctors with most to least patients
@@ -151,6 +164,7 @@ function DoctorDashboard() {
     getTotalNumberOfDoctors();
     getTotalNumberOfFlaggedPatients();
     getStatusCountAllPatients();
+    getStatusCountMyPatients();
     getDoctorsWithMostPatients();
     getDoctorsWithLeastPatients();
     getFlaggedPatientsNotViewed();
@@ -176,11 +190,29 @@ function DoctorDashboard() {
     },
     {
       argument: 'Isolated', value: totalStatusCounts.map((val, key) => {
-        return (val.isolatedCount)
+        return (val.isolatingCount)
       })
     },
     {
       argument: 'Infected', value: totalStatusCounts.map((val, key) => {
+        return (val.infectedCount)
+      })
+    },
+  ];
+
+  const myPatientsData = [
+    {
+      argument: 'Healthy', value: totalMyPatientsStatusCounts.map((val, key) => {
+        return (val.healthyCount)
+      })
+    },
+    {
+      argument: 'Isolated', value: totalMyPatientsStatusCounts.map((val, key) => {
+        return (val.isolatingCount)
+      })
+    },
+    {
+      argument: 'Infected', value: totalMyPatientsStatusCounts.map((val, key) => {
         return (val.infectedCount)
       })
     },
@@ -198,7 +230,7 @@ function DoctorDashboard() {
             {totalStatusCounts.map((val, key) => {
               return (
                 <Item key={key}>
-                  <h1>Patient Registration Statistics</h1>
+                  <h1>All Patients Registration Statistics</h1>
                   <Chart data={data}>
                     <ArgumentAxis />
                     <ValueAxis />
@@ -229,7 +261,21 @@ function DoctorDashboard() {
               )}
             </Item>
           </Grid>
-
+          <Grid item xs={8} >
+            {/* Using the totalMyPatientsStatusCounts to produce the graoh with corresponding values */}
+            {totalMyPatientsStatusCounts.map((val, key) => {
+              return (
+                <Item key={key}>
+                  <h1>My Patients Registration Statistics</h1>
+                  <Chart data={myPatientsData}>
+                    <ArgumentAxis />
+                    <ValueAxis />
+                    <BarSeries valueField="value" argumentField="argument" />
+                  </Chart>
+                </Item>
+              )
+            })}
+          </Grid>
           <Grid item xs={6} >
             <List>
               <Item>
