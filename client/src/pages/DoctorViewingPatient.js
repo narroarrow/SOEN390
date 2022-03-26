@@ -13,7 +13,7 @@ import {
     MenuItem, PropTypes, InputLabel, FormControl
 } from '@mui/material';
 import Axios from 'axios';
-import { useLocation, Navigate } from 'react-router-dom';
+import {useLocation, Navigate, Link} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelect } from '@mui/base/SelectUnstyled';
 import FlagIcon from '@mui/icons-material/Flag'
@@ -245,9 +245,9 @@ function DoctorViewingPatient() {
                                         (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
 
                                     {/* Feature has not yet been implemented*/}
-                                    <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
+                                    <Link to='/PreviousSymptoms' state={{ ID: location.state.ID }} style={{ textDecoration: 'none' }}><Button style ={{minHeight:'3.7rem'}} xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
                                         PREVIOUS SYMPTOM FORMS
-                                    </Button>
+                                    </Button> </Link>
                                     
                                     {/* If the patient has not been viewed since an update or is a new patient, the doctors will be able
                                     to mark them as reviewed. The act of marking a patient as reviewed will only be allowed for their own doctor. */}

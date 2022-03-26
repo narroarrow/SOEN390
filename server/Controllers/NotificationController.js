@@ -29,9 +29,9 @@ NotificationController.get("/retrieveAllNotifications", (req, res) => {
     let doctorID = req.query["id"];
     //parameters: DoctorID
 //returns: FName, LName, aptDate, StartTime,EndTime
-let state = "SELECT Upatient.Fname, Upatient.Lname, A.aptDate, A.startTime, A.endTime " +
+let state = "SELECT Upatient.Fname, Upatient.Lname, A.aptDate, A.startTime, A.endTime, A.ID " +
 "FROM 390db.appointments A, 390db.users Upatient, 390db.doctors D, 390db.patients P " +
-"Where A.PatientID = Upatient.ID AND A.doctorID = ? AND P.id=Upatient.id AND P.doctorID = D.id;"
+"Where A.PatientID = Upatient.ID AND A.doctorID = ? AND P.id=Upatient.id AND P.doctorID = D.id AND A.Notification = 1;"
     db.query(state, [doctorID], (err, result) => {
         if (err) {
             console.log(err);
@@ -41,4 +41,66 @@ let state = "SELECT Upatient.Fname, Upatient.Lname, A.aptDate, A.startTime, A.en
     })
 });
 
+NotificationController.get("/retrieveFormNotifications", (req, res) => {
+    let doctorID = req.query["id"];
+    console.log(doctorID);
+    //parameters: DoctorID
+//returns: FName, LName, aptDate, StartTime,EndTime
+    let state = "SELECT Upatient.Fname, Upatient.Lname, Upatient.ID, Hi.InfoTimestamp " +
+        "FROM 390db.healthinformation Hi, 390db.users Upatient, 390db.doctors D, 390db.patients P " +
+        "Where Hi.PatientID = Upatient.ID AND D.ID = ? AND P.id=Upatient.id AND P.doctorID = D.id AND Hi.Notification = 1;"
+    db.query(state, [doctorID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+});
+
+//Gets the total number of appointments
+NotificationController.post("/getAllNotificationCount", (req, res) => {
+    let doctorID = req.query["id"];
+    //parameters: DoctorID
+    //returns: (count of rows)
+    let state = "SELECT count(*) as notificationCount FROM 390db.appointments A WHERE A.DoctorID = ?"
+    db.query(state, [doctorID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+});
+
+NotificationController.put("/maskFormNotification", (req, res) => {
+
+    let PatientID = req.body.PatientID;
+    let  InfoTimestamp=  req.body.InfoTimestamp
+    // parameters: timestamp of form, patient ID
+    // updates: notification value to 0
+    let state = "UPDATE 390db.healthinformation Hi SET Hi.Notification = 0 WHERE InfoTimestamp = ? AND PatientID = ?"
+    db.query(state, [InfoTimestamp, PatientID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result)
+        }
+    })
+});
+
+NotificationController.put("/maskApptNotification", (req, res) => {
+
+    let ApptID = req.body.ID;
+    // parameters: ID of appointment
+    // updates: notification value to 0
+    let state = "UPDATE 390db.appointments A SET A.Notification = 0 WHERE ID = ?"
+    db.query(state, [ApptID], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result)
+        }
+    })
+})
 module.exports = NotificationController;

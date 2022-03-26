@@ -85,13 +85,18 @@ const ResponsiveAppBar = () => {
     }
 
     //function to get the number of notifications to be used
-    function getNotificationsCount() {
+    function getNotificationsCount() { // first getting notifs related to appointments
         Axios.get("http://localhost:8080/retrieveAllNotifications", {
             params: {
                 id: localStorage.getItem('id')
             }
-        }).then((response) => {
-            setCount(response.data.length);
+        }).then((response) => { //getting notifs specific to forms
+            Axios.get("http://localhost:8080/retrieveFormNotifications", {params: {
+                id: localStorage.getItem('id')
+            }}).then(response2 => {
+                setCount(response.data.length + response2.data.length);
+            })
+
             console.log("Notification List:");
             console.log(response.data);
         }).catch(alert);
