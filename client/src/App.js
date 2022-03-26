@@ -20,6 +20,7 @@ import EditInfoForm from './pages/EditInfoForm';
 import PatientCovidStatus from './pages/PatientCovidStatus';
 import DoctorSchedule from './pages/DoctorSchedule';
 import PatientAppointment from './pages/PatientAppointment';
+import DoctorFileDownload from './pages/DoctorFileDownload';
 import Home from './pages/Home';
 
 import Cookies from 'js-cookie';
@@ -72,6 +73,7 @@ function App() {
                     <Route path='/PatientAppointment' element={<PatientAppointment />} />
                     <Route path='/DoctorSchedule' element={<DoctorSchedule />} />
                     <Route path='/PatientFiles' element={<PatientFiles />} />
+                    <Route path='/DoctorFileDownload' element={<DoctorFileDownload />} />
                 </Routes>
             </Common.Provider>
             <Footer />
