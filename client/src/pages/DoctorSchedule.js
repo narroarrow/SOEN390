@@ -13,17 +13,25 @@ const TimeSlotCalendar = () => {
     const currentDate = moment().isoWeekday(0).startOf("day"); // Setting the reference date to equal Sunday
     const [timeSlotsPerDay, setTimeSlotsPerDay] = useState([]);
     const selectedTimeSlots = []; // An array storing the data of each selected slot.
-
+    const [previousSlots, setPreviousSlots] = useState([])
     // Display the appropriate time slots whenever a Docotr clicks on a checkbox
     const handleChange = (event, timeSlot) => {
-        if (event.target.checked) {
+        console.log(event.target.checked);
+        console.log(previousSlots)
+        console.log(previousSlots.findIndex(slot => slot.StartTime.substr(0,5) === timeSlot.label.substr(0,5) && slot.dayName === timeSlot.day.substr(0,3)))
+         if (event.target.checked) {
             selectedTimeSlots.push(timeSlot);
         } else {
-            const indexToRemove = selectedTimeSlots.indexOf(timeSlot);
+           console.log('spliced');
+            console.log(previousSlots);
+            previousSlots.splice(previousSlots.findIndex(slot => slot.StartTime.substr(0,5) === timeSlot.label.substr(0,5) && slot.dayName === timeSlot.day.substr(0,3)),1)
+
+             const indexToRemove = selectedTimeSlots.indexOf(timeSlot);
             if (indexToRemove > -1) {
                 selectedTimeSlots.splice(indexToRemove, 1); // 2nd parameter means remove one item only
-            }
-        }
+            } }
+        // previousSlots.splice(previousSlots.findIndex(slot => slot.StartTime.substr(0,5) === timeSlot.label.substr(0,5) && slot.dayName === timeSlot.day.substr(0,3)))
+        console.log(selectedTimeSlots)
     };
 
     // Creates the collumn for each day - associates the day name ex. "Monday" with the time slots
@@ -61,6 +69,15 @@ const TimeSlotCalendar = () => {
         }
         setTimeSlotsPerDay(calculatedTimeSlots);
     };
+    const getDoctorSchedule = () => {
+        Axios.get("http://localhost:8080/doctorFilledSlots", { params: { id: localStorage.getItem('id') } }).then((response) => {
+            setPreviousSlots(response.data);
+            console.log(response.data);
+
+
+        }).catch(alert);
+
+    }
     const submit = () => {
 
         // Iterates through each selected time slot and sends the data to the database
@@ -71,6 +88,16 @@ const TimeSlotCalendar = () => {
                 doctorID: localStorage.getItem('id'),
                 startTime: timeSlot.label.substr(0, 5).concat(":00"),
                 endTime: timeSlot.label.substr(8, 14).concat(":00")
+            })
+        })
+    console.log('yo here');
+        console.log(previousSlots)
+        previousSlots.forEach(slot => {
+            backendTimeSlots.push({
+                day: slot.dayName,
+                doctorID: localStorage.getItem('id'),
+                startTime: slot.StartTime,
+                endTime: slot.EndTime
             })
         })
 
@@ -87,38 +114,47 @@ const TimeSlotCalendar = () => {
     }
     //runs the calculateTimeSlots function whenever this page is loaded
     useEffect(() => {
+        getDoctorSchedule();
         calculateTimeSlots(8, 17);
+
     }, []);
 
-
+console.log(!!previousSlots)
     // Returning the page - displaying each element such as day name, and all checkbox containers after passing in the data to TimeSLotDayTable which creates the HTML / MUI components
-    return <Box sx={{ p: 10 }}>
-        {timeSlotsPerDay.length > 0 && timeSlotsPerDay.map((timeSlotsOnDay, index) => 
-        <TimeSlotDayTable handleChange={handleChange} key={`${index}`} day={timeSlotsOnDay.day} slots={timeSlotsOnDay.slots} />)}
+   while (!previousSlots){return <div> yo</div>} return <Box sx={{ p: 10 }}>
+        {timeSlotsPerDay.length > 0 && timeSlotsPerDay.map((timeSlotsOnDay, index) =>
+        <TimeSlotDayTable handleChange={handleChange} key={`${index}`} day={timeSlotsOnDay.day} slots={timeSlotsOnDay.slots} previousSlots = {previousSlots} />)}
+
         <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, ml: 7 }} onClick={submit}>
             Submit
         </Button>
     </Box>;
 };
+const checkChange = e =>
+    e.target.checked;
 
 function TimeSlotDayTable (props){
     // Object destructuring, get the day and timeSlots properties from props, 
     //which we passed in when we used .map in the TimeSlotCalendar component
-    const { day, slots, handleChange } = props;
+    const { day, slots, handleChange, previousSlots } = props;
 
     return (
         <>
             {
                 localStorage.getItem("role") != 'Doctor' && <Navigate to={"/"} refresh={true} />
             }
+
             <Grid>
                 <Typography component="h1" variant="h3" sx={{mt: 5, mb: 5, ml: 7}}>
                     {day}
                 </Typography>
                 <Grid>
+                    {previousSlots.length}
                     {slots.map((timeSlot) => (
                         // Displaying the checkboxes
-                        <FormControlLabel sx={{ml: 6}} key={`${day} - ${timeSlot.label}`} control={<Checkbox/>}
+                        <FormControlLabel sx={{ml: 6}} key={`${day} - ${timeSlot.label}`} control={<Checkbox checked= {previousSlots && !!previousSlots.some(s => s.StartTime && s.StartTime.substr(0,5) ===
+                            timeSlot.label.substr(0,5) &&
+                            s.dayName === day.substr(0,3)) } />}
                             onChange={(event) => handleChange(event, timeSlot)} label={timeSlot.label} />
                     ))}
                 </Grid>
