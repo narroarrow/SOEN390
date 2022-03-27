@@ -160,10 +160,9 @@ function PreviousSymptoms() {
                                         disabled={healthInfo.length < 1}
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        defaultValue={formIndex}
+                                        value={formIndex}
                                         label="Form on date"
                                         onChange={handleChange}
-
                                 >
                                     {healthInfo.length > 0 && healthInfo.map((val, index) => {
                                         return (

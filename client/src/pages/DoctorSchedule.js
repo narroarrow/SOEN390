@@ -157,8 +157,6 @@ const TimeSlotCalendar = () => {
         calculateTimeSlots(8, 17);
 
     }, []);
-
-    console.log(!!previousSlots)
     // Returning the page - displaying each element such as day name, and all checkbox containers after passing in the data to TimeSLotDayTable which creates the HTML / MUI components
     return <Box sx={{p: 10}}>
         {timeSlotsPerDay.length > 0 && timeSlotsPerDay.map((timeSlotsOnDay, index) =>
