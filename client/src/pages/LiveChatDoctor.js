@@ -66,7 +66,7 @@ function LiveChat() {
      //This useEffect is for receiving messages from the server. NOTE: Only patients in the room that is sending messages will receive them (implemented in the backend).
      useEffect(() => {
         socket.on("receive_message", (data) => {
-            console.log("I AM RECEIVING THE MESSAGE: " + data.message);
+            console.log("I AM RECEIVING THE MESSAGE: ");
             window.location.reload(false);
         })
     }, [socket]);
@@ -103,7 +103,7 @@ function LiveChat() {
 
         });
             const messageData = {
-                roomid: localStorage.getItem('id'),
+                roomid: patientId,
                 patientid: localStorage.getItem('id'),
                 message: message
             }

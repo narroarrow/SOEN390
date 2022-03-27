@@ -14,7 +14,6 @@ function LiveChat() {
     const ENTERCODE = 13;
     let stopEffect = 1;
     let stopEffect2 = 1;
-    const webSocket = useRef(null);
     const scrollBottomRef = useRef(null);
 
     

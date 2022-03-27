@@ -20,19 +20,22 @@ const io = new Server(server, {
 
 
 io.on("connection", (socket) => { //This checks if a user opened thew website
-    console.log(socket.id);
+   //console.log(socket.id);
 
     socket.on("join_room", (roomid) => { //Server waits for client to connect
-        socket.join(roomid);//Needs to be roomid
-        console.log("Patient joined room: " + roomid);//Needs to be roomid
+        
+        var room = Number(roomid); //Convert the room id into a number
+        socket.join(room);//Needs to be roomid
+        console.log("User joined room: " + roomid);//Needs to be roomid
     });
 
     socket.on("send_message", (messageData) => {
         console.log("Correct Room ID: " + messageData.roomid);
-        console.log("Patient That Send Message: " + messageData.patientid);
+        console.log("Patient That Sent Message: " + messageData.patientid);
         console.log("Socket Message Emitted: " + messageData.message);
 
-        socket.to(messageData.roomid).emit("receive_message",messageData); // The socket.listen on the frontend LiveChat.js page will catch this message since they are both using "receive_message".
+        var room = Number(messageData.roomid); //Convert the room id into a number
+        socket.to(room).emit("receive_message",messageData); // The socket.listen on the frontend LiveChat.js page will catch this message since they are both using "receive_message".
     });
 
     socket.on("disconnect", () => { //Checks if a user has left the website. i.e closed the socket connection
@@ -41,8 +44,8 @@ io.on("connection", (socket) => { //This checks if a user opened thew website
 });
 
 server.listen(5069, () => { //The socket server will eb running on a seperate port for now
-    console.log("SERVER RUNNING");
-})
+    console.log("LIVECHAT SERVER RUNNING");
+});
 
 const ChatController = express.Router()
 
