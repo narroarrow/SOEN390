@@ -25,12 +25,14 @@ let submitSymptomForm = (event) => {
     cough: data.get('cough'),
     taste: data.get('taste'),
     symptoms: data.get('symptoms'),
-    urgent: data.get('urgent'),
+    urgent: data.get({urgent}),
   }).then(() => {
     console.log("success");
     window.location.href = "/PatientProfile";
   });
 };
+
+let urgent = false;
 
 function FormRadio(label, radioId, radioName, labelBy) {
 
@@ -95,6 +97,15 @@ return(
 )
 }
 
+const handleChange = () => {
+
+  if (!{urgent}){
+      urgent = true;
+  } else {
+      urgent = false;
+  }
+};
+
 function SymptomForm() {
 
   const storedLabels = ["Difficulty Breathing", "Chest Pain", "Fatigue", "Fever", "Cough", "Loss of Smell", "Loss of Taste"]
@@ -108,7 +119,6 @@ function SymptomForm() {
   let cough = FormRadio(storedLabels[4], nameIDs[4], nameIDs[4], nameIDs[4])
   let smell = FormRadio(storedLabels[5], nameIDs[5], nameIDs[5], nameIDs[5])
   let taste = FormRadio(storedLabels[6], nameIDs[6], nameIDs[6], nameIDs[6])
-
 
   return (
 
@@ -170,8 +180,8 @@ function SymptomForm() {
 
           <div>
             <FormControl>
-              <FormLabel sx={{ mb: 3 }}>Urgent</FormLabel>
-              <Checkbox id="urgent"></Checkbox>
+              <FormLabel sx={{ mb: 3 }} position="start">Urgent</FormLabel>
+              <Checkbox id="urgent"  onChange={handleChange()}></Checkbox>
             </FormControl>
           </div>
 
