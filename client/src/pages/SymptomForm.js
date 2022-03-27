@@ -12,6 +12,7 @@ let submitSymptomForm = (event) => {
   const data = new FormData(event.currentTarget);
   const currentDate = new Date();
   const timestamp = currentDate.getTime();
+  
   Axios.post('http://localhost:8080/createSymptomForm', {
     patientid: localStorage.getItem('id'),
     timestamp: Date.now(),
@@ -25,14 +26,16 @@ let submitSymptomForm = (event) => {
     cough: data.get('cough'),
     taste: data.get('taste'),
     symptoms: data.get('symptoms'),
-    urgent: data.get({urgent}),
+    urgent: urgentTwo
   }).then(() => {
     console.log("success");
     window.location.href = "/PatientProfile";
   });
 };
 
-let urgent = false;
+
+let urgentTwo = 0;
+
 
 function FormRadio(label, radioId, radioName, labelBy) {
 
@@ -98,16 +101,6 @@ return(
 }
 
 
-
-const handleChange = () => {
-
-  if (!{urgent}){
-      urgent = true;
-  } else {
-      urgent = false;
-  }
-};
-
 function SymptomForm() {
 
   const storedLabels = ["Difficulty Breathing", "Chest Pain", "Fatigue", "Fever", "Cough", "Loss of Smell", "Loss of Taste"]
@@ -121,6 +114,19 @@ function SymptomForm() {
   let cough = FormRadio(storedLabels[4], nameIDs[4], nameIDs[4], nameIDs[4])
   let smell = FormRadio(storedLabels[5], nameIDs[5], nameIDs[5], nameIDs[5])
   let taste = FormRadio(storedLabels[6], nameIDs[6], nameIDs[6], nameIDs[6])
+
+ 
+
+  const [urgent ,setUrgent] = useState(0);
+
+  const handleChange = (ev) => {
+
+    if (ev.target.checked){
+        urgentTwo = 1;
+    } else {
+        urgentTwo = 0;
+    }
+  };
 
   return (
 
@@ -163,8 +169,6 @@ function SymptomForm() {
           {smell}
           {taste}
 
-      
-
           <div>
             <FormControl>
               <FormLabel id="symptoms" sx={{ mb: 3 }}>Any Additional Symptoms (Optional)?</FormLabel>
@@ -183,7 +187,7 @@ function SymptomForm() {
           <div>
             <FormControl>
               <FormLabel sx={{ mb: 3 }} position="start">Urgent</FormLabel>
-              <Checkbox id="urgent"  onChange={handleChange()}></Checkbox>
+              <Checkbox id="urgent"  onClick={handleChange}></Checkbox>
             </FormControl>
           </div>
 
