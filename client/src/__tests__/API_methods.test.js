@@ -411,9 +411,10 @@ describe('testing /validateImmigrationOfficer', () => {
 
 //Max
 //Verifies that patients can be reassigned
-describe('testing /reassignPatient', () => {
-  it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/reassignPatient').send({PatientID : 1, DoctorID: 6});
-    expect(res.statusCode).toEqual(200);
-  })
-});
+//Will need to create fake chats and a fake patient/doctor
+// describe('testing /reassignPatient', () => {
+//   it('returns a status code of 200 indicating that the get worked', async () => {
+//     let res = await request(app).post('/reassignPatient').send({PatientID : 1, DoctorID: 6});
+//     expect(res.statusCode).toEqual(200);
+//   })
+// });
