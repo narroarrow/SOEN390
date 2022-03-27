@@ -173,8 +173,8 @@ PatientController.post("/createSymptomForm", (req, res) => {
                 console.log(err);
             } else {
                 if (results.length == 0) {
-                    let state = "INSERT INTO 390db.healthinformation (PatientID, InfoTimestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
-                    db.query(state, [patientid, fullDate, weight, temperature, breathing, chest_pain, fatigue, fever, cough, smell, taste, other],
+                    let state = "INSERT INTO 390db.healthinformation (PatientID, InfoTimestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other, urgent) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
+                    db.query(state, [patientid, fullDate, weight, temperature, breathing, chest_pain, fatigue, fever, cough, smell, taste, other, urgent],
                         (err, results) => {
                             if (err) {
                                 console.log(err);
@@ -185,8 +185,8 @@ PatientController.post("/createSymptomForm", (req, res) => {
                     );
                 }
                 if (results.length > 0) {
-                    let deleteState = "update healthinformation set PatientID=?, InfoTimestamp=?, Weight=?, Temperature=?, Breathing=?, Chest_Pain=?, Fatigue=?, Fever=?, Cough=?, Smell=?, Taste =?, Other = ? where PatientID = ? and InfoTimestamp between  ? and ?;"
-                    db.query(deleteState, [patientid, fullDate, weight, temperature, breathing, chest_pain, fatigue, fever, cough, smell, taste, other, patientid, dayNow + ' 00:00:00', dayNow + ' 23:59:00'],
+                    let deleteState = "update healthinformation set PatientID=?, InfoTimestamp=?, Weight=?, Temperature=?, Breathing=?, Chest_Pain=?, Fatigue=?, Fever=?, Cough=?, Smell=?, Taste =?, Other = ?, Urgent =? where PatientID = ? and InfoTimestamp between  ? and ?;"
+                    db.query(deleteState, [patientid, fullDate, weight, temperature, breathing, chest_pain, fatigue, fever, cough, smell, taste, other,urgent, patientid, dayNow + ' 00:00:00', dayNow + ' 23:59:00'],
                         (err, results) => {
                             if (err) {
                                 console.log(err);
@@ -229,7 +229,7 @@ PatientController.get("/getPatientFile",(req,res)=>{
             }
         }
     );
-
+//attempted INSERT INTO patientfiles (patientfiles, patientID, timesubmitted) VALUES (LOAD_FILE('C:/Users/chanj/Downloads/Project_v2'),1,'2022-3-27 12:00:00'); as a test
 });
 
 module.exports = PatientController;
