@@ -352,20 +352,43 @@ AdminController.post("/invalidateImmigrationOfficer", (req, res) => {
         }
     })
 });
+
 AdminController.post("/reassignPatient", (req, res) => {
     //Reasigns a patient to a new doctor in the database
+    //It also resets chat permission/request values and 
+    //deletes all old messages.
     let newDocID= req.body.DoctorID;
     let patientID = req.body.PatientID;
 
-    let state = "UPDATE 390db.patients SET DoctorID = ? WHERE ID = ?";
+    //parameters: newDocID, patientID
+    //returns:
+    let state1 = "UPDATE 390db.patients SET DoctorID = ? WHERE ID = ?";
+    db.query(state1, [newDocID, patientID], (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+    })
 
-    db.query(state, [newDocID, patientID], (err, result) => {
+    //paremeters: patientID
+    //returns:
+    let state2= "UPDATE 390db.patients SET ChatRequested=0, ChatPermission=0 WHERE ID = ?";
+    db.query(state2, [patientID], (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+    })
+
+    //parameters: patientID
+    //returns: 
+    let state3 = "DELETE FROM 390db.livechat WHERE PatientID = ?";
+    db.query(state3, [patientID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
-            res.send("Patient Reassigned!");
+            res.send("Reassigned patients and reset values/deleted old messages");
         }
     })
+
 });
 
 module.exports = AdminController;
