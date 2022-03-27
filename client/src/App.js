@@ -26,6 +26,7 @@ import PreviousSymptoms from './pages/PreviousSymptoms'
 import Cookies from 'js-cookie';
 import Common from './components/Common'
 import ForgetPassword from './pages/ForgetPassword.js';
+import PasswordReset from './pages/PasswordReset.js';
 
 function App() {
 
@@ -74,6 +75,7 @@ function App() {
                     <Route path='/DoctorSchedule' element={<DoctorSchedule />} />
                     <Route path ='/PreviousSymptoms' element = {<PreviousSymptoms />} />
                     <Route path ='/ForgetPassword' element = {<ForgetPassword />} />
+                    <Route path ='/PasswordReset' element = {<PasswordReset />} />
                 </Routes>
             </Common.Provider>
             <Footer />
