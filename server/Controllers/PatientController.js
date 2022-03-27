@@ -179,7 +179,7 @@ PatientController.post("/createSymptomForm", (req, res) => {
                             if (err) {
                                 console.log(err);
                             } else {
-                                res.send("Form Submitted!");
+                                res.sendStatus(200);
                             }
                         }
                     );
@@ -191,7 +191,7 @@ PatientController.post("/createSymptomForm", (req, res) => {
                             if (err) {
                                 console.log(err);
                             } else {
-                                res.send("Symptoms for today modified");
+                                res.sendStatus(200);
                             }
                         }
                     );
