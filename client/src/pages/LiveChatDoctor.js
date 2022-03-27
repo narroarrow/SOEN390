@@ -2,18 +2,19 @@ import { Container, Box, Grid, CssBaseline, Button, Chip, Paper, Typography, Div
 import { useEffect, useState, useRef } from 'react';
 import '../components/Chat.css';
 import SendIcon from '@mui/icons-material/Send'
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import Axios from 'axios';
 import io from 'socket.io-client';
 
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("http://localhost:5069");
 
 
 function LiveChat() {
     const ENTERCODE = 13;
     let stopEffect = 1;
     const scrollBottomRef = useRef(null);
+    const location = useLocation();
 
     
 
@@ -22,28 +23,29 @@ function LiveChat() {
     const [message, setMessage] = useState("") 
     const [allMessages, setAllMessages] = useState([]);
     const [doctorid, setDoctorID] = useState("");
+    const [patientId, setPatientId] = useState(location.state.ID);
     const [roomid, setRoomID] = useState("");
 
     useEffect(() => {
         if(scrollBottomRef.current){
-            scrollBottomRef.current.scrollIntoView({behavior: 'smooth'})
+            scrollBottomRef.current.scrollIntoView({behavior: 'auto'})
         }
     })
 
     //to do
      useEffect(() => {
          Axios.get('http://localhost:8080/patientDoctorName', { withCredentials: true, 
-         params: { id: localStorage.getItem('id') } 
+         params: { id: patientId } 
      }).then((response) => {
-             setPatient(response.data.patientName);
-             setDoctor(response.data.doctorName);
+             setPatient(response.data[0].patientName);
+             setDoctor(response.data[0].doctorName);
          })
      }, [stopEffect]);
 
      //to do
     useEffect(() => {
         Axios.get('http://localhost:8080/patientLiveChatMessages', { withCredentials: true, 
-        params: { id: localStorage.getItem('id') } 
+        params: { id: patientId } 
     }).then((response) => {
             setAllMessages(response.data);
             console.log(response);
@@ -55,7 +57,7 @@ function LiveChat() {
         if(localStorage.getItem("role") == "Doctor"){
             setDoctorID(localStorage.getItem("id"));
             console.log("Doctor ID: " + localStorage.getItem("id"));
-            setRoomID(doctorid);
+            setRoomID(patientId);
             joinRoom(); //This will put the patient in a room so only their doctor can join
         }
 
@@ -65,6 +67,7 @@ function LiveChat() {
      useEffect(() => {
         socket.on("receive_message", (data) => {
             console.log("I AM RECEIVING THE MESSAGE: " + data.message);
+            window.location.reload(false);
         })
     }, [socket]);
 
@@ -72,7 +75,7 @@ function LiveChat() {
 
         if(localStorage.getItem("id") !== ""){
             console.log("Testing");
-            socket.emit("join_room", localStorage.getItem("id")); 
+            socket.emit("join_room", patientId); 
         }
     }
 
@@ -89,9 +92,10 @@ function LiveChat() {
 
     const sendMessage = async () => {
         //Message sent by the patient is inserted into the database
-        Axios.post("http://localhost:8080/createPatientLiveChatMessage", {
+        Axios.post("http://localhost:8080/createDoctorLiveChatMessage", {
             id: localStorage.getItem('id'), //Pass the patient's id and message to the backend
-            message: message 
+            message: message,
+            patientId: patientId
 
         }).then(() => {
             console.log("success");
@@ -105,6 +109,7 @@ function LiveChat() {
             }
             await socket.emit("send_message", messageData);
             setMessage('');
+            window.location.reload(false);
 
     }
 
@@ -154,7 +159,7 @@ function LiveChat() {
     return (
         <>
         {
-            localStorage.getItem("role") != 'Patient' && <Navigate to={"/"} refresh={true} />
+            localStorage.getItem("role") != 'Doctor' && <Navigate to={"/"} refresh={true} />
         }
         <div>
             <Container>

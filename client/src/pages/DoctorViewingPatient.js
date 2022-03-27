@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Box, Grid, CssBaseline, Button, Card, styled, Paper, Typography } from '@mui/material';
 import Axios from 'axios';
-import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation, Navigate, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 
@@ -212,8 +212,11 @@ function DoctorViewingPatient() {
                                         (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>)}
                                     {/* This button will allow the doctor to accept a chat from a patient, initially  the chat is disabled.
                                     This action can only be performed by the patients own doctor. */}
-                                    {(!isChatRequested || isChatAccepted || !viewingDoctorsPatient) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} disabled variant="contained" href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) :
-                                        (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained"  href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}
+                                    {(!isChatRequested || isChatAccepted || !viewingDoctorsPatient) ? (
+                                    <Link to='/LiveChatDoctor' state={{ ID: val.ID }} style={{ textDecoration: 'none' }}>
+                                        <Button xs={12} sm={3} sx={{ margin: 1 }}  variant="contained" href='/LiveChatDoctor'>CHAT</Button>
+                                    </Link>) :
+                                    (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained"  href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}
                                 </Grid>
                             </Box>
                         </Box>

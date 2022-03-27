@@ -7,7 +7,7 @@ import Axios from 'axios';
 import io from 'socket.io-client';
 
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("http://localhost:5069");
 
 
 function LiveChat() {
@@ -28,7 +28,7 @@ function LiveChat() {
 
     useEffect(() => {
         if(scrollBottomRef.current){
-            scrollBottomRef.current.scrollIntoView({behavior: 'smooth'})
+            scrollBottomRef.current.scrollIntoView({behavior: 'auto'})
         }
     })
 
@@ -65,6 +65,7 @@ function LiveChat() {
      useEffect(() => {
         socket.on("receive_message", (data) => {
             console.log("I AM RECEIVING THE MESSAGE: " + data.message);
+            window.location.reload(false);
         })
     }, [socket]);
 
@@ -105,6 +106,7 @@ function LiveChat() {
             }
             await socket.emit("send_message", messageData);
             setMessage('');
+            window.location.reload(false);
 
     }
 
@@ -161,7 +163,7 @@ function LiveChat() {
                 <Paper elevation={5}>
                     <Box p={3}>
                         <Typography variant='h6' gutterBottom>
-                            Live Chat {doctor}
+                            Live Chat with: {doctor}
                         </Typography>
                         <Divider />
                         <Grid container spacing={4} alignItems="center">

@@ -32,7 +32,7 @@ io.on("connection", (socket) => { //This checks if a user opened thew website
         console.log("Patient That Send Message: " + messageData.patientid);
         console.log("Socket Message Emitted: " + messageData.message);
 
-        socket.to(2).emit("receive_message",messageData); // The socket.listen on the frontend LiveChat.js page will catch this message since they are both using "receive_message".
+        socket.to(messageData.roomid).emit("receive_message",messageData); // The socket.listen on the frontend LiveChat.js page will catch this message since they are both using "receive_message".
     });
 
     socket.on("disconnect", () => { //Checks if a user has left the website. i.e closed the socket connection
@@ -40,7 +40,7 @@ io.on("connection", (socket) => { //This checks if a user opened thew website
     });
 });
 
-server.listen(5000, () => { //The socket server will eb running on a seperate port for now
+server.listen(5069, () => { //The socket server will eb running on a seperate port for now
     console.log("SERVER RUNNING");
 })
 
@@ -152,7 +152,7 @@ ChatController.get("/patientLiveChatMessages", (req, res) => {
     ChatController.post("/createPatientLiveChatMessage", (req,res) => {
     let patientid = req.body.id;
     let doctorid;
-    let roomid = 2;
+    let roomid = req.body.id;
     let timestamp = new Date();
     let message = req.body.message;
     let senderid = req.body.id;
@@ -187,6 +187,32 @@ ChatController.get("/patientLiveChatMessages", (req, res) => {
     );
     
 
+});
+
+/*This post method is called when a patient or doctor sends a message through the live chat*/
+ChatController.post("/createDoctorLiveChatMessage", (req,res) => {
+    let patientid = req.body.patientId;
+    let doctorid = req.body.id; 
+    let roomid = req.body.patientId;
+    let timestamp = new Date();
+    let message = req.body.message;
+    let senderid = req.body.id;
+
+
+    //This query inserts a new message between a patient and doctor into the livechat table
+    //parameters: PatientID, DoctorID, SenderID, Timestamp
+    //returns:
+    let state2 = "INSERT INTO 390db.livechat (PatientID, DoctorID, RoomID, Timestamp, Message, SenderID, Seen) VALUES (?,?,?,?,?,?,0)";
+    db.query(state2,[patientid,doctorid,roomid,timestamp,message,senderid],
+        (err,results) =>
+        {
+            if(err){
+                console.log(err);
+            } else{
+                console.log("Message inserted!");
+            }
+        }
+    );
 });
 
 ChatController.get("/patientDoctorName", (req, res) => {
