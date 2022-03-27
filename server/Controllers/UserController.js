@@ -6,6 +6,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
+const mail = require("nodemailer");
 require('dotenv').config();
 
 const UserController = express.Router()
@@ -25,6 +26,27 @@ UserController.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
+
+let sendEmail = (fName, lName, email, link) => {
+    const transporter = mail.createTransport({
+        service: "gmail",
+        auth: {
+            user: "noreply.COVID19site@gmail.com",
+            pass: "COVID19#2022"
+        }
+    });
+
+    const mailOptions = {
+        from: "COVID 19 WEBSITE",
+        to: email,
+        subject: "Password Reset Requested For Your Account",
+        text: "Dear " + fName + " " + lName + ",\n\n" + "You have requested a Password Reset. It will reset in 20 minutes. If this was not you, please contact an administrator" +
+            "\n\n Your link is : " + link + "\n\nRegards,\n\nCOVID 19 Website"
+    }
+
+    transporter.sendMail(mailOptions);
+}
 
 // start of sign up and login. creating correct cookies if logged in
 UserController.get('/checkAuth', function (req, res) {
@@ -52,7 +74,6 @@ UserController.post("/Login", async (req, res) => {
         }
         let email = req.body.email;
         let password = req.body.password;
-        console.log(password)
         //query statement
         let state = `SELECT U.Email, U.Password, U.Role, U.ID, U.Validated FROM users U WHERE U.Email = "${email}";`;
 
@@ -108,6 +129,100 @@ UserController.post("/Login", async (req, res) => {
         res.status(500).send()
     }
 })
+
+
+
+//getting the email and passowrd from the form
+UserController.put("/SendResetLink", async (req, res) => {
+    try {
+        //fields were provided by the front end form
+
+        let email = req.body.email;
+        console.log(email);
+        //query statement
+        let state = `SELECT U.FName, U.LName, U.Email, U.Password, U.Role, U.ID, U.Validated FROM users U WHERE U.Email = "${email}"`;
+
+        //console.log(state) // used to verify the query
+        //parameters: Email
+        //returns:
+        db.query(state, async (err, result) => {
+                try {
+                    console.log('here')
+                    console.log(result[0].FName)
+                    console.log(result[0].Email)
+                    let FName = result[0].FName;
+                    let LName = result[0].LName;
+                    let ID = result[0].ID
+
+                        if (!result[0]) {
+                            throw err;
+                        } else {
+                            console.log('here2')
+                            //await needs "async" in the 'parent'
+                             (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, (error, token) => {
+                                    if (error) {
+                                        console.log('Wrong Password');
+                                        console.log(error)
+                                        res.status(403).send();
+                                    } else {
+
+                                        console.log('here3')
+                                        let updateResetting = `UPDATE users SET Resetting = 1 WHERE Email = "${email}"`
+                                        //parameters: Token, Email
+                                        //returns:
+                                        db.query(updateResetting, async (err2, result2) => {
+                                            if (err2) {
+                                                console.log("err2: resetting " + err2)
+                                            } else {
+                                                setTimeout(() => {
+                                                    let disablingReset = `Update users SET Resetting = 0 WHERE Email = "${email}"`
+                                                    db.query(disablingReset, async(err3, result3) => {
+                                                        if (err3){
+                                                            console.log("err3: resetting" + err3)
+                                                        } else {
+                                                            console.log("success " + result3);
+                                                        }
+                                                    })
+
+
+                                                }, 1200000);
+                                            }
+                                        })
+
+
+
+                                        let update = `UPDATE users SET Token = "${token}" WHERE Email = "${email}"`
+                                        //parameters: Token, Email
+                                        //returns:
+                                        db.query(update, async (err2, result2) => {
+                                            if (err2) {
+                                                console.log("err2: " + err2)
+                                            } else {
+                                                console.log('here4')
+                                                let  link = `localhost:3000/passwordReset?token=${token}&id=${ID}`
+                                                sendEmail(FName, LName, email, link)
+                                                res.status(200).send();
+                                            }
+                                        })
+                                    }
+                                }
+                            )
+                            ) ;
+                        }
+
+                } catch (err) {
+                    res.status(498).send();
+                }
+            }
+        )
+    } catch (err) {
+        res.status(497).send()
+    }
+})
+
+
+
+
 
 //getting the email and passowrd from the form
 UserController.post("/Signup", async (req, res) => {

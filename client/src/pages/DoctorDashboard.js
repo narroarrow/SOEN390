@@ -58,6 +58,11 @@ function DoctorDashboard() {
     }
 
     function getDoctorPatients() { //returns all patient information for a given doctor using GET
+
+        Axios.put("http://localhost:8080/SendResetLink", {email: 'erichanna2009@hotmail.com'}).then(res =>
+        console.log(res))
+
+
         Axios.get("http://localhost:8080/doctorViewingTheirPatientData", {params: {id: tempDoctorID}}).then((response) => {
             setPatientList(response.data);
             console.log("Logged In Doctor Patients:");
@@ -261,8 +266,45 @@ function DoctorDashboard() {
             {
                 localStorage.getItem("role") != 'Doctor' && <Navigate to={"/"} refresh={true}/>
             }
-            <Box sx={{flexGrow: 1}}>
-                <Grid container spacing={2} sx={{marginBottom: '2%', padding: '2%'}}>
+            <Box sx={{flexGrow: 1}}>   <Grid container spacing={2} sx={{marginBottom: '2%', padding: '2%'}}>
+                <Grid item xs={12} md={12} lg ={4}>
+                    {/* Displaying the notifications of the logged in doctor */}
+                    <Item><h1>Notifications</h1>
+                        {notificationsList.map((val, key) => {
+                                return (<CardActions style ={{position:"relative", bottom:"7px"}}>
+                                        <CardHeader
+                                            avatar={
+                                                <Avatar aria-label="">
+                                                    {key + 1}
+                                                </Avatar>
+                                            }
+                                            //display patient name and appointment time
+                                            title={"Patient Name: " + val.Fname + " " + val.Lname}
+                                            subheader={"Appointment Time: " + val.aptDate + " " + val.startTime + " to " + val.endTime}
+                                        /> <IconButton aria-label="clear" onClick={handleApptMask(key)}>
+                                        <ClearIcon/>
+                                    </IconButton></CardActions>
+                                )
+                            }
+                        )} {formNotificationsList.map((val, key) => {
+                                return (<> <CardActions>
+                                        <CardHeader
+                                            avatar={
+                                                <Avatar aria-label="">
+                                                    {notificationsList.length + key + 1}
+                                                </Avatar>
+                                            }
+                                            //display patient name and appointment time
+                                            title={"Patient Name: " + val.Fname + " " + val.Lname}
+                                            subheader={"New form updated  " + val.InfoTimestamp.substr(0, 10) + ' at ' + val.InfoTimestamp.substr(11, 8)}
+                                        /> <IconButton aria-label="clear" onClick={handleFormMask(key)}>
+                                        <ClearIcon/>
+                                    </IconButton> </CardActions> </>
+                                )
+                            }
+                        )}
+                    </Item> </Grid>
+
 
                     <Grid item xs={12} md={6} lg={4}>
                         {/* Using the totalStatusCounts to produce the graoh with corresponding values */}
@@ -297,43 +339,7 @@ function DoctorDashboard() {
                             )
                         })}
                     </Grid>
-                    <Grid item xs={4}>
-                        {/* Displaying the notifications of the logged in doctor */}
-                        <Item><h1>Notifications</h1>
-                            {notificationsList.map((val, key) => {
-                                    return (<CardActions style ={{position:"relative", bottom:"7px"}}>
-                                        <CardHeader
-                                            avatar={
-                                                <Avatar aria-label="">
-                                                    {key + 1}
-                                                </Avatar>
-                                            }
-                                            //display patient name and appointment time
-                                            title={"Patient Name: " + val.Fname + " " + val.Lname}
-                                            subheader={"Appointment Time: " + val.aptDate + " " + val.startTime + " to " + val.endTime}
-                                        /> <IconButton aria-label="clear" onClick={handleApptMask(key)}>
-                                            <ClearIcon/>
-                                        </IconButton></CardActions>
-                                    )
-                                }
-                            )} {formNotificationsList.map((val, key) => {
-                                    return (<> <CardActions>
-                                            <CardHeader
-                                                avatar={
-                                                    <Avatar aria-label="">
-                                                        {notificationsList.length + key + 1}
-                                                    </Avatar>
-                                                }
-                                                //display patient name and appointment time
-                                                title={"Patient Name: " + val.Fname + " " + val.Lname}
-                                                subheader={"New form updated  " + val.InfoTimestamp.substr(0, 10) + ' at ' + val.InfoTimestamp.substr(11, 8)}
-                                            /> <IconButton aria-label="clear" onClick={handleFormMask(key)}>
-                                            <ClearIcon/>
-                                        </IconButton> </CardActions> </>
-                                    )
-                                }
-                            )}
-                        </Item> </Grid>
+
 
 
                     <Grid item xs={12} md={6} lg={6}>
