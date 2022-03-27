@@ -172,5 +172,25 @@ PatientController.post("/createSymptomForm", (req, res) => {
     );
 });
 
+PatientController.get("/getPatientFile",(req,res)=>{
+    let fileGiven = req.body.file //ask eric 
+    let patientID = req.body.patientid;
+    let dateNow = new Date(); 
+    let timeNow = dateNow.getFullYear()+'-'+dateNow.getMonth()+'-'+dateNow.getDate()+" "+dateNow.getHours() + ":" + dateNow.getMinutes() + ":" + dateNow.getSeconds();
+
+    let state = "INSERT INTO 390db.fileStorage (patientfiles,patientID, timesubmitted) VALUES (?,?,?)"
+    db.query(state, [fileGiven, patientID,timeNow],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Submitted!");
+            }
+        }
+    );
+}
+)
+
+
 
 module.exports = PatientController;
