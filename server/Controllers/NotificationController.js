@@ -57,7 +57,7 @@ NotificationController.post("/getAllNotificationCount", (req, res) => {
     })
 });
 
-//reruns the 
+//reruns the check every 60 seconds for the target time of 23:30
 let checkTime = setInterval(() => {
     let dateNow = new Date();
     let timeNow = dateNow.getHours() + ":" + dateNow.getMinutes();
