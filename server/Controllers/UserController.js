@@ -199,7 +199,7 @@ UserController.put("/SendResetLink", async (req, res) => {
                                                 console.log("err2: " + err2)
                                             } else {
                                                 console.log('here4')
-                                                let  link = `localhost:3000/passwordReset?token=${token}&id=${ID}`
+                                                let  link = `localhost:3000/PasswordReset?token=${token}&id=${ID}`
                                                 sendEmail(FName, LName, email, link)
                                                 res.status(200).send();
                                             }

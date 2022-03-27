@@ -58,11 +58,6 @@ function DoctorDashboard() {
     }
 
     function getDoctorPatients() { //returns all patient information for a given doctor using GET
-
-        Axios.put("http://localhost:8080/SendResetLink", {email: 'erichanna2009@hotmail.com'}).then(res =>
-        console.log(res))
-
-
         Axios.get("http://localhost:8080/doctorViewingTheirPatientData", {params: {id: tempDoctorID}}).then((response) => {
             setPatientList(response.data);
             console.log("Logged In Doctor Patients:");

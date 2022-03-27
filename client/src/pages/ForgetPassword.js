@@ -3,6 +3,7 @@ import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import { Container, Typography, Box, TextField, CssBaseline, Button, Avatar } from '@mui/material';
 import { Component } from "react";
 import validator from 'validator';
+import Axios from "axios";
 
 
 
@@ -23,6 +24,7 @@ class ForgetPassword extends Component {
         //Validating the email
         if (validator.isEmail(this.state.email)) {
             this.setState({ msg: 'Your recovery password has been sent if your email is found in our database!' })
+            Axios.put("http://localhost:8080/SendResetLink", {email: this.state.email})
         } else {
             this.setState({ msg: 'Enter a valid Email!' })
         }
