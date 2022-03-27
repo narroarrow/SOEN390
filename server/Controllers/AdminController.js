@@ -229,6 +229,7 @@ AdminController.post("/invalidateDoctor", (req, res) => {
 AdminController.post("/validateHO", (req, res) => {
     let HealthOfficialID = req.body.HealthOfficialID;
     let state = 'UPDATE 390db.users SET Validated = 1 WHERE ID = ?'
+    console.log("test HERERE"+HealthOfficialID);
     //parameters: HealthOfficialID
     //returns:
     db.query(state, [HealthOfficialID], (err, result) => {
