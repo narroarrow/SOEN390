@@ -199,11 +199,19 @@ PatientController.post("/createSymptomForm", (req, res) => {
             }
         }
     );
-
-
-
-
 });
+
+
+PatientController.post("/createPatientFile", (req, res) => {
+
+    let patientid = req.body.patientid;
+    let dateNow = new Date();
+    let timeNow = dateNow.getHours() + ":" + dateNow.getMinutes() + ":" + dateNow.getSeconds();
+    let dayNow = dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1) + '-' + dateNow.getDate()
+    let fullDate = dayNow + ' ' + timeNow
+    let patientFile = req.body.status;
+
+    console.log(req.body)
 
 PatientController.get("/getPatientFile",(req,res)=>{
     let fileGiven = req.body.file //ask eric 
@@ -217,13 +225,11 @@ PatientController.get("/getPatientFile",(req,res)=>{
             if (err) {
                 console.log(err);
             } else {
-                res.send("Submitted!");
+                res.send("File uploaded!");
             }
         }
     );
-}
-)
 
-
+});
 
 module.exports = PatientController;
