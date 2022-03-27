@@ -32,9 +32,83 @@ let submitSymptomForm = (event) => {
   });
 };
 
+function FormRadio(label, radioId, radioName, labelBy) {
+
+return(
+<>
+  <FormControl>
+              <FormLabel sx={{ mb: 3 }}>
+                {label}
+              </FormLabel>
+
+              <RadioGroup
+                row
+                aria-labelledby={labelBy}
+                defaultValue="top"
+                sx={{ mb: 5 }}
+                id={radioId}
+                name={radioName}
+              >
+
+                <FormControlLabel
+                  value="1"
+                  control={<Radio required={true} />}
+                  label="1 (None)"
+                  labelPlacement="top"
+                  required
+                />
+
+                <FormControlLabel
+                  value="2"
+                  control={<Radio required={true} />}
+                  label="2"
+                  labelPlacement="top"
+                  sx={{ mr: 3 }}
+                />
+
+                <FormControlLabel
+                  value="3"
+                  control={<Radio required={true} />}
+                  label="3"
+                  labelPlacement="top"
+                  sx={{ mr: 3 }}
+                />
+
+                <FormControlLabel
+                  value="4"
+                  control={<Radio required={true} />}
+                  label="4"
+                  labelPlacement="top"
+                />
+
+                <FormControlLabel
+                  value="5"
+                  control={<Radio required={true} />}
+                  label="5 (Extreme)"
+                  labelPlacement="top"
+                  sx={{ ml: 0.5 }}
+                />
+
+              </RadioGroup>
+            </FormControl>
+            </>
+)
+}
+
 function SymptomForm() {
 
   const storedLabels = ["Difficulty Breathing", "Chest Pain", "Fatigue", "Fever", "Cough", "Loss of Smell", "Loss of Taste"]
+  const nameIDs = ["breathing", "chest", "fatigue", "fever", "cough", "smell", "taste"]
+
+
+  let diffBreathing = FormRadio(storedLabels[0], nameIDs[0], nameIDs[0], nameIDs[0])
+  let chestPain = FormRadio(storedLabels[1], nameIDs[1], nameIDs[1], nameIDs[1])
+  let fatigue = FormRadio(storedLabels[2], nameIDs[2], nameIDs[2], nameIDs[2])
+  let fever = FormRadio(storedLabels[3], nameIDs[3], nameIDs[3], nameIDs[3])
+  let cough = FormRadio(storedLabels[4], nameIDs[4], nameIDs[4], nameIDs[4])
+  let smell = FormRadio(storedLabels[5], nameIDs[5], nameIDs[5], nameIDs[5])
+  let taste = FormRadio(storedLabels[6], nameIDs[6], nameIDs[6], nameIDs[6])
+
 
   return (
 
@@ -42,6 +116,7 @@ function SymptomForm() {
       {
         localStorage.getItem("role") != 'Patient' && <Navigate to={"/"} refresh={true} />
       }
+
       <div align="Center">
         <Paper elevation={24} component="form" onSubmit={submitSymptomForm} sx={{ width: 700, height: 2000, mt: 10 }}>
           <h1>Symptoms</h1>
@@ -68,382 +143,15 @@ function SymptomForm() {
 
           <br></br>
 
-          <FormControl>
-            <FormLabel sx={{ mb: 3 }}>
-              Difficulty Breathing
-            </FormLabel>
+          {diffBreathing}
+          {chestPain}
+          {fatigue}
+          {fever}
+          {cough}
+          {smell}
+          {taste}
 
-            <RadioGroup
-              row
-              aria-labelledby="breathing"
-              defaultValue="top"
-              sx={{ mb: 5 }}
-              id="breathing"
-              name="breathing"
-            >
-
-              <FormControlLabel
-                value="1"
-                control={<Radio required={true} />}
-                label="1 (None)"
-                labelPlacement="top"
-                required
-              />
-
-              <FormControlLabel
-                value="2"
-                control={<Radio required={true} />}
-                label="2"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="3"
-                control={<Radio required={true} />}
-                label="3"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="4"
-                control={<Radio required={true} />}
-                label="4"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="5"
-                control={<Radio required={true} />}
-                label="5 (Extreme)"
-                labelPlacement="top"
-                sx={{ ml: 0.5 }}
-              />
-
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl>
-
-            <FormLabel id="chest" sx={{ mb: 3 }}>
-              Chest Pain
-            </FormLabel>
-
-            <RadioGroup
-              row
-              aria-labelledby="chest"
-              name="chest"
-              defaultValue="top"
-              sx={{ mb: 5 }}
-            >
-
-              <FormControlLabel
-                value="1"
-                control={<Radio required={true} />}
-                label="1 (None)"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="2"
-                control={<Radio required={true} />}
-                label="2"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="3"
-                control={<Radio required={true} />}
-                label="3"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="4"
-                control={<Radio required={true} />}
-                label="4"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="5"
-                control={<Radio required={true} />}
-                label="5 (Extreme)"
-                labelPlacement="top"
-                sx={{ ml: 0.5 }}
-              />
-
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl>
-            <FormLabel id="fatigue" sx={{ mb: 3 }}>
-              Fatigue
-            </FormLabel>
-
-            <RadioGroup
-              row
-              aria-labelledby="fatigue"
-              name="fatigue"
-              defaultValue="top"
-              sx={{ mb: 5 }}
-            >
-
-              <FormControlLabel
-                value="1"
-                control={<Radio required={true} />}
-                label="1 (None)"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="2"
-                control={<Radio required={true} />}
-                label="2"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="3"
-                control={<Radio required={true} />}
-                label="3"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="4"
-                control={<Radio required={true} />}
-                label="4"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="5"
-                control={<Radio required={true} />}
-                label="5 (Extreme)"
-                labelPlacement="top"
-                sx={{ ml: 0.5 }}
-              />
-
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl>
-            <FormLabel id="fever" sx={{ mb: 3 }}>
-              Fever
-            </FormLabel>
-
-            <RadioGroup
-              row
-              aria-labelledby="fever"
-              name="fever"
-              defaultValue="top"
-              sx={{ mb: 5 }}
-            >
-              <FormControlLabel
-                value="1"
-                control={<Radio required={true} />}
-                label="1 (None)"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="2"
-                control={<Radio required={true} />}
-                label="2"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="3"
-                control={<Radio required={true} />}
-                label="3"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="4"
-                control={<Radio required={true} />}
-                label="4"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="5"
-                control={<Radio required={true} />}
-                label="5 (Extreme)"
-                labelPlacement="top"
-                sx={{ ml: 0.5 }}
-              />
-
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl>
-            <FormLabel id="cough" sx={{ mb: 3 }}>
-              Cough
-            </FormLabel>
-
-            <RadioGroup
-              row
-              aria-labelledby="cough"
-              name="cough"
-              defaultValue="top"
-              sx={{ mb: 5 }}
-            >
-              <FormControlLabel
-                value="1"
-                control={<Radio required={true} />}
-                label="1 (None)"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="2"
-                control={<Radio required={true} />}
-                label="2"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="3"
-                control={<Radio required={true} />}
-                label="3"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="4"
-                control={<Radio required={true} />}
-                label="4"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="5"
-                control={<Radio required={true} />}
-                label="5 (Extreme)"
-                labelPlacement="top"
-                sx={{ ml: 0.5 }}
-              />
-
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl>
-            <FormLabel id="smell" sx={{ mb: 3 }}>
-              Loss of Smell
-            </FormLabel>
-
-            <RadioGroup
-              row
-              aria-labelledby="smell"
-              name="smell"
-              defaultValue="top"
-              sx={{ mb: 5 }}
-            >
-              <FormControlLabel
-                value="1"
-                control={<Radio required={true} />}
-                label="1 (None)"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="2"
-                control={<Radio required={true} />}
-                label="2"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="3"
-                control={<Radio required={true} />}
-                label="3"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="4"
-                control={<Radio required={true} />}
-                label="4"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="5"
-                control={<Radio required={true} />}
-                label="5 (Extreme)"
-                labelPlacement="top"
-                sx={{ ml: 0.5 }}
-              />
-
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl>
-            <FormLabel id="taste" sx={{ mb: 3 }}>
-              Loss of Taste
-            </FormLabel>
-
-            <RadioGroup
-              row
-              aria-labelledby="taste"
-              name="taste"
-              defaultValue="top"
-              sx={{ mb: 5 }}
-            >
-              <FormControlLabel
-                value="1"
-                control={<Radio required={true} />}
-                label="1 (None)"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="2"
-                control={<Radio required={true} />}
-                label="2"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="3"
-                control={<Radio required={true} />}
-                label="3"
-                labelPlacement="top"
-                sx={{ mr: 3 }}
-              />
-
-              <FormControlLabel
-                value="4"
-                control={<Radio required={true} />}
-                label="4"
-                labelPlacement="top"
-              />
-
-              <FormControlLabel
-                value="5"
-                control={<Radio required={true} />}
-                label="5 (Extreme)"
-                labelPlacement="top"
-                sx={{ ml: 0.5 }}
-              />
-
-            </RadioGroup>
-          </FormControl>
+      
 
           <div>
             <FormControl>
@@ -462,7 +170,7 @@ function SymptomForm() {
 
           <div>
             <FormControl>
-              <FormLabel id="urgent" sx={{ mb: 3 }}>Urgent</FormLabel>
+              <FormLabel sx={{ mb: 3 }}>Urgent</FormLabel>
               <Checkbox id="urgent"></Checkbox>
             </FormControl>
           </div>
