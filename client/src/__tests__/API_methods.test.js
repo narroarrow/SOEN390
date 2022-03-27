@@ -373,9 +373,9 @@ describe('testing /adminViewingUnvalidatedImmigrationOfficerData', () => {
 
 //Max
 //Verifies the command validates a health official
-describe('testing /validateHO', () => {
+describe('testing /validateHealthOfficial', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/validateHO').send({HealthOfficialID : 16});
+    let res = await request(app).post('/validateHealthOfficial').send({HealthOfficialID : 16});
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -392,9 +392,9 @@ describe('testing /validateHO', () => {
 //Max
 //Need to verify if there's a way that we will implement to fake sign up
 //Verifies the command validates a immigration officer
-describe('testing /validateIO', () => {
+describe('testing /validateImmigrationOfficer', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).post('/validateIO').send({ImmigrationOfficerID : 14});
+    let res = await request(app).post('/validateImmigrationOfficer').send({ImmigrationOfficerID : 14});
     expect(res.statusCode).toEqual(200);
   })
 });
