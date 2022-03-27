@@ -194,6 +194,7 @@ function AdminDashboard() {
         title="Welcome Admin"
         subheader="Admin"
       />
+      {/* Doctor Block */}
       <Container maxWidth="md" sx={{ padding: '2%' }}>
         {/* Title Doctor Block and Standard Grid Sizing */}
         <Grid container spacing={2} >
@@ -264,6 +265,78 @@ function AdminDashboard() {
           )}
         </Grid> 
       </Container>
+      {/* Health Officials Block */}
+      <Container maxWidth="md" sx={{ padding: '2%' }}>
+        {/* Title Health Official Block and Standard Grid Sizing */}
+        <Grid container spacing={2} >
+          <Grid item xs={12}>
+            <Card container sx={{ marginBottom: '2%', padding: '3%' }}>
+              <Typography variant="body1" color="initial" >
+                Health Officials
+              </Typography>
+            </Card>
+          </Grid>
+          {/* SEARCH BAR TOO IMPLEMENT NEXT SPRINT */}
+          {/* <Grid item xs={4}>
+            <TextField id="docSearch" label="Search" variant="filled" onChange={() => filterMyDoc()}>{docSearch}</TextField>
+          </Grid> */}
+        </Grid>
+        {/*  Grid Sizing for Health Official Invalid Accounts Paper Tiles */}
+        <Grid container spacing={2} >
+        {healthOfficialListUnvalidated.map((val,key) => {
+            return(
+              <Grid item xs={4} key={key}>
+                <UrgentPaper>
+                  <CardHeader
+                    avatar={
+                      <Avatar aria-label="">
+                        D{key}
+                      </Avatar>
+                    }
+                    action={
+                      <IconButton aria-label=""></IconButton>
+                    }
+                    title = {val.Fname + " " + val.Lname} 
+                    subheader = {`Contact: ${val.Phone}`} 
+                  />
+                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%', color: 'black'}}></Typography>
+                  <Button  sx={{ marginLeft: '20%'}} variant="contained" color="primary" onClick={() => validateHO(val.ID)} >
+                  VALIDATE
+                  </Button>
+                  <Button variant="contained" color="primary" onClick={() => invalidateHO(val.ID)} sx={{ ml: '2%' }} >
+                  DENY
+                  </Button>
+                </UrgentPaper>
+              </Grid>
+            )
+          }
+          )}
+           {/*  Grid Sizing for Doctor Invalid Accounts Paper Tiles */}
+          {healthOfficialListValidated.map((val,key) => {
+            return(
+              <Grid item xs={4} key={key}>
+                <TilePaper>
+                  <CardHeader
+                    avatar={
+                      <Avatar aria-label="">
+                        D{key}
+                      </Avatar>
+                    }
+                    action={
+                      <IconButton aria-label=""></IconButton>
+                    }
+                    title = {val.Fname + " " + val.Lname} 
+                    subheader = {`Contact: ${val.Phone}`} 
+                  />
+                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}></Typography>
+                </TilePaper>
+              </Grid>
+            )
+          }
+          )}
+        </Grid> 
+      </Container>
+      {/* Patients Block */}
     </div> </>
   );
 }
