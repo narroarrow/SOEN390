@@ -129,6 +129,10 @@ function PatientProfile() {
                             <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/SymptomForm">
                                 SYMPTOM FORM
                             </Button>
+                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" target="_blank" href="https://www.quebec.ca/en/health/health-issues/a-z/2019-coronavirus/measures-in-force/about-the-measures-in-force">
+                                COVID-19 MEASURES
+                            </Button>
+
                         </Grid>
                     </Box>
                     <Box sx={{ mt: 1 }}>
