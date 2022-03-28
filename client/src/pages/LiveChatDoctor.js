@@ -1,4 +1,4 @@
-import { Container, Box, Grid, CssBaseline, Button, Chip, Paper, Typography, Divider, List, ListItem, ListItemText, FormControl, TextField, IconButton } from '@mui/material';
+import { Container, Box, Grid, Chip, Paper, Typography, Divider, List, ListItem, ListItemText, FormControl, TextField, IconButton } from '@mui/material';
 import { useEffect, useState, useRef } from 'react';
 import '../components/Chat.css';
 import SendIcon from '@mui/icons-material/Send'
@@ -11,28 +11,28 @@ const socket = io.connect("http://localhost:5069");
 
 
 function LiveChat() {
-    const ENTERCODE = 13;
+    
+    //declaring the variables
     let stopEffect = 1;
+    const ENTERCODE = 13;
     const scrollBottomRef = useRef(null);
     const location = useLocation();
 
-    
-
-    const [patient, setPatient] = useState("Patient's Name") 
-    const [doctor, setDoctor] = useState("Doctor's Name") 
+    //declaring all the use states
+    const [patient, setPatient] = useState("") //the name
+    const [doctor, setDoctor] = useState("")//the name 
     const [message, setMessage] = useState("") 
     const [allMessages, setAllMessages] = useState([]);
-    const [doctorid, setDoctorID] = useState("");
     const [patientId, setPatientId] = useState(location.state.ID);
-    const [roomid, setRoomID] = useState("");
-
+    
+    //scrolls to the bottom of the messages
     useEffect(() => {
         if(scrollBottomRef.current){
             scrollBottomRef.current.scrollIntoView({behavior: 'auto'})
         }
     })
 
-    //to do
+    //gets the name of doctor and patient
      useEffect(() => {
          Axios.get('http://localhost:8080/patientDoctorName', { withCredentials: true, 
          params: { id: patientId } 
@@ -42,7 +42,7 @@ function LiveChat() {
          })
      }, [stopEffect]);
 
-     //to do
+    //Gets the messages to display
     useEffect(() => {
         Axios.get('http://localhost:8080/patientLiveChatMessages', { withCredentials: true, 
         params: { id: patientId } 
@@ -52,107 +52,78 @@ function LiveChat() {
         })
     }, [stopEffect]);
 
-    //On render we store either the patient or doctor's id.
+    //joind the room based on patient id on render
     useEffect(() => {
-        if(localStorage.getItem("role") == "Doctor"){
-            setDoctorID(localStorage.getItem("id"));
-            console.log("Doctor ID: " + localStorage.getItem("id"));
-            setRoomID(patientId);
-            joinRoom(); //This will put the patient in a room so only their doctor can join
+        if(localStorage.getItem("id") !== ""){
+            socket.emit("join_room", patientId); 
         }
-
     }, [stopEffect]);
 
-     //This useEffect is for receiving messages from the server. NOTE: Only patients in the room that is sending messages will receive them (implemented in the backend).
+     //This useEffect is for receiving messages from the server. NOTE: Only people in the room that is sending messages will receive them (implemented in the backend).
      useEffect(() => {
         socket.on("receive_message", (data) => {
-            console.log("I AM RECEIVING THE MESSAGE: ");
-            window.location.reload(false);
+            console.log(data);
+            setAllMessages(allMessages => [...allMessages, {Message: data.message, SenderID: patientId, patientid: patientId, DoctorID: parseInt(localStorage.getItem('id'))}]);
+            console.log(allMessages);
         })
     }, [socket]);
 
-    const joinRoom = () => {
 
-        if(localStorage.getItem("id") !== ""){
-            console.log("Testing");
-            socket.emit("join_room", patientId); 
+    //stores message in database
+    const sendMessage = async () => {
+        //Message sent by the doctor is inserted into the database
+        Axios.post("http://localhost:8080/createDoctorLiveChatMessage", {
+            id: localStorage.getItem('id'), //Pass the doctor's id and message to the backend
+            message: message,
+            patientId: patientId
+
+        });
+        //create a message and send it to patient
+        const messageData = {
+            roomid: patientId,
+            patientid: patientId,
+            message: message
         }
+        //emits message to socket connected to patient
+        await socket.emit("send_message", messageData);
+        setAllMessages(allMessages => [...allMessages, {Message: message, SenderID: parseInt(localStorage.getItem('id')), patientid: patientId, DoctorID: parseInt(localStorage.getItem('id'))}]);
+        setMessage('');
+        console.log(allMessages);
+
     }
 
-
+    //allows us to write message in text box
     const handleMessgaeChange = (event) => {
         setMessage(event.target.value)
     }
     
+    //allows for us to press enter key and send message
     const handleEnterKey = (event) => {
         if(event.keyCode === ENTERCODE){
             sendMessage();
         }
     }
 
-    const sendMessage = async () => {
-        //Message sent by the patient is inserted into the database
-        Axios.post("http://localhost:8080/createDoctorLiveChatMessage", {
-            id: localStorage.getItem('id'), //Pass the patient's id and message to the backend
-            message: message,
-            patientId: patientId
-
-        }).then(() => {
-            console.log("success");
-            window.location.href = "/";
-
-        });
-            const messageData = {
-                roomid: patientId,
-                patientid: localStorage.getItem('id'),
-                message: message
-            }
-            await socket.emit("send_message", messageData);
-            setMessage('');
-            window.location.reload(false);
-
-    }
-
-
-
+    //gives an alert with all the text when a message is pressed
     const showMessage = (event) => {
-        console.log(event)
         alert(event.target.innerText);
       };
 
-    // let splitMessage=[];
+
     let listChatMessages = [];
-    // let MessageSplit = [];
+    //put all the messages from server in proper format
     allMessages.forEach((item, index) => {
-    //     splitMessage=item.Message.match(/.{1,65}/g);
-        
-    //     splitMessage.forEach((element) => {
-    //         MessageSplit.push(
-    //             <div>{element}</div>
-    //         )
-    //     });
-        // console.log(splitMessage);
         listChatMessages.push(
-        // <ListItem key={index} justify="flex-end">
-        //     {(item.SenderID == item.PatientID) ?
-        //     (<ListItemText/>):(<span></span>)}
-        //     {(item.SenderID == item.PatientID) ?
-        //     (<Chip key={Math.random()} sx={{ maxWidth: 1/1, height: 'auto'}} label={(
-        //         <section>
-        //             {MessageSplit}
-        //         </section>
-        //     )} color="primary"/>):
-        //     (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} variant="outlined" label={`${item.Message}`} color="primary"/>)}
-        // </ListItem> 
          <ListItem key={index} justify="flex-end">
          {(item.SenderID == item.DoctorID) ?
+         //messages sent by doctor will display on the right
          (<ListItemText/>):(<span></span>)}
          {(item.SenderID == item.DoctorID) ?
+         //shows the actaul text bubble with appropriate message
          (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} label={`${item.Message}`} color="primary" onClick={showMessage}/>):
          (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} variant="outlined" label={`${item.Message}`} onClick={showMessage} color="primary"/>)}
      </ListItem> 
         )
-        // MessageSplit=[];
     })
 
 
@@ -166,27 +137,31 @@ function LiveChat() {
                 <Paper elevation={5}>
                     <Box p={3}>
                         <Typography variant='h6' gutterBottom>
-                            Live Chat {patient}
+                            Live Chat with: {patient}
                         </Typography>
                         <Divider />
                         <Grid container spacing={4} alignItems="center">
                             <Grid id="chat-window" xs={12} item>
                                 <List id="chat-messages">
+                                    {/* Display all the messages */}
                                     {listChatMessages}
                                     <ListItem ref={scrollBottomRef}></ListItem>
                                 </List>
                             </Grid>
-                            <Grid xs={1} item>
+                            <Grid xs={2} item>
                                 <Typography variant='subtitle1'>
+                                    {/* Show the doctor name */}
                                     {doctor}   
                                 </Typography>  
                             </Grid>
-                            <Grid xs={10} item>
+                            <Grid xs={9} item>
                                 <FormControl fullWidth>
+                                    {/* Message input box */}
                                     <TextField onChange={handleMessgaeChange} onKeyDown={handleEnterKey} label="Type your message" variant='outlined' value={message}/>
                                 </FormControl>
                             </Grid>
                             <Grid xs={1} item>
+                                {/* Send button */}
                                 <IconButton aria-label="send" color="primary" onClick={sendMessage}>
                                     <SendIcon/>
                                 </IconButton>
