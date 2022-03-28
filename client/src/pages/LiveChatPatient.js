@@ -62,7 +62,7 @@ function LiveChat() {
      //This useEffect is for receiving messages from the server. NOTE: Only people in the room that is sending messages will receive them (implemented in the backend).
      useEffect(() => {
         socket.on("receive_message", (data) => {
-            setAllMessages(allMessages => [...allMessages, {Message: data.message, SenderID: doctorId, patientid: parseInt(localStorage.getItem('id')), DoctorID: doctorId}]);
+            setAllMessages(allMessages => [...allMessages, {Message: data.message, SenderID: doctorId, patientId: parseInt(localStorage.getItem('id')), DoctorID: doctorId}]);
             // window.location.reload(false);
         })
     }, [socket]);
@@ -81,7 +81,7 @@ function LiveChat() {
         });
          //create a message and send it to doctor
         const messageData = {
-            roomid: localStorage.getItem('id'),
+            roomId: localStorage.getItem('id'),
             patientId: localStorage.getItem('id'),
             message: message
         }
@@ -149,12 +149,12 @@ function LiveChat() {
                                     <ListItem ref={scrollBottomRef}></ListItem>
                                 </List>
                             </Grid>
-                            <Grid xs={1} item>
+                            <Grid xs={2} item>
                                 <Typography variant='subtitle1'>
                                     {patient}   
                                 </Typography>  
                             </Grid>
-                            <Grid xs={10} item>
+                            <Grid xs={9} item>
                                 <FormControl fullWidth>
                                     <TextField onChange={handleMessgaeChange} onKeyDown={handleEnterKey} label="Type your message" variant='outlined' value={message}/>
                                 </FormControl>
