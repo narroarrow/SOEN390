@@ -69,6 +69,11 @@ function LiveChat() {
 
     //stores message in database
     const sendMessage = async () => {
+
+        if(message === '' )
+        {
+            return;
+        }
         //Message sent by the patient is inserted into the database
         Axios.post("http://localhost:8080/createPatientLiveChatMessage", {
             id: localStorage.getItem('id'), //Pass the patient's id and message to the backend
