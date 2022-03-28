@@ -365,4 +365,68 @@ UserController.post('/Logout', ((req, res) => {
     res.status(200).send();
 }));
 
+UserController.get("/checkPasswordLink", async (req,res) => {
+    let id = req.query["id"];
+    let token = req.query["utoken"];
+    let state = `SELECT U.Token, U.ID, U.Resetting FROM users U WHERE U.id = ${id} AND U.Token = "${token}"`;
+
+    db.query(state, async (err, result) => {
+        try {
+            console.log(result)
+            if (!result[0] || result[0].Resetting === 0) {
+                res.status(405).send();
+            } else {
+                res.status(200).send()
+            }
+
+        } catch (err) {
+            res.status(498).send();
+        }
+    })
+
+})
+
+UserController.put("/ResettingPassword", async (req, res) => {
+    try {
+        //fields were provided by the front end form
+
+        let id = req.body.id;
+        let newPassword = req.body.password
+        //query statement
+        let state = `SELECT U.FName, U.LName, U.Email, U.Password, U.Role, U.ID, U.Resetting FROM users U WHERE U.id = "${id}"`;
+
+        //console.log(state) // used to verify the query
+        //parameters: Email
+        //returns:
+        db.query(state, async (err, result) => {
+                try {
+
+                    let resetting = result[0].Resetting
+                    if (!result[0]) {
+                        throw err;
+                    } else if (resetting === 0){
+                        res.status(405).send();
+                    }else {
+
+                        const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
+                        const hashedPassword = await bcrypt.hash(newPassword, salt)
+
+                        let updatePasswordState = `UPDATE users SET Password = "${hashedPassword}" WHERE users.ID = ${id};`
+                        db.query(updatePasswordState, async(err, result) => {
+                            if (err) {
+                                console.log(err)
+                            }
+                        })
+                    }
+
+                } catch (err) {
+                    res.status(498).send();
+                }
+            }
+        )
+    } catch (err) {
+        res.status(497).send()
+    }
+})
+
 module.exports = UserController;

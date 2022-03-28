@@ -6,7 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import Axios from 'axios';
 import { useState, useEffect } from "react";
-import { Link, Navigate } from 'react-router-dom';
+import {Link, Navigate, useSearchParams} from 'react-router-dom';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 
@@ -16,7 +16,6 @@ function DoctorPatientProfile() {
   const [filteredPatients, setFilteredPatients] = useState([]); //filtered values for patient info
   const [executed, setExecuted] = useState(false); //keeps track of if getPatients() method is called
   const [viewedList, setViewedList] = useState([]); //Patients whose profiles have been reviewed by a doctor
-
   var tempDoctorID = parseInt(localStorage.getItem('id'));
 
   var myPatients = patientList.filter(e => e.DoctorID === tempDoctorID); //returns a filtered list of patients that are assigned to the doctor

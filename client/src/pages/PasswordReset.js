@@ -1,36 +1,61 @@
 import * as React from 'react';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import { Container, Typography, Box, TextField, CssBaseline, Button, Avatar } from '@mui/material';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { Component } from "react";
 import validator from 'validator';
 import Axios from "axios";
+import {useSearchParams} from "react-router-dom";
 
 
-class PasswordReset extends Component {
+function PasswordReset() {
 
-    constructor(props) {
-        super(props)
 
-        // Set initial states
-        this.state = { msg: '', password: '' , confirmPassword : ''}
 
-        // Binding keywords keyword
-        this.handleClick = this.handleClick.bind(this)
-    }
+    const [msg, setMsg] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    handleClick() {
+
+    const handleClick = () => {
         //Validating the password
-        if (validator.isStrongPassword(this.state.password) && this.state.password === this.state.confirmPassword) {
-            this.setState({ msg: 'Your Password has been reset.' })
+        if (validator.isStrongPassword(password) && password === confirmPassword) {
+            setMsg('Your Password has been reset.')
+            Axios.put("http://localhost:8080/ResettingPassword", {
+                password: password,
+                id : searchParams.get("id")
+            }).catch((err) => {
+                if (err.response.status === 405){
+                    setMsg("The link has expired!")
+                }
+            })
 
         } else {
-            this.setState({ msg: 'Enter valid password or passwords do not match.' })
+            setMsg('Enter valid password or passwords do not match.' )
         }
 
-    }
+    };
+    useEffect(() => {
+        checkValidLink();
+    }, [])
 
-    render() {
+    const checkValidLink = () => {
+        if (!searchParams.get("id") || !searchParams.get("token")){
+            window.location.href = "/"
+        } else {
+            Axios.get("http://localhost:8080/checkPasswordLink", { withCredentials: true, params: { id: searchParams.get("id"), utoken:searchParams.get("token") } }).then((response) => {
+
+            }).catch((err => {
+                //Checks if the credentials are valid but the doctor has not yet been validated
+                if (err.response.status === 405) {
+                    window.location.href = "/"
+                } else {
+                    console.log(err)
+                }
+            }));
+        }
+    }
 
         return (
             <Container component="main" maxWidth="xs">
@@ -44,21 +69,21 @@ class PasswordReset extends Component {
                     </Typography>
                     <Box sx={{ mt: 1 }}>
                         {/* User providing the password*/}
-                        <TextField margin="normal" required fullWidth id="password" label="New Password" name="password" type="password" value={this.state.password} onChange={(ev) => this.setState({ password: ev.target.value })}
+                        <TextField margin="normal" required fullWidth id="password" label="New Password" name="password" type="password" value={password} onChange={(ev) => setPassword(ev.target.value )}
                         />
                         
-                         <TextField margin="normal" required fullWidth id="confirmPassword" label="Confirm New Password" name="confirmPassword" type="password" value={this.state.confirmPassword} onChange={(ev) => this.setState({ confirmPassword: ev.target.value })}
+                         <TextField margin="normal" required fullWidth id="confirmPassword" label="Confirm New Password" name="confirmPassword" type="password" value={confirmPassword} onChange={(ev) => setConfirmPassword(ev.target.value)}
                         />
-                        <Button type="submit" fullWidth variant="contained" onClick={() => this.handleClick()} sx={{ mt: 3, mb: 2 }}>
+                        <Button type="submit" fullWidth variant="contained" onClick={handleClick} sx={{ mt: 3, mb: 2 }}>
                             Reset Password
                         </Button>
                         {/* Displays confirmation message based status send from server */}
-                        {this.state.msg}
+                        {msg && msg}
                     </Box>
                 </Box>
             </Container>
         );
-    }
+
 
 }
 
