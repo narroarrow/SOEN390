@@ -48,7 +48,6 @@ function LiveChat() {
         params: { id: patientId } 
     }).then((response) => {
             setAllMessages(response.data);
-            console.log(response);
         })
     }, [stopEffect]);
 
@@ -62,9 +61,7 @@ function LiveChat() {
      //This useEffect is for receiving messages from the server. NOTE: Only people in the room that is sending messages will receive them (implemented in the backend).
      useEffect(() => {
         socket.on("receive_message", (data) => {
-            console.log(data);
             setAllMessages(allMessages => [...allMessages, {Message: data.message, SenderID: patientId, patientid: patientId, DoctorID: parseInt(localStorage.getItem('id'))}]);
-            console.log(allMessages);
         })
     }, [socket]);
 
@@ -88,8 +85,6 @@ function LiveChat() {
         await socket.emit("send_message", messageData);
         setAllMessages(allMessages => [...allMessages, {Message: message, SenderID: parseInt(localStorage.getItem('id')), patientid: patientId, DoctorID: parseInt(localStorage.getItem('id'))}]);
         setMessage('');
-        console.log(allMessages);
-
     }
 
     //allows us to write message in text box

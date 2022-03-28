@@ -20,6 +20,7 @@ function LiveChat() {
    //declaring all the use states
    const [patient, setPatient] = useState("") //the name
    const [doctor, setDoctor] = useState("")//the name 
+   const [doctorId, setDoctorId] = useState("")//the id 
    const [message, setMessage] = useState("") 
    const [allMessages, setAllMessages] = useState([]);
 
@@ -38,6 +39,7 @@ function LiveChat() {
     }).then((response) => {
             setPatient(response.data[0].patientName);
             setDoctor(response.data[0].doctorName);
+            setDoctorId(response.data[0].doctorId);
         })
     }, [stopEffect]);
 
@@ -47,7 +49,6 @@ function LiveChat() {
         params: { id: localStorage.getItem('id') } 
     }).then((response) => {
             setAllMessages(response.data);
-            console.log(response);
         })
     }, [stopEffect]);
 
@@ -61,10 +62,7 @@ function LiveChat() {
      //This useEffect is for receiving messages from the server. NOTE: Only people in the room that is sending messages will receive them (implemented in the backend).
      useEffect(() => {
         socket.on("receive_message", (data) => {
-            console.log(data);
-            let doctorId = 35
             setAllMessages(allMessages => [...allMessages, {Message: data.message, SenderID: doctorId, patientid: parseInt(localStorage.getItem('id')), DoctorID: doctorId}]);
-            console.log(allMessages);
             // window.location.reload(false);
         })
     }, [socket]);
@@ -83,9 +81,7 @@ function LiveChat() {
             message: message
         }
         await socket.emit("send_message", messageData);
-        let doctorId = 35
         setAllMessages(allMessages => [...allMessages, {Message: message, SenderID: parseInt(localStorage.getItem('id')), Patientid: parseInt(localStorage.getItem('id')), DoctorID: doctorId}]);
-        console.log(allMessages)
         setMessage('');
         // window.location.reload(false);
 

@@ -1,14 +1,14 @@
-import { render } from '@testing-library/react';
-import LiveChatPatient from '../pages/LiveChatPatient';
-import { BrowserRouter } from 'react-router-dom';
+// import { render } from '@testing-library/react';
+// import LiveChatPatient from '../pages/LiveChatPatient';
+// import { BrowserRouter } from 'react-router-dom';
 
-test('Renders the LiveChatPatient page', () => {
+// test('Renders the LiveChatPatient page', () => {
 
-  localStorage.setItem('role', 'Patient');
+//   localStorage.setItem('role', 'Patient');
 
-  render(
-    <BrowserRouter>
-      <LiveChatPatient />
-    </BrowserRouter>);
+//   render(
+//     <BrowserRouter>
+//       <LiveChatPatient />
+//     </BrowserRouter>);
 
-});
+// });

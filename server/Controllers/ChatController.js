@@ -221,7 +221,7 @@ ChatController.post("/createDoctorLiveChatMessage", (req,res) => {
 ChatController.get("/patientDoctorName", (req, res) => {
     let patientid = req.query.id;
     //This query is used in order to get the first name of both the patient and doctor using the patiendid as the passed value
-    let state ="SELECT pat.FName AS patientName, doc.FName AS doctorName FROM 390db.patients p, 390db.users pat, 390db.users doc WHERE p.ID = ? AND p.ID = pat.ID AND p.DoctorID = doc.ID";
+    let state ="SELECT pat.FName AS patientName, doc.FName AS doctorName, doc.ID AS doctorId FROM 390db.patients p, 390db.users pat, 390db.users doc WHERE p.ID = ? AND p.ID = pat.ID AND p.DoctorID = doc.ID";
     db.query(state, [patientid],
         (err, results) => {
             if (err) {
