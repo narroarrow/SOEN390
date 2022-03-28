@@ -4,48 +4,50 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
-const app = require("../app.js");
-const http = require("http");
-const server = http.createServer(app);
-const {Server} = require("socket.io");
+
+// const app = require("../app.js");
+// const http = require("http");
+// const server = http.createServer(app);
+// const {Server} = require("socket.io");
 
 
-// Initialize io object that will be taking care or tracking users that open the website
-const io = new Server(server, {
-    cors: {
-        origin: "http://localhost:3000", //This tells the socket which port the frontend is running on so it can track
-        methods: ["GET","POST"], //Tells the socket which commands it will be receiving from the frontend
-    },
-});
+// // Initialize io object that will be taking care or tracking users that open the website
+// const io = new Server(server, {
+//     cors: {
+//         origin: "http://localhost:3000", //This tells the socket which port the frontend is running on so it can track
+//         methods: ["GET","POST"], //Tells the socket which commands it will be receiving from the frontend
+//     },
+// });
 
 
-io.on("connection", (socket) => { //This checks if a user opened thew website
-   //console.log(socket.id);
+// io.on("connection", (socket) => { //This checks if a user opened thew website
+//    //console.log(socket.id);
 
-    socket.on("join_room", (roomid) => { //Server waits for client to connect
+//     socket.on("join_room", (roomid) => { //Server waits for client to connect
         
-        var room = Number(roomid); //Convert the room id into a number
-        socket.join(room);//Needs to be roomid
-        console.log("User joined room: " + roomid);//Needs to be roomid
-    });
+//         var room = Number(roomid); //Convert the room id into a number
+//         socket.join(room);//Needs to be roomid
+//         console.log("User joined room: " + roomid);//Needs to be roomid
+//     });
 
-    socket.on("send_message", (messageData) => {
-        console.log("Correct Room ID: " + messageData.roomid);
-        console.log("Patient That Sent Message: " + messageData.patientid);
-        console.log("Socket Message Emitted: " + messageData.message);
+//     socket.on("send_message", (messageData) => {
+//         console.log("Correct Room ID: " + messageData.roomid);
+//         console.log("Patient That Sent Message: " + messageData.patientid);
+//         console.log("Socket Message Emitted: " + messageData.message);
 
-        var room = Number(messageData.roomid); //Convert the room id into a number
-        socket.to(room).emit("receive_message",messageData); // The socket.listen on the frontend LiveChat.js page will catch this message since they are both using "receive_message".
-    });
+//         var room = Number(messageData.roomid); //Convert the room id into a number
+//         socket.to(room).emit("receive_message",messageData); // The socket.listen on the frontend LiveChat.js page will catch this message since they are both using "receive_message".
+//     });
 
-    socket.on("disconnect", () => { //Checks if a user has left the website. i.e closed the socket connection
-        console.log("user disconnected");
-    });
-});
+//     socket.on("disconnect", () => { //Checks if a user has left the website. i.e closed the socket connection
+//         console.log("user disconnected");
+//     });
+// });
 
-server.listen(5069, () => { //The socket server will eb running on a seperate port for now
-    console.log("LIVECHAT SERVER RUNNING");
-});
+// server.listen(5069, () => { //The socket server will eb running on a seperate port for now
+//     console.log("LIVECHAT SERVER RUNNING");
+// });
+
 
 const ChatController = express.Router()
 
