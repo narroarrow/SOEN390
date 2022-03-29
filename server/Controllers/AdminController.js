@@ -241,7 +241,7 @@ AdminController.post("/validateHealthOfficial", (req, res) => {
 });  
 
 AdminController.get("/mostToLeastPatients", (req, res) => {
-    let state = "SELECT  U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients FROM 390db.doctors D, 390db.patients P, 390db.users U  WHERE D.ID = P.DoctorID AND D.ID = U.ID AND U.validated = '1' GROUP BY D.ID ORDER BY countPatients ASC"
+    let state = "SELECT  U.ID, U.Fname, U.Lname, U.Email, U.Phone, U.Address, count(*) as countPatients FROM 390db.doctors D, 390db.patients P, 390db.users U  WHERE D.ID = P.DoctorID AND D.ID = U.ID AND U.validated = '1' GROUP BY D.ID ORDER BY countPatients ASC"
     //parameters:
     //returns: returns a list of doctors from least to most patietns while providing the doctors names, email, phone, address, and patient count.
     db.query(state, (err, result) => {
