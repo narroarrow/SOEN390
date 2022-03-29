@@ -156,7 +156,7 @@ AdminController.get("/adminViewingUnvalidatedImmigrationOfficerData", (req, res)
 AdminController.get("/adminViewingPatientData", (req, res) => {
     //parameters:
     //returns: (patient first name, patient last name, patient phone, doctor first name, doctor last name)
-    let state ='SELECT Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;'
+    let state ='SELECT Upatient.ID, Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;'
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);
