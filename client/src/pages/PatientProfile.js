@@ -120,37 +120,33 @@ function PatientProfile() {
                     {/* Displays the third block related to the clickable buttons */}
                     <Box sx={{ mt: 10 }}>
                         <Grid container fullwidth spacing={1}>
-                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/EditInfoForm" >
+                            <Button xs={12} sm={6} md={3} sx={{ margin: 1 }} variant="contained" href="/EditInfoForm" >
                                 EDIT INFO
                             </Button>
-                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/PatientCovidStatus" >
+                            <Button xs={12} sm={6} md={3} sx={{ margin: 1 }} variant="contained" href="/PatientCovidStatus" >
                                 Edit CURRENT STATUS
                             </Button>
-                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/SymptomForm">
+                            <Button xs={12} sm={6} md={3} sx={{ margin: 1 }} variant="contained" href="/SymptomForm">
                                 SYMPTOM FORM
                             </Button>
-                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" target="_blank" href="https://www.quebec.ca/en/health/health-issues/a-z/2019-coronavirus/measures-in-force/about-the-measures-in-force">
+                            <Button xs={12} sm={6} md={3} sx={{ margin: 1 }} variant="contained" target="_blank" href="https://www.quebec.ca/en/health/health-issues/a-z/2019-coronavirus/measures-in-force/about-the-measures-in-force">
                                 COVID-19 MEASURES
                             </Button>
-
-                           
-                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/PatientFiles">
-                                Upload File
-                            </Button>
-                           
-                            
                         </Grid>
                     </Box>
                     <Box sx={{ mt: 1 }}>
                         <Grid container fullwidth spacing={1}>
-                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/PatientAppointment" >
+                            <Button xs={12} sm={6} md={3} sx={{ margin: 1 }} variant="contained" href="/PatientFiles">
+                                Upload File
+                            </Button>
+                            <Button xs={12} sm={6} md={3} sx={{ margin: 1 }} variant="contained" href="/PatientAppointment" >
                                 BOOK APPOINTMENT
                             </Button>
                             {/* This will display the approriate button based on this users status in the database */}
-                            {(isChatRequested || chatGranted) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled>CHAT REQUESTED</Button>) :
-                                (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={requestChat} >REQUEST CHAT</Button>)}
-                            {chatGranted ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained">OPEN CHAT</Button>) :
-                                (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled> OPEN CHAT</Button>)}
+                            {(isChatRequested || chatGranted) ? (<Button xs={12} sm={6} md={3} sx={{ margin: 1 }} variant="contained" disabled>CHAT REQUESTED</Button>) :
+                                (<Button xs={12} sm={6} md={3} sx={{ margin: 1 }} variant="contained" onClick={requestChat} >REQUEST CHAT</Button>)}
+                            {chatGranted ? (<Button xs={12} sm={6} md={3} sx={{ margin: 1 }} variant="contained">OPEN CHAT</Button>) :
+                                (<Button xs={12} sm={6} md={3} sx={{ margin: 1 }} variant="contained" disabled> OPEN CHAT</Button>)}
                         </Grid>
                     </Box>
                 </Box>
