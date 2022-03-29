@@ -339,7 +339,16 @@ describe('testing /getAllNotificationCount', () => {
 //If the get is successful, a 200 status code will be returned to make the test pass. 
 describe('testing /patientLiveChatMessages', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).get('/patientLiveChatMessages');
+    let res = await request(app).get('/patientLiveChatMessages', { params: {id: 1}});
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Verifies get the patient and doctor names
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+describe('testing /patientDoctorName', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/patientLiveChatMessages', { params: {id: 1}});
     expect(res.statusCode).toEqual(200);
   })
 });
