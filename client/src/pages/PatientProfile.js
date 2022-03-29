@@ -134,8 +134,8 @@ function PatientProfile() {
                             </Button>
 
                            
-                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" component="label"> 
-                                Upload File <input type="file" hidden />
+                            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/PatientFiles">
+                                Upload File
                             </Button>
                            
                             

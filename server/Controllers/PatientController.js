@@ -204,23 +204,14 @@ PatientController.post("/createSymptomForm", (req, res) => {
 
 PatientController.post("/createPatientFile", (req, res) => {
 
-    let patientid = req.body.patientid;
-    let dateNow = new Date();
-    let timeNow = dateNow.getHours() + ":" + dateNow.getMinutes() + ":" + dateNow.getSeconds();
-    let dayNow = dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1) + '-' + dateNow.getDate()
-    let fullDate = dayNow + ' ' + timeNow
     let patientFile = req.body.status;
-
-    console.log(req.body)
-
-PatientController.get("/getPatientFile",(req,res)=>{
-    let fileGiven = req.body.file //ask eric 
     let patientID = req.body.patientid;
     let dateNow = new Date(); 
     let timeNow = dateNow.getFullYear()+'-'+dateNow.getMonth()+'-'+dateNow.getDate()+" "+dateNow.getHours() + ":" + dateNow.getMinutes() + ":" + dateNow.getSeconds();
 
-    let state = "INSERT INTO 390db.fileStorage (patientfiles,patientID, timesubmitted) VALUES (?,?,?)"
-    db.query(state, [fileGiven, patientID,timeNow],
+    console.log(req.body)
+    let state = "INSERT INTO 390db.patientfiles (patientfiles,patientID, timesubmitted) VALUES (?,?,?)"
+    db.query(state, [patientFile, patientID,timeNow],
         (err, results) => {
             if (err) {
                 console.log(err);
