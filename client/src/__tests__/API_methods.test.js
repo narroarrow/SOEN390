@@ -337,9 +337,9 @@ describe('testing /getAllNotificationCount', () => {
 
 //Verifies get all of the live chat messages for a patient
 //If the get is successful, a 200 status code will be returned to make the test pass. 
-describe('testing /patientLiveChatMessages', () => {
+describe('testing /liveChatMessages', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).get('/patientLiveChatMessages', { params: {id: 1}});
+    let res = await request(app).get('/liveChatMessages', { params: {id: 1}});
     expect(res.statusCode).toEqual(200);
   })
 });

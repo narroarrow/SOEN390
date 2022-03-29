@@ -45,7 +45,7 @@ function LiveChat() {
 
     //Gets the messages to display
     useEffect(() => {
-        Axios.get('http://localhost:8080/patientLiveChatMessages', { withCredentials: true, 
+        Axios.get('http://localhost:8080/liveChatMessages', { withCredentials: true, 
         params: { id: localStorage.getItem('id') } 
     }).then((response) => {
             setAllMessages(response.data);

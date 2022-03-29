@@ -71,7 +71,7 @@ ChatController.post("/acceptChat", (req, res) => {
 //This query get all messages between a specific patient and doctor.
 //parameters: patientId
 //returns: All rows in livechat table
-ChatController.get("/patientLiveChatMessages", (req, res) => {
+ChatController.get("/liveChatMessages", (req, res) => {
     let patientId = req.query["id"];
 
     let state1 ="SELECT * FROM 390db.livechat LC WHERE LC.PatientID = ? ORDER BY LC.Timestamp";
@@ -86,26 +86,6 @@ ChatController.get("/patientLiveChatMessages", (req, res) => {
         }
     );
 });
-
-// ChatController.get("/doctorLiveChatMessages", (req, res) => {
-//     let patientid = req.query["id"];
-//     // let doctorid = 35;
-
-//     //This query get all messages between a specific patient and doctor.
-//     //parameters: PatientID, DoctorID
-//     //returns:
-//     let state ="SELECT * FROM 390db.livechat LC WHERE LC.PatientID = ? ORDER BY LC.Timestamp";
-//     db.query(state,
-//         [patientid],
-//         (err, results) => {
-//             if (err) {
-//                 console.log(err);
-//             } else {
-//                 res.send(results);
-//             }
-//         }
-//     );
-// });
 
 /*This post method adds new patient live chat messages to the database*/
     ChatController.post("/createPatientLiveChatMessage", (req,res) => {
