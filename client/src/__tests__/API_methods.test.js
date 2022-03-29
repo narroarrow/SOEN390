@@ -348,7 +348,7 @@ describe('testing /patientLiveChatMessages', () => {
 //If the get is successful, a 200 status code will be returned to make the test pass. 
 describe('testing /patientDoctorName', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).get('/patientLiveChatMessages', { params: {id: 1}});
+    let res = await request(app).get('/patientDoctorName', { params: {id: 1}});
     expect(res.statusCode).toEqual(200);
   })
 });
