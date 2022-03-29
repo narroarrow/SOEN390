@@ -1,6 +1,5 @@
 import { Container, Box, Grid, Chip, Paper, Typography, Divider, List, ListItem, ListItemText, FormControl, TextField, IconButton } from '@mui/material';
 import { useEffect, useState, useRef } from 'react';
-import '../components/Chat.css';
 import SendIcon from '@mui/icons-material/Send'
 import { Navigate, useLocation } from "react-router-dom";
 import Axios from 'axios';
@@ -142,8 +141,8 @@ function LiveChat() {
                         </Typography>
                         <Divider />
                         <Grid container spacing={4} alignItems="center">
-                            <Grid id="chat-window" xs={12} item>
-                                <List id="chat-messages">
+                            <Grid sx={{height: '20rem'}} xs={12} item>
+                                <List id="chat-messages" sx={{height: '18rem', overflow: 'auto'}}>
                                     {/* Display all the messages */}
                                     {listChatMessages}
                                     <ListItem ref={scrollBottomRef}></ListItem>
