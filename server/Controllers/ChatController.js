@@ -70,12 +70,12 @@ ChatController.post("/acceptChat", (req, res) => {
 
 //This query get all messages between a specific patient and doctor.
 //parameters: patientId
-//returns:
+//returns: All rows in livechat table
 ChatController.get("/patientLiveChatMessages", (req, res) => {
     let patientId = req.query["id"];
 
-    let state2 ="SELECT * FROM 390db.livechat LC WHERE LC.PatientID = ? ORDER BY LC.Timestamp";
-    db.query(state2,
+    let state1 ="SELECT * FROM 390db.livechat LC WHERE LC.PatientID = ? ORDER BY LC.Timestamp";
+    db.query(state1,
         [patientId],
         (err, results) => {
             if (err) {
