@@ -108,7 +108,7 @@ function AdminPatientDashboard() {
     });
   };
 
-  let reassignPatient = (docID, patientID) => { //this function will update the patient with the reassigned doctor
+  let reassignPatient = (docID, patientID) => { //This function will update the patient with the reassigned doctor and make changes in the tables to reflect the reassignment.
     Axios.post("http://localhost:8080/reassignPatient", {
       DoctorID: docID,
       PatientID: patientID
