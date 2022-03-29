@@ -55,13 +55,13 @@ function AdminPatientDashboard() {
   const changeToNewDoc = (value) => {
     setNewDocID(value.value);
     setFilled(true);
-    console.log(value.label + value.value);
+    //console.log(value.label + value.value);
   };
 
   //sets ID of Patient toChange
   const changePatientDoc = (value) => { 
     setPatientID(value);
-    console.log(value);
+    //console.log(value);
    };
 
    //If cancelled dialog box, reset form vallidator
@@ -103,8 +103,8 @@ function AdminPatientDashboard() {
   function getDoctorMostAvailable() { //this function will return doctors sorted by the most available
     Axios.get("http://localhost:8080/mostToLeastPatients").then((response) => {
       setMostToLeastPatients(response.data);
-      // console.log("Doctors Most Available :");
-      // console.log(response.data);
+      console.log("Doctors Most Available :");
+      console.log(response.data);
     });
   };
 
@@ -113,7 +113,7 @@ function AdminPatientDashboard() {
       DoctorID: docID,
       PatientID: patientID
     }).then(() => {
-      console.log("successfully updated patient!")
+      //console.log("successfully updated patient!")
     });
     window.location.reload(false);
   };
@@ -182,7 +182,6 @@ function AdminPatientDashboard() {
           )}
         </Grid> 
       </Container>
-      <hr></hr>
       {/* Alert Box for reassigning Patients */}
       <Dialog open={open} onClose={handleClose} fullScreen>
         <DialogTitle>Reassign Patient</DialogTitle>
