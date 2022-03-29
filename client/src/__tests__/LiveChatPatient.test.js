@@ -1,3 +1,5 @@
+//Test does not work because of sockets
+
 // import { render } from '@testing-library/react';
 // import LiveChatPatient from '../pages/LiveChatPatient';
 // import { BrowserRouter } from 'react-router-dom';
