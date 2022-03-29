@@ -299,8 +299,7 @@ function AdminDashboard() {
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
-                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%', color: 'black'}}></Typography>
-                  <Button  sx={{ marginLeft: '20%'}} variant="contained" color="primary" onClick={() => validateHO(val.ID)} >
+                   <Button  sx={{ marginLeft: '20%'}} variant="contained" color="primary" onClick={() => validateHO(val.ID)} >
                   VALIDATE
                   </Button>
                   <Button variant="contained" color="primary" onClick={() => invalidateHO(val.ID)} sx={{ ml: '2%' }} >
@@ -328,7 +327,6 @@ function AdminDashboard() {
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
-                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}></Typography>
                 </TilePaper>
               </Grid>
             )
@@ -370,7 +368,6 @@ function AdminDashboard() {
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
-                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%', color: 'black'}}></Typography>
                   <Button  sx={{ marginLeft: '20%'}} variant="contained" color="primary" onClick={() => validateIO(val.ID)} >
                   VALIDATE
                   </Button>
@@ -399,7 +396,6 @@ function AdminDashboard() {
                     title = {val.Fname + " " + val.Lname} 
                     subheader = {`Contact: ${val.Phone}`} 
                   />
-                   <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}></Typography>
                 </TilePaper>
               </Grid>
             )

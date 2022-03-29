@@ -1,4 +1,4 @@
-import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled, TextField } from '@mui/material';
+import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled, Autocomplete, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { Navigate } from "react-router-dom";
@@ -31,6 +31,7 @@ function AdminPatientDashboard() {
 
   const [patientList, setPatientList] = useState([]); //all patient info
   const [filteredPatientList, setFilteredPatientList] = useState([]); //all patient info
+  const [availableDoctorsList, setMostToLeastPatients] = useState([]);
 
   var ptSearch = "";
   var patientsOf = patientList.filter(e => e.Fname.includes(ptSearch)); //returns a filtered list of patients based on search
@@ -46,11 +47,41 @@ function AdminPatientDashboard() {
     setFilteredPatientList(allPatients)
   };
 
+  // Alert Box 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const options = 
+    availableDoctorsList.map((val, key) => 
+      ({
+        label: val.Fname + ' '+ val.Lname,
+        value: val.ID
+      })
+    )
+  ;
+
+
+
   function getPatients() { //this function will return all information associated to patients
     Axios.get("http://localhost:8080/adminViewingPatientData").then((response) => {
       setPatientList(response.data);
       setFilteredPatientList(response.data);
-      console.log("Patients:");
+      // console.log("Patients:");
+      // console.log(response.data);
+    });
+  };
+
+  function getDoctorMostAvailable() { //this function will return doctors sorted by the most available
+    Axios.get("http://localhost:8080/mostToLeastPatients").then((response) => {
+      setMostToLeastPatients(response.data);
+      console.log("Doctors Most Available :");
       console.log(response.data);
     });
   };
@@ -59,6 +90,7 @@ function AdminPatientDashboard() {
 
   useEffect(() => { //functions executed upon page render
     getPatients();
+    getDoctorMostAvailable();
   }, [stopeffect]);
 
   return (
@@ -112,6 +144,9 @@ function AdminPatientDashboard() {
                   subheader = {`Doctor: ${val.docFname} ${val.docLname}`} 
                 />
                  <Typography variant="body2" display="block" gutterBottom sx={{ marginLeft: '20%',}}>Contact: {val.Phone}</Typography>
+                 <Button  sx={{ marginLeft: '20%'}} variant="contained" color="primary"  onClick={handleClickOpen} >
+                  REASSIGN
+                  </Button>
               </TilePaper>
               </Grid>
             )
@@ -120,6 +155,27 @@ function AdminPatientDashboard() {
         </Grid> 
       </Container>
       <hr></hr>
+      {/* Alert Box for reassigning Patients */}
+      <Dialog open={open} onClose={handleClose} fullScreen>
+        <DialogTitle>Reassign Patient</DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{pb:"2%"}}>
+            Select a doctor to reassign the selected patient to.
+          </DialogContentText>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={options}
+                sx={{ height: '80%' }}
+                renderInput={(params) => <TextField {...params} label="Doctor" />}
+              />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>CANCEL</Button>
+          <Button onClick={handleClose}>SUBMIT</Button>
+          {/* (event, value) => console.log(value)} */}
+        </DialogActions>
+      </Dialog>
     </div> </>
   );
 }
