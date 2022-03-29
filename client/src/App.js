@@ -21,6 +21,8 @@ import PatientCovidStatus from './pages/PatientCovidStatus';
 import DoctorSchedule from './pages/DoctorSchedule';
 import PatientAppointment from './pages/PatientAppointment';
 import Home from './pages/Home';
+import LiveChatPatient from './pages/LiveChatPatient';
+import LiveChatDoctor from './pages/LiveChatDoctor';
 
 import Cookies from 'js-cookie';
 import Common from './components/Common'
@@ -70,6 +72,8 @@ function App() {
                     <Route path='/SymptomForm' element={<SymptomForm />} />
                     <Route path='/PatientAppointment' element={<PatientAppointment />} />
                     <Route path='/DoctorSchedule' element={<DoctorSchedule />} />
+                    <Route path='/LiveChatPatient' element={<LiveChatPatient />} />
+                    <Route path='/LiveChatDoctor' element={<LiveChatDoctor />} />
                 </Routes>
             </Common.Provider>
             <Footer />

@@ -143,7 +143,7 @@ function PatientProfile() {
                             {/* This will display the approriate button based on this users status in the database */}
                             {(isChatRequested || chatGranted) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled>CHAT REQUESTED</Button>) :
                                 (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={requestChat} >REQUEST CHAT</Button>)}
-                            {chatGranted ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained">OPEN CHAT</Button>) :
+                            {chatGranted ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" href="/LiveChatPatient">OPEN CHAT</Button>) :
                                 (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" disabled> OPEN CHAT</Button>)}
                         </Grid>
                     </Box>
