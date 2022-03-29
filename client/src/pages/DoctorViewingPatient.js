@@ -214,9 +214,13 @@ function DoctorViewingPatient() {
                                     {/* This button will allow the doctor to accept a chat from a patient, initially  the chat is disabled.
                                     This action can only be performed by the patients own doctor. */}
                                     {(!isChatRequested || isChatAccepted || !viewingDoctorsPatient) ? (
+                                        // Display chat only if the chat is accepted and it is your patient
+                                        (isChatAccepted && viewingDoctorsPatient)?( 
                                     <Link to='/LiveChatDoctor' state={{ ID: val.ID }} style={{ textDecoration: 'none' }}>
                                         <Button xs={12} sm={3} sx={{ margin: 1 }}  variant="contained" href='/LiveChatDoctor'>CHAT</Button>
-                                    </Link>) :
+                                    </Link>):
+                                    (<Button xs={12} sm={3} sx={{ margin: 1 }} disabled variant="contained">ACCEPT CHAT</Button>)
+                                    ) :
                                     (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={acceptChat}>ACCEPT CHAT</Button>)}
                                 </Grid>
                             </Box>
