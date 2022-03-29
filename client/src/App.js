@@ -22,6 +22,8 @@ import DoctorSchedule from './pages/DoctorSchedule';
 import PatientAppointment from './pages/PatientAppointment';
 import DoctorFileDownload from './pages/DoctorFileDownload';
 import Home from './pages/Home';
+import LiveChatPatient from './pages/LiveChatPatient';
+import LiveChatDoctor from './pages/LiveChatDoctor';
 
 import Cookies from 'js-cookie';
 import Common from './components/Common'
@@ -74,6 +76,8 @@ function App() {
                     <Route path='/DoctorSchedule' element={<DoctorSchedule />} />
                     <Route path='/PatientFiles' element={<PatientFiles />} />
                     <Route path='/DoctorFileDownload' element={<DoctorFileDownload />} />
+                    <Route path='/LiveChatPatient' element={<LiveChatPatient />} />
+                    <Route path='/LiveChatDoctor' element={<LiveChatDoctor />} />
                 </Routes>
             </Common.Provider>
             <Footer />
