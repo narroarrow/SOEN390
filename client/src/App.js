@@ -1,6 +1,7 @@
 import Login from './pages/Login.js';
 import Signup from './pages/Signup.js';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminPatientDashboard from './pages/AdminPatientDashboard'
 import SymptomForm from './pages/SymptomForm';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Route, Routes } from 'react-router-dom';
@@ -20,13 +21,17 @@ import EditInfoForm from './pages/EditInfoForm';
 import PatientCovidStatus from './pages/PatientCovidStatus';
 import DoctorSchedule from './pages/DoctorSchedule';
 import PatientAppointment from './pages/PatientAppointment';
+import DoctorFileDownload from './pages/DoctorFileDownload';
 import Home from './pages/Home';
 import PreviousSymptoms from './pages/PreviousSymptoms'
+import LiveChatPatient from './pages/LiveChatPatient';
+import LiveChatDoctor from './pages/LiveChatDoctor';
 
 import Cookies from 'js-cookie';
 import Common from './components/Common'
 import ForgetPassword from './pages/ForgetPassword.js';
 import PasswordReset from './pages/PasswordReset.js';
+import PatientFiles from './pages/PatientFiles.js';
 
 function App() {
 
@@ -62,6 +67,7 @@ function App() {
                     <Route path='/DoctorDashboard' element={<DoctorDashboard />} />
                     <Route path='/DoctorPatientProfile' element={<DoctorPatientProfile />} />
                     <Route path='/AdminDashboard' element={<AdminDashboard />} />
+                    <Route path='/AdminPatientDashboard' element={<AdminPatientDashboard />} />
                     <Route path='/PatientProfile' element={<PatientProfile />} />
                     <Route path='/DoctorViewingPatient' element={<DoctorViewingPatient />} />
                     <Route path='/HealthOfficialPatientProfile' element={<HealthOfficialPatientProfile />}></Route>
@@ -73,6 +79,10 @@ function App() {
                     <Route path='/SymptomForm' element={<SymptomForm />} />
                     <Route path='/PatientAppointment' element={<PatientAppointment />} />
                     <Route path='/DoctorSchedule' element={<DoctorSchedule />} />
+                    <Route path='/PatientFiles' element={<PatientFiles />} />
+                    <Route path='/DoctorFileDownload' element={<DoctorFileDownload />} />
+                    <Route path='/LiveChatPatient' element={<LiveChatPatient />} />
+                    <Route path='/LiveChatDoctor' element={<LiveChatDoctor />} />
                     <Route path ='/PreviousSymptoms' element = {<PreviousSymptoms />} />
                     <Route path ='/ForgetPassword' element = {<ForgetPassword />} />
                     <Route path ='/PasswordReset' element = {<PasswordReset />} />

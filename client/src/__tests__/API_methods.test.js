@@ -69,12 +69,16 @@ describe('testing /DoctorPatientProfile', () => {
 //If it does so, the test will succeed and a status code of 200 will be returned
 //to make the test pass. This will fail after it passes, to make it pass again, 
 //change the timestamp value by 1.
-// describe('testing /createSymptomForm', () => {
-//     it('returns a status code of 200 indicating that the post worked', async () => {
-//         let res = await request(app).post('/createSymptomForm').send({ timestamp: Math.floor(Math.random() * 9999999999999), weight: 25, temperature: 66, breathing: 1, chest: 2, fatigue: 1, fever: 1, cough: 5, smell: 4, taste: 2, symptoms: 'sore' })
-//         expect(res.statusCode).toEqual(200);
-//     })
-// });
+let dateNow = new Date();
+let timeNow = dateNow.getHours() + ":" + dateNow.getMinutes() + ":" + dateNow.getSeconds();
+let dayNow = dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1) + '-' + dateNow.getDate()
+let fullDate = dayNow + ' ' + timeNow
+describe('testing /createSymptomForm', () => {
+    it('returns a status code of 200 indicating that the post worked', async () => {
+        let res = await request(app).post('/createSymptomForm').send({patientid:1, InfoTimestamp: fullDate, weight: 25, temperature: 66, breathing: 1, chest: 2, fatigue: 1, fever: 1, cough: 5, smell: 4, taste: 2, symptoms: 'sore' , urgent:1})
+        expect(res.statusCode).toEqual(200);
+    })
+});
 
 //Here we send data to make sure that we can post to alter the patient's status.
 //If it does so, the test will succeed and a status code of 200 will be returned
@@ -327,4 +331,106 @@ describe('testing /retrieveAllNotifications', () => {
   })
 });
 
+
+//Max
+//Verifies the command that gets validated health officials
+describe('testing /adminViewingValidatedHealthOfficalData', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/adminViewingValidatedHealthOfficalData');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+//Verifies get all of the live chat messages for a patient
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+describe('testing /liveChatMessages', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/liveChatMessages', { params: {id: 1}});
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+
+//Max
+//Verifies the command that gets unvalidated health officials
+describe('testing /adminViewingUnvalidatedHealthOfficalData', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/adminViewingUnvalidatedHealthOfficalData');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Verifies the command that gets validated immigration officers
+describe('testing /adminViewingValidatedImmigrationOfficerData', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/adminViewingValidatedImmigrationOfficerData');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Verifies the command that gets validated immigration officers
+describe('testing /adminViewingUnvalidatedImmigrationOfficerData', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/adminViewingUnvalidatedImmigrationOfficerData');
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Verifies the command validates a health official
+describe('testing /validateHealthOfficial', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/validateHealthOfficial').send({HealthOfficialID : 16});
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Verifies the command invalidates a health official
+// describe('testing /invalidateHO', () => {
+//   it('returns a status code of 200 indicating that the get worked', async () => {
+//     let res = await request(app).post('/validateHO').send({HealthOfficialID : 16});
+//     expect(res.statusCode).toEqual(200);
+//   })
+// });
+
+//Max
+//Need to verify if there's a way that we will implement to fake sign up
+//Verifies the command validates a immigration officer
+describe('testing /validateImmigrationOfficer', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/validateImmigrationOfficer').send({ImmigrationOfficerID : 14});
+    expect(res.statusCode).toEqual(200);
+  })
+});
+
+//Max
+//Need to see if there's a way that we will implement to fake sign up
+//Verifies the command invalidates a immigration officer
+// describe('testing /invalidateIO', () => {
+//   it('returns a status code of 200 indicating that the get worked', async () => {
+//     let res = await request(app).post('/validateIO').send({ImmigrationOfficerID : 16});
+//     expect(res.statusCode).toEqual(200);
+//   })
+// });
+
+//Max
+//Verifies that patients can be reassigned
+//Will need to create fake chats and a fake patient/doctor
+// describe('testing /reassignPatient', () => {
+//   it('returns a status code of 200 indicating that the get worked', async () => {
+//     let res = await request(app).post('/reassignPatient').send({PatientID : 1, DoctorID: 6});
+//     expect(res.statusCode).toEqual(200);
+//   })
+// });
+
+//Verifies get the patient and doctor names
+//If the get is successful, a 200 status code will be returned to make the test pass. 
+describe('testing /patientDoctorName', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).get('/patientDoctorName', { params: {id: 1}});
+    expect(res.statusCode).toEqual(200);
+  })
+});
 
