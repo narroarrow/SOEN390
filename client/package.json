@@ -31,6 +31,8 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "require": "^2.4.20",
+    "socket.io": "^4.4.1",
+    "socket.io-client": "^4.4.1",
     "styled-components": "^5.3.3",
     "supertest": "^6.2.2",
     "validator": "^13.7.0",
@@ -40,7 +42,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll --testMatch **/src/__tests__/*.test.js --coverage",
-    "citest":"react-scripts test --watchAll=false --testMatch **/src/__tests__/*.test.js --coverage",
+    "citest": "react-scripts test --watchAll=false --testMatch **/src/__tests__/*.test.js --coverage",
     "jesttest": "jest",
     "eject": "react-scripts eject"
   },

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Box, Grid, CssBaseline, Button, Card, styled, Paper, Typography } from '@mui/material';
 import Axios from 'axios';
-import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation, Navigate, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 
@@ -89,6 +89,7 @@ function DoctorViewingPatient() {
             PatientID: location.state.ID //The patient ID is being passed to the post method
         }).then(() => {
             console.log("success")
+            window.location.href = "/DoctorViewingPatient"
         });
     }
 
@@ -202,9 +203,12 @@ function DoctorViewingPatient() {
                                         (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
 
                                     {/* Feature has not yet been implemented*/}
-                                    <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
-                                        PREVIOUS SYMPTOM FORMS
-                                    </Button>
+                                    
+                                    <Link to='/DoctorFileDownload' state={{ ID: val.ID }} style={{ textDecoration: 'none' }}>
+                                        <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
+                                            PATIENT FILES
+                                        </Button>
+                                    </Link>
                                     
                                     {/* If the patient has not been viewed since an update or is a new patient, the doctors will be able
                                     to mark them as reviewed. The act of marking a patient as reviewed will only be allowed for their own doctor. */}
@@ -212,8 +216,15 @@ function DoctorViewingPatient() {
                                         (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>)}
                                     {/* This button will allow the doctor to accept a chat from a patient, initially  the chat is disabled.
                                     This action can only be performed by the patients own doctor. */}
-                                    {(!isChatRequested || isChatAccepted || !viewingDoctorsPatient) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} disabled variant="contained" href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) :
-                                        (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained"  href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}
+                                    {(!isChatRequested || isChatAccepted || !viewingDoctorsPatient) ? (
+                                        // Display chat only if the chat is accepted and it is your patient
+                                        (isChatAccepted && viewingDoctorsPatient)?( 
+                                    <Link to='/LiveChatDoctor' state={{ ID: val.ID }} style={{ textDecoration: 'none' }}>
+                                        <Button xs={12} sm={3} sx={{ margin: 1 }}  variant="contained" href='/LiveChatDoctor'>CHAT</Button>
+                                    </Link>):
+                                    (<Button xs={12} sm={3} sx={{ margin: 1 }} disabled variant="contained">ACCEPT CHAT</Button>)
+                                    ) :
+                                    (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={acceptChat}>ACCEPT CHAT</Button>)}
                                 </Grid>
                             </Box>
                         </Box>
