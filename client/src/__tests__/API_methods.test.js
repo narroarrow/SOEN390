@@ -69,12 +69,16 @@ describe('testing /DoctorPatientProfile', () => {
 //If it does so, the test will succeed and a status code of 200 will be returned
 //to make the test pass. This will fail after it passes, to make it pass again, 
 //change the timestamp value by 1.
-// describe('testing /createSymptomForm', () => {
-//     it('returns a status code of 200 indicating that the post worked', async () => {
-//         let res = await request(app).post('/createSymptomForm').send({ timestamp: Math.floor(Math.random() * 9999999999999), weight: 25, temperature: 66, breathing: 1, chest: 2, fatigue: 1, fever: 1, cough: 5, smell: 4, taste: 2, symptoms: 'sore' })
-//         expect(res.statusCode).toEqual(200);
-//     })
-// });
+let dateNow = new Date();
+let timeNow = dateNow.getHours() + ":" + dateNow.getMinutes() + ":" + dateNow.getSeconds();
+let dayNow = dateNow.getFullYear() + '-' + (dateNow.getMonth() + 1) + '-' + dateNow.getDate()
+let fullDate = dayNow + ' ' + timeNow
+describe('testing /createSymptomForm', () => {
+    it('returns a status code of 200 indicating that the post worked', async () => {
+        let res = await request(app).post('/createSymptomForm').send({patientid:1, InfoTimestamp: fullDate, weight: 25, temperature: 66, breathing: 1, chest: 2, fatigue: 1, fever: 1, cough: 5, smell: 4, taste: 2, symptoms: 'sore' , urgent:1})
+        expect(res.statusCode).toEqual(200);
+    })
+});
 
 //Here we send data to make sure that we can post to alter the patient's status.
 //If it does so, the test will succeed and a status code of 200 will be returned

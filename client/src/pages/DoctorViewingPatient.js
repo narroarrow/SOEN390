@@ -203,9 +203,12 @@ function DoctorViewingPatient() {
                                         (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
 
                                     {/* Feature has not yet been implemented*/}
-                                    <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
-                                        PREVIOUS SYMPTOM FORMS
-                                    </Button>
+                                    
+                                    <Link to='/DoctorFileDownload' state={{ ID: val.ID }} style={{ textDecoration: 'none' }}>
+                                        <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
+                                            PATIENT FILES
+                                        </Button>
+                                    </Link>
                                     
                                     {/* If the patient has not been viewed since an update or is a new patient, the doctors will be able
                                     to mark them as reviewed. The act of marking a patient as reviewed will only be allowed for their own doctor. */}
