@@ -52,7 +52,6 @@ UserController.post("/Login", async (req, res) => {
         }
         let email = req.body.email;
         let password = req.body.password;
-        console.log(password)
         //query statement
         let state = `SELECT U.Email, U.Password, U.Role, U.ID, U.Validated FROM users U WHERE U.Email = "${email}";`;
 
