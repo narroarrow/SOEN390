@@ -319,7 +319,7 @@ DoctorController.get("/patientsFlaggedNotViewed", (req, res) => {
     "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.InfoTimestamp AND ((P.ID IN " +
     "(SELECT P1.ID " +
     "FROM 390db.patients P1, 390db. healthinformation H1, 390db.viewed V1 " +
-    "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.Timestamp > V1.Timestamp)) " +
+    "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.InfoTimestamp > V1.Timestamp)) " +
     "OR (P.ID NOT IN (SELECT V1.PatientID FROM 390db.viewed V1)));"
     db.query(state, (err, result) => {
         if (err) {
