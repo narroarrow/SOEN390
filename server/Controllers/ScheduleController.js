@@ -120,7 +120,7 @@ ScheduleController.post("/makeAppointments", (req, res) => {
             //update the appointment
             //parameters: startTime, endTime, aptDate,dayName,patientID
             //returns: 
-            updateState3 = "UPDATE 390db.appointments apt set apt.startTime = ?, apt.endTime = ?, apt.aptDate = ?, apt.dayName = ? WHERE apt.doctorID = (SELECT DoctorID from 390db.patients p where id = ?) and apt.PatientID = ?;"
+            updateState3 = "UPDATE 390db.appointments apt set apt.startTime = ?, apt.endTime = ?, apt.aptDate = ?, apt.dayName = ?, apt.Notification = 1 WHERE apt.doctorID = (SELECT DoctorID from 390db.patients p where id = ?) and apt.PatientID = ?;"
             db.query(updateState3, [start, end, aptDate, dayName, patID, patID], (err, result) => {
                 if (err) {
                     console.log(err);

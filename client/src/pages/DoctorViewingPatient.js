@@ -73,9 +73,10 @@ function DoctorViewingPatient() {
     }
 
     let flagPatient = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
+
         Axios.post("http://localhost:8080/flagPatient", {
             PatientID: location.state.ID,
-            FlagPriority: flagPriority
+            FlagPriority: flagPriority === 0 ? 1 : flagPriority
         }).then(() => {
             console.log("success")
         });
