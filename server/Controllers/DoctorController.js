@@ -171,7 +171,7 @@ DoctorController.post("/requestForm", (req, res) => {
 //Gets the number of patients in each status category
 DoctorController.get("/statusCountAllPatients", (req, res) => {
     //parameters: 
-    //returns: (healthyCount, isolatingCount,infectedCount)
+    //returns: (healthyCount, isolatingCount, infectedCount)
     let state = "  SELECT healthyCount, isolatingCount, infectedCount " +
     "FROM (  SELECT count(*) as healthyCount " +
     "FROM 390db.patients P " +
@@ -183,6 +183,28 @@ DoctorController.get("/statusCountAllPatients", (req, res) => {
     "FROM 390db.patients P " +
     "WHERE P.Status = 'Infected') as infectedCount;"
     db.query(state, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+});
+DoctorController.get("/statusCountMyPatients", (req, res) => {
+    let doctorID = req.query["id"];
+    //parameters: the ID of the doctor doctorID
+    //returns: (healthyCount, isolatingCount, infectedCount)
+    let state = "  SELECT healthyCount, isolatingCount, infectedCount " +
+    "FROM (  SELECT count(*) as healthyCount " +
+    "FROM 390db.patients P " +
+    "WHERE P.Status = 'Healthy' AND P.doctorID = ?) as healthyCount, " +
+    "(  SELECT count(*) as isolatingCount " +
+    "FROM 390db.patients P " +
+    "WHERE P.Status = 'Isolated' AND P.doctorID = ?) as isolatingCount, " +
+    "(  SELECT count(*) as infectedCount " +
+    "FROM 390db.patients P " +
+    "WHERE P.Status = 'Infected' AND P.doctorID = ?) as infectedCount;"
+    db.query(state, [doctorID, doctorID, doctorID ] ,(err, result) => {
         if (err) {
             console.log(err);
         } else {

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Avatar, IconButton, Button, Box, Grid, CardHeader, Typography } from '@mui/material';
+import {Avatar, IconButton, Button, Box, Grid, CardHeader, Typography, Select, MenuItem} from '@mui/material';
 import FlagIcon from '@mui/icons-material/Flag';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import Axios from 'axios';
 import { useState, useEffect } from "react";
-import { Link, Navigate } from 'react-router-dom';
+import {Link, Navigate, useSearchParams} from 'react-router-dom';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 
@@ -16,7 +16,6 @@ function DoctorPatientProfile() {
   const [filteredPatients, setFilteredPatients] = useState([]); //filtered values for patient info
   const [executed, setExecuted] = useState(false); //keeps track of if getPatients() method is called
   const [viewedList, setViewedList] = useState([]); //Patients whose profiles have been reviewed by a doctor
-
   var tempDoctorID = parseInt(localStorage.getItem('id'));
 
   var myPatients = patientList.filter(e => e.DoctorID === tempDoctorID); //returns a filtered list of patients that are assigned to the doctor
@@ -48,6 +47,7 @@ function DoctorPatientProfile() {
   };
 
   let stopeffect = 1;
+
 
   useEffect(() => { //After the page is rendered, the two functions getPatients() and getViewed() are called once
     getPatients();
@@ -108,7 +108,9 @@ function DoctorPatientProfile() {
                       />
 
                       {isViewed ? (<VisibilityIcon />) : (<VisibilityOutlinedIcon />)} {/* If a patients health information has been reviewed the eye icon will be filled */}
-                      {isFlagged ? (<FlagIcon color='secondary' />) : (<FlagOutlinedIcon />)} {/* If a patient is flagged the flag icon will be red */}
+
+                      {isFlagged === 3 ? (<FlagIcon color = 'secondary' />) : isFlagged === 2 ? (<FlagIcon sx={{color: '#EFD000'}} />):
+                          isFlagged === 1 ? (<FlagIcon sx={{color: '#00F700'}} />) : (<FlagOutlinedIcon />)} {/* If a patient is flagged the flag icon will be red */}
                       {isChatRequested ? (<AnnouncementIcon />) : (<AnnouncementIcon sx={{ visibility: 'hidden' }} />)}
                       {isPatientNew ? (<FiberNewIcon />) : (<FiberNewIcon sx={{ visibility: 'hidden' }} />)}
 

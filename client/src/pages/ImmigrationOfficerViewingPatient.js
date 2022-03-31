@@ -36,7 +36,8 @@ function ImmigrationOfficerViewingPatient() {
 
     let flagPatient = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
         Axios.post("http://localhost:8080/flagPatient", {
-            PatientID: location.state.ID
+            PatientID: location.state.ID,
+            FlagPriority: 3
         }).then(() => {
             console.log("success")
         });
@@ -52,7 +53,7 @@ function ImmigrationOfficerViewingPatient() {
 
     let isFlagged = false; //variable to verify if patient has already been flagged, to be used for displaying either the FLAG or UNFLAG butttons
     let isFlaggedArray = patientData.map((val, key) => { return val.Flagged });
-    if (isFlaggedArray[0] === 1) {
+    if (isFlaggedArray[0] !== 0) {
         isFlagged = true;
     }
 

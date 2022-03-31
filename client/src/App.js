@@ -23,11 +23,14 @@ import DoctorSchedule from './pages/DoctorSchedule';
 import PatientAppointment from './pages/PatientAppointment';
 import DoctorFileDownload from './pages/DoctorFileDownload';
 import Home from './pages/Home';
+import PreviousSymptoms from './pages/PreviousSymptoms'
 import LiveChatPatient from './pages/LiveChatPatient';
 import LiveChatDoctor from './pages/LiveChatDoctor';
 
 import Cookies from 'js-cookie';
 import Common from './components/Common'
+import ForgetPassword from './pages/ForgetPassword.js';
+import PasswordReset from './pages/PasswordReset.js';
 import PatientFiles from './pages/PatientFiles.js';
 
 function App() {
@@ -80,6 +83,9 @@ function App() {
                     <Route path='/DoctorFileDownload' element={<DoctorFileDownload />} />
                     <Route path='/LiveChatPatient' element={<LiveChatPatient />} />
                     <Route path='/LiveChatDoctor' element={<LiveChatDoctor />} />
+                    <Route path ='/PreviousSymptoms' element = {<PreviousSymptoms />} />
+                    <Route path ='/ForgetPassword' element = {<ForgetPassword />} />
+                    <Route path ='/PasswordReset' element = {<PasswordReset />} />
                 </Routes>
             </Common.Provider>
             <Footer />
