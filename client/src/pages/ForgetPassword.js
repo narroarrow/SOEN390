@@ -21,7 +21,7 @@ class ForgetPassword extends Component {
     handleClick() {
         //Validating the email
         if (validator.isEmail(this.state.email)) {
-            this.setState({ msg: 'Your recovery password has been sent if your email is found in our database!' })
+            this.setState({ msg: 'Your recovery password has been sent to your email address.' })
             Axios.put("http://localhost:8080/SendResetLink", {email: this.state.email})
         } else {
             this.setState({ msg: 'Enter a valid Email!' })
