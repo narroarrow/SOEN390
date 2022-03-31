@@ -399,9 +399,8 @@ UserController.put("/ResettingPassword", async (req, res) => {
         //query statement
         let state = `SELECT U.FName, U.LName, U.Email, U.Password, U.Role, U.ID, U.Resetting FROM users U WHERE U.ID = ${id}`;
 
-        //console.log(state) // used to verify the query
-        //parameters: Email
-        //returns:
+        //parameters: user ID, user new password
+        //returns: updates user password
         db.query(state, async (err, result) => {
                 try {
 

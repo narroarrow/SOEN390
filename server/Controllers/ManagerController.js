@@ -63,7 +63,7 @@ ManagerController.get("/Viewed", (req, res) => {
 ManagerController.post("/flagPatient", (req, res) => {
     let PatientID = req.body.PatientID;
     let flagPriority = req.body.FlagPriority
-    //parameters: (ID of patient)
+    //parameters: (ID of patient), (Flag priority)
     //returns:
     let state ="UPDATE 390db.patients SET Flagged=? where ID=?"
     db.query(state, [flagPriority, PatientID], (err, result) => {
