@@ -30,9 +30,9 @@ NotificationController.get("/retrieveAllNotifications", (req, res) => {
     let doctorID = req.query["id"];
     //parameters: DoctorID
     //returns: FName, LName, aptDate, StartTime,EndTime
-    let state = "SELECT Upatient.Fname, Upatient.Lname, A.aptDate, A.startTime, A.endTime " +
+    let state = "SELECT Upatient.Fname, Upatient.Lname, A.aptDate, A.startTime, A.endTime, A.ID " +
         "FROM 390db.appointments A, 390db.users Upatient, 390db.doctors D, 390db.patients P " +
-        "Where A.PatientID = Upatient.ID AND A.doctorID = ? AND P.id=Upatient.id AND P.doctorID = D.id;"
+        "Where A.Notification = 1 AND A.PatientID = Upatient.ID AND A.doctorID = ? AND P.id=Upatient.id AND P.doctorID = D.id;"
     db.query(state, [doctorID], (err, result) => {
         if (err) {
             console.log(err);
