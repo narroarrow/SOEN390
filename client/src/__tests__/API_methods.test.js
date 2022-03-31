@@ -331,6 +331,13 @@ describe('testing /retrieveAllNotifications', () => {
   })
 });
 
+//Verifies get the total number of notifications command
+describe('testing /getAllNotificationCount', () => {
+  it('returns a status code of 200 indicating that the get worked', async () => {
+    let res = await request(app).post('/getAllNotificationCount').send({id: 1});
+    expect(res.statusCode).toEqual(200);
+  })
+});
 
 //Max
 //Verifies the command that gets validated health officials

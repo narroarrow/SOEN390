@@ -37,6 +37,7 @@ function DoctorDashboard() {
     var tempDoctorID = 6;
     // functions to make notifications disappear when clicked on X button
     const handleApptMask = (index) => (event) => {
+        // prevent reload, then update notification in backend, then reload page
         event.preventDefault();
         Axios.put("http://localhost:8080/maskApptNotification", {
             ID: notificationsList[index].ID,
@@ -44,14 +45,13 @@ function DoctorDashboard() {
             window.location.reload()
         }).catch((err) => console.log(err));
     }
-
+        
     const handleFormMask = (index) => (event) => {
+        // prevent reload, then update notification in backend, then reload page
         event.preventDefault()
         Axios.put("http://localhost:8080/maskFormNotification", {
             PatientID: formNotificationsList[index].ID,
             InfoTimestamp: formNotificationsList[index].InfoTimestamp.substr(0, 10).concat(' ').concat(formNotificationsList[index].InfoTimestamp.substr(14,8)),
-            NewInfoTimestamp: formNotificationsList[index].InfoTimestamp,
-            DateInfoTimestamp: new Date(formNotificationsList[index].InfoTimestamp).getTime()
         }).then(() => {
             window.location.reload()
         }).catch((err) => console.log(err));
@@ -280,7 +280,7 @@ function DoctorDashboard() {
                                         <ClearIcon/>
                                     </IconButton></CardActions>
                                 )
-                            }
+                            } // Displaying notifications specifically form changes
                         )} {formNotificationsList.map((val, key) => {
                                 return (<> <CardActions>
                                         <CardHeader
@@ -289,10 +289,12 @@ function DoctorDashboard() {
                                                     {notificationsList.length + key + 1}
                                                 </Avatar>
                                             }
-                                            //display patient name and appointment time
+                                            // Display patient name and appointment time
                                             title={"Patient Name: " + val.Fname + " " + val.Lname}
+                                            // Getting the right info from info time stamp
                                             subheader={"New form updated  " + val.InfoTimestamp.substr(0, 10) + ' at ' + val.InfoTimestamp.substr(11, 8)}
-                                        /> <IconButton aria-label="clear" onClick={handleFormMask(key)}>
+                                        /> {/* On click X button, remove notification */}
+                                        <IconButton aria-label="clear" onClick={handleFormMask(key)}>
                                         <ClearIcon/>
                                     </IconButton> </CardActions> </>
                                 )
