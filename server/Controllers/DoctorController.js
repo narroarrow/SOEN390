@@ -192,7 +192,7 @@ DoctorController.get("/statusCountAllPatients", (req, res) => {
 });
 DoctorController.get("/statusCountMyPatients", (req, res) => {
     let doctorID = req.query["id"];
-    //parameters: 
+    //parameters: the ID of the doctor doctorID
     //returns: (healthyCount, isolatingCount, infectedCount)
     let state = "  SELECT healthyCount, isolatingCount, infectedCount " +
     "FROM (  SELECT count(*) as healthyCount " +
