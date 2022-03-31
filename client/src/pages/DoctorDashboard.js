@@ -45,7 +45,7 @@ function DoctorDashboard() {
             window.location.reload()
         }).catch((err) => console.log(err));
     }
-        
+
     const handleFormMask = (index) => (event) => {
         // prevent reload, then update notification in backend, then reload page
         event.preventDefault()
@@ -267,16 +267,16 @@ function DoctorDashboard() {
                     <Item><h1>Notifications</h1>
                         {notificationsList.map((val, key) => {
                                 return (<CardActions style ={{position:"relative", bottom:"7px"}}>
-                                        <CardHeader
+                                        <CardHeader style={{position: 'relative', left: '2rem'}}
                                             avatar={
-                                                <Avatar aria-label="">
+                                                <Avatar aria-label="" style={{position: 'relative', right: '2rem'}}>
                                                     {key + 1}
                                                 </Avatar>
                                             }
                                             //display patient name and appointment time
                                             title={"Patient Name: " + val.Fname + " " + val.Lname}
                                             subheader={"Appointment Time: " + val.aptDate + " " + val.startTime + " to " + val.endTime}
-                                        /> <IconButton aria-label="clear" onClick={handleApptMask(key)}>
+                                        /> <IconButton aria-label="clear" onClick={handleApptMask(key)} style={{position: 'relative', left: '1em'}}>
                                         <ClearIcon/>
                                     </IconButton></CardActions>
                                 )
@@ -285,16 +285,16 @@ function DoctorDashboard() {
                                 return (<> <CardActions>
                                         <CardHeader
                                             avatar={
-                                                <Avatar aria-label="">
+                                                <Avatar aria-label="" style={{position: 'relative', right: '3rem'}}>
                                                     {notificationsList.length + key + 1}
                                                 </Avatar>
-                                            }
+                                            }style={{position: 'relative', left: '3rem'}}
                                             // Display patient name and appointment time
                                             title={"Patient Name: " + val.Fname + " " + val.Lname}
                                             // Getting the right info from info time stamp
                                             subheader={"New form updated  " + val.InfoTimestamp.substr(0, 10) + ' at ' + val.InfoTimestamp.substr(11, 8)}
                                         /> {/* On click X button, remove notification */}
-                                        <IconButton aria-label="clear" onClick={handleFormMask(key)}>
+                                        <IconButton style={{position: 'relative', left: '1.3em'}} aria-label="clear" onClick={handleFormMask(key)}>
                                         <ClearIcon/>
                                     </IconButton> </CardActions> </>
                                 )
