@@ -42,7 +42,7 @@ describe('testing /requestForm', () => {
 //If it does, the test will succeed and a status code of 200 will be returned to make sure the test pass.
 describe('testing /flagPatient', () => {
   it('returns a status code of 200 indicating that the post worked', async () => {
-    let res = await request(app).post('/flagPatient').send({ PatientID: 1});
+    let res = await request(app).post('/flagPatient').send({ PatientID: 1, FlagPriority: 1});
     expect(res.statusCode).toEqual(200);
   })
 });
