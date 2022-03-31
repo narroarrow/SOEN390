@@ -39,11 +39,25 @@ function DoctorDashboard() {
     const handleApptMask = (index) => (event) => {
         // prevent reload, then update notification in backend, then reload page
         event.preventDefault();
-        Axios.put("http://localhost:8080/maskApptNotification", {
-            ID: notificationsList[index].ID,
-        }).then(() => {
-            window.location.reload()
-        }).catch((err) => console.log(err));
+        let today = new Date();
+        let dateOfAppt = new Date(notificationsList[index].aptDate.concat(' ' + notificationsList[index].endTime))
+        let apptTime = new Date(notificationsList[index].endTime)
+        // if time is between 1 and 5, we know it should be PM. thus convert to PM time by adding 12 and redefining date of appointment
+        if (Number(notificationsList[index].endTime.substr(0,2)) < 8){
+            apptTime = (Number(notificationsList[index].endTime.substr(0,2)) + (12))
+            dateOfAppt = new Date(notificationsList[index].aptDate.concat(' ' + apptTime + notificationsList[index].endTime.substr(2,6)))
+        }
+      // if today is after appointment, we mask it, otherwise alert error
+
+        if (today.getTime() > dateOfAppt.getTime()) {
+            Axios.put("http://localhost:8080/maskApptNotification", {
+                ID: notificationsList[index].ID,
+            }).then(() => {
+                window.location.reload()
+            }).catch((err) => console.log(err));
+        } else {
+            alert('You can only remove appointment notifications after the appointment date!')
+        }
     }
 
     const handleFormMask = (index) => (event) => {
