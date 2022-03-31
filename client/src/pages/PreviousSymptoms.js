@@ -1,17 +1,5 @@
 import React from 'react';
-import {
-    Container,
-    Box,
-    Grid,
-    CssBaseline,
-    Button,
-    Card,
-    styled,
-    Paper,
-    Typography,
-    Select,
-    MenuItem, PropTypes, InputLabel, FormControl
-} from '@mui/material';
+import { Container,Box, Grid, CssBaseline, Button, Card, styled, Paper, Typography, Select, MenuItem, PropTypes, InputLabel, FormControl} from '@mui/material';
 import Axios from 'axios';
 import {useLocation, Navigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
@@ -36,8 +24,6 @@ function PreviousSymptoms() {
     let stopeffect = 1;
     let healthValues = ['None', 'Slight', 'Moderate', 'Severe', 'Extreme'] // list of health values that patient filled (stored as int)
 
-
-
     useEffect(() => { //When page is loaded, get requests will get patient data
         Axios.get("http://localhost:8080/doctorViewingPatientData", {params: {id: location.state.ID}}).then((response) => {
 
@@ -51,9 +37,6 @@ function PreviousSymptoms() {
         });
 
     }, [stopeffect]);
-
-
-
 
     return (
         <>
@@ -170,10 +153,8 @@ function PreviousSymptoms() {
                                                 value={index}>{moment(healthInfo[index].InfoTimestamp).utc().format('MMM Do, YYYY')}</MenuItem>
                                         );
                                     })}
-
                                 </Select> </FormControl></Box>
                         </Box>
-
                     )
                 })}
             </Container>

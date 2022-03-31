@@ -6,8 +6,6 @@ import validator from 'validator';
 import Axios from "axios";
 
 
-
-
 class ForgetPassword extends Component {
 
     constructor(props) {

@@ -1,17 +1,5 @@
 import React from 'react';
-import {
-    Container,
-    Box,
-    Grid,
-    CssBaseline,
-    Button,
-    Card,
-    styled,
-    Paper,
-    Typography,
-    Select,
-    MenuItem, PropTypes, InputLabel, FormControl
-} from '@mui/material';
+import {Container,Box,Grid,CssBaseline,Button,styled,Paper,Typography,Select,MenuItem, InputLabel, FormControl} from '@mui/material';
 import Axios from 'axios';
 import {useLocation, Navigate, Link} from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -25,9 +13,6 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
     fontWeight: 'bold'
 }));
-
-
-
 
 
 function DoctorViewingPatient() {
@@ -251,7 +236,7 @@ function DoctorViewingPatient() {
                                     </Button> </Link>
                                     
                                     <Link to='/DoctorFileDownload' state={{ ID: val.ID }} style={{ textDecoration: 'none' }}>
-                                        <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
+                                        <Button xs={12} sm={3} sx={{minHeight:'3.7rem', margin: 1}} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
                                             PATIENT FILES
                                         </Button>
                                     </Link>
