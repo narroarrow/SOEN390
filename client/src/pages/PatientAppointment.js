@@ -15,13 +15,16 @@ function PatientAppointment() {
   const [setDisplay , bookedAppointments ] = useState([]);
 
   function getBookedAppointment() { //this function will return all information associated to validated doctors
-    Axios.get("http://localhost:8080/seeCurrentPatientAppointment").then((response) => {
+    Axios.get("http://localhost:8080/seeCurrentPatientAppointment", {
+      params: {
+        id: localStorage.getItem('id')
+      }
+    }).then((response) => {
       bookedAppointments(response.data);
-      
       console.log(response.data);
       console.log("hello");
     });
-  };
+  } 
 
   function openAppointments() {
     Axios.get("http://localhost:8080/seeOpenAppointments", {

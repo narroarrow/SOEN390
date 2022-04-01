@@ -76,13 +76,14 @@ ScheduleController.get("/seeCurrentPatientAppointment", (req, res) => {
 
     //parameters:patientID
     //returns: StartTime, EndTime, week day name, date
-    state = "select startTime,endTime,dayName, aptDate from  appointments where PatientID = ?"
+    console.log("id here " + patientID)
+    state = "select startTime,endTime,dayName, aptDate from appointments where PatientID = ?"
 
     db.query(state, [patientID], (err, result) => {
         if (err) {
             console.log("Error: " + err);
         } else {
-            console.log("Results open: " + result);
+            console.log("Results given: " + result);
             res.send(result);
         }
     });
