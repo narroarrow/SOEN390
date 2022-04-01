@@ -41,13 +41,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-
-//FUNCTION TO BE IMPLEMENTED SPRINT FOUR
-app.post("/sendEmail", (req, res) => {
-    //sendEmail();
-});
-
-
 //LEAVE THIS HERE
 // app.get('/*', function(req,res){
 //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
@@ -56,6 +49,7 @@ app.post("/sendEmail", (req, res) => {
 // app.get('/*', function (req, res) {
 //     res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
 // });
+
 
 
 module.exports = app;
