@@ -12,6 +12,27 @@ function PatientAppointment() {
     setValue(event.target.value);
   };
 
+  const [setDisplay , bookedAppointments ] = useState([]);
+
+  function getBookedAppointment() { //this function will return all information associated to validated doctors
+    Axios.get("http://localhost:8080/seeCurrentPatientAppointment").then((response) => {
+      bookedAppointments(response.data);
+      
+      console.log(response.data);
+      console.log("hello");
+    });
+  };
+
+  function openAppointments() {
+    Axios.get("http://localhost:8080/seeOpenAppointments", {
+      params: {
+        id: localStorage.getItem('id')
+      }
+    }).then((response) => {
+      setAppointments(response.data);
+    });
+  }
+
   //handling the submit and sending the approriate data to the server
   let submitAppointmentForm = (event) => {
     event.preventDefault();
@@ -39,13 +60,8 @@ function PatientAppointment() {
 
   //This will automatically get the appointment slots available for the doctor to which the patient is assigned to
   useEffect(() => {
-    Axios.get("http://localhost:8080/seeOpenAppointments", {
-      params: {
-        id: localStorage.getItem('id')
-      }
-    }).then((response) => {
-      setAppointments(response.data);
-    });
+    openAppointments();
+    getBookedAppointment();
   }, [stopeffect]);
 
 
@@ -81,6 +97,16 @@ function PatientAppointment() {
                 </Button>
               </FormControl>
             </form>
+
+            <Typography sx={{ mt: 2 }} variant='h4'>Upcoming Appointment</Typography>
+
+
+            {setDisplay.map((val,key) => {
+              return(
+            <Typography sx={{ mt: 2 }} variant='p' key={key} >Next Appointment: {val.dayName} {val.aptDate} {val.startTime} {val.endTime} </Typography>
+              )}
+              )}
+            
           </Box>
         </Card>
       </Container>
