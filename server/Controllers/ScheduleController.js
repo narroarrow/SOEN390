@@ -69,6 +69,27 @@ ScheduleController.get("/seeOpenAppointments", (req, res) => {
 )
 
 
+
+ScheduleController.get("/seeCurrentPatientAppointment", (req, res) => {
+
+    let patientID = req.query["id"];
+
+    //parameters:patientID
+    //returns: StartTime, EndTime, week day name, date
+    state = "select startTime,endTime,dayName, aptDate from  appointments where PatientID = ?"
+
+    db.query(state, [patientID], (err, result) => {
+        if (err) {
+            console.log("Error: " + err);
+        } else {
+            console.log("Results open: " + result);
+            res.send(result);
+        }
+    });
+}
+)
+
+
 ScheduleController.post("/makeAppointments", (req, res) => {
     var appointment = req.body.appointmentTime;
 
