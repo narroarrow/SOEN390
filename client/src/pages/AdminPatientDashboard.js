@@ -1,4 +1,4 @@
-import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled, Autocomplete, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Box, Card, styled, Autocomplete, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { Navigate } from "react-router-dom";
@@ -130,7 +130,7 @@ function AdminPatientDashboard() {
       {
         localStorage.getItem("role") != 'Admin' && <Navigate to={"/"} refresh={true} />
       }
-    <div>
+     <Box sx={{flexGrow: 1}}> 
       <CardHeader
         avatar={
           <Avatar aria-label="">
@@ -157,7 +157,7 @@ function AdminPatientDashboard() {
         <Grid container spacing={2} >
           {filteredPatientList.map((val,key) => {
             return(
-              <Grid item xs={4} key={key}>
+              <Grid item xs={12} sm={6} md={4} lg ={4} key={key}>
               <TilePaper>
                 <CardHeader
                   avatar={
@@ -203,7 +203,7 @@ function AdminPatientDashboard() {
           <Button onClick={() => { handleClose(); updatePatientDoctor();}}>SUBMIT</Button>
         </DialogActions>
       </Dialog>
-    </div> </>
+    </Box> </>
   );
 }
 export default AdminPatientDashboard;

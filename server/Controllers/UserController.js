@@ -147,7 +147,7 @@ UserController.put("/SendResetLink", async (req, res) => {
         //returns:
         db.query(state, async (err, result) => {
                 try {
-                    console.log('here')
+                    //console.log('here')
                     console.log(result[0].FName)
                     console.log(result[0].Email)
                     let FName = result[0].FName;
@@ -157,7 +157,7 @@ UserController.put("/SendResetLink", async (req, res) => {
                         if (!result[0]) {
                             throw err;
                         } else {
-                            console.log('here2')
+                            //console.log('here2')
                             //await needs "async" in the 'parent'
                              (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, async (error, token) => {
                                      if (error) {
@@ -166,7 +166,7 @@ UserController.put("/SendResetLink", async (req, res) => {
                                          res.status(403).send();
                                      } else {
 
-                                         console.log('here3')
+                                         //console.log('here3')
                                          let updateResetting = `UPDATE users SET Resetting = 1 WHERE Email = "${email}"`
                                          // after 20 minutes, updating the resetting value to 0 to block reset password attempts
                                          db.query(updateResetting, async (err2, result2) => {
@@ -199,7 +199,7 @@ UserController.put("/SendResetLink", async (req, res) => {
                                              if (err2) {
                                                  console.log("err2: " + err2)
                                              } else {
-                                                 console.log('here4')
+                                                 //console.log('here4')
                                                  let link = `http://localhost:3000/PasswordReset?token=${resetTokenHashed}&id=${ID}`
                                                  sendEmail(FName, LName, email, link)
                                                  res.status(200).send();

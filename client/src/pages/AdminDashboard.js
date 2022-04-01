@@ -1,4 +1,4 @@
-import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, styled, TextField } from '@mui/material';
+import { Container, Button, CardHeader, Avatar, IconButton, Typography, Grid, Paper, Card, Box, styled, TextField } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { Navigate } from "react-router-dom";
@@ -35,13 +35,6 @@ function AdminDashboard() {
   const [healthOfficialListUnvalidated, setHealthOfficialListUnvalidated] = useState([]); //all unvalidated health official info
   const [immigrationOfficerListValidated, setImmigrationOfficerListValidated] = useState([]); //all validated immigration officer info
   const [immigrationOfficerListUnvalidated, setImmigrationOfficerListUnvalidated] = useState([]); //all unvalidated immigration officer info
-
-  var docSearch = "";
-  var docOf = doctorListValidated.filter(e => e.Fname.includes(docSearch)); //returns a filtered list of doctors based on search
-  
-  const filterMyDoc = () => { //this function will set the useState filteredPatients to show the patients assigned specifically to the doctor who is logged in
-    setDoctorListValidated(docOf)
-  };
   
   function getValidatedDoctors() { //this function will return all information associated to validated doctors
     Axios.get("http://localhost:8080/adminViewingValidatedDoctorData").then((response) => {
@@ -59,7 +52,7 @@ function AdminDashboard() {
     });
   };
 
-  function getValidatedHealthOfficials() {
+  function getValidatedHealthOfficials() { //this function will return all information associated to validated health officials
     Axios.get("http://localhost:8080/adminViewingValidatedHealthOfficalData").then((response) => {
       setHealthOfficialListValidated(response.data);
       // console.log("Validated HO:");
@@ -67,7 +60,7 @@ function AdminDashboard() {
     });
   };
 
-  function getUnvalidatedHealthOfficials() {
+  function getUnvalidatedHealthOfficials() {//this function will return all information associated to unvalidated health officials
     Axios.get("http://localhost:8080/adminViewingUnvalidatedHealthOfficalData").then((response) => {
       setHealthOfficialListUnvalidated(response.data);
       // console.log("Unvalidated HO:");
@@ -75,7 +68,7 @@ function AdminDashboard() {
     });
   };
 
-  function getValidatedImmigrationOfficers() {
+  function getValidatedImmigrationOfficers() { //this function will return all information associated to validated immigration officials
     Axios.get("http://localhost:8080/adminViewingValidatedImmigrationOfficerData").then((response) => {
       setImmigrationOfficerListValidated(response.data);
       // console.log("Validated IO:");
@@ -83,7 +76,7 @@ function AdminDashboard() {
     });
   };
 
-  function getUnvalidatedImmigrationOfficers() {
+  function getUnvalidatedImmigrationOfficers() { //this function will return all information associated to unvalidated immigration officials
     Axios.get("http://localhost:8080/adminViewingUnvalidatedImmigrationOfficerData").then((response) => {
       setImmigrationOfficerListUnvalidated(response.data);
       // console.log("Unvalidated IO:");
@@ -182,7 +175,7 @@ function AdminDashboard() {
       {
         localStorage.getItem("role") != 'Admin' && <Navigate to={"/"} refresh={true} />
       }
-    <div>
+     <Box sx={{flexGrow: 1}}> 
       <CardHeader
         avatar={
           <Avatar aria-label="">
@@ -205,16 +198,12 @@ function AdminDashboard() {
               </Typography>
             </Card>
           </Grid>
-          {/* SEARCH BAR TOO IMPLEMENT NEXT SPRINT */}
-          {/* <Grid item xs={4}>
-            <TextField id="docSearch" label="Search" variant="filled" onChange={() => filterMyDoc()}>{docSearch}</TextField>
-          </Grid> */}
         </Grid>
         {/*  Grid Sizing for Doctor Invalid Accounts Paper Tiles */}
         <Grid container spacing={2} >
-        {doctorListUnvalidated.map((val,key) => {
+          {doctorListUnvalidated.map((val,key) => {
             return(
-              <Grid item xs={4} key={key}>
+              <Grid item xs={12} sm={6} md={4} lg ={4} key={key}>
                 <UrgentPaper>
                   <CardHeader
                     avatar={
@@ -240,10 +229,10 @@ function AdminDashboard() {
             )
           }
           )}
-           {/*  Grid Sizing for DoctorValid Accounts Paper Tiles */}
+          {/*  Grid Sizing for DoctorValid Accounts Paper Tiles */}
           {doctorListValidated.map((val,key) => {
             return(
-              <Grid item xs={4} key={key}>
+              <Grid item xs={12} sm={6} md={4} lg ={4} key={key}>
                 <TilePaper>
                   <CardHeader
                     avatar={
@@ -276,16 +265,12 @@ function AdminDashboard() {
               </Typography>
             </Card>
           </Grid>
-          {/* SEARCH BAR TOO IMPLEMENT NEXT SPRINT */}
-          {/* <Grid item xs={4}>
-            <TextField id="docSearch" label="Search" variant="filled" onChange={() => filterMyDoc()}>{docSearch}</TextField>
-          </Grid> */}
         </Grid>
         {/*  Grid Sizing for Health Officials Invalid Accounts Paper Tiles */}
         <Grid container spacing={2} >
         {healthOfficialListUnvalidated.map((val,key) => {
             return(
-              <Grid item xs={4} key={key}>
+              <Grid item xs={12} sm={6} md={4} lg ={4} key={key}>
                 <UrgentPaper>
                   <CardHeader
                     avatar={
@@ -313,7 +298,7 @@ function AdminDashboard() {
            {/*  Grid Sizing for Health Officials Valid Accounts Paper Tiles */}
           {healthOfficialListValidated.map((val,key) => {
             return(
-              <Grid item xs={4} key={key}>
+              <Grid item xs={12} sm={6} md={4} lg ={4} key={key}>
                 <TilePaper>
                   <CardHeader
                     avatar={
@@ -345,16 +330,12 @@ function AdminDashboard() {
               </Typography>
             </Card>
           </Grid>
-          {/* SEARCH BAR TOO IMPLEMENT NEXT SPRINT */}
-          {/* <Grid item xs={4}>
-            <TextField id="docSearch" label="Search" variant="filled" onChange={() => filterMyDoc()}>{docSearch}</TextField>
-          </Grid> */}
         </Grid>
         {/*  Grid Sizing for Immigration Officers Invalid Accounts Paper Tiles */}
         <Grid container spacing={2} >
         {immigrationOfficerListUnvalidated.map((val,key) => {
             return(
-              <Grid item xs={4} key={key}>
+              <Grid item xs={12} sm={6} md={4} lg ={4} key={key}>
                 <UrgentPaper>
                   <CardHeader
                     avatar={
@@ -382,7 +363,7 @@ function AdminDashboard() {
            {/*  Grid Sizing for Immigration Officers Valid Accounts Paper Tiles */}
           {immigrationOfficerListValidated.map((val,key) => {
             return(
-              <Grid item xs={4} key={key}>
+              <Grid item xs={12} sm={6} md={4} lg ={4} key={key}>
                 <TilePaper>
                   <CardHeader
                     avatar={
@@ -403,7 +384,7 @@ function AdminDashboard() {
           )}
         </Grid> 
       </Container>
-    </div> </>
+    </Box> </>
   );
 }
 export default AdminDashboard;
