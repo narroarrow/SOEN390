@@ -445,7 +445,6 @@ describe('testing /patientDoctorName', () => {
 //If the get is successful, a 200 status code will be returned to make the test pass. 
 describe('testing /seeCurrentPatientAppointment', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app).get('/seeCurrentPatientAppointment', { params: {id: 1}});
-    expect(res.statusCode).toEqual(200);
+  request(app).get('/seeCurrentPatientAppointment').query({id: 1}).expect(200);
   })
 });
