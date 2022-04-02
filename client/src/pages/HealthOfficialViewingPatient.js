@@ -128,10 +128,6 @@ function HealthOfficialViewingPatient() {
                                         FLAG PATIENT
                                     </Button>)}
 
-                                {/* Feature has not yet been implemented*/}
-                                <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
-                                    PREVIOUS SYMPTOM FORMS
-                                </Button>
                             </Grid>
                         </Box>
                     </Box>

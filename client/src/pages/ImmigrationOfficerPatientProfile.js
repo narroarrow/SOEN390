@@ -93,12 +93,6 @@ function ImmigrationOfficerPatientProfile() {
             })}
           </Grid>
         </Box>
-        {/* Feature not yet implemented */}
-        <Box sx={{ padding: 5 }}>
-          <Button variant='contained' href='#outlined-buttons' sx={{ textAlign: 'right', display: 'inline-block', float: 'right' }}>
-            Review Medical Checklist
-          </Button>
-        </Box>
       </div>
     </>
   );
