@@ -232,7 +232,7 @@ DoctorController.get("/countAllPatients", (req, res) => {
 DoctorController.get("/countAllFlaggedPatients", (req, res) => {
     //parameters:
     //returns: (count of rows)
-    let state = "SELECT count(*) as allFlaggedPatientCount FROM 390db.patients P WHERE P.Flagged = 1"
+    let state = "SELECT count(*) as allFlaggedPatientCount FROM 390db.patients P WHERE P.Flagged <> 0"
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);

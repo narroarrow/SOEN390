@@ -106,7 +106,7 @@ function PatientAppointment() {
 
             {setDisplay.map((val,key) => {
               return(
-            <Typography sx={{ mt: 2, textAlign :'center'}} variant='p' key={key} >Next Appointment: <br></br> {val.dayName} {val.aptDate} {val.startTime} - {val.endTime} </Typography>
+            <Typography sx={{ textAlign :'center', padding :'50px'}} variant='p' key={key} >Next Appointment: <br></br> {val.dayName} {val.aptDate} {val.startTime} - {val.endTime} </Typography>
               )}
               )}
             
