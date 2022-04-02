@@ -1,9 +1,10 @@
 import React from 'react';
-import { Container, Box, Grid, CssBaseline, Button, Card, styled, Paper, Typography } from '@mui/material';
+import {Container,Box,Grid,CssBaseline,Button,styled,Paper,Typography,Select,MenuItem, InputLabel, FormControl} from '@mui/material';
 import Axios from 'axios';
-import { useLocation, Navigate } from 'react-router-dom';
+import {useLocation, Navigate, Link} from 'react-router-dom';
 import { useEffect, useState } from 'react';
-
+import { useSelect } from '@mui/base/SelectUnstyled';
+import FlagIcon from '@mui/icons-material/Flag'
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -15,6 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 function DoctorViewingPatient() {
+    const [flagPriority, setFlagPriority] = React.useState(0);
     const location = useLocation(); //get data passed on through previous page (DoctorPatientProfile page)
     const [patientData, setPatientData] = useState([]); //Patient data used in rendering of page
     const [viewedList, setViewedList] = useState([]); //list of patients whose profiles have been reviewed
@@ -31,11 +33,13 @@ function DoctorViewingPatient() {
 
     useEffect(() => { //When page is loaded, get requests will get patient data as well as a list of patients whose profiles have been viewed
         Axios.get("http://localhost:8080/doctorViewingPatientData", { params: { id: location.state.ID } }).then((response) => {
+            setFlagPriority(response.data[0].Flagged)
+
             setPatientData(response.data);
         });
         Axios.get("http://localhost:8080/Viewed").then((response) => {
             setViewedList(response.data);
-            console.log(response.data);
+
         });
     }, [stopeffect]);
 
@@ -69,8 +73,10 @@ function DoctorViewingPatient() {
     }
 
     let flagPatient = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
+
         Axios.post("http://localhost:8080/flagPatient", {
-            PatientID: location.state.ID
+            PatientID: location.state.ID,
+            FlagPriority: flagPriority === 0 ? 1 : flagPriority
         }).then(() => {
             console.log("success")
         });
@@ -89,6 +95,7 @@ function DoctorViewingPatient() {
             PatientID: location.state.ID //The patient ID is being passed to the post method
         }).then(() => {
             console.log("success")
+            window.location.href = "/DoctorViewingPatient"
         });
     }
 
@@ -106,7 +113,7 @@ function DoctorViewingPatient() {
 
     let isFlagged = false; //variable to verify if patient has already been flagged, to be used for displaying either the FLAG or UNFLAG butttons
     let isFlaggedArray = patientData.map((val, key) => { return val.Flagged });
-    if (isFlaggedArray[0] === 1) {
+    if (isFlaggedArray[0] !== 0) {
         isFlagged = true;
     }
 
@@ -122,6 +129,11 @@ function DoctorViewingPatient() {
     if(patientsDoctorID === parseInt(localStorage.getItem("id"))){
         viewingDoctorsPatient = true;
     }
+
+
+    const handleChange = (event) => {
+        setFlagPriority(event.target.value);
+    };
 
     return (
         <>
@@ -197,14 +209,38 @@ function DoctorViewingPatient() {
                                     <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={requestForm} href='/DoctorViewingPatient'>
                                         REQUEST SYMPTOM FORM
                                     </Button>
+                                    <Box> <FormControl fullwidth>
+                                    <InputLabel>Flag Priority</InputLabel>
+                                    <Select  xs={12} sm={3} sx={{ margin: 1 }}
+                                        disabled ={isFlagged}
+                                             labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        defaultValue = {flagPriority || 1}
+                                        label="flagPriority"
+                                        onChange={handleChange}
+                                    >
+
+                                        <MenuItem value={3}>High Priority <FlagIcon fontSize = "small" color = 'secondary'></FlagIcon></MenuItem>
+                                        <MenuItem value={2}>Medium Priority <FlagIcon fontSize = "small" sx = {{color:'#EFD000' }}></FlagIcon></MenuItem>
+                                        <MenuItem value={1}>Low Priority <FlagIcon fontSize = "small" sx = {{color:'#00F700' }}></FlagIcon> </MenuItem>
+
+                                    </Select>    </FormControl></Box>
+
+
                                     {/* Displaying the appropriate button base on if the patient is flagged or not */}
                                     {isFlagged ? (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={unflagPatient} href='/DoctorViewingPatient'>UNFLAG PATIENT</Button>) :
                                         (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={flagPatient} href='/DoctorViewingPatient'>FLAG PATIENT</Button>)}
 
                                     {/* Feature has not yet been implemented*/}
-                                    <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
+                                    <Link to='/PreviousSymptoms' state={{ ID: location.state.ID }} style={{ textDecoration: 'none' }}><Button style ={{minHeight:'3.7rem'}} xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
                                         PREVIOUS SYMPTOM FORMS
-                                    </Button>
+                                    </Button> </Link>
+                                    
+                                    <Link to='/DoctorFileDownload' state={{ ID: val.ID }} style={{ textDecoration: 'none' }}>
+                                        <Button xs={12} sm={3} sx={{minHeight:'3.7rem', margin: 1}} variant="contained" onClick={previousSymptoms} href='/PreviousSymptoms'>
+                                            PATIENT FILES
+                                        </Button>
+                                    </Link>
                                     
                                     {/* If the patient has not been viewed since an update or is a new patient, the doctors will be able
                                     to mark them as reviewed. The act of marking a patient as reviewed will only be allowed for their own doctor. */}
@@ -212,8 +248,15 @@ function DoctorViewingPatient() {
                                         (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={markAsReviewed} disabled href='/DoctorViewingPatient'>MARK AS REVIEWED</Button>)}
                                     {/* This button will allow the doctor to accept a chat from a patient, initially  the chat is disabled.
                                     This action can only be performed by the patients own doctor. */}
-                                    {(!isChatRequested || isChatAccepted || !viewingDoctorsPatient) ? (<Button xs={12} sm={3} sx={{ margin: 1 }} disabled variant="contained" href='/DoctorViewingPatient'>ACCEPT CHAT</Button>) :
-                                        (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained"  href='/DoctorViewingPatient' onClick={acceptChat}>ACCEPT CHAT</Button>)}
+                                    {(!isChatRequested || isChatAccepted || !viewingDoctorsPatient) ? (
+                                        // Display chat only if the chat is accepted and it is your patient
+                                        (isChatAccepted && viewingDoctorsPatient)?( 
+                                    <Link to='/LiveChatDoctor' state={{ ID: val.ID }} style={{ textDecoration: 'none' }}>
+                                        <Button xs={12} sm={3} sx={{ margin: 1 }}  variant="contained" href='/LiveChatDoctor'>CHAT</Button>
+                                    </Link>):
+                                    (<Button xs={12} sm={3} sx={{ margin: 1 }} disabled variant="contained">ACCEPT CHAT</Button>)
+                                    ) :
+                                    (<Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" onClick={acceptChat}>ACCEPT CHAT</Button>)}
                                 </Grid>
                             </Box>
                         </Box>
