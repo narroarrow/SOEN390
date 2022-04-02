@@ -63,9 +63,15 @@ function DoctorDashboard() {
     const handleFormMask = (index) => (event) => {
         // prevent reload, then update notification in backend, then reload page
         event.preventDefault()
+        let hours = (Number((formNotificationsList[index].InfoTimestamp.substr(11,2))) - (4))
+
+        if (hours.toString().length< 2){
+            hours = '0' + hours
+        }
         Axios.put("http://localhost:8080/maskFormNotification", {
             PatientID: formNotificationsList[index].ID,
-            InfoTimestamp: formNotificationsList[index].InfoTimestamp.substr(0, 10).concat(' ').concat(formNotificationsList[index].InfoTimestamp.substr(14,8)),
+            InfoTimestamp: formNotificationsList[index].InfoTimestamp.substr(0, 10).concat(' ').concat(hours.toString()).concat((formNotificationsList[index].InfoTimestamp.substr(13,6))),
+            FormID: formNotificationsList[index].FormID
         }).then(() => {
             window.location.reload()
         }).catch((err) => console.log(err));

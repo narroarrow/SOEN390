@@ -47,7 +47,7 @@ NotificationController.get("/retrieveFormNotifications", (req, res) => {
     console.log(doctorID);
     //parameters: DoctorID
 //returns: FName, LName, aptDate, StartTime,EndTime
-    let state = "SELECT Upatient.Fname, Upatient.Lname, Upatient.ID, Hi.InfoTimestamp " +
+    let state = "SELECT Upatient.Fname, Upatient.Lname, Upatient.ID, Hi.InfoTimestamp, Hi.FormID " +
         "FROM 390db.healthinformation Hi, 390db.users Upatient, 390db.doctors D, 390db.patients P " +
         "Where Hi.PatientID = Upatient.ID AND D.ID = ? AND P.id=Upatient.id AND P.doctorID = D.id AND Hi.Notification = 1;"
     db.query(state, [doctorID], (err, result) => {
@@ -78,10 +78,12 @@ NotificationController.put("/maskFormNotification", (req, res) => {
 
     let PatientID = req.body.PatientID;
     let  InfoTimestamp=  req.body.InfoTimestamp
+    let FormID = req.body.FormID
+    console.log(InfoTimestamp)
     // parameters: timestamp of form, patient ID
     // updates: notification value to 0
-    let state = "UPDATE 390db.healthinformation Hi SET Hi.Notification = 0 WHERE InfoTimestamp = ? AND PatientID = ?"
-    db.query(state, [InfoTimestamp, PatientID], (err, result) => {
+    let state = "UPDATE 390db.healthinformation Hi SET Hi.Notification = 0 WHERE FormID = ? AND PatientID = ?"
+    db.query(state, [FormID, PatientID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
