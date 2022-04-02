@@ -101,12 +101,12 @@ function PatientAppointment() {
               </FormControl>
             </form>
 
-            <Typography sx={{ mt: 2 }} variant='h4'>Upcoming Appointment</Typography>
+            <Typography sx={{ mt: 2 , padding: '16px'}} variant='h4'>Upcoming Appointment</Typography>
 
 
             {setDisplay.map((val,key) => {
               return(
-            <Typography sx={{ mt: 2, textAlign :'center'}} variant='p' key={key} >Next Appointment: <br></br> {val.dayName} {val.aptDate} {val.startTime} - {val.endTime} </Typography>
+            <Typography sx={{ textAlign :'center', padding :'50px'}} variant='p' key={key} >Next Appointment: <br></br> {val.dayName} {val.aptDate} {val.startTime} - {val.endTime} </Typography>
               )}
               )}
             
