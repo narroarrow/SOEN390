@@ -101,7 +101,7 @@ function PatientAppointment() {
               </FormControl>
             </form>
 
-            <Typography sx={{ mt: 2 }} variant='h4'>Upcoming Appointment</Typography>
+            <Typography sx={{ mt: 2 , padding: '16px'}} variant='h4'>Upcoming Appointment</Typography>
 
 
             {setDisplay.map((val,key) => {
