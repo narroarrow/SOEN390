@@ -13,7 +13,7 @@ let submitPatientCovidStatus = (event) => {
   Axios.post('http://localhost:8080/createPatientCovidStatus', {
     patientid: localStorage.getItem('id'),
     status: data.get('covidStatus')
-  }).then(() => {
+  },{withCredentials: true}).then(() => {
     console.log('success');
     window.location.href = "/PatientProfile";
   });

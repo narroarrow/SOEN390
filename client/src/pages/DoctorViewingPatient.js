@@ -32,12 +32,12 @@ function DoctorViewingPatient() {
 
 
     useEffect(() => { //When page is loaded, get requests will get patient data as well as a list of patients whose profiles have been viewed
-        Axios.get("http://localhost:8080/doctorViewingPatientData", { params: { id: location.state.ID } }).then((response) => {
+        Axios.get("http://localhost:8080/doctorViewingPatientData", { params: { id: location.state.ID }, withCredentials:true }).then((response) => {
             setFlagPriority(response.data[0].Flagged)
 
             setPatientData(response.data);
         });
-        Axios.get("http://localhost:8080/Viewed").then((response) => {
+        Axios.get("http://localhost:8080/Viewed",{withCredentials: true}).then((response) => {
             setViewedList(response.data);
 
         });
@@ -53,7 +53,7 @@ function DoctorViewingPatient() {
             PatientDocID: patientData.map((val, key) => { return val.DoctorID })[0],
             DoctorID: tempDoctorID,
             datetime: timestamp
-        }).then(() => {
+        },{withCredentials: true}).then(() => {
             console.log("success")
         }).catch((err) => console.log(err));
     };
@@ -61,13 +61,13 @@ function DoctorViewingPatient() {
     let requestForm = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
         Axios.post("http://localhost:8080/requestForm", {
             PatientID: location.state.ID
-        }).then(() => {
+        },{withCredentials: true}).then(() => {
             console.log("success")
         });
     }
 
     let previousSymptoms = () => { //This function gets the list of all the patients previous symptom forms (to be rendered on a page in later sprint)
-        Axios.get("http://localhost:8080/doctorViewingPreviousSymptoms", { params: { id: location.state.ID } }).then((response) => {
+        Axios.get("http://localhost:8080/doctorViewingPreviousSymptoms", { params: { id: location.state.ID }, withCredentials:true }).then((response) => {
             console.log("success");
         });
     }
@@ -77,7 +77,7 @@ function DoctorViewingPatient() {
         Axios.post("http://localhost:8080/flagPatient", {
             PatientID: location.state.ID,
             FlagPriority: flagPriority === 0 ? 1 : flagPriority
-        }).then(() => {
+        },{withCredentials: true}).then(() => {
             console.log("success")
         });
     }
@@ -85,7 +85,7 @@ function DoctorViewingPatient() {
     let unflagPatient = () => { //When clicking the UNFLAG button, this will update the Flagged attribute in the patient tale to false
         Axios.post("http://localhost:8080/unflagPatient", {
             PatientID: location.state.ID //The patient ID is being passed to the post method
-        }).then(() => {
+        },{withCredentials: true}).then(() => {
             console.log("success")
         });
     }
@@ -93,7 +93,7 @@ function DoctorViewingPatient() {
     let acceptChat = () => { //When clicking the ACCEPT CHAt button, this will update the ChatPermission attribute in the patient tale to true
         Axios.post("http://localhost:8080/acceptChat", {
             PatientID: location.state.ID //The patient ID is being passed to the post method
-        }).then(() => {
+        },{withCredentials: true}).then(() => {
             console.log("success")
             window.location.href = "/DoctorViewingPatient"
         });

@@ -1,0 +1,33 @@
+const jwt = require("jsonwebtoken");
+const db = require("../database");
+require('dotenv').config()
+module.exports = (req, res, next) => {
+    const token = req.cookies.token
+    if (!token) return res.status(401).send({
+        ok: false,
+        error: "Access denied. No token provided"
+    });
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
+        if (err) {
+            return res.status(401).send({
+                ok: false,
+                error: "Access denied. No token provided"
+            });
+        } else {
+            let state = `SELECT U.Email, U.Password, U.Role, U.ID, U.Validated FROM users U WHERE U.Token = "${token}";`;
+            db.query(state, (err, result) => {
+
+                if (err || result[0].ID !== req.cookies.id) {
+                    console.log(result[0].ID);
+                    console.log(req.cookies.id);
+                    console.log(err);
+                } else {
+                    next();
+                }
+            });
+        }
+    })
+
+    next();
+}

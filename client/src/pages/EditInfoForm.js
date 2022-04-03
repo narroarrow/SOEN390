@@ -19,7 +19,7 @@ let submitEditInfoForm = (event) => {
     email: data.get('patientEmail'),
     phone: data.get('patientPhone'),
     healthinsurance: data.get('patientHI'),
-  }).then(() => {
+  },{withCredentials: true}).then(() => {
     console.log('success');
     window.location.href = "/PatientProfile";
   });
@@ -42,7 +42,7 @@ function EditInfoForm() {
     Axios.get('http://localhost:8080/editPatientProfileData', {
       withCredentials: true,
       params: { id: localStorage.getItem('id') }
-    }).then((response) => {
+    },{withCredentials: true}).then((response) => {
       setEditPatientData(response.data);
       console.log(response);
     });

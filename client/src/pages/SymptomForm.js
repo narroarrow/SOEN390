@@ -27,7 +27,7 @@ let submitSymptomForm = (event) => {
     taste: data.get('taste'),
     symptoms: data.get('symptoms'),
     urgent: urgentTwo
-  }).then(() => {
+  },{withCredentials: true}).then(() => {
     console.log("success");
     //return to their profile page
     window.location.href = "/PatientProfile";

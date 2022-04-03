@@ -52,7 +52,7 @@ function DoctorDashboard() {
         if (today.getTime() > dateOfAppt.getTime()) {
             Axios.put("http://localhost:8080/maskApptNotification", {
                 ID: notificationsList[index].ID,
-            }).then(() => {
+            },{withCredentials: true}).then(() => {
                 window.location.reload()
             }).catch((err) => console.log(err));
         } else {
@@ -72,13 +72,13 @@ function DoctorDashboard() {
             PatientID: formNotificationsList[index].ID,
             InfoTimestamp: formNotificationsList[index].InfoTimestamp.substr(0, 10).concat(' ').concat(hours.toString()).concat((formNotificationsList[index].InfoTimestamp.substr(13,6))),
             FormID: formNotificationsList[index].FormID
-        }).then(() => {
+        },{withCredentials: true}).then(() => {
             window.location.reload()
         }).catch((err) => console.log(err));
     }
 
     function getDoctorPatients() { //returns all patient information for a given doctor using GET
-        Axios.get("http://localhost:8080/doctorViewingTheirPatientData", {params: {id: tempDoctorID}}).then((response) => {
+        Axios.get("http://localhost:8080/doctorViewingTheirPatientData", {params: {id: tempDoctorID},withCredentials:true}).then((response) => {
             setPatientList(response.data);
             console.log("Logged In Doctor Patients:");
             console.log(response.data);
@@ -86,7 +86,7 @@ function DoctorDashboard() {
     };
 
     function getPatientsPerDoctor() { //returns all patient information organized by doctor using GET
-        Axios.get("http://localhost:8080/doctorViewingDoctorPatients").then((response) => {
+        Axios.get("http://localhost:8080/doctorViewingDoctorPatients",{withCredentials: true}).then((response) => {
             setPatientPerDoctorList(response.data);
             console.log("Patients Organized By Doctor:");
             console.log(response.data);
@@ -95,7 +95,7 @@ function DoctorDashboard() {
 
 
     function getAllPatients() { //returns all patient information using GET
-        Axios.get("http://localhost:8080/doctorViewingAllPatientData").then((response) => {
+        Axios.get("http://localhost:8080/doctorViewingAllPatientData",{withCredentials: true}).then((response) => {
             setAllPatientList(response.data);
             console.log("All Patients:");
             console.log(response.data);
@@ -103,7 +103,7 @@ function DoctorDashboard() {
     };
 
     function getStatusCountAllPatients() {// This will return the number of patients classified under each status for ALL patients
-        Axios.get("http://localhost:8080/statusCountAllPatients").then((response) => {
+        Axios.get("http://localhost:8080/statusCountAllPatients",{withCredentials: true}).then((response) => {
             setTotalStatusCounts(response.data);
             console.log("Counts:");
             console.log(response.data)
@@ -114,7 +114,7 @@ function DoctorDashboard() {
         Axios.get("http://localhost:8080/statusCountMyPatients", {
             params: {
                 id: localStorage.getItem('id')
-            }
+            }, withCredentials:true
         }).then((response) => {
             setTotalMyPatientsStatusCounts(response.data);
             console.log("My Patients Count:");
@@ -123,7 +123,7 @@ function DoctorDashboard() {
     };
 
     function getDoctorsWithMostPatients() { //This will return the top 5 doctors with most to least patients
-        Axios.get("http://localhost:8080/doctorsWithMostPatients").then((response) => {
+        Axios.get("http://localhost:8080/doctorsWithMostPatients",{withCredentials: true}).then((response) => {
             setDoctorsWithMostPatientsList(response.data);
             console.log("Doctors With Most Patients:");
             console.log(response.data)
@@ -131,7 +131,7 @@ function DoctorDashboard() {
     };
 
     function getDoctorsWithLeastPatients() { //This will return the top 5 doctors with least to most patients
-        Axios.get("http://localhost:8080/doctorsWithLeastPatients").then((response) => {
+        Axios.get("http://localhost:8080/doctorsWithLeastPatients",{withCredentials: true}).then((response) => {
             setDoctorsWithLeastPatientsList(response.data);
             console.log("Doctors With Least Patients:");
             console.log(response.data)
@@ -139,7 +139,7 @@ function DoctorDashboard() {
     };
 
     function getTotalNumberOfDoctors() { //This will return the total number of validated doctors
-        Axios.get("http://localhost:8080/countAllValidatedDoctors").then((response) => {
+        Axios.get("http://localhost:8080/countAllValidatedDoctors",{withCredentials: true}).then((response) => {
             setValidatedDoctorCount(response.data);
             console.log("Total Number of Doctors:");
             console.log(response.data)
@@ -147,7 +147,7 @@ function DoctorDashboard() {
     };
 
     function getTotalNumberOfPatients() { //This will return the total number of validated doctors
-        Axios.get("http://localhost:8080/countAllPatients").then((response) => {
+        Axios.get("http://localhost:8080/countAllPatients",{withCredentials: true}).then((response) => {
             setTotalPatientCount(response.data);
             console.log("Total Number of Patients:");
             console.log(response.data)
@@ -155,7 +155,7 @@ function DoctorDashboard() {
     };
 
     function getTotalNumberOfFlaggedPatients() { //This will return the total number of validated doctors
-        Axios.get("http://localhost:8080/countAllFlaggedPatients").then((response) => {
+        Axios.get("http://localhost:8080/countAllFlaggedPatients",{withCredentials: true}).then((response) => {
             setTotalFlaggedPatientCount(response.data);
             console.log("Total Number of Flagged Patients:");
             console.log(response.data)
@@ -163,7 +163,7 @@ function DoctorDashboard() {
     };
 
     function getFlaggedPatientsNotViewed() { //This will return the list of patients that have submitted a form but have not been reviewed
-        Axios.get("http://localhost:8080/patientsFlaggedNotViewed").then((response) => {
+        Axios.get("http://localhost:8080/patientsFlaggedNotViewed",{withCredentials: true}).then((response) => {
             setPatientsFlaggedNotViewedList(response.data);
             console.log("Flagged Patients Not Viewed");
             console.log(response.data)
@@ -171,7 +171,7 @@ function DoctorDashboard() {
     };
 
     function getFlaggedPatientsLeastViewed() { //This will return the list of patients whose form has been reviewed from longest to most recent
-        Axios.get("http://localhost:8080/patientsFlaggedLeastViewed").then((response) => {
+        Axios.get("http://localhost:8080/patientsFlaggedLeastViewed",{withCredentials: true}).then((response) => {
             setpatientsFlaggedLeastViewedList(response.data);
             console.log("Patients Flagged Least Viewed");
             console.log(response.data)
@@ -179,7 +179,7 @@ function DoctorDashboard() {
     };
 
     function getFlaggedPatientsNoSymptomFormResponse() { //This will return the list of patients that have been sent a form to fill out but have not done so
-        Axios.get("http://localhost:8080/patientsFlaggedNoSymptomFormResponse").then((response) => {
+        Axios.get("http://localhost:8080/patientsFlaggedNoSymptomFormResponse",{withCredentials: true}).then((response) => {
             setpatientsFlaggedNoSymptomFormResponseList(response.data);
             console.log("Patients Flagged No Symptom Form Response:");
             console.log(response.data)
@@ -190,7 +190,7 @@ function DoctorDashboard() {
         Axios.get("http://localhost:8080/retrieveAllNotifications", {
             params: {
                 id: localStorage.getItem('id')
-            }
+            }, withCredentials:true
         }).then((response) => {
             setNotificationsList(response.data);
             console.log("Notification List:");
@@ -202,7 +202,7 @@ function DoctorDashboard() {
         Axios.get("http://localhost:8080/retrieveFormNotifications", {
             params: {
                 id: localStorage.getItem('id')
-            }
+            }, withCredentials:true
         }).then((response) => {
             setFormNotificationsList(response.data);
             console.log("Notification List:");

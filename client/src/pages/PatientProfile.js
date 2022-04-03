@@ -33,7 +33,7 @@ function PatientProfile() {
     let requestChat = () => { //When clicking the REQUEST CHAT button, this will update the ChatRequested attribute in the patient tale to true
         Axios.post("http://localhost:8080/RequestChat", {
             patientid: localStorage.getItem('id')
-        }).then(() => {
+        },{withCredentials: true}).then(() => {
             console.log("success");
             window.location.href = "/PatientProfile";
 

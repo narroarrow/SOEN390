@@ -13,7 +13,7 @@ let submitPatientFile = (event) => {
   Axios.post('http://localhost:8080/createPatientFile', {
     patientid: localStorage.getItem('id'),
     status: data.get('PatientFile')
-  }).then(() => {
+  },{withCredentials: true}).then(() => {
     console.log('success');
     window.location.href = "/PatientFiles";
   });

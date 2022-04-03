@@ -89,11 +89,11 @@ const ResponsiveAppBar = () => {
         Axios.get("http://localhost:8080/retrieveAllNotifications", {
             params: {
                 id: localStorage.getItem('id')
-            }
+            }, withCredentials:true
         }).then((response) => { //getting notifs specific to forms
             Axios.get("http://localhost:8080/retrieveFormNotifications", {params: {
                 id: localStorage.getItem('id')
-            }}).then(response2 => {
+            }, withCredentials:true}).then(response2 => {
                 setCount(response.data.length + response2.data.length);
             })
 

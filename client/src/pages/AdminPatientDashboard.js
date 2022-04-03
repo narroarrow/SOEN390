@@ -92,7 +92,7 @@ function AdminPatientDashboard() {
   ;
 
   function getPatients() { //this function will return all information associated to patients
-    Axios.get("http://localhost:8080/adminViewingPatientData").then((response) => {
+    Axios.get("http://localhost:8080/adminViewingPatientData",{withCredentials: true}).then((response) => {
       setPatientList(response.data);
       setFilteredPatientList(response.data);
       // console.log("Patients:");
@@ -101,7 +101,7 @@ function AdminPatientDashboard() {
   };
 
   function getDoctorMostAvailable() { //this function will return doctors sorted by the most available
-    Axios.get("http://localhost:8080/mostToLeastPatients").then((response) => {
+    Axios.get("http://localhost:8080/mostToLeastPatients",{withCredentials: true}).then((response) => {
       setMostToLeastPatients(response.data);
       console.log("Doctors Most Available :");
       console.log(response.data);
@@ -112,7 +112,7 @@ function AdminPatientDashboard() {
     Axios.post("http://localhost:8080/reassignPatient", {
       DoctorID: docID,
       PatientID: patientID
-    }).then(() => {
+    },{withCredentials: true}).then(() => {
       //console.log("successfully updated patient!")
     });
     window.location.reload(false);
