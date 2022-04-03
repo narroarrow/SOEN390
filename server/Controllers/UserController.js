@@ -362,7 +362,7 @@ UserController.post("/Signup", async (req, res) => {
     }
 })
 // end of sign up and login
-
+//formal 
 
 // clearing cookies on logout
 UserController.post('/Logout', ((req, res) => {
