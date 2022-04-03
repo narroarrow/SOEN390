@@ -119,6 +119,8 @@ let checkTime = setInterval(() => {
 
 function reminderNotification(timeNow, dateNow, dayNow) {
     if (timeNow == "23:30") {
+        //parameters: 
+        //reutrns: users names and emails 
         let state = "select U.FName, U.LName, U.email, U.id from users U where U.ID not in (select U.ID from users U, healthInformation HI where U.ID = HI.PatientID and HI.InfoTimestamp =?) and U.Role = 'Patient';"
         db.query(state, [dayNow],
             (err, results) => {

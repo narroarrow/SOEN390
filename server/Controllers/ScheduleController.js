@@ -69,7 +69,7 @@ ScheduleController.get("/seeOpenAppointments", (req, res) => {
 )
 
 
-
+//Displays the current appointment that a patient has.
 ScheduleController.get("/seeCurrentPatientAppointment", (req, res) => {
 
     let patientID = req.query["id"];
