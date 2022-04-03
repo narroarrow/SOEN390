@@ -24,7 +24,7 @@ When the COVID-19 virus first appeared in 2019, there was an uncertainty of how 
 - [ ]  Sprint 1
 - [ ]  Sprint 2
 - [ ]  Sprint 3
-- [ x ]  Sprint 4
+- [x]  Sprint 4
 
 
 ## Team Members :technologist:
