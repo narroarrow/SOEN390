@@ -60,7 +60,7 @@ UserController.use(function (req, res, next) {
 })
 
 // start of sign up and login. creating correct cookies if logged in
-UserController.get('/checkAuth', [auth, patient], function (req, res) {
+UserController.get('/checkAuth', function (req, res) {
     if (!req.cookies) {
         res.status(403).send();
     } else {
@@ -362,7 +362,7 @@ UserController.post("/Signup", async (req, res) => {
     }
 })
 // end of sign up and login
-//formal 
+//formal
 
 // clearing cookies on logout
 UserController.post('/Logout', ((req, res) => {

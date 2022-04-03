@@ -4,6 +4,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
+const {patient, admin, doctor} = require("../middleware/roles");
+const auth = require("../middleware/auth");
 
 const DoctorController = express.Router()
 
@@ -15,6 +17,7 @@ DoctorController.use(express.static(__dirname + "../client/public/"));
 DoctorController.use(bodyParser.urlencoded({extended: true}));
 DoctorController.use(bodyParser.json())
 DoctorController.use(express.static('dist'));
+
 
 
 DoctorController.use(function (req, res, next) {
@@ -39,7 +42,7 @@ DoctorController.get("/DoctorPatientProfile", (req, res) => {
 });
     
 //Gets all relevant patient information to the doctor logged in
-DoctorController.get("/doctorViewingTheirPatientData", (req, res) => {
+DoctorController.get("/doctorViewingTheirPatientData", [auth,doctor], (req, res) => {
     let did = 6;
     //parameters: ID
     //returns: ID, FName, LName, Email, Password, Validated, Phone, Birthday, Address, Role, Token
