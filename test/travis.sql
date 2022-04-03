@@ -10,6 +10,8 @@ CREATE TABLE `390db`.`users` (
   `Address` varchar(45) DEFAULT NULL,
   `Role` varchar(45) NOT NULL,
   `Token` varchar(256) NULL,
+  `Resetting` TINYINT NULL,
+`ResetToken` VARCHAR(256) NULL,
   PRIMARY KEY (`ID`)
 );
 
@@ -81,6 +83,7 @@ CREATE TABLE `390db`.`appointments` (
 `endTime` time not null,
 `aptDate` varchar(45) not null,
 `dayName` varchar(45) not null,
+  `Notification` TINYINT NOT NULL DEFAULT 1,
   `Priority` int NOT NULL,
  FOREIGN KEY (`PatientID`)
     REFERENCES `390db`.`patients` (`ID`),
@@ -112,9 +115,9 @@ CREATE TABLE `390db`.`inforequest` (
     );
 
 
-CREATE TABLE `390db`.`healthinformation` (   
-  `PatientID` INT NOT NULL,   
-  `Timestamp` VARCHAR(18),
+CREATE TABLE `390db`.`healthinformation` ( 
+`FormID` INT NOT NULL AUTO_INCREMENT,  
+  `PatientID` INT NOT NULL,
   `InfoTimestamp` Timestamp,   
   `Weight` DOUBLE,   
   `Temperature` DOUBLE,   
@@ -125,10 +128,11 @@ CREATE TABLE `390db`.`healthinformation` (
   `Cough` TINYINT NOT NULL,   
   `Smell` TINYINT NOT NULL,   
   `Taste` TINYINT NOT NULL,   
-  `Other` Varchar(300),  
-  FOREIGN KEY (PatientID)     
-   REFERENCES 390db.patients (ID),   
-   PRIMARY KEY (PatientID, Timestamp)     
+  `Other` Varchar(300),
+  `Notification` TINYINT NOT NULL DEFAULT 1,
+  `Urgent` int,
+  FOREIGN KEY (PatientID) REFERENCES 390db.patients (ID),
+   PRIMARY KEY (FormID)
    );
 
 CREATE TABLE `390db`.`contacts` (
@@ -141,29 +145,55 @@ CREATE TABLE `390db`.`contacts` (
     REFERENCES `390db`.`patients` (`ID`)
     );
 
+CREATE TABLE 390db.livechat (
+  MessageID INT NOT NULL AUTO_INCREMENT,
+  PatientID INT NOT NULL,
+  DoctorID INT NOT NULL,
+  RoomID INT NOT NULL,
+  Timestamp TIMESTAMP NOT NULL,
+  Message VARCHAR(2048) NOT NULL,
+  SenderID INT NOT NULL,
+  Seen BOOLEAN NOT NULL,
+  FOREIGN KEY (PatientID)
+    REFERENCES 390db.patients (ID),
+     FOREIGN KEY (DoctorID)
+    REFERENCES 390db.doctors (ID),
+    PRIMARY KEY(MessageID)
+);
+
+CREATE TABLE `390db`.`patientfiles` (
+  `patientfiles` MEDIUMBLOB NOT NULL,
+  `patientID` int NOT NULL,
+  `documentID` INT NOT NULL AUTO_INCREMENT,
+  `timesubmitted` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`patientID`, `timesubmitted`),
+  foreign key (patientID) references 390db.users (ID) on delete cascade,
+  UNIQUE INDEX `documentID_UNIQUE` (`documentID` ASC));
 
 
 
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('1', 'Hussein', 'Hassein', 'a@a.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '1111111111', '1999/1/1', '363 aaa', 'Patient');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('2', 'Frank', 'James', 'frank@james.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '2222222222', '1985-3-3', '222 bbb', 'Patient');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('3 ', 'Donald ', 'Wimp ', 'donald@wimp.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '3333333333', '2005-3-4', '333 ccc', 'Patient');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('4 ', 'Payton', 'Taylor', 'payton@taylor.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '4444444444', '1923-4-2', '444 ddd', 'Patient');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('5', 'Weirdo', 'Snicks', 'weirdo@snicks.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '5555555555', '1985-5-3', '555 eee ', 'Patient');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('6', 'Matthew', 'James', 'matthew@james.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '6666666666', '1997-4-3', '666 fff', 'Doctor');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('7', 'James', 'Trump', 'james@trump.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '7777777777', '1999-9-9', '777 ggg', 'Doctor');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('8', 'Trey', 'Rey', 'trey@rey.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '8888888888', '1964-4-3', '888 hhh', 'Doctor');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('9', 'Patrick', 'Deadi', 'patent@deadi.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '9999999999', '1987-4-2', '999 iii', 'Doctor');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('10', 'Wayo', 'Weyo', 'wayo@weyo.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '1010101010', '1990-4-3', '100 jjj', 'Doctor');
 
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('11', 'Addagio', 'Bratok', 'addagio@bratok.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '1212121212', '1982-03-2', '110 kka', 'Admin');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('12', 'Travis', 'Scott', 'travis@scott.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '1313131313', '1998-1-20', '112 lll', 'Admin');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('13', 'Prey', 'Tale', 'prey@tale.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '1414141414', '1985-1-1', '232 mmm', 'Immigration Officer');
-INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('14 ', 'Dey', 'Insa', 'dey@insa.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '1515151515', '1932-1-1', '444 nnn', 'Immigration Officer');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('1', 'Hussein', 'Hassein', 'a@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '4385550148', '1999/1/1', '420 Rue Guy', 'Patient');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('2', 'Frank', 'James', 'f.james@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '4385550152', '1985-3-3', '5600 Rue Rodrigue', 'Patient');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('3 ', 'Donald ', 'Wimp ', 'donald@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '5145550152', '2005-3-4', '550 Bd St Laurent E', 'Patient');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('4 ', 'Payton', 'Taylor', 'payton@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '4385550198', '1923-4-2', '1326 Avenue Maguire', 'Patient');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('5', 'Weirdo', 'Snicks', 'weirdo@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '4385550157', '1985-5-3', '1075 Rue Richelieu', 'Patient');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('6', 'Matthew', 'James', 'matthew@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '5145550153', '1997-4-3', '500 Rue Léonard', 'Doctor');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('7', 'James', 'Trump', 'james@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '5145550199', '1999-9-9', '1292 Jarry E', 'Doctor');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('8', 'Trey', 'Rey', 'trey@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '5149550136', '1964-4-3', '2900 Boulevard Edouard-Montpetit', 'Doctor');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('9', 'Patrick', 'Deadi', 'patent@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '5146324578', '1987-4-2', '5095 Rue Fabre', 'Doctor');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('10', 'Wayo', 'Weyo', 'wayo@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '4387856333', '1990-4-3', 'Rang de Équerre', 'Doctor');
 
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('11', 'Addagio', 'Bratok', 'addagio@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '5142121212', '1982-03-2', '4600 Bd Industriel', 'Admin');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('12', 'Travis', 'Scott', 'travis@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '5143131313', '1998-1-20', '2127 Rue Sainte-Catherine Ouest', 'Admin');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('13', 'Prey', 'Tale', 'prey@yahoo.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '5144141414', '1985-1-1', '	17 Rue Sainte-Catherine Ouest', 'Immigration Officer');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('14', 'Dey', 'Insa', 'dey@outlook.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '4385151515', '1932-1-1', '3916 Avenue Coloniale', 'Immigration Officer');
+INSERT INTO `390db`.`users` (`ID`, `FName`, `LName`, `Email`, `Password`, `Validated`, `Phone`, `Birthday`, `Address`, `Role`) VALUES ('15', 'Max', 'Gambino', 'mag@gmail.com', '$2b$10$8V3DcGFpSlqb93Ykmhn5B.K91HjOQWhylC/sfmW243co5JwPEPgZ.', '1', '4385151515', '1932-1-1', '690 Boulevard René Lévesque East', 'Immigration Officer');
 
 
 INSERT INTO `390db`.`otherusers` (`ID`, `Type`) VALUES ('13', 'Immigration Officer');
-INSERT INTO `390db`.`otherusers` (`ID`, `Type`) VALUES ('14 ', 'Immigration Officer');
+INSERT INTO `390db`.`otherusers` (`ID`, `Type`) VALUES ('14', 'Immigration Officer');
+INSERT INTO `390db`.`otherusers` (`ID`, `Type`) VALUES ('15', 'Health Offical');
 
 INSERT INTO `390db`.`admins` (`ID`, `Type`) VALUES ('12', '1');
 INSERT INTO `390db`.`admins` (`ID`, `Type`) VALUES ('11', '0');
@@ -200,11 +230,11 @@ INSERT INTO `390db`.`contacts` (`PatientID1`, `PatientID2`) VALUES ('2', '4');
 INSERT INTO `390db`.`contacts` (`PatientID1`, `PatientID2`) VALUES ('4', '2');
 
 
-INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('1', 1, '2022-2-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nothing');
-INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('2',  1, '2022-1-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'headache');
-INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('3',  1, '2022-4-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nausea');
-INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('4',   1, '2021-1-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'cannot sleep');
-INSERT INTO `390db`.`healthinformation` (`PatientID`, `Timestamp`, `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`) VALUES ('5',   1, '2022-3-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'migraine');
+INSERT INTO `390db`.`healthinformation` (`PatientID`,  `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`, `Urgent`) VALUES ('1',  '2022-2-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nothing',1);
+INSERT INTO `390db`.`healthinformation` (`PatientID`,  `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`, `Urgent`) VALUES ('2',   '2022-1-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'headache',0);
+INSERT INTO `390db`.`healthinformation` (`PatientID`,`InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`, `Urgent`) VALUES ('3',   '2022-4-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'nausea',0);
+INSERT INTO `390db`.`healthinformation` (`PatientID`,  `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`, `Urgent`) VALUES ('4',    '2021-1-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'cannot sleep',0);
+INSERT INTO `390db`.`healthinformation` (`PatientID`,  `InfoTimestamp`, `Weight`, `Temperature`, `Breathing`, `Chest_Pain`, `Fatigue`, `Fever`, `Cough`, `Smell`, `Taste`, `Other`, `Urgent`) VALUES ('5',   '2022-3-1', 25, 65, 1, 3, 2, 3, 3, 2, 1, 'migraine',0);
 
 
 
