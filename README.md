@@ -21,10 +21,10 @@ When the COVID-19 virus first appeared in 2019, there was an uncertainty of how 
 
 ## Progress :alarm_clock:
 
-- [ x ]  Sprint 1
+- [ ]  Sprint 1
 - [ ]  Sprint 2
 - [ ]  Sprint 3
-- [ ]  Sprint 4
+- [ x ]  Sprint 4
 
 
 ## Team Members :technologist:
