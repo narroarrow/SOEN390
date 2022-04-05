@@ -50,14 +50,14 @@ let sendEmail = (fName, lName, email, link) => {
     transporter.sendMail(mailOptions);
 }
 
-UserController.use(function (req, res, next) {
-    if (req.cookies) {
-        console.log(req.cookies)
-        next()
-    } else {
-        res.status(403).send;
-    }
-})
+// UserController.use(function (req, res, next) {
+//     if (req.cookies) {
+//         console.log(req.cookies)
+//         next()
+//     } else {
+//         res.status(403).send;
+//     }
+// })
 
 // start of sign up and login. creating correct cookies if logged in
 UserController.get('/checkAuth', function (req, res) {

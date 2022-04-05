@@ -1,6 +1,49 @@
-const app = require('../../../server/app.js');
+import "core-js";
 const request = require('supertest');
+const sinon = require('sinon');
 const { changeUser } = require('../../../server/database.js');
+// const auth = require('../../../server/middleware/auth')
+// const roles = require('../../../server/middleware/roles');
+// jest.mock('../../../server/middleware/roles', () => jest.fn((req, res, next) => next()));
+
+
+// const mockGetData = jest.spyOn(roles, "doctor").mockImplementation((req, res, next) => next());
+
+
+
+// jest.mock('../../../server/middleware/roles', () => jest.fn((req, res, next) => next()));
+// let roles;
+beforeEach(function() {
+  //  roles = require('../../../server/middleware/roles');
+  // sinon.stub('../../../server/middleware/roles', doctor)
+  //     .callsFake(function(req, res, next) {
+  //       return next();
+  //     });
+  // jest.mock('../../../server/middleware/roles', () => jest.fn((req, res, next) => next()));
+  // const mockGetData = jest.spyOn(roles, 'doctor').mockImplementation((req, res, next) => next());
+
+  // jest.mock('../../../server/middleware/roles', () => ({
+  //   doctor: (req, res,next) =>{ console.log('nothaappen');next();}
+  // }));
+
+});
+//
+//
+// afterEach(function() {
+//   jest.unmock('../../../server/middleware/roles')
+// })
+
+const app = require('../../../server/app.js');
+const {doctor} = require("../../../server/middleware/roles");
+const {auth} = require("../../../server/middleware/auth");
+
+jest.mock('../../../server/middleware/roles', () => ({
+  doctor: (req, res,next) =>{next();}
+}));
+
+jest.mock('../../../server/middleware/auth', () => ({
+  auth: (req, res,next) =>{next();}
+}));
 
 //Here we try to get a specific patients information so that it can be displayed in the UI.
 //If the get is successful, a 200 status code will be returned to make the test pass. 
@@ -272,8 +315,9 @@ describe('testing /adminViewingValidatedDoctorData', () => {
 //Here we try to get information for all patients.
 //If the get is successful, a 200 status code will be returned to make the test pass. 
   describe('testing /doctorViewingTheirPatientData', () => {
+    // jest.setTimeout(30000)
     it('returns a status code of 200 indicating that the get worked', async () => {
-      let res = await request(app).get('/doctorViewingTheirPatientData');
+      let res = await request(app.use(auth, doctor)).get('/doctorViewingTheirPatientData');
       expect(res.statusCode).toEqual(200);
     })
   });
