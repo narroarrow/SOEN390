@@ -14,7 +14,7 @@ const AdminController = require("./Controllers/AdminController");
 const ChatController = require("./Controllers/ChatController");
 const ManagerController = require("./Controllers/ManagerController");
 const ScheduleController = require("./Controllers/ScheduleController");
-const PatientController = require("./Controllers/PatientController")
+const PatientController = require("./Controllers/PatientController");
 
 app.use(UserController);
 app.use(NotificationController);
