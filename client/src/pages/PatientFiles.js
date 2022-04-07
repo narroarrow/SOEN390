@@ -7,46 +7,38 @@ import { Navigate } from 'react-router-dom';
 //their form to change their status. It will post the data from the form to
 //the server.js file so that the patient's information can be altered in
 //the database.
-// let submitPatientFile = (event) => {
-//   event.preventDefault();
-//   const data = new FormData(event.currentTarget);
-//   Axios.post('http://localhost:8080/createPatientFile', {
-//     patientid: localStorage.getItem('id'),
-//     status: data.get('PatientFile')
-//   }).then(() => {
-//     console.log('success');
-//     window.location.href = "/PatientFiles";
-//   });
-// };
 
-// function PatientFiles() {
 
   const PatientFiles = () => {
     // a local state to store the currently selected file.
-    const [selectedFile, setSelectedFile] = React.useState(null);
-  
-    const handleSubmit = (event) => {
-      event.preventDefault()
-      const formData = new FormData();
-      formData.append("selectedFile", selectedFile);
-      try {
-        axios({
-          method: "post",
-          url: "http://localhost:8080/createPatientFile",
-          data: formData,
-          headers: { "Content-Type": "multipart/form-data" },
-          patientid: localStorage.getItem('id'),
-        });
-      } catch(error) {
-        console.log(error)
-      }
-    }
-  
+    const [selectedFile, setSelectedFile] = React.useState();
+
+    
     const handleFileSelect = (event) => {
       setSelectedFile(event.target.files[0])
     }
 
+    const handleSubmit = (event) => {
+      event.preventDefault()
+      const formData = new FormData();
 
+      formData.append("patientFiles", this.state.selectedFile);
+
+      console.log(this.state.selectedFile)
+
+      axios.post('http://localhost:8080/createPatientFile', {
+        patientid: localStorage.getItem('id'),
+        patientfiles: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+
+      }).then(() => {
+        console.log('success');
+
+  })
+    }
+  
   return (
     <>
       {/* Make sure the user signed in is a patient */}

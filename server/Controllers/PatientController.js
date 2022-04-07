@@ -213,7 +213,7 @@ PatientController.post("/createPatientFile", (req, res) => {
     let dateNow = new Date(); 
     let timeNow = dateNow.getFullYear()+'-'+dateNow.getMonth()+'-'+dateNow.getDate()+" "+dateNow.getHours() + ":" + dateNow.getMinutes() + ":" + dateNow.getSeconds();
 
-    console.log(req.query)
+    console.log(req.body)
     //parameters: PatientID, InfoTimestamp, patientFile
     //returns: 
     let state = "INSERT INTO 390db.patientfiles (patientfiles,patientID, timesubmitted) VALUES (?,?,?)"
