@@ -11,33 +11,27 @@ import { Navigate } from 'react-router-dom';
 
   const PatientFiles = () => {
     // a local state to store the currently selected file.
-    const [selectedFile, setSelectedFile] = React.useState();
-
-    
-    const handleFileSelect = (event) => {
-      setSelectedFile(event.target.files[0])
-    }
-
+    const [selectedFile, setSelectedFile] = React.useState(null);
     const handleSubmit = (event) => {
       event.preventDefault()
       const formData = new FormData();
 
-      formData.append("patientFiles", this.state.selectedFile);
+      formData.append("selectedFile", selectedFile);
+      formData.append("patientID", localStorage.getItem('id'));
 
-      console.log(this.state.selectedFile)
+      axios.post('http://localhost:8080/createPatientFile', formData).then(res=>{
+        console.log(res)
+      }).catch(error=>{
+        console.log(error)
+      })
 
-      axios.post('http://localhost:8080/createPatientFile', {
-        patientid: localStorage.getItem('id'),
-        patientfiles: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-
-      }).then(() => {
-        console.log('success');
-
-  })
     }
+  
+    const handleFileSelect = (event) => {
+      setSelectedFile(event.target.files[0])
+    }
+
+
   
   return (
     <>

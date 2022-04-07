@@ -1,10 +1,12 @@
+
+const Blob = require('node-blob')
 const express = require("express");
 const db = require("../database");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
-
+const Formidable = require("formidable");
 const PatientController = express.Router()
 
 PatientController.use(express.json());
@@ -208,24 +210,36 @@ PatientController.post("/createSymptomForm", (req, res) => {
 
 PatientController.post("/createPatientFile", (req, res) => {
 
-    let patientFile = req.body.status;
-    let patientID = req.body.patientid;
-    let dateNow = new Date(); 
-    let timeNow = dateNow.getFullYear()+'-'+dateNow.getMonth()+'-'+dateNow.getDate()+" "+dateNow.getHours() + ":" + dateNow.getMinutes() + ":" + dateNow.getSeconds();
+    console.log(req.files)
+    // console.log(req)
+    console.log(req.data)
+    console.log(req.query)
+    const form = new Formidable.IncomingForm();
+    form.parse(req, async (error, fields, files) => {
+        const {selectedFile} = files
 
-    console.log(req.body)
-    //parameters: PatientID, InfoTimestamp, patientFile
-    //returns: 
-    let state = "INSERT INTO 390db.patientfiles (patientfiles,patientID, timesubmitted) VALUES (?,?,?)"
-    db.query(state, [patientFile, patientID,timeNow],
-        (err, results) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.send("File uploaded!");
+
+        //file is here, have fun with this
+        console.log(selectedFile);
+        let dateNow = new Date();
+        let timeNow = dateNow.getFullYear() + '-' + dateNow.getMonth() + '-' + dateNow.getDate() + " " + dateNow.getHours() + ":" + dateNow.getMinutes() + ":" + dateNow.getSeconds();
+
+        let state = "INSERT INTO 390db.patientfiles (patientFiles, patientID) VALUES (?, ?)"
+        db.query(state, [selectedFile, fields.patientID],
+            (err, results) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send("File uploaded!");
+                }
             }
-        }
-    );
+        );
+
+    })
+
+
+
+
 //attempted INSERT INTO patientfiles (patientfiles, patientID, timesubmitted) VALUES (LOAD_FILE('C:/Users/chanj/Downloads/Project_v2'),1,'2022-3-27 12:00:00'); as a test
 });
 
