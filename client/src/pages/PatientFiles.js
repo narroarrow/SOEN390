@@ -14,11 +14,13 @@ import { Navigate } from 'react-router-dom';
     const [selectedFile, setSelectedFile] = React.useState(null);
     const handleSubmit = (event) => {
       event.preventDefault()
-      const formData = new FormData();
 
+      // FormData() allows us to store the file to be sent to the DB
+      const formData = new FormData();
       formData.append("selectedFile", selectedFile);
       formData.append("patientID", localStorage.getItem('id'));
 
+      //  Sending data to the backend
       axios.post('http://localhost:8080/createPatientFile', formData).then(res=>{
         console.log(res)
       }).catch(error=>{
@@ -26,7 +28,8 @@ import { Navigate } from 'react-router-dom';
       })
 
     }
-  
+    
+    // updating the selected file on change
     const handleFileSelect = (event) => {
       setSelectedFile(event.target.files[0])
     }
