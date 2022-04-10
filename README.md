@@ -1,30 +1,22 @@
 
 # :wave: Covid-19 App (SOEN390) :wave: <br>
 
-
 ## Objective :trophy:
-This project involves building a COVID-19 Tracking App from the beginning to the end. When developing the project, several software and project management practices will be used allowing for organization of work and meeting the objectives and requirements of the application. 
 
-
+The objective of this project was to build an application that connects COVID-19 patients with doctors and medical professionals. The application allows doctors to easily observe and monitor the status of their patients based on the information the patient provides. Moreover, this project was developed for the Concordia mini-capstone in preparation for the final engineering project capstone. This project allowed us to learn and further develop an understanding of the fundamentals of software development, project management and the overall process of delivering a product.
 
 ## Description :pencil2:
-When the COVID-19 virus first appeared in 2019, there was an uncertainty of how it would affect the world. As the virus continuously spread and progressed into a pandemic, there was a limitation to how well the virus was tracked when it was caught and transmitted from one person to another. With this in mind, the development of a COVID-19 Tracking App was proposed for medical professionals and government health officials to keep track of those infected and document them as patients.
 
-
-
-<!-- ## Core Features :point_down:
-:one: &nbsp;  <br>
-:two: &nbsp;  <br>
-:three: &nbsp;  &nbsp; ✔️ <br>
-:four: &nbsp;  -->
+The application provides a platform for doctors, health officials, and immigration officers to connect with patients. Initially, users are asked to sign up, provide their personal information and select their roles (patient, doctor, health officials, etc). In order for privileged accounts to be accepted into the system, admins must validate their credentials. Services provided for patients in the system include: daily symptom form uploads, book appointments or direct chat with their doctors, close monitoring by doctors, and access to the latest relevant information related to COVID. Further, services provided for doctors include: analytics of their patients, direct chat with their patients, a dashboard containing all their patients, and patient symptom forms. 
 
 
 ## Progress :alarm_clock:
 
-- [ ]  Sprint 1
-- [ ]  Sprint 2
-- [ ]  Sprint 3
+- [X]  Sprint 1
+- [X]  Sprint 2
+- [X]  Sprint 3
 - [x]  Sprint 4
+- [ ]  Sprint 5
 
 
 ## Team Members :technologist:
@@ -43,12 +35,6 @@ When the COVID-19 virus first appeared in 2019, there was an uncertainty of how 
 
 F = Frontend B = Backend
 
-
-
-
-
-
-
 ## Technology Stack :gear:
 
 :black_square_button: &nbsp; Front-End <br>
@@ -56,9 +42,13 @@ F = Frontend B = Backend
 &nbsp;&nbsp;&nbsp; :black_small_square: CSS <br>
 &nbsp;&nbsp;&nbsp; :black_small_square: MUI <br>
 &nbsp;&nbsp;&nbsp; :black_small_square: React <br>
+&nbsp;&nbsp;&nbsp; :black_small_square: Axios <br>
+
 :white_square_button: &nbsp; Back-End: <br>
 &nbsp;&nbsp;&nbsp; :white_small_square: Node.js<br>
 &nbsp;&nbsp;&nbsp; :white_small_square: MySQL <br>
+&nbsp;&nbsp;&nbsp; :white_small_square: ExpressJS <br>
+&nbsp;&nbsp;&nbsp; :white_small_square: Axios <br>
 
 
 ## Naming Conventions (for Git & Github organization) :green_book:
