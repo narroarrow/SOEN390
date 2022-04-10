@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const db = require("../database");
 require('dotenv').config()
-module.exports = (req, res, next) => {
+function auth(req, res, next)  {
     const token = req.cookies.token
     console.log(token);
     if (!token) return res.status(401).send({
@@ -36,5 +36,5 @@ module.exports = (req, res, next) => {
 
     next();
 }
-
+module.exports = { auth };
 
