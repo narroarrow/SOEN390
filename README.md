@@ -105,8 +105,6 @@ Since we are using ExpressJS on the backend, we will also be following their cod
 
 16. Have uniform spacing between methods (1 space between each method to keep everything clean)
 
-17. When writing tests, include your name in the comment so that if it fails, you can be notified. **MAX I DONT THINK WE NEED THIS ONE**
-
 17. All methods should be no more than 100 lines long for clarity. If ever it is exceeded, find a way to break the methods down into smaller pieces.
 
 18. Use single quotes (‘ ‘) when assigning a value to a string instead of double quotes (“ “) **PROJECT IS FOR SURE LITTERED WITH THIS**
@@ -119,11 +117,7 @@ Since we are using ExpressJS on the backend, we will also be following their cod
 
 21. Do not let the combination of predicates in an if statement get too long, start a new line and continue from there.
 
-22. Create your own get/set methods rather than using auto-generated as they can have some side effects. **IRRELEVANT**
-
 22. Use Switch statements if you plan on using more than 1 else if between an if and else statement. 
-
-23. If a method returns a value, always add /** @return {type} **/. “Type” changes depending on the type being returned by the method. **DONT THINK THIS IS DONE**
 
 24. Every method must have a unit test associated with it.
 
@@ -140,6 +134,4 @@ Since we are using ExpressJS on the backend, we will also be following their cod
 26. Always have 2 people review a branch before merging it
 
 27. Tag issues worked on for commits and merge requests
-
-28. Use @param tag to describe the name, type, function of parameters. **CAP**
 
