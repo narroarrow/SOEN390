@@ -81,7 +81,7 @@ Since we are using ExpressJS on the backend, we will also be following their cod
 
 4. When adding prompts to a component, add them in the same line. Only if the component is too long, can it be broken into multiple lines.
 
-5. Always end a statement with a semicolon.
+5. Always end a statement with a semicolon. **This was not respected**
 
 6. All frontend page files need to go in the folder ./client/pages.
 
