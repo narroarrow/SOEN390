@@ -51,7 +51,7 @@ jest.mock('../../../server/middleware/auth', () => ({
 }));
 
 
-// app.use(auth, doctor);
+// app;
 //Here we try to get a specific patients information so that it can be displayed in the UI.
 //If the get is successful, a 200 status code will be returned to make the test pass. 
 describe('testing /doctorViewingPatientData', () => {
@@ -65,7 +65,7 @@ describe('testing /doctorViewingPatientData', () => {
 //If the get is successful, a 200 status code will be returned to make the test pass. 
 describe('testing /doctorViewingPreviousSymptoms', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app.use(auth, doctor)).get('/doctorViewingPreviousSymptoms', { params: {id: 1}});
+    let res = await request(app).get('/doctorViewingPreviousSymptoms', { params: {id: 1}});
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -74,7 +74,7 @@ describe('testing /doctorViewingPreviousSymptoms', () => {
 //If it does, the test will succeed and a status code of 200 will be returned to make sure the test pass.
 describe('testing /markViewed', () => {
   it('returns a status code of 200 indicating that the post worked', async () => {
-    let res = await request(app.use(auth, doctor)).post('/markViewed').send({ PatientID: 1, DoctorID: 6, datetime: '2022-04-03 00:00:00'});
+    let res = await request(app).post('/markViewed').send({ PatientID: 1, DoctorID: 6, datetime: '2022-04-03 00:00:00'});
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -110,7 +110,7 @@ describe('testing /Viewed', () => {
 //If the get is successful, a 200 status code will be returned to make the test pass. 
 describe('testing /DoctorPatientProfile', () => {
   it('returns a status code of 200 indicating that the get worked', async () => {
-    let res = await request(app.use(auth, doctor)).get('/DoctorPatientProfile');
+    let res = await request(app).get('/DoctorPatientProfile');
     expect(res.statusCode).toEqual(200);
   })
 });
@@ -324,7 +324,7 @@ describe('testing /adminViewingValidatedDoctorData', () => {
   describe('testing /doctorViewingTheirPatientData', () => {
     // jest.setTimeout(30000)
     it('returns a status code of 200 indicating that the get worked', async () => {
-      let res = await request(app.use(auth, doctor)).get('/doctorViewingTheirPatientData');
+      let res = await request(app).get('/doctorViewingTheirPatientData');
       expect(res.statusCode).toEqual(200);
     })
   });
@@ -333,7 +333,7 @@ describe('testing /adminViewingValidatedDoctorData', () => {
 //If the get is successful, a 200 status code will be returned to make the test pass. 
   describe('testing /doctorViewingAllDoctors', () => {
     it('returns a status code of 200 indicating that the get worked', async () => {
-      let res = await request(app.use(auth, doctor)).get('/doctorViewingAllDoctors');
+      let res = await request(app).get('/doctorViewingAllDoctors');
       expect(res.statusCode).toEqual(200);
     })
   });
@@ -342,7 +342,7 @@ describe('testing /adminViewingValidatedDoctorData', () => {
 //If the get is successful, a 200 status code will be returned to make the test pass. 
   describe('testing /doctorViewingDoctorPatients', () => {
     it('returns a status code of 200 indicating that the get worked', async () => {
-      let res = await request(app.use(auth, doctor)).get('/doctorViewingDoctorPatients');
+      let res = await request(app).get('/doctorViewingDoctorPatients');
       expect(res.statusCode).toEqual(200);
     })
   });

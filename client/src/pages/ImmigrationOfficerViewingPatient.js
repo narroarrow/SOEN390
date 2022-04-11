@@ -43,14 +43,6 @@ function ImmigrationOfficerViewingPatient() {
         });
     }
 
-    let unflagPatient = () => { //When clicking the UNFLAG button, this will update the Flagged attribute in the patient tale to false
-        Axios.post("http://localhost:8080/unflagPatient", {
-            PatientID: location.state.ID //The patient ID is being passed to the post method
-        },{withCredentials: true}).then(() => {
-            console.log("success")
-        });
-    }
-
     let isFlagged = false; //variable to verify if patient has already been flagged, to be used for displaying either the FLAG or UNFLAG butttons
     let isFlaggedArray = patientData.map((val, key) => { return val.Flagged });
     if (isFlaggedArray[0] !== 0) {

@@ -6,7 +6,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 
 const ManagerController = express.Router()
-const {manager, doctorOrImmigrationOfficer} = require("../middleware/Roles");
+const {manager, doctor} = require("../middleware/Roles");
 const {auth} = require("../middleware/Auth");
 
 
@@ -81,7 +81,7 @@ ManagerController.post("/flagPatient", [manager, auth],(req, res) => {
 });
 
 //Sets the Flagged attribute of the patient DB to 0
-ManagerController.post("/unflagPatient", [doctorOrImmigrationOfficer, auth],(req, res) => {
+ManagerController.post("/unflagPatient", [doctor, auth],(req, res) => {
     let patientID = req.body.PatientID; //this PatientID is used in the query to specify which patient tuple to edit
 
     //parameters: (ID of patient)
