@@ -18,6 +18,9 @@ The application provides a platform for doctors, health officials, and immigrati
 - [x]  Sprint 4
 - [ ]  Sprint 5
 
+## Project Architecture and Info :gear:
+
+The project was built using the "Client - Server" architecture style, which essentially divides the frontend files (client) fron the backend files (server). Further information is provided the READMEs of both client and server folders, found in the src file.  
 
 ## Team Members :technologist:
 
