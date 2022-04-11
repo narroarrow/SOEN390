@@ -87,7 +87,7 @@ Since we are using ExpressJS on the backend, we will also be following their cod
 
 7. All frontend component files need to go in the folder ./client/component.
 
-8. All testing files need to go in the folder ./client/testing.S
+8. All testing files need to go in the folder ./client/src/\_\_tests__
 
 9. Testing files need to have the extension .test.js
 
