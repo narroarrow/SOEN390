@@ -99,12 +99,13 @@ const ResponsiveAppBar = () => {
 
             console.log("Notification List:");
             console.log(response.data);
-        }).catch(alert);
+        }).catch((err) => console.log(err));
     }
     // these  functions are called when navbar is rendered
     useEffect(() => {
         instantiateNavBar();
-        getNotificationsCount();
+        if (localStorage.getItem('role') === 'Doctor'){
+        getNotificationsCount();}
     }, [])
 
 

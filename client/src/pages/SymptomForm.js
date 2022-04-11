@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 
 //This variable represents a function that will be called when the user 
 //submits their Symptom Form. The data enterred will be sent to the 
-//server.js file so that it can be stored in the database.
+//Server.js file so that it can be stored in the database.
 let submitSymptomForm = (event) => {
   event.preventDefault();
   const data = new FormData(event.currentTarget);

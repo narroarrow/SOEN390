@@ -87,7 +87,7 @@ function AdminDashboard() {
   let validateDoctor = (ID) => { //this function will validate doctors on click
     Axios.post("http://localhost:8080/validateDoctor", {
       DoctorID: ID
-    },{withCredentials:true},{withCredentials: true}).then(() => {
+    },{withCredentials:true}).then(() => {
       //console.log("successfully validated doctor!")
     });
     window.location.reload(false);

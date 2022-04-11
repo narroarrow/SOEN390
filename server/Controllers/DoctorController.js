@@ -1,11 +1,11 @@
 const express = require("express");
-const db = require("../database");
+const db = require("../Database");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
-const {patient, admin, doctor} = require("../middleware/roles");
-const {auth} = require("../middleware/auth");
+const {doctor, manager} = require("../middleware/Roles");
+const {auth} = require("../middleware/Auth");
 
 const DoctorController = express.Router()
 
@@ -46,7 +46,7 @@ DoctorController.get("/doctorViewingTheirPatientData", [auth, doctor],(req, res)
 
 /* This get method will be executed when rendering the DoctorPatientProfile page. The database will be querries to get the patients names, ID, status and whether they have been
 flagged or not. The returned list is a list of all patients in the database. */
-DoctorController.get("/DoctorPatientProfile",[auth,doctor], (req, res) => {
+DoctorController.get("/DoctorPatientProfile",[auth,manager], (req, res) => {
     //parameters:
     //returns: FName,LName, Status, Flagged, DoctorID, ChatRequested
     let state = "SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID, P.ChatRequested, P.NewPatient FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;"

@@ -1,11 +1,14 @@
 const express = require("express");
-const db = require("../database");
+const db = require("../Database");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
 
 const ManagerController = express.Router()
+const {manager, doctorOrImmigrationOfficer} = require("../middleware/Roles");
+const {auth} = require("../middleware/Auth");
+
 
 ManagerController.use(express.json());
 ManagerController.use(cookieParser());
@@ -25,7 +28,7 @@ ManagerController.use(function (req, res, next) {
 
 /* This get method be executed when rendering the DoctorViewingPatient and HealthOfficialViewingPatient pages. It will take the necessary patient data from the database
 and display it in the UI. */
-ManagerController.get("/doctorViewingPatientData", (req, res) => {
+ManagerController.get("/doctorViewingPatientData", [manager, auth],(req, res) => {
     let pid = req.query.id;
     //parameters: (ID of patient)
     //returns: (FName of patient, LName of patient, ID of patient, status of patient, whether a patient is new, first name of doctor, last name of doctor,
@@ -43,7 +46,7 @@ ManagerController.get("/doctorViewingPatientData", (req, res) => {
 /* This get method be executed when rendering the DoctorPatientProfile page and when rendering the DoctorViewingPatient page (Health official pages as well).
  It returns a list of patients whose profiles have reviewed. This is used to create indicators in the UI when a patient profile has been reviewed such
  as a filled in eye icon for viewed patients. */
-ManagerController.get("/Viewed", (req, res) => {
+ManagerController.get("/Viewed", [manager, auth],(req, res) => {
 
     //parameters:
     //returns: ID
@@ -60,7 +63,7 @@ ManagerController.get("/Viewed", (req, res) => {
 
 
 /* This post method is called when a docotr clicks the FLAG PATIENT button on a patient profile. It will update the Flagged attribute in the patient table of the DB */
-ManagerController.post("/flagPatient", (req, res) => {
+ManagerController.post("/flagPatient", [manager, auth],(req, res) => {
     let PatientID = req.body.PatientID;
     let flagPriority = req.body.FlagPriority
     //parameters: (ID of patient), (Flag priority)
@@ -78,7 +81,7 @@ ManagerController.post("/flagPatient", (req, res) => {
 });
 
 //Sets the Flagged attribute of the patient DB to 0
-ManagerController.post("/unflagPatient", (req, res) => {
+ManagerController.post("/unflagPatient", [doctorOrImmigrationOfficer, auth],(req, res) => {
     let patientID = req.body.PatientID; //this PatientID is used in the query to specify which patient tuple to edit
 
     //parameters: (ID of patient)

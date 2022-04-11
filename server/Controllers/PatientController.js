@@ -1,12 +1,13 @@
 const express = require("express");
-const db = require("../database");
+const db = require("../Database");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
 
 const PatientController = express.Router()
-
+const {patient} = require("../middleware/Roles");
+const {auth} = require("../middleware/Auth");
 PatientController.use(express.json());
 PatientController.use(cookieParser());
 PatientController.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
@@ -27,7 +28,7 @@ PatientController.use(function (req, res, next) {
 //goes to the edit profile page so that they can see what it is
 //exactly that they need to change. The patient's id is used
 //to retrieve the data.
-PatientController.get('/editPatientProfileData', (req, res) => {
+PatientController.get('/editPatientProfileData', [patient, auth], (req, res) => {
 
     //This query will return the patients information that we deem ok to change.
     //It filters the database and looks for the patient with the id that we passed.
@@ -46,7 +47,7 @@ PatientController.get('/editPatientProfileData', (req, res) => {
 //This is the code that will be executed when the user opens the
 //patient profile page. The user's id will be sent to this function
 //by the get.
-PatientController.get('/patientProfileData', (req, res) => {
+PatientController.get('/patientProfileData', [patient, auth],(req, res) => {
 
 
     //The query below returns all the information that the user will see on their
@@ -70,7 +71,7 @@ PatientController.get('/patientProfileData', (req, res) => {
 //submits their edited information. It takes in all the
 //information that was sent in the form along with the
 //patient's id.
-PatientController.post("/editedPatientData", (req, res) => {
+PatientController.post("/editedPatientData", [patient, auth],(req, res) => {
     let patientid = req.body.patientid;
     let fname = req.body.fname;
     let lname = req.body.lname;
@@ -114,7 +115,7 @@ PatientController.post("/editedPatientData", (req, res) => {
 //This post method is called when the user submits a
 //form to change their current health status. The patient's
 //id is passed to this method.
-PatientController.post("/createPatientCovidStatus", (req, res) => {
+PatientController.post("/createPatientCovidStatus", [patient,auth], (req, res) => {
     let patientStatus = req.body.status;
     let patientid = req.body.patientid;
 
@@ -139,7 +140,7 @@ PatientController.post("/createPatientCovidStatus", (req, res) => {
 //This post is called when a user tries to submit a symptom form.
 //The patient's id is passed along with the symptom information
 //so that we can associate it with the right patient.
-PatientController.post("/createSymptomForm", (req, res) => {
+PatientController.post("/createSymptomForm", [patient,auth], (req, res) => {
 
     let patientid = req.body.patientid;
     let timestamp = req.body.timestamp;
@@ -206,7 +207,7 @@ PatientController.post("/createSymptomForm", (req, res) => {
 });
 
 
-PatientController.post("/createPatientFile", (req, res) => {
+PatientController.post("/createPatientFile", [auth, patient],(req, res) => {
 
     let patientFile = req.body.status;
     let patientID = req.body.patientid;

@@ -79,7 +79,7 @@ function LiveChat() {
             message: message,
             patientId: patientId
 
-        });
+        }, {withCredentials:true});
         //create a message and send it to patient
         const messageData = {
             roomId: patientId,

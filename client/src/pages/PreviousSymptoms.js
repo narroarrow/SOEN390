@@ -22,7 +22,7 @@ function PreviousSymptoms() {
     const [healthInfo, setHealthInfo] = useState(new Array(2).fill(false)) // list of symptom forms
     const [formIndex, setFormIndex] = useState(0) // wanted index of form
     let stopeffect = 1;
-    let healthValues = ['None', 'Slight', 'Moderate', 'Severe', 'Extreme'] // list of health values that patient filled (stored as int)
+    let healthValues = ['PlaceHolder','None', 'Slight', 'Moderate', 'Severe', 'Extreme'] // list of health values that patient filled (stored as int)
 
     useEffect(() => { //When page is loaded, get requests will get patient data
         Axios.get("http://localhost:8080/doctorViewingPatientData", {params: {id: location.state.ID}, withCredentials:true}).then((response) => {

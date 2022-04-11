@@ -9,8 +9,8 @@ const bodyParser = require("body-parser");
 const mail = require("nodemailer");
 require('dotenv').config();
 const crypto = require("crypto")
-const {patient, admin, doctor} = require("../middleware/roles");
-const auth = require("../middleware/auth");
+const {patient, admin, doctor} = require("../middleware/Roles");
+const auth = require("../middleware/Auth");
 const UserController = express.Router()
 
 UserController.use(express.json());

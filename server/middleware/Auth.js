@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const db = require("../database");
+const db = require("../Database");
 require('dotenv').config()
 function auth(req, res, next)  {
     const token = req.cookies.token
@@ -28,13 +28,12 @@ function auth(req, res, next)  {
                         error: "Access denied. No token provided"
                     });
                 } else {
+                    console.log('ok')
                     next();
                 }
             });
         }
     })
-
-    next();
 }
 module.exports = { auth };
 

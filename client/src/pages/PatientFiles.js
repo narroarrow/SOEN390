@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 
 //This variable represents a function that will be called when the user submits
 //their form to change their status. It will post the data from the form to
-//the server.js file so that the patient's information can be altered in
+//the Server.js file so that the patient's information can be altered in
 //the database.
 let submitPatientFile = (event) => {
   event.preventDefault();

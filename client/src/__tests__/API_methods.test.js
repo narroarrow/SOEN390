@@ -33,17 +33,24 @@ beforeEach(function() {
 //   jest.unmock('../../../server/middleware/roles')
 // })
 
-const app = require('../../../server/app.js');
-const {doctor} = require("../../../server/middleware/roles");
-const {auth} = require("../../../server/middleware/auth");
+const app = require('../../../server/App.js');
+const {doctor, patient, admin, doctorOrPatient} = require("../../../server/middleware/Roles");
+const {auth} = require("../../../server/middleware/Auth");
 
 jest.mock('../../../server/middleware/roles', () => ({
-  doctor: (req, res,next) =>{next();}
+  doctor: (req, res,next) =>{next();},
+  patient: (req, res,next) =>{next();},
+  doctorOrPatient: (req, res,next) =>{next();},
+  admin: (req,res,next) => {next();},
+  manager: (req,res,next) => {next();},
+  doctorOrImmigrationOfficer: (req,res,next) => {next();}
 }));
 
 jest.mock('../../../server/middleware/auth', () => ({
   auth: (req, res,next) =>{next();}
 }));
+
+
 // app.use(auth, doctor);
 //Here we try to get a specific patients information so that it can be displayed in the UI.
 //If the get is successful, a 200 status code will be returned to make the test pass. 

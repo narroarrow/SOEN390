@@ -118,7 +118,7 @@ const TimeSlotCalendar = () => {
             setPreviousWednesday(arrayOfFalse[2]);
             setPreviousThursday(arrayOfFalse[3]);
             setPreviousFriday(arrayOfFalse[4]);
-        }).catch(alert);
+        }).catch((err) => console.log(err));
 
     }
 

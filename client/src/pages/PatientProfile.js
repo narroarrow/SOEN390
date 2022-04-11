@@ -22,7 +22,7 @@ function PatientProfile() {
 
     //This useEffect() will run after the page renders. It will
     //get the patients data by using a get and going to the 
-    //server.js file to execute the code to query for the data.
+    //Server.js file to execute the code to query for the data.
     useEffect(() => {
         Axios.get('http://localhost:8080/patientProfileData', { withCredentials: true, params: { id: localStorage.getItem('id') } }).then((response) => {
             setPatientData(response.data);
