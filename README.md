@@ -71,16 +71,75 @@ F = Frontend B = Backend
 
 ## Coding Style & Naming Convention :notebook: 
 
-**Indentation**
+Since we are using ExpressJS on the backend, we will also be following their coding standards which can be found here. Coding standards from Google’s JavaScript Style Guide were also used. It can be found here.
 
+1. Properly indent code blocks and statements. Use (Ctrl + K) then (Ctrl F) to auto-format on VS Code.
 
-**Variable names**
+2. Define individual classes for Error Handling. Group all Error Handling classes in one folder to be used by all .js files.
 
-   
-**HTML components**
+3. All imports from the same folder need to be put in the same line using the curly bracket notation.
 
+4. When adding prompts to a component, add them in the same line. Only if the component is too long, can it be broken into multiple lines.
 
-**Files**
+5. Always end a statement with a semicolon.
 
+6. All frontend page files need to go in the folder ./client/pages.
 
-**Architecture**
+7. All frontend component files need to go in the folder ./client/component.
+
+8. All testing files need to go in the folder ./client/testing.S
+
+9. Testing files need to have the extension .test.js
+
+10. Every method needs to have a comment above it explaining the purpose of it.
+
+11. Inline styling is heavily discouraged, use sparingly.
+
+12. Use components from Material UI framework https://mui.com/.
+
+13. Variable names must describe what they are used to do (ex. Use patientCount and not count3)
+
+14. Variable names must be in camel case.
+
+15. Class names must be in Pascal case.
+
+16. Have uniform spacing between methods (1 space between each method to keep everything clean)
+
+17. When writing tests, include your name in the comment so that if it fails, you can be notified. **MAX I DONT THINK WE NEED THIS ONE**
+
+17. All methods should be no more than 100 lines long for clarity. If ever it is exceeded, find a way to break the methods down into smaller pieces.
+
+18. Use single quotes (‘ ‘) when assigning a value to a string instead of double quotes (“ “) **PROJECT IS FOR SURE LITTERED WITH THIS**
+
+18. Use dot notation when accessing an object's value.
+
+19. Try to use const and let instead of var (we want to limit the amount of global variables)
+
+20. Have all ‘const’s and all ‘let’s grouped together separately at the top of the file. **HAVE TO CHECK THIS ONE**
+
+21. Do not let the combination of predicates in an if statement get too long, start a new line and continue from there.
+
+22. Create your own get/set methods rather than using auto-generated as they can have some side effects. **IRRELEVANT**
+
+22. Use Switch statements if you plan on using more than 1 else if between an if and else statement. 
+
+23. If a method returns a value, always add /** @return {type} **/. “Type” changes depending on the type being returned by the method. **DONT THINK THIS IS DONE**
+
+24. Every method must have a unit test associated with it.
+
+25. To import js files, the .js is NOT optional and must be included. For example: 
+   import '../directory/file.js'
+   Source file structure:
+   Copyright and Author information 
+   @fileoverview (description of contents and its dependencies)
+   Module imports.
+   Require statements
+   Source code implementation
+   NOTE: Separate Each point above with exactly one line, except for step 5, 2 can be used. 
+
+26. Always have 2 people review a branch before merging it
+
+27. Tag issues worked on for commits and merge requests
+
+28. Use @param tag to describe the name, type, function of parameters. **CAP**
+
