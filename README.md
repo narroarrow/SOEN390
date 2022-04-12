@@ -107,7 +107,7 @@ Since we are using ExpressJS on the backend, we will also be following their cod
 
 17. All methods should be no more than 100 lines long for clarity. If ever it is exceeded, find a way to break the methods down into smaller pieces.
 
-18. Use single quotes (‘ ‘) when assigning a value to a string instead of double quotes (“ “) **PROJECT IS FOR SURE LITTERED WITH THIS**
+18. Use single quotes (‘ ‘) when assigning a value to a string instead of double quotes (“ “) with the exception of strings that are used for database queries. **PROJECT IS FOR SURE LITTERED WITH THIS**
 
 18. Use dot notation when accessing an object's value.
 
