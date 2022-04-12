@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import { Container, Typography, Box, Grid, Link, Checkbox, FormControlLabel, TextField, CssBaseline, Button, Avatar, MenuItem, stepConnectorClasses } from '@mui/material'
+import { Container, Typography, Box, Grid, Link, TextField, CssBaseline, Button, Avatar, MenuItem} from '@mui/material'
 import Axios from 'axios';
 import validator from 'validator';
 import { Navigate } from "react-router-dom";
@@ -33,7 +33,6 @@ const roles = [
 //handling the Signup form
 let userRoles = 'Patient';
 
-
 function Signup() {
   //switching roles
   const [role, setRoles] = React.useState('Patient');
@@ -56,9 +55,8 @@ function Signup() {
         window.location.href = "/Login"
       }).catch(() => setEmailExisting('Your email already exists!'));
     }
-
-
   };
+
   // if is doctor we will add health license
   const handleChange = (event2) => {
     setRoles(event2.target.value);
@@ -70,9 +68,10 @@ function Signup() {
       setIsDoctor(false);
     }
   };
+
   // remove error message after new submit
   const submit = () => {
-    setEmailExisting('')
+    setEmailExisting('');
   };
 
   //validating email
@@ -152,7 +151,7 @@ function Signup() {
               <Grid item xs={12}>
                 <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password" onChange={(e) => validatePassword(e)}
                   onMouseEnter={() => setIsPassword1Shown(true)} onMouseLeave={() => setIsPassword1Shown(false)} />
-                  {/* Telling user the correct format for password */}
+                {/* Telling user the correct format for password */}
                 {isPassword1Shown && (
                   <div>
                     min Length is 8, at least 1 lowercase, at least 1 Uppercase, at least 1 Numbers,at least 1 Symbols
@@ -163,7 +162,7 @@ function Signup() {
               <Grid item xs={12}>
                 <TextField required fullWidth name="confirmPassword" label="Confirm Password" type="password" id="Confirmpassword" autoComplete="new-password" onChange={(e) => validatePassword(e)}
                   onMouseEnter={() => setIsPassword2Shown(true)} onMouseLeave={() => setIsPassword2Shown(false)} />
-                  {/* Telling user the correct format for password */}
+                {/* Telling user the correct format for password */}
                 {isPassword2Shown && (
                   <div>
                     min Length is 8, at least 1 lowercase, at least 1 Uppercase, at least 1 Numbers, at least 1 Symbols
@@ -185,7 +184,7 @@ function Signup() {
               </Grid>
             </Grid>
             {/* Burron for submit */}
-            <div onClick={submit}> 
+            <div onClick={submit}>
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign Up
               </Button>
@@ -202,7 +201,7 @@ function Signup() {
             </Grid>
           </Box>
         </Box>
-      </Container> 
+      </Container>
     </>
   );
 }

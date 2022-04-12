@@ -21,7 +21,6 @@ let submitPatientFile = (event) => {
 
 function PatientFiles() {
 
-
   return (
     <>
       {/* Make sure the user signed in is a patient */}
@@ -41,9 +40,9 @@ function PatientFiles() {
           </Typography>
           {/* The form with the radio buttons to select your status */}
           <FormControl>
-          <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" component="label" >                                  
-            <input accept=".pdf,image/*" type="file" />                             
-            </Button> 
+            <Button xs={12} sm={3} sx={{ margin: 1 }} variant="contained" component="label" >
+              <input accept=".pdf,image/*" type="file" />
+            </Button>
           </FormControl>
           <br></br>
           <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>

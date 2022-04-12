@@ -34,7 +34,7 @@ function PatientProfile() {
         Axios.post("http://localhost:8080/RequestChat", {
             patientid: localStorage.getItem('id')
         }).then(() => {
-            console.log("success");
+            console.log('success');
             window.location.href = "/PatientProfile";
 
         });
@@ -45,7 +45,6 @@ function PatientProfile() {
     if (isChatRequestedArray[0] === 1) {
         isChatRequested = true;
     }
-
 
     let chatGranted = false; //variable to verify if patient has permission to chat with doctor, to be used for disabling or enabling OPEN CHAT button
     let chatGrantedArray = patientData.map((val, key) => { return val.ChatPermission });
@@ -94,7 +93,7 @@ function PatientProfile() {
                             </Grid>
                         </Grid>
                         {/* Displays the second block related to Patient Information */}
-                        <Grid container spacing={2} sx={{mt: 7}}>
+                        <Grid container spacing={2} sx={{ mt: 7 }}>
                             <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
                                 <Typography component="h1" variant="h5">
                                     General Patient Information
