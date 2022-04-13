@@ -81,7 +81,7 @@ Since we are using ExpressJS on the backend, we will also be following their cod
 
 4. When adding prompts to a component, add them in the same line. Only if the component is too long, can it be broken into multiple lines.
 
-5. Always end a statement with a semicolon. **This was not respected**
+5. Always end a statement with a semicolon. 
 
 6. All frontend page files need to go in the folder ./client/pages.
 
@@ -107,13 +107,13 @@ Since we are using ExpressJS on the backend, we will also be following their cod
 
 17. All methods should be no more than 100 lines long for clarity. If ever it is exceeded, find a way to break the methods down into smaller pieces.
 
-18. Use single quotes (‘ ‘) when assigning a value to a string instead of double quotes (“ “) with the exception of strings that are used for database queries. **PROJECT IS FOR SURE LITTERED WITH THIS**
+18. Use single quotes (‘ ‘) when assigning a value to a string instead of double quotes (“ “) with the exception of strings that are used for database queries. 
 
 18. Use dot notation when accessing an object's value.
 
 19. Try to use const and let instead of var (we want to limit the amount of global variables)
 
-20. Have all ‘const’s and all ‘let’s grouped together separately at the top of the file. **HAVE TO CHECK THIS ONE**
+20. Have all ‘const’s and all ‘let’s grouped together separately at the top of the file. 
 
 21. Do not let the combination of predicates in an if statement get too long, start a new line and continue from there.
 
