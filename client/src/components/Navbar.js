@@ -1,12 +1,12 @@
 import * as React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Container, Box, Button, AppBar, Toolbar, IconButton, Typography, Menu, Avatar, Tooltip, MenuItem, Badge, Link, } from '@mui/material';
-import axios from "axios";
-import { useEffect } from "react";
+import axios from 'axios';
+import { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import Axios from "axios";
-import Common from "./Common";
-import Login from "../pages/Login";
+import Axios from 'axios';
+import Common from './Common';
+import Login from '../pages/Login';
 
 let pages = [];
 
@@ -75,7 +75,7 @@ const ResponsiveAppBar = () => {
             localStorage.clear();
             return new Promise(((resolve, reject) => {
                 axios.get(
-                    "http://localhost:8080/checkAuth", { withCredentials: true }).catch(err => {
+                    'http://localhost:8080/checkAuth', { withCredentials: true }).catch(err => {
                         window.location.reload();
                     })
             }))
@@ -86,18 +86,18 @@ const ResponsiveAppBar = () => {
 
     //function to get the number of notifications to be used
     function getNotificationsCount() { // first getting notifs related to appointments
-        Axios.get("http://localhost:8080/retrieveAllNotifications", {
+        Axios.get('http://localhost:8080/retrieveAllNotifications', {
             params: {
                 id: localStorage.getItem('id')
             }
         }).then((response) => { //getting notifs specific to forms
-            Axios.get("http://localhost:8080/retrieveFormNotifications", {params: {
+            Axios.get('http://localhost:8080/retrieveFormNotifications', {params: {
                 id: localStorage.getItem('id')
             }}).then(response2 => {
                 setCount(response.data.length + response2.data.length);
             })
 
-            console.log("Notification List:");
+            console.log('Notification List:');
             console.log(response.data);
         }).catch(alert);
     }
@@ -109,22 +109,22 @@ const ResponsiveAppBar = () => {
 
 
     return (
-        <AppBar position="sticky">
-            <Container maxWidth="xl">
+        <AppBar position='sticky'>
+            <Container maxWidth='xl'>
                 <Toolbar disableGutters>
-                    <Button variant="h6" noWrap component="div" href='/' sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }} >
+                    <Button variant='h6' noWrap component='div' href='/' sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }} >
                         <Link href='/' sx={{ color: 'white', textDecoration: 'none' }}>
-                            <Typography component="h1" variant="h5">
+                            <Typography component='h1' variant='h5'>
                                 COVID-19 App
                             </Typography>
                         </Link>
                     </Button>
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton size="large" aria-label="account of current user" aria-controls="menu-appbar"
-                            aria-haspopup="true" onClick={handleOpenNavMenu} color="inherit">
+                        <IconButton size='large' aria-label='account of current user' aria-controls='menu-appbar'
+                            aria-haspopup='true' onClick={handleOpenNavMenu} color='inherit'>
                             <MenuIcon />
                         </IconButton>
-                        <Menu id="menu-appbar" anchorEl={anchorElNav}
+                        <Menu id='menu-appbar' anchorEl={anchorElNav}
                             anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }} keepMounted
                             transformOrigin={{ vertical: 'top', horizontal: 'left', }}
                             open={Boolean(anchorElNav)} onClose={handleCloseNavMenu}
@@ -160,25 +160,25 @@ const ResponsiveAppBar = () => {
                     </Box>
                     {localStorage.getItem('role') &&
                         <Box sx={{ flexGrow: 0 }}>
-                            <Badge color="secondary" badgeContent={count}>
-                                <Tooltip title="Open settings">
+                            <Badge color='secondary' badgeContent={count}>
+                                <Tooltip title='Open settings'>
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                        {localStorage.getItem("role") == 'Patient' &&
-                                            <Avatar alt="Remy Sharp" src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg" />}
-                                        {localStorage.getItem("role") == 'Doctor' &&
-                                            <Avatar alt="Remy Sharp" src="https://thumbnail.imgbin.com/20/13/16/imgbin-profession-job-computer-icons-user-profile-avatar-doctor-cartoon-0UHE4i8tiPvnj2bjTRnTZ2nnf_t.jpg" />}
-                                        {localStorage.getItem("role") == 'Admin' &&
-                                            <Avatar alt="Remy Sharp" src="https://www.clipartmax.com/png/middle/344-3449008_vector-avatars-circle-avatar.png" />}
+                                        {localStorage.getItem('role') == 'Patient' &&
+                                            <Avatar alt='Remy Sharp' src='https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg' />}
+                                        {localStorage.getItem('role') == 'Doctor' &&
+                                            <Avatar alt='Remy Sharp' src='https://thumbnail.imgbin.com/20/13/16/imgbin-profession-job-computer-icons-user-profile-avatar-doctor-cartoon-0UHE4i8tiPvnj2bjTRnTZ2nnf_t.jpg' />}
+                                        {localStorage.getItem('role') == 'Admin' &&
+                                            <Avatar alt='Remy Sharp' src='https://www.clipartmax.com/png/middle/344-3449008_vector-avatars-circle-avatar.png' />}
                                         {/* Immigration Officer and Health Official will have different avatars */}
-                                        {localStorage.getItem("role") == 'Immigration Officer' &&
-                                            <Avatar alt="Remy Sharp" src="https://www.clipartmax.com/png/middle/344-3449008_vector-avatars-circle-avatar.png" />}
-                                        {localStorage.getItem("role") == 'Health Official' &&
-                                            <Avatar alt="Remy Sharp" src="https://www.clipartmax.com/png/middle/344-3449008_vector-avatars-circle-avatar.png" />}
+                                        {localStorage.getItem('role') == 'Immigration Officer' &&
+                                            <Avatar alt='Remy Sharp' src='https://www.clipartmax.com/png/middle/344-3449008_vector-avatars-circle-avatar.png' />}
+                                        {localStorage.getItem('role') == 'Health Official' &&
+                                            <Avatar alt='Remy Sharp' src='https://www.clipartmax.com/png/middle/344-3449008_vector-avatars-circle-avatar.png' />}
                                     </IconButton>
                                 </Tooltip>
                             </Badge>
                             {/* Displays the menu option when the avatar is pressed */}
-                            <Menu sx={{ mt: '45px' }} id="menu-appbar" anchorEl={anchorElUser}
+                            <Menu sx={{ mt: '45px' }} id='menu-appbar' anchorEl={anchorElUser}
                                 anchorOrigin={{ vertical: 'top', horizontal: 'right', }} keepMounted
                                 transformOrigin={{ vertical: 'top', horizontal: 'right', }}
                                 open={Boolean(anchorElUser)} onClose={handleCloseUserMenu}>
