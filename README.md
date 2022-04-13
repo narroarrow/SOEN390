@@ -53,6 +53,13 @@ F = Frontend B = Backend
 &nbsp;&nbsp;&nbsp; :white_small_square: ExpressJS <br>
 &nbsp;&nbsp;&nbsp; :white_small_square: Axios <br>
 
+🔻: &nbsp; Testing: <br>
+&nbsp;&nbsp;&nbsp; :🔻: Jest<br>
+&nbsp;&nbsp;&nbsp; :🔻: React Testing Library <br>
+&nbsp;&nbsp;&nbsp; :🔻: Enzyme <br>
+&nbsp;&nbsp;&nbsp; :🔻: Postman <br>
+&nbsp;&nbsp;&nbsp; :🔻: JMeter <br>
+
 
 ## Naming Conventions (for Git & Github organization) :green_book:
 
