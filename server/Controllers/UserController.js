@@ -15,10 +15,10 @@ const UserController = express.Router()
 
 UserController.use(express.json());
 UserController.use(cookieParser());
-UserController.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+UserController.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 UserController.use(express.static(path.join(__dirname, "../client/build")));
 UserController.use(express.static(__dirname + "../client/public/"));
-UserController.use(bodyParser.urlencoded({extended: true}));
+UserController.use(bodyParser.urlencoded({ extended: true }));
 UserController.use(bodyParser.json())
 UserController.use(express.static('dist'));
 
@@ -69,7 +69,7 @@ UserController.get('/checkAuth', function (req, res) {
             if (err) {
                 res.status(403).send();
             } else {
-                res.send({email: data, role: req.cookies.role, id: req.cookies.id});
+                res.send({ email: data, role: req.cookies.role, id: req.cookies.id });
             }
         })
     }
@@ -92,49 +92,49 @@ UserController.post("/Login", async (req, res) => {
         //parameters: Email
         //returns: 
         db.query(state, async (err, result) => {
-                try {
-                    if (err) {
-                        console.log('err: ' + err)
-                    } //indicator for errors when executing a query
-                    else {
-                        if (!result[0]) {
-                            throw err;
-                        } else if (await bcrypt.compare(password, result[0].Password) && email === result[0].Email) {
+            try {
+                if (err) {
+                    console.log('err: ' + err)
+                } //indicator for errors when executing a query
+                else {
+                    if (!result[0]) {
+                        throw err;
+                    } else if (await bcrypt.compare(password, result[0].Password) && email === result[0].Email) {
 
-                            //await needs "async" in the 'parent'
-                            if (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, (error, token) => {
-                                    if (error) {
-                                        console.log('Wrong Password');
-                                        console.log(error)
-                                        res.status(403).send();
-                                    } else if (result[0].Validated == 0) {
-                                        res.status(405).send();
+                        //await needs "async" in the 'parent'
+                        if (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, (error, token) => {
+                            if (error) {
+                                console.log('Wrong Password');
+                                console.log(error)
+                                res.status(403).send();
+                            } else if (result[0].Validated == 0) {
+                                res.status(405).send();
+                            } else {
+                                let update = `UPDATE users SET Token = "${token}" WHERE email = "${email}"`
+                                //parameters: Token, Email
+                                //returns: 
+                                db.query(update, async (err2, result2) => {
+                                    if (err2) {
+                                        console.log("err2: " + err2)
                                     } else {
-                                        let update = `UPDATE users SET Token = "${token}" WHERE email = "${email}"`
-                                        //parameters: Token, Email
-                                        //returns: 
-                                        db.query(update, async (err2, result2) => {
-                                            if (err2) {
-                                                console.log("err2: " + err2)
-                                            } else {
-                                                res.cookie('token', token);
-                                                res.cookie('role', result[0].Role);
-                                                res.cookie('id', result[0].ID)
-                                                res.sendStatus(200);
-                                            }
-                                        })
+                                        res.cookie('token', token);
+                                        res.cookie('role', result[0].Role);
+                                        res.cookie('id', result[0].ID)
+                                        res.sendStatus(200);
                                     }
-                                }
-                            )
-                            ) ;
-                        } else {
-                            throw err
+                                })
+                            }
                         }
+                        )
+                        );
+                    } else {
+                        throw err
                     }
-                } catch (err) {
-                    res.status(500).send();
                 }
+            } catch (err) {
+                res.status(500).send();
             }
+        }
         )
     } catch (err) {
         res.status(500).send()
@@ -155,13 +155,13 @@ UserController.put("/SendResetLink", async (req, res) => {
         //parameters: Email
         //returns:
         db.query(state, async (err, result) => {
-                try {
-                    //console.log('here')
-                    console.log(result[0].FName)
-                    console.log(result[0].Email)
-                    let FName = result[0].FName;
-                    let LName = result[0].LName;
-                    let ID = result[0].ID
+            try {
+                //console.log('here')
+                console.log(result[0].FName)
+                console.log(result[0].Email)
+                let FName = result[0].FName;
+                let LName = result[0].LName;
+                let ID = result[0].ID
 
                     if (!result[0]) {
                         throw err;
@@ -220,10 +220,10 @@ UserController.put("/SendResetLink", async (req, res) => {
                         );
                     }
 
-                } catch (err) {
-                    res.status(498).send();
-                }
+            } catch (err) {
+                res.status(498).send();
             }
+        }
         )
     } catch (err) {
         res.status(497).send()
@@ -259,13 +259,15 @@ UserController.post("/Signup", async (req, res) => {
         let password = req.body.password;
         let userRole = req.body.userRole
         let phoneNumber = req.body.phoneNumber
+        let dateOfBirth = req.body.dateOfBirth
+
 
         let uid;
         const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
         const hashedPassword = await bcrypt.hash(password, salt)
 
         let Validated = 0
-        let state = `INSERT INTO 390db.users (FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?);`;//figure out how to pass variables i created in
+        let state = `INSERT INTO 390db.users (FName, LName, Email, Password, Birthday, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in
 
 
         //console.log(state) //used to verify proper SQL format
@@ -277,7 +279,7 @@ UserController.post("/Signup", async (req, res) => {
         if (existing === false) {
             //parameters:FName, LName, Email, Password, Validated, Phone, Role
             //returns: 
-            db.query(state, [firstName, lastName, email, hashedPassword, Validated, phoneNumber, userRole], function (err, result) {//ID might be removed since it should be auto indent
+            db.query(state, [firstName, lastName, email, hashedPassword,dateOfBirth, Validated, phoneNumber, userRole], function (err, result) {//ID might be removed since it should be auto indent
                 if (err) {
                     console.log(err)
                     res.sendStatus(500);
@@ -408,7 +410,7 @@ UserController.put("/ResettingPassword", async (req, res) => {
         //parameters: user ID, user new password
         //returns: updates user password
         db.query(state, async (err, result) => {
-                try {
+            try {
 
                     let resetting = result[0].Resetting
                     if (!result[0]) {
@@ -417,8 +419,8 @@ UserController.put("/ResettingPassword", async (req, res) => {
                         res.status(405).send();
                     } else {
 
-                        const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
-                        const hashedPassword = await bcrypt.hash(newPassword, salt)
+                    const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
+                    const hashedPassword = await bcrypt.hash(newPassword, salt)
 
                         let updatePasswordState = `UPDATE users SET Password = "${hashedPassword}" WHERE users.ID = ${id};`
                         db.query(updatePasswordState, async (err, result) => {
@@ -433,10 +435,10 @@ UserController.put("/ResettingPassword", async (req, res) => {
                         })
                     }
 
-                } catch (err) {
-                    res.status(498).send();
-                }
+            } catch (err) {
+                res.status(498).send();
             }
+        }
         )
     } catch (err) {
         res.status(497).send()
