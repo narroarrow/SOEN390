@@ -18,6 +18,13 @@ test('Renders the AdminPatientDashboard component', () => {
   );
 });
 
+
+// The following tests test specific functions related to AdminPatientDashboard,
+// Initially, the page is rendered with a mount
+// Then the specific component is rendered, ensuring the component is not null
+// Finally, the function is called and the test checks to see if the function was called.
+// This repeats for every relevant function
+
 describe('Testing getPatients', () => {
   const getPatients = jest.fn();
   let wrapper;
