@@ -78,46 +78,46 @@ function AdminPatientDashboard() {
       alert('Please select a doctor to reassign patient to.');
     }
     setFilled(false);
+   };
+
+   //Data JSON Array of Doctor Names and IDs 
+  const options = 
+    availableDoctorsList.map((val, key) => 
+      ({
+        label: val.Fname + ' '+ val.Lname,
+        value: val.ID
+      })
+    )
+  ;
+
+  function getPatients() { //this function will return all information associated to patients
+    Axios.get("http://localhost:8080/adminViewingPatientData",{withCredentials: true}).then((response) => {
+      setPatientList(response.data);
+      setFilteredPatientList(response.data);
+      // console.log("Patients:");
+      // console.log(response.data);
+    });
   };
 
-  //Data JSON Array of Doctor Names and IDs
-  const options = availableDoctorsList.map((val, key) => ({
-    label: val.Fname + ' ' + val.Lname,
-    value: val.ID,
-  }));
-  let reassignPatient = (docID, patientID) => {
-    //This function will update the patient with the reassigned doctor and make changes in the tables to reflect the reassignment.
-    Axios.post('http://localhost:8080/reassignPatient', {
+  function getDoctorMostAvailable() { //this function will return doctors sorted by the most available
+    Axios.get("http://localhost:8080/mostToLeastPatients",{withCredentials: true}).then((response) => {
+      setMostToLeastPatients(response.data);
+      console.log("Doctors Most Available :");
+      console.log(response.data);
+    });
+  };
+
+  let reassignPatient = (docID, patientID) => { //This function will update the patient with the reassigned doctor and make changes in the tables to reflect the reassignment.
+    Axios.post("http://localhost:8080/reassignPatient", {
       DoctorID: docID,
-      PatientID: patientID,
-    }).then(() => {
-      //console.log('successfully updated patient!')
+      PatientID: patientID
+    },{withCredentials: true}).then(() => {
+      //console.log("successfully updated patient!")
     });
     window.location.reload(false);
   };
 
   let stopeffect = 1;
-
-  function getPatients() {
-    //this function will return all information associated to patients
-    Axios.get('http://localhost:8080/adminViewingPatientData').then(
-      (response) => {
-        setPatientList(response.data);
-        setFilteredPatientList(response.data);
-        // console.log('Patients:');
-        // console.log(response.data);
-      }
-    );
-  }
-
-  function getDoctorMostAvailable() {
-    //this function will return doctors sorted by the most available
-    Axios.get('http://localhost:8080/mostToLeastPatients').then((response) => {
-      setMostToLeastPatients(response.data);
-      console.log('Doctors Most Available :');
-      console.log(response.data);
-    });
-  }
 
   useEffect(() => {
     //functions executed upon page render

@@ -22,7 +22,7 @@ function PatientProfile() {
 
     //This useEffect() will run after the page renders. It will
     //get the patients data by using a get and going to the 
-    //server.js file to execute the code to query for the data.
+    //Server.js file to execute the code to query for the data.
     useEffect(() => {
         Axios.get('http://localhost:8080/patientProfileData', { withCredentials: true, params: { id: localStorage.getItem('id') } }).then((response) => {
             setPatientData(response.data);
@@ -33,8 +33,8 @@ function PatientProfile() {
     let requestChat = () => { //When clicking the REQUEST CHAT button, this will update the ChatRequested attribute in the patient tale to true
         Axios.post("http://localhost:8080/RequestChat", {
             patientid: localStorage.getItem('id')
-        }).then(() => {
-            console.log('success');
+        },{withCredentials: true}).then(() => {
+            console.log("success");
             window.location.href = "/PatientProfile";
 
         });
@@ -101,7 +101,7 @@ function PatientProfile() {
                             </Grid>
                             <Grid item xs={12} sm={6} md={4}>
                                 <Item>
-                                    Birthdate:<br />{patientData.map((val, key) => { return " " + val.Birthday })}
+                                    Birthdate:<br />{patientData.map((val, key) => { return " " + new Date (val.Birthday).getFullYear() +"-" +  (new Date (val.Birthday).getMonth()+1) + "-" +  new Date (val.Birthday).getDate() })}
                                 </Item>
                             </Grid>
                             <Grid item xs={12} sm={6} md={4}>

@@ -1,11 +1,13 @@
 const express = require("express");
-const db = require("../database");
+const db = require("../Database");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
 const ScheduleController = express.Router();
 
+const {patient, doctor} = require("../middleware/Roles");
+const {auth} = require("../middleware/Auth");
 ScheduleController.use(express.json());
 ScheduleController.use(cookieParser());
 ScheduleController.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
@@ -44,7 +46,7 @@ function arrayMaker(result) {
 }
 
 //see open appointments
-ScheduleController.get("/seeOpenAppointments", (req, res) => {
+ScheduleController.get("/seeOpenAppointments", [patient, auth],(req, res) => {
 
     let patientID = req.query["id"];
     console.log("Patient ID: " + patientID);
@@ -66,7 +68,7 @@ ScheduleController.get("/seeOpenAppointments", (req, res) => {
 
 
 //Displays the current appointment that a patient has.
-ScheduleController.get("/seeCurrentPatientAppointment", (req, res) => {
+ScheduleController.get("/seeCurrentPatientAppointment", [patient, auth],(req, res) => {
 
     let patientID = req.query["id"];
 
@@ -86,7 +88,7 @@ ScheduleController.get("/seeCurrentPatientAppointment", (req, res) => {
 )
 
 
-ScheduleController.post("/makeAppointments", (req, res) => {
+ScheduleController.post("/makeAppointments", [patient, auth],(req, res) => {
     var appointment = req.body.appointmentTime;
 
     var appointmentArray = appointment.split(/(\s+)/);
@@ -186,7 +188,7 @@ ScheduleController.post("/makeAppointments", (req, res) => {
 )
 
 
-ScheduleController.post("/doctorAvailbility", (req, res) => {
+ScheduleController.post("/doctorAvailbility", [doctor, auth],(req, res) => {
     let gridSlots = req.body["backendTimeSlots"];
     let dID = gridSlots[0]["doctorID"];
     //parameters: DoctorID
@@ -233,7 +235,7 @@ ScheduleController.post("/doctorAvailbility", (req, res) => {
 }
 )
 
-ScheduleController.get("/doctorFilledSlots", (req, res) => {
+ScheduleController.get("/doctorFilledSlots", [doctor, auth], (req, res) => {
     let doctorID = req.query["id"];
     state = "SELECT * FROM 390db.doctorhours dh WHERE dh.DoctorID = ?;"
     db.query(state, [doctorID], (err, result) => {

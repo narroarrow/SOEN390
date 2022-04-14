@@ -39,7 +39,7 @@ function AdminDashboard() {
   const [immigrationOfficerListUnvalidated, setImmigrationOfficerListUnvalidated] = useState([]); //all unvalidated immigration officer info
   
   function getValidatedDoctors() { //this function will return all information associated to validated doctors
-    Axios.get('http://localhost:8080/adminViewingValidatedDoctorData').then((response) => {
+    Axios.get("http://localhost:8080/adminViewingValidatedDoctorData",{withCredentials:true}).then((response) => {
       setDoctorListValidated(response.data);
       //console.log('Validated Doctors:');
       //console.log(response.data);
@@ -47,7 +47,7 @@ function AdminDashboard() {
   };
 
   function getUnvalidatedDoctors() { //this function will return all information associated to unvalidated doctors
-    Axios.get('http://localhost:8080/adminViewingUnvalidatedDoctorData').then((response) => {
+    Axios.get("http://localhost:8080/adminViewingUnvalidatedDoctorData",{withCredentials:true}).then((response) => {
       setDoctorListUnvalidated(response.data);
       // console.log('Unvalidated Doctors:');
       // console.log(response.data);
@@ -55,7 +55,7 @@ function AdminDashboard() {
   };
 
   function getValidatedHealthOfficials() { //this function will return all information associated to validated health officials
-    Axios.get('http://localhost:8080/adminViewingValidatedHealthOfficalData').then((response) => {
+    Axios.get("http://localhost:8080/adminViewingValidatedHealthOfficalData",{withCredentials: true}).then((response) => {
       setHealthOfficialListValidated(response.data);
       // console.log('Validated HO:');
       // console.log(response.data);
@@ -63,7 +63,7 @@ function AdminDashboard() {
   };
 
   function getUnvalidatedHealthOfficials() {//this function will return all information associated to unvalidated health officials
-    Axios.get('http://localhost:8080/adminViewingUnvalidatedHealthOfficalData').then((response) => {
+    Axios.get("http://localhost:8080/adminViewingUnvalidatedHealthOfficalData",{withCredentials: true}).then((response) => {
       setHealthOfficialListUnvalidated(response.data);
       // console.log('Unvalidated HO:');
       // console.log(response.data);
@@ -71,7 +71,7 @@ function AdminDashboard() {
   };
 
   function getValidatedImmigrationOfficers() { //this function will return all information associated to validated immigration officials
-    Axios.get('http://localhost:8080/adminViewingValidatedImmigrationOfficerData').then((response) => {
+    Axios.get("http://localhost:8080/adminViewingValidatedImmigrationOfficerData",{withCredentials: true}).then((response) => {
       setImmigrationOfficerListValidated(response.data);
       // console.log('Validated IO:');
       // console.log(response.data);
@@ -79,7 +79,7 @@ function AdminDashboard() {
   };
 
   function getUnvalidatedImmigrationOfficers() { //this function will return all information associated to unvalidated immigration officials
-    Axios.get('http://localhost:8080/adminViewingUnvalidatedImmigrationOfficerData').then((response) => {
+    Axios.get("http://localhost:8080/adminViewingUnvalidatedImmigrationOfficerData",{withCredentials: true}).then((response) => {
       setImmigrationOfficerListUnvalidated(response.data);
       // console.log('Unvalidated IO:');
       // console.log(response.data);
@@ -89,8 +89,8 @@ function AdminDashboard() {
   let validateDoctor = (ID) => { //this function will validate doctors on click
     Axios.post('http://localhost:8080/validateDoctor', {
       DoctorID: ID
-    }).then(() => {
-      //console.log('successfully validated doctor!')
+    },{withCredentials:true}).then(() => {
+      //console.log("successfully validated doctor!")
     });
     window.location.reload(false);
   };
@@ -105,11 +105,10 @@ function AdminDashboard() {
       return;
     }
 
-    Axios.post("http://localhost:8080/invalidateDoctor", {
-      //This request will invalidate a doctor
-      DoctorID: ID,
-    }).then(() => {
-      //console.log('successfully invalidated doctor!')
+    Axios.post("http://localhost:8080/invalidateDoctor", { //This request will invalidate a doctor
+      DoctorID: ID
+    },{withCredentials: true}).then(() => {
+      //console.log("successfully invalidated doctor!")
     });
     window.location.reload(false);
   };
@@ -117,7 +116,7 @@ function AdminDashboard() {
   let validateHO = (ID) => { //this function will validate health officials on click
     Axios.post('http://localhost:8080/validateHealthOfficial', {
       HealthOfficialID: ID
-    }).then(() => {
+    },{withCredentials: true}).then(() => {
       //console.log('successfully validated health official!')
     });
     window.location.reload(false);
@@ -130,8 +129,8 @@ function AdminDashboard() {
 
     Axios.post('http://localhost:8080/invalidateHealthOfficial', { //This request will invalidate a health official
       HealthOfficialID: ID
-    }).then(() => {
-      //console.log('successfully invalidated health official!')
+    },{withCredentials: true}).then(() => {
+      //console.log("successfully invalidated health official!")
     });
     window.location.reload(false);
   };
@@ -139,8 +138,8 @@ function AdminDashboard() {
   let validateIO = (ID) => { //this function will validate immigration officers on click
     Axios.post('http://localhost:8080/validateImmigrationOfficer', {
       ImmigrationOfficerID: ID
-    }).then(() => {
-      //console.log('successfully validated immigration officer!')
+    },{withCredentials: true}).then(() => {
+      //console.log("successfully validated immigration officer!")
     });
     window.location.reload(false);
   };
@@ -152,15 +151,15 @@ function AdminDashboard() {
 
     Axios.post('http://localhost:8080/invalidateImmigrationOfficer', { //This request will invalidate a immigration officer
       ImmigrationOfficerID: ID
-    }).then(() => {
-      //console.log('successfully invalidated immigration officer!')
+    },{withCredentials: true}).then(() => {
+      //console.log("successfully invalidated immigration officer!")
     });
     window.location.reload(false);
   };
 
   function sendEmail() { //Feature to be implemented soon
-    Axios.post('http://localhost:8080/sendEmail').then(() => {
-      //console.log('Sent Email!')
+    Axios.post("http://localhost:8080/sendEmail",{withCredentials: true}).then(() => {
+      //console.log("Sent Email!")
     });
   }
 

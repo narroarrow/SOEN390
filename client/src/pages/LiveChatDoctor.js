@@ -8,42 +8,41 @@ import io from 'socket.io-client';
 const socket = io.connect('http://localhost:8080');
 
 function LiveChat() {
-  //declaring the variables
-  let stopEffect = 1;
-  const ENTERCODE = 13;
-  const scrollBottomRef = useRef(null);
-  const location = useLocation();
+    
+    //declaring the variables
+    let stopEffect = 1;
+    const ENTERCODE = 13;
+    const scrollBottomRef = useRef(null);
+    const location = useLocation();
 
-  //declaring all the use states
-  const [patient, setPatient] = useState(''); //the name
-  const [doctor, setDoctor] = useState(''); //the name
-  const [message, setMessage] = useState('');
-  const [allMessages, setAllMessages] = useState([]);
-  const [patientId, setPatientId] = useState(location.state.ID);
+    //declaring all the use states
+    const [patient, setPatient] = useState("") //the name
+    const [doctor, setDoctor] = useState("")//the name 
+    const [message, setMessage] = useState("") 
+    const [allMessages, setAllMessages] = useState([]);
+    const [patientId, setPatientId] = useState(location.state.ID);
+    
+    //scrolls to the bottom of the messages
+    useEffect(() => {
+        if(scrollBottomRef.current){
+            scrollBottomRef.current.scrollIntoView({behavior: 'auto'})
+        }
+    })
 
-  //scrolls to the bottom of the messages
-  useEffect(() => {
-    if (scrollBottomRef.current) {
-      scrollBottomRef.current.scrollIntoView({ behavior: 'auto' });
-    }
-  });
+    //gets the name of doctor and patient
+     useEffect(() => {
+         Axios.get('http://localhost:8080/patientDoctorName', { withCredentials: true, 
+         params: { id: patientId }
+     }).then((response) => {
+             setPatient(response.data[0].patientName);
+             setDoctor(response.data[0].doctorName);
+         })
+     }, [stopEffect]);
 
-  //gets the name of doctor and patient
-  useEffect(() => {
-    Axios.get('http://localhost:8080/patientDoctorName', {
-      withCredentials: true,
-      params: { id: patientId },
-    }).then((response) => {
-      setPatient(response.data[0].patientName);
-      setDoctor(response.data[0].doctorName);
-    });
-  }, [stopEffect]);
-
-  //Gets the messages to display
-  useEffect(() => {
-    Axios.get('http://localhost:8080/liveChatMessages', {
-      withCredentials: true,
-      params: { id: patientId },
+    //Gets the messages to display
+    useEffect(() => {
+        Axios.get('http://localhost:8080/liveChatMessages', { withCredentials: true, 
+        params: { id: patientId }
     }).then((response) => {
       setAllMessages(response.data);
     });
@@ -82,7 +81,7 @@ function LiveChat() {
       id: localStorage.getItem('id'), //Pass the doctor's id and message to the backend
       message: message,
       patientId: patientId,
-    });
+    }, {withCredentials: true});
     //create a message and send it to patient
     const messageData = {
       roomId: patientId,

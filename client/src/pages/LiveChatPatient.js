@@ -75,8 +75,8 @@ function LiveChat() {
         Axios.post("http://localhost:8080/createPatientLiveChatMessage", {
             id: localStorage.getItem('id'), //Pass the patient's id and message to the backend
             message: message
-        });
-        //create a message and send it to doctor
+        }, {withCredentials:true});
+         //create a message and send it to doctor
         const messageData = {
             roomId: localStorage.getItem('id'),
             patientId: localStorage.getItem('id'),

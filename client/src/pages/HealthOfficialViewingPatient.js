@@ -13,38 +13,34 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function HealthOfficialViewingPatient() {
-  const location = useLocation(); //get data passed on through previous page (HealthOfficialPatientProfile page)
-  const [patientData, setPatientData] = useState([]); //Patient data used in rendering of page
+    const location = useLocation(); //get data passed on through previous page (HealthOfficialPatientProfile page)
+    const [patientData, setPatientData] = useState([]); //Patient data used in rendering of page
+
+    let stopeffect = 1;
+    
+    useEffect(()=>{ //When page is loaded, get requests will get patient data as well as a list of patients whose profiles have been viewed
+        Axios.get("http://localhost:8080/doctorViewingPatientData", { params: {id: location.state.ID}, withCredentials:true}).then((response) => {
+            setPatientData(response.data);
+        });   
+    }, [stopeffect]); 
 
   let stopEffect = 1;
 
-  useEffect(() => {
-    //When page is loaded, get requests will get patient data as well as a list of patients whose profiles have been viewed
-    Axios.get('http://localhost:8080/doctorViewingPatientData', {
-      params: { id: location.state.ID },
-    }).then((response) => {
-      setPatientData(response.data);
-    });
-  }, [stopEffect]);
 
-  let previousSymptoms = () => {
-    //This function gets the list of all the patients previous symptom forms (to be rendered on a page in later sprint)
-    Axios.get('http://localhost:8080/doctorViewingPreviousSymptoms', {
-      params: { id: location.state.ID },
-    }).then((response) => {
-      console.log('success');
-    });
-  };
+    let previousSymptoms = () => { //This function gets the list of all the patients previous symptom forms (to be rendered on a page in later sprint)
+        Axios.get("http://localhost:8080/doctorViewingPreviousSymptoms", { params: {id: location.state.ID}, withCredentials:true}).then((response) => {
+            console.log("success");
+        });  
+    }
 
-  let flagPatient = () => {
-    //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
-    Axios.post('http://localhost:8080/flagPatient', {
-      PatientID: location.state.ID,
-      FlagPriority: 3,
-    }).then(() => {
-      console.log('success');
-    });
-  };
+    let flagPatient = () => { //When clicking the REQUEST SYMPTOM FORM button, this will update the SymptomRequested attribute in the patient tale to true
+        Axios.post("http://localhost:8080/flagPatient", {
+            PatientID: location.state.ID,
+            FlagPriority: 3
+        },{withCredentials: true}).then(()=>{
+            console.log("success")
+        });
+    }
 
   let isFlagged = false; //variable to verify if patient has already been flagged, to be used for displaying either the FLAG or UNFLAG butttons
   let isFlaggedArray = patientData.map((val, key) => {

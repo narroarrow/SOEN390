@@ -8,8 +8,10 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const mail = require("nodemailer");
 require('dotenv').config();
-const crypto = require("crypto");
-const UserController = express.Router();
+const crypto = require("crypto")
+const {patient, admin, doctor} = require("../middleware/Roles");
+const auth = require("../middleware/Auth");
+const UserController = express.Router()
 
 UserController.use(express.json());
 UserController.use(cookieParser());
@@ -46,6 +48,15 @@ let sendEmail = (fName, lName, email, link) => {
 
     transporter.sendMail(mailOptions);
 }
+
+// UserController.use(function (req, res, next) {
+//     if (req.cookies) {
+//         console.log(req.cookies)
+//         next()
+//     } else {
+//         res.status(403).send;
+//     }
+// })
 
 // start of sign up and login. creating correct cookies if logged in
 UserController.get('/checkAuth', function (req, res) {
@@ -242,11 +253,13 @@ UserController.post("/Signup", async (req, res) => {
         let password = req.body.password;
         let userRole = req.body.userRole;
         let phoneNumber = req.body.phoneNumber;
+        let dateOfBirth = req.body.dateOfBirth;
         let uid;
-        const salt = await bcrypt.genSalt(10); //hashes with 10 rounds
+        const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
         const hashedPassword = await bcrypt.hash(password, salt);
+
         let Validated = 0;
-        let state = `INSERT INTO 390db.users (FName, LName, Email, Password, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?);`;//figure out how to pass variables i created in
+        let state = `INSERT INTO 390db.users (FName, LName, Email, Password, Birthday, Validated, Phone, Role) VALUES (?,?,?,?,?,?,?,?);`;//figure out how to pass variables i created in
 
         //console.log(state) //used to verify proper SQL format
 
@@ -257,7 +270,7 @@ UserController.post("/Signup", async (req, res) => {
         if (existing === false) {
             //parameters:FName, LName, Email, Password, Validated, Phone, Role
             //returns: 
-            db.query(state, [firstName, lastName, email, hashedPassword, Validated, phoneNumber, userRole], function (err, result) {//ID might be removed since it should be auto indent
+            db.query(state, [firstName, lastName, email, hashedPassword,dateOfBirth, Validated, phoneNumber, userRole], function (err, result) {//ID might be removed since it should be auto indent
                 if (err) {
                     console.log(err)
                     res.sendStatus(500);
@@ -336,7 +349,7 @@ UserController.post("/Signup", async (req, res) => {
     }
 })
 // end of sign up and login
-
+//formal
 
 // clearing cookies on logout
 UserController.post('/Logout', ((req, res) => {
@@ -377,35 +390,35 @@ UserController.put("/ResettingPassword", async (req, res) => {
         let id = req.body.id;
         let newPassword = req.body.password;
         //query statement
-        let state = `SELECT U.FName, U.LName, U.Email, U.Password, U.Role, U.ID, U.Resetting FROM users U WHERE U.ID = ${id}`;
+        let state = `SELECT U.FName, U.LName, U.Email, U.Password, U.Role, U.ID, U.Resetting, U.ResetToken FROM users U WHERE U.ID = ${id}`;
 
         //parameters: user ID, user new password
         //returns: updates user password
         db.query(state, async (err, result) => {
             try {
 
-                let resetting = result[0].Resetting;
-                if (!result[0]) {
-                    throw err;
-                } else if (resetting === 0) {
-                    res.status(405).send();
-                } else {
+                    let resetting = result[0].Resetting
+                    if (!result[0]) {
+                        throw err;
+                    } else if (resetting === 0 || result[0].ResetToken !== req.body.ResetToken) {
+                        res.status(405).send();
+                    } else {
 
-                    const salt = await bcrypt.genSalt(10); //hashes with 10 rounds
-                    const hashedPassword = await bcrypt.hash(newPassword, salt);
+                    const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
+                    const hashedPassword = await bcrypt.hash(newPassword, salt)
 
-                    let updatePasswordState = `UPDATE users SET Password = "${hashedPassword}" WHERE users.ID = ${id};`;
-                    db.query(updatePasswordState, async (err, result) => {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            let updateResetting = `UPDATE users SET Resetting = 0, ResetToken = NULL WHERE ID = ${id}`;
-                            db.query(updateResetting);
-                            console.log('yay');
-                            res.status(200).send();
-                        }
-                    });
-                }
+                        let updatePasswordState = `UPDATE users SET Password = "${hashedPassword}" WHERE users.ID = ${id};`
+                        db.query(updatePasswordState, async (err, result) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                let updateResetting = `UPDATE users SET Resetting = 0, ResetToken = NULL WHERE ID = ${id}`
+                                db.query(updateResetting);
+                                console.log('yay');
+                                res.status(200).send();
+                            }
+                        })
+                    }
 
             } catch (err) {
                 res.status(498).send();

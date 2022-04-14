@@ -32,11 +32,19 @@ const roles = [
 
 //handling the Signup form
 let userRoles = 'Patient';
+let dateOfBirth = '2014-08-18T21:11:54'
 
 function Signup() {
   //switching roles
   const [role, setRoles] = React.useState('Patient');
   const [isDoctor, setIsDoctor] = useState(false);
+  const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  var todayDate = yyyy+ '-' +mm+ '-' +dd;
+  
   // signing up -> if correct send to login page -> if not  display error
   let submitSignupForm = (event1) => {
     event1.preventDefault();
@@ -49,7 +57,8 @@ function Signup() {
         password: data.get('password'),
         userRole: userRoles,
         phoneNumber: data.get('PhoneNumber'),
-        medicalLicense: data.get('medicalLicense') ? data.get('medicalLicense') : ''
+        medicalLicense: data.get('medicalLicense') ? data.get('medicalLicense') : '',
+        dateOfBirth: dateOfBirth
       }, { withCredentials: true }).then(() => {
 
         window.location.href = "/Login"
@@ -68,7 +77,11 @@ function Signup() {
       setIsDoctor(false);
     }
   };
-
+  const handleChange2 = (DOB) => {
+    setValue(DOB.target.value);
+    dateOfBirth = DOB.target.value
+  };
+  
   // remove error message after new submit
   const submit = () => {
     setEmailExisting('');
@@ -169,6 +182,14 @@ function Signup() {
                   </div>
                 )}
                 {passwordError}
+              </Grid>
+              {/*Date of Birth*/}
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  type="date"
+                  inputProps={{ min: "1900-01-01", max: todayDate}}
+                  onChange={handleChange2}
+                />
               </Grid>
               {isDoctor && <Grid item xs={12}>
                 <TextField required fullWidth name="medicalLicense" label="Medical License" id="medicalLicense" autoComplete="medical-license" />

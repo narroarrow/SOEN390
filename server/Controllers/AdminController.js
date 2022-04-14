@@ -1,10 +1,12 @@
 const express = require("express");
-const db = require("../database");
+const db = require("../Database");
 const mail = require("nodemailer");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
+const {admin} = require("../middleware/Roles");
+const {auth} = require("../middleware/Auth");
 
 const AdminController = express.Router()
 
@@ -43,7 +45,7 @@ let sendEmail = (fName, lName, email) => {
 };
 
 // Gets validated doctor first name, last name, phone number to the admin
-AdminController.get("/adminViewingValidatedDoctorData", (req, res) => {
+AdminController.get("/adminViewingValidatedDoctorData", [admin, auth],(req, res) => {
 
     let state = 'SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 1;';
     //parameters:
@@ -58,7 +60,7 @@ AdminController.get("/adminViewingValidatedDoctorData", (req, res) => {
 });
 
 // Gets unvalidated doctor first name, last name, phone number to the admin
-AdminController.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
+AdminController.get("/adminViewingUnvalidatedDoctorData", [admin, auth], (req, res) => {
     let state = 'SELECT Udoctor.Fname, Udoctor.Lname, Udoctor.Phone, Udoctor.Validated, Udoctor.ID, D.License FROM 390db.users Udoctor, 390db.doctors D WHERE Udoctor.ID = D.ID AND Udoctor.Validated = 0;';
     //parameters:
     //returns: (doctor first name, doctor last name, doctor phone, validity state of doctor, doctor ID, doctor license)
@@ -74,7 +76,7 @@ AdminController.get("/adminViewingUnvalidatedDoctorData", (req, res) => {
 );
 
 // Gets validated health official first name, last name, phone number, ID, and validation status to the admin
-AdminController.get("/adminViewingValidatedHealthOfficalData", (req, res) => {
+AdminController.get("/adminViewingValidatedHealthOfficalData", [admin, auth], (req, res) => {
     let state = 'SELECT Uho.Fname, Uho.Lname, Uho.Phone, Uho.Validated, Uho.ID FROM 390db.users Uho WHERE Uho.Role = "Health Official" AND Uho.Validated = 1;';
     //parameters:
     //returns: (health official first name, health official last name, health official phone, validity state of health official, health official ID)
@@ -91,7 +93,7 @@ AdminController.get("/adminViewingValidatedHealthOfficalData", (req, res) => {
 );
 
 // Gets unvalidated health official first name, last name, phone number, ID, and validation status to the admin
-AdminController.get("/adminViewingUnvalidatedHealthOfficalData", (req, res) => {
+AdminController.get("/adminViewingUnvalidatedHealthOfficalData", [admin, auth],(req, res) => {
     let state = 'SELECT Uho.Fname, Uho.Lname, Uho.Phone, Uho.Validated, Uho.ID FROM 390db.users Uho WHERE Uho.Role = "Health Official" AND Uho.Validated = 0;';
     //parameters:
     //returns: (health official first name, health official last name, health official phone, validity state of health official, health official ID)
@@ -107,7 +109,7 @@ AdminController.get("/adminViewingUnvalidatedHealthOfficalData", (req, res) => {
 );
 
 // Gets validated immigration officer first name, last name, phone number, ID, and validation status to the admin
-AdminController.get("/adminViewingValidatedImmigrationOfficerData", (req, res) => {
+AdminController.get("/adminViewingValidatedImmigrationOfficerData", [admin, auth],(req, res) => {
     let state = 'SELECT Uio.Fname, Uio.Lname, Uio.Phone, Uio.Validated, Uio.ID FROM 390db.users Uio WHERE Uio.Role = "Immigration Officer" AND Uio.Validated = 1;';
     //parameters:
     //returns: (immigration officer first name, immigration officer last name, immigration officer phone, validity state of immigration officer, immigration officer ID)
@@ -124,7 +126,7 @@ AdminController.get("/adminViewingValidatedImmigrationOfficerData", (req, res) =
 );
 
 // Gets unvalidated immigration officer first name, last name, phone number, ID, and validation status to the admin
-AdminController.get("/adminViewingUnvalidatedImmigrationOfficerData", (req, res) => {
+AdminController.get("/adminViewingUnvalidatedImmigrationOfficerData", [admin, auth], (req, res) => {
     let state = 'SELECT Uio.Fname, Uio.Lname, Uio.Phone, Uio.Validated, Uio.ID FROM 390db.users Uio WHERE Uio.Role = "Immigration Officer" AND Uio.Validated = 0;';
     //parameters:
     //returns: (immigration officer first name, immigration officer last name, immigration officer phone, validity state of immigration officer, immigration officer ID)
@@ -140,7 +142,7 @@ AdminController.get("/adminViewingUnvalidatedImmigrationOfficerData", (req, res)
 );
 
 // Gets patient first name, last name, phone number to the admin
-AdminController.get("/adminViewingPatientData", (req, res) => {
+AdminController.get("/adminViewingPatientData", [admin, auth], (req, res) => {
     //parameters:
     //returns: (patient first name, patient last name, patient phone, doctor first name, doctor last name)
     let state = 'SELECT Upatient.ID, Upatient.Fname, Upatient.Lname, Upatient.Phone, Udoctor.Fname AS docFname, Udoctor.Lname AS docLname FROM 390db.users Upatient, 390db.patients P, 390db.users Udoctor WHERE Upatient.ID = P.ID AND P.DoctorID = Udoctor.ID;';
@@ -154,7 +156,7 @@ AdminController.get("/adminViewingPatientData", (req, res) => {
 });
 
 //Post to validate doctor in database
-AdminController.post("/validateDoctor", (req, res) => {
+AdminController.post("/validateDoctor", [admin, auth],(req, res) => {
     let DoctorID = req.body.DoctorID;
     let state = 'UPDATE 390db.users SET Validated = 1 WHERE ID = ?';
     //parameters: DoctorID
@@ -168,10 +170,10 @@ AdminController.post("/validateDoctor", (req, res) => {
     });
 });
 
-AdminController.post("/invalidateDoctor", (req, res) => {
+
+AdminController.post("/invalidateDoctor", [admin, auth],(req, res) => {
     //Delete from the database
     let DoctorID = req.body.DoctorID;
-    console.log(DoctorID);
     var fName;
     var lName;
     var email;
@@ -185,7 +187,6 @@ AdminController.post("/invalidateDoctor", (req, res) => {
             fName = result[0].Fname;
             lName = result[0].Lname;
             email = result[0].Email;
-            console.log(email);
         }
     });
     //parameters: DoctorID
@@ -211,7 +212,8 @@ AdminController.post("/invalidateDoctor", (req, res) => {
     });
 });
 
-AdminController.post("/validateHealthOfficial", (req, res) => {
+
+AdminController.post("/validateHealthOfficial", [admin, auth],(req, res) => {
     //Validates a Health Official account request
     let HealthOfficialID = req.body.HealthOfficialID;
     let state = 'UPDATE 390db.users SET Validated = 1 WHERE ID = ?';
@@ -226,7 +228,7 @@ AdminController.post("/validateHealthOfficial", (req, res) => {
     });
 });
 
-AdminController.get("/mostToLeastPatients", (req, res) => {
+AdminController.get("/mostToLeastPatients", [auth, admin], (req, res) => {
     //Returns all the doctors ordered from least to most patients
     let state = "SELECT  U.ID, U.Fname, U.Lname, U.Email, U.Phone, U.Address, d.patientCount FROM 390db.doctors D, 390db.users U WHERE D.ID = U.ID AND U.validated = '1' GROUP BY D.ID ORDER BY patientCount ASC";
     //parameters:
@@ -240,7 +242,7 @@ AdminController.get("/mostToLeastPatients", (req, res) => {
     });
 });
 
-AdminController.post("/invalidateHealthOfficial", (req, res) => {
+AdminController.post("/invalidateHealthOfficial", [admin, auth],(req, res) => {
     //Deletes the Health Official that requested an account from the database.
     let HealthOfficialID = req.body.HealthOfficialID;
     console.log(HealthOfficialID);
@@ -283,7 +285,7 @@ AdminController.post("/invalidateHealthOfficial", (req, res) => {
     });
 });
 
-AdminController.post("/validateImmigrationOfficer", (req, res) => {
+AdminController.post("/validateImmigrationOfficer", [auth, admin], (req, res) => {
     //Validates the account of an Immigration Officer
     let ImmigrationOfficerID = req.body.ImmigrationOfficerID;
     let state = 'UPDATE 390db.users SET Validated = 1 WHERE ID = ?';
@@ -298,7 +300,7 @@ AdminController.post("/validateImmigrationOfficer", (req, res) => {
     });
 });
 
-AdminController.post("/invalidateImmigrationOfficer", (req, res) => {
+AdminController.post("/invalidateImmigrationOfficer", [admin, auth], (req, res) => {
     //Delete the Immigration Officer that requested an account from the database.
     let ImmigrationOfficerID = req.body.ImmigrationOfficerID;
     console.log(ImmigrationOfficerID);
@@ -341,7 +343,7 @@ AdminController.post("/invalidateImmigrationOfficer", (req, res) => {
     });
 });
 
-AdminController.post("/reassignPatient", (req, res) => {
+AdminController.post("/reassignPatient", [admin, auth],(req, res) => {
     //Reasigns a patient to a new doctor in the database
     //Resets chat permission/request values
     //Deletes all old messages.
