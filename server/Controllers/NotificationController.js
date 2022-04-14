@@ -46,7 +46,6 @@ NotificationController.get("/retrieveAllNotifications", [auth, doctor], (req, re
 
 NotificationController.get("/retrieveFormNotifications", [auth, doctor],(req, res) => {
     let doctorID = req.query["id"];
-    console.log(doctorID);
     //parameters: DoctorID
 //returns: FName, LName, aptDate, StartTime,EndTime
     let state = "SELECT Upatient.Fname, Upatient.Lname, Upatient.ID, Hi.InfoTimestamp, Hi.FormID " +

@@ -187,7 +187,6 @@ AdminController.post("/validateDoctor", [admin, auth],(req, res) => {
 AdminController.post("/invalidateDoctor", [admin, auth],(req, res) => {
     //Delete from the database
     let DoctorID = req.body.DoctorID;
-    console.log(DoctorID);
     var fName;
     var lName;
     var email;
@@ -201,7 +200,6 @@ AdminController.post("/invalidateDoctor", [admin, auth],(req, res) => {
             fName = result[0].Fname;
             lName = result[0].Lname;
             email = result[0].Email;
-            console.log(email);
         }
     });
     //parameters: DoctorID
