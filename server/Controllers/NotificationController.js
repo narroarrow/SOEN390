@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("../database");
+const db = require("../Database");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 const mail = require("nodemailer");
 
 const NotificationController = express.Router()
+const {doctor} = require("../middleware/Roles");
+const {auth} = require("../middleware/Auth");
 
 NotificationController.use(express.json());
 NotificationController.use(cookieParser());
@@ -26,7 +28,7 @@ NotificationController.use(function (req, res, next) {
 
 //Gets patient name, and appointment time
 
-NotificationController.get("/retrieveAllNotifications", (req, res) => {
+NotificationController.get("/retrieveAllNotifications", [auth, doctor], (req, res) => {
     let doctorID = req.query["id"];
     //parameters: DoctorID
     //returns: FName, LName, aptDate, StartTime,EndTime
@@ -42,7 +44,7 @@ NotificationController.get("/retrieveAllNotifications", (req, res) => {
     })
 });
 
-NotificationController.get("/retrieveFormNotifications", (req, res) => {
+NotificationController.get("/retrieveFormNotifications", [auth, doctor],(req, res) => {
     let doctorID = req.query["id"];
     console.log(doctorID);
     //parameters: DoctorID
@@ -60,7 +62,7 @@ NotificationController.get("/retrieveFormNotifications", (req, res) => {
 });
 
 //Gets the total number of appointments
-NotificationController.post("/getAllNotificationCount", (req, res) => {
+NotificationController.post("/getAllNotificationCount", [auth,doctor],(req, res) => {
     let doctorID = req.query["id"];
     //parameters: DoctorID
     //returns: (count of rows)
@@ -74,7 +76,7 @@ NotificationController.post("/getAllNotificationCount", (req, res) => {
     })
 });
 
-NotificationController.put("/maskFormNotification", (req, res) => {
+NotificationController.put("/maskFormNotification", [auth, doctor],(req, res) => {
 
     let PatientID = req.body.PatientID;
     let  InfoTimestamp=  req.body.InfoTimestamp
@@ -92,7 +94,7 @@ NotificationController.put("/maskFormNotification", (req, res) => {
     })
 });
 
-NotificationController.put("/maskApptNotification", (req, res) => {
+NotificationController.put("/maskApptNotification", [auth,doctor],(req, res) => {
 
     let ApptID = req.body.ID;
     // parameters: ID of appointment

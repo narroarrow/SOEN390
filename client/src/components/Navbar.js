@@ -89,22 +89,23 @@ const ResponsiveAppBar = () => {
         Axios.get("http://localhost:8080/retrieveAllNotifications", {
             params: {
                 id: localStorage.getItem('id')
-            }
+            }, withCredentials:true
         }).then((response) => { //getting notifs specific to forms
             Axios.get("http://localhost:8080/retrieveFormNotifications", {params: {
                 id: localStorage.getItem('id')
-            }}).then(response2 => {
+            }, withCredentials:true}).then(response2 => {
                 setCount(response.data.length + response2.data.length);
             })
 
             console.log("Notification List:");
             console.log(response.data);
-        }).catch(alert);
+        }).catch((err) => console.log(err));
     }
     // these  functions are called when navbar is rendered
     useEffect(() => {
         instantiateNavBar();
-        getNotificationsCount();
+        if (localStorage.getItem('role') === 'Doctor'){
+        getNotificationsCount();}
     }, [])
 
 

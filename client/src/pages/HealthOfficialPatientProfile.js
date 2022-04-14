@@ -22,20 +22,20 @@ function HealthOfficialPatientProfile() {
   };
 
   function getPatients() { //this function is called when the doctor patient profile page is loaded. It sets the useState patientList to the query result for patient info
-    Axios.get("http://localhost:8080/DoctorPatientProfile").then((response) => {
+    Axios.get("http://localhost:8080/DoctorPatientProfile",{withCredentials: true}).then((response) => {
       setPatientList(response.data);
       console.log(patientList);
       if (!executed) {
         setFilteredPatients(response.data);
         setExecuted(true);
       }
-    }).catch(alert);  
+    }).catch(console.log('err'));
   };
 
   const getViewed = () => { //this function is called when the doctor patient profile page is loaded. It sets the useState patientList to the query result for patient info
-    Axios.get("http://localhost:8080/Viewed").then((response) => {
+    Axios.get("http://localhost:8080/Viewed",{withCredentials: true}).then((response) => {
       setViewedList(response.data);
-    }).catch(alert);  
+    }).catch((err) => console.log(err));
   };
 
   //calling the functions when loading the page

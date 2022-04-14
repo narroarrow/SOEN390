@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 
 //This variable represents a function that will be called when the
 //user submits the form with their updated data. The updated data will be 
-//sent to the server.js file so that the user's data can be altered in
+//sent to the Server.js file so that the user's data can be altered in
 //the database.
 let submitEditInfoForm = (event) => {
   event.preventDefault();
@@ -19,7 +19,7 @@ let submitEditInfoForm = (event) => {
     email: data.get('patientEmail'),
     phone: data.get('patientPhone'),
     healthinsurance: data.get('patientHI'),
-  }).then(() => {
+  },{withCredentials: true}).then(() => {
     console.log('success');
     window.location.href = "/PatientProfile";
   });
@@ -37,12 +37,12 @@ function EditInfoForm() {
 
   //This useEffect() will run after the page renders. It will
   //get the patients data by using a get and going to the 
-  //server.js file to execute the code to query for the current data.
+  //Server.js file to execute the code to query for the current data.
   useEffect(() => {
     Axios.get('http://localhost:8080/editPatientProfileData', {
       withCredentials: true,
       params: { id: localStorage.getItem('id') }
-    }).then((response) => {
+    },{withCredentials: true}).then((response) => {
       setEditPatientData(response.data);
       console.log(response);
     });

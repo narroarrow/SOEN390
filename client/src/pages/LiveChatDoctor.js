@@ -34,7 +34,7 @@ function LiveChat() {
     //gets the name of doctor and patient
      useEffect(() => {
          Axios.get('http://localhost:8080/patientDoctorName', { withCredentials: true, 
-         params: { id: patientId } 
+         params: { id: patientId }
      }).then((response) => {
              setPatient(response.data[0].patientName);
              setDoctor(response.data[0].doctorName);
@@ -44,7 +44,7 @@ function LiveChat() {
     //Gets the messages to display
     useEffect(() => {
         Axios.get('http://localhost:8080/liveChatMessages', { withCredentials: true, 
-        params: { id: patientId } 
+        params: { id: patientId }
     }).then((response) => {
             setAllMessages(response.data);
         })
@@ -79,7 +79,7 @@ function LiveChat() {
             message: message,
             patientId: patientId
 
-        });
+        }, {withCredentials:true});
         //create a message and send it to patient
         const messageData = {
             roomId: patientId,

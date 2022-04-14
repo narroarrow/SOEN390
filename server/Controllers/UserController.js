@@ -9,7 +9,8 @@ const bodyParser = require("body-parser");
 const mail = require("nodemailer");
 require('dotenv').config();
 const crypto = require("crypto")
-
+const {patient, admin, doctor} = require("../middleware/Roles");
+const auth = require("../middleware/Auth");
 const UserController = express.Router()
 
 UserController.use(express.json());
@@ -48,6 +49,15 @@ let sendEmail = (fName, lName, email, link) => {
 
     transporter.sendMail(mailOptions);
 }
+
+// UserController.use(function (req, res, next) {
+//     if (req.cookies) {
+//         console.log(req.cookies)
+//         next()
+//     } else {
+//         res.status(403).send;
+//     }
+// })
 
 // start of sign up and login. creating correct cookies if logged in
 UserController.get('/checkAuth', function (req, res) {
@@ -132,7 +142,6 @@ UserController.post("/Login", async (req, res) => {
 })
 
 
-
 //getting the email and passowrd from the form
 UserController.put("/SendResetLink", async (req, res) => {
     try {
@@ -154,62 +163,62 @@ UserController.put("/SendResetLink", async (req, res) => {
                 let LName = result[0].LName;
                 let ID = result[0].ID
 
-                if (!result[0]) {
-                    throw err;
-                } else {
-                    //console.log('here2')
-                    //await needs "async" in the 'parent'
-                    (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, async (error, token) => {
-                        if (error) {
-                            console.log('Wrong Password');
-                            console.log(error)
-                            res.status(403).send();
-                        } else {
+                    if (!result[0]) {
+                        throw err;
+                    } else {
+                        //console.log('here2')
+                        //await needs "async" in the 'parent'
+                        (jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, async (error, token) => {
+                                    if (error) {
+                                        console.log('Wrong Password');
+                                        console.log(error)
+                                        res.status(403).send();
+                                    } else {
 
-                            //console.log('here3')
-                            let updateResetting = `UPDATE users SET Resetting = 1 WHERE Email = "${email}"`
-                            // after 20 minutes, updating the resetting value to 0 to block reset password attempts
-                            db.query(updateResetting, async (err2, result2) => {
-                                if (err2) {
-                                    console.log("err2: resetting " + err2)
-                                } else {
-                                    setTimeout(() => {
-                                        let disablingReset = `Update users SET Resetting = 0 WHERE Email = "${email}"`
-                                        db.query(disablingReset, async (err3, result3) => {
-                                            if (err3) {
-                                                console.log("err3: resetting" + err3)
+                                        //console.log('here3')
+                                        let updateResetting = `UPDATE users SET Resetting = 1 WHERE Email = "${email}"`
+                                        // after 20 minutes, updating the resetting value to 0 to block reset password attempts
+                                        db.query(updateResetting, async (err2, result2) => {
+                                            if (err2) {
+                                                console.log("err2: resetting " + err2)
                                             } else {
-                                                console.log("success " + result3);
+                                                setTimeout(() => {
+                                                    let disablingReset = `Update users SET Resetting = 0 WHERE Email = "${email}"`
+                                                    db.query(disablingReset, async (err3, result3) => {
+                                                        if (err3) {
+                                                            console.log("err3: resetting" + err3)
+                                                        } else {
+                                                            console.log("success " + result3);
+                                                        }
+                                                    })
+
+
+                                                }, 1200000);
                                             }
                                         })
 
 
-                                    }, 1200000);
+                                        const resetToken = crypto.randomBytes(32).toString("hex");
+                                        const salt = await bcrypt.genSalt(10)
+                                        const resetTokenHashed = await bcrypt.hash(resetToken, salt)
+                                        const update = `UPDATE users SET ResetToken = "${resetTokenHashed}" WHERE Email = "${email}"`
+                                        //parameters: Token, Email
+                                        //returns:
+                                        db.query(update, async (err2, result2) => {
+                                            if (err2) {
+                                                console.log("err2: " + err2)
+                                            } else {
+                                                //console.log('here4')
+                                                let link = `http://localhost:3000/PasswordReset?token=${resetTokenHashed}&id=${ID}`
+                                                sendEmail(FName, LName, email, link)
+                                                res.status(200).send();
+                                            }
+                                        })
+                                    }
                                 }
-                            })
-
-
-                            const resetToken = crypto.randomBytes(32).toString("hex");
-                            const salt = await bcrypt.genSalt(10)
-                            const resetTokenHashed = await bcrypt.hash(resetToken, salt)
-                            const update = `UPDATE users SET ResetToken = "${resetTokenHashed}" WHERE Email = "${email}"`
-                            //parameters: Token, Email
-                            //returns:
-                            db.query(update, async (err2, result2) => {
-                                if (err2) {
-                                    console.log("err2: " + err2)
-                                } else {
-                                    //console.log('here4')
-                                    let link = `http://localhost:3000/PasswordReset?token=${resetTokenHashed}&id=${ID}`
-                                    sendEmail(FName, LName, email, link)
-                                    res.status(200).send();
-                                }
-                            })
-                        }
+                            )
+                        );
                     }
-                    )
-                    );
-                }
 
             } catch (err) {
                 res.status(498).send();
@@ -220,9 +229,6 @@ UserController.put("/SendResetLink", async (req, res) => {
         res.status(497).send()
     }
 })
-
-
-
 
 
 //getting the email and passowrd from the form
@@ -358,7 +364,7 @@ UserController.post("/Signup", async (req, res) => {
     }
 })
 // end of sign up and login
-
+//formal
 
 // clearing cookies on logout
 UserController.post('/Logout', ((req, res) => {
@@ -399,35 +405,35 @@ UserController.put("/ResettingPassword", async (req, res) => {
         let id = req.body.id;
         let newPassword = req.body.password
         //query statement
-        let state = `SELECT U.FName, U.LName, U.Email, U.Password, U.Role, U.ID, U.Resetting FROM users U WHERE U.ID = ${id}`;
+        let state = `SELECT U.FName, U.LName, U.Email, U.Password, U.Role, U.ID, U.Resetting, U.ResetToken FROM users U WHERE U.ID = ${id}`;
 
         //parameters: user ID, user new password
         //returns: updates user password
         db.query(state, async (err, result) => {
             try {
 
-                let resetting = result[0].Resetting
-                if (!result[0]) {
-                    throw err;
-                } else if (resetting === 0) {
-                    res.status(405).send();
-                } else {
+                    let resetting = result[0].Resetting
+                    if (!result[0]) {
+                        throw err;
+                    } else if (resetting === 0 || result[0].ResetToken !== req.body.ResetToken) {
+                        res.status(405).send();
+                    } else {
 
                     const salt = await bcrypt.genSalt(10)//hashes with 10 rounds
                     const hashedPassword = await bcrypt.hash(newPassword, salt)
 
-                    let updatePasswordState = `UPDATE users SET Password = "${hashedPassword}" WHERE users.ID = ${id};`
-                    db.query(updatePasswordState, async (err, result) => {
-                        if (err) {
-                            console.log(err)
-                        } else {
-                            let updateResetting = `UPDATE users SET Resetting = 0, ResetToken = NULL WHERE ID = ${id}`
-                            db.query(updateResetting);
-                            console.log('yay');
-                            res.status(200).send();
-                        }
-                    })
-                }
+                        let updatePasswordState = `UPDATE users SET Password = "${hashedPassword}" WHERE users.ID = ${id};`
+                        db.query(updatePasswordState, async (err, result) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                let updateResetting = `UPDATE users SET Resetting = 0, ResetToken = NULL WHERE ID = ${id}`
+                                db.query(updateResetting);
+                                console.log('yay');
+                                res.status(200).send();
+                            }
+                        })
+                    }
 
             } catch (err) {
                 res.status(498).send();

@@ -92,7 +92,7 @@ const TimeSlotCalendar = () => {
 
     };
     const getDoctorSchedule = () => {
-        Axios.get("http://localhost:8080/doctorFilledSlots", {params: {id: localStorage.getItem('id')}}).then((response) => {
+        Axios.get("http://localhost:8080/doctorFilledSlots", {params: {id: localStorage.getItem('id')}, withCredentials:true}).then((response) => {
 
             //array of false has a false value for each day for each possible increment (18 total increments for each day).
             let arrayOfFalse = new Array(5);
@@ -118,7 +118,7 @@ const TimeSlotCalendar = () => {
             setPreviousWednesday(arrayOfFalse[2]);
             setPreviousThursday(arrayOfFalse[3]);
             setPreviousFriday(arrayOfFalse[4]);
-        }).catch(alert);
+        }).catch((err) => console.log(err));
 
     }
 

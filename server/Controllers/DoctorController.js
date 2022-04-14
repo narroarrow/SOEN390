@@ -1,9 +1,11 @@
 const express = require("express");
-const db = require("../database");
+const db = require("../Database");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const bodyParser = require("body-parser");
+const {doctor, manager} = require("../middleware/Roles");
+const {auth} = require("../middleware/Auth");
 
 const DoctorController = express.Router()
 
@@ -17,29 +19,15 @@ DoctorController.use(bodyParser.json())
 DoctorController.use(express.static('dist'));
 
 
+
 DoctorController.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
-/* This get method will be executed when rendering the DoctorPatientProfile page. The database will be querries to get the patients names, ID, status and whether they have been
-flagged or not. The returned list is a list of all patients in the database. */
-DoctorController.get("/DoctorPatientProfile", (req, res) => {
-    //parameters:
-    //returns: FName,LName, Status, Flagged, DoctorID, ChatRequested
-    let state = "SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID, P.ChatRequested, P.NewPatient FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;"
-    db.query(state, (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-});
-    
 //Gets all relevant patient information to the doctor logged in
-DoctorController.get("/doctorViewingTheirPatientData", (req, res) => {
+DoctorController.get("/doctorViewingTheirPatientData", [auth, doctor],(req, res) => {
     let did = 6;
     //parameters: ID
     //returns: ID, FName, LName, Email, Password, Validated, Phone, Birthday, Address, Role, Token
@@ -56,8 +44,25 @@ DoctorController.get("/doctorViewingTheirPatientData", (req, res) => {
 
 });
 
+/* This get method will be executed when rendering the DoctorPatientProfile page. The database will be querries to get the patients names, ID, status and whether they have been
+flagged or not. The returned list is a list of all patients in the database. */
+DoctorController.get("/DoctorPatientProfile",[auth,manager], (req, res) => {
+    //parameters:
+    //returns: FName,LName, Status, Flagged, DoctorID, ChatRequested
+    let state = "SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID, P.ChatRequested, P.NewPatient FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;"
+    db.query(state, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+    
+
+
 //Gets all doctor information to other doctors
-DoctorController.get("/doctorViewingAllDoctors", (req, res) => {
+DoctorController.get("/doctorViewingAllDoctors", [auth,doctor], (req, res) => {
     //parameters:
     //returns: ID, License, patientCount
     let state = "SELECT Udoctor.* FROM 390db.users Udoctor, 390db.doctors D WHERE D.ID =  Udoctor.ID;"
@@ -73,7 +78,7 @@ DoctorController.get("/doctorViewingAllDoctors", (req, res) => {
 
 
 //Gets all patient information with their assigned doctor to any doctor logged in
-DoctorController.get("/doctorViewingDoctorPatients", (req, res) => {
+DoctorController.get("/doctorViewingDoctorPatients", [auth,doctor], (req, res) => {
     //parameters:
     //returns: FName,LName, ID, FName, LName, Email, Password, Validated, Phone, Birthday, Address, Role, Token
     let state = "SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.users Upatient, 390db.users Udoctor, 390db.patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;"
@@ -89,7 +94,7 @@ DoctorController.get("/doctorViewingDoctorPatients", (req, res) => {
 });
 
 //Gets all patient information to doctors
-DoctorController.get("/doctorViewingAllPatientData", (req, res) => {
+DoctorController.get("/doctorViewingAllPatientData", [auth,doctor], (req, res) => {
     //parameters:
     //returns: FName,LName, ID, FName, LName, Email, Password, Validated, Phone, Birthday, Address, Role, Token
     let state = "SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P WHERE P.ID = Upatient.ID;"
@@ -104,7 +109,7 @@ DoctorController.get("/doctorViewingAllPatientData", (req, res) => {
 });
 
 /* This get method will return all the previously filled in HealthInformation for a specific patient and dispay it in the UI. */
-DoctorController.get("/doctorViewingPreviousSymptoms", (req, res) => {
+DoctorController.get("/doctorViewingPreviousSymptoms",[auth,doctor], (req, res) => {
     let pid = req.query.id;
      //parameters: PatientID
     //returns: PatientID, Timestamp, InfoTimestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other
@@ -120,7 +125,7 @@ DoctorController.get("/doctorViewingPreviousSymptoms", (req, res) => {
 
 
 /* This post method is called when a docotr clicks the MARK AS REVIEWED button on a patient profile. It will update the 'viewed table' in the database. */
-DoctorController.post("/markViewed", (req, res) => {
+DoctorController.post("/markViewed", [auth,doctor], (req, res) => {
     let PatientID = req.body.PatientID;
     let PatientDocID = req.body.PatientDocID;
     let DoctorID = req.body.DoctorID;
@@ -152,7 +157,7 @@ DoctorController.post("/markViewed", (req, res) => {
 
 /* This post method is called when a doctor clicks the REQUEST SYMPTOM FORM button on a patient profile. It will update the SymptomRequested attribute in the patient
 table of the DB. */
-DoctorController.post("/requestForm", (req, res) => {
+DoctorController.post("/requestForm",[auth,doctor], (req, res) => {
     let PatientID = req.body.PatientID;
     //parameters: PatientID
     //returns:
@@ -169,7 +174,7 @@ DoctorController.post("/requestForm", (req, res) => {
 
 
 //Gets the number of patients in each status category
-DoctorController.get("/statusCountAllPatients", (req, res) => {
+DoctorController.get("/statusCountAllPatients", [auth,doctor],(req, res) => {
     //parameters: 
     //returns: (healthyCount, isolatingCount, infectedCount)
     let state = "  SELECT healthyCount, isolatingCount, infectedCount " +
@@ -190,7 +195,7 @@ DoctorController.get("/statusCountAllPatients", (req, res) => {
         }
     })
 });
-DoctorController.get("/statusCountMyPatients", (req, res) => {
+DoctorController.get("/statusCountMyPatients", [auth,doctor],(req, res) => {
     let doctorID = req.query["id"];
     //parameters: the ID of the doctor doctorID
     //returns: (healthyCount, isolatingCount, infectedCount)
@@ -214,7 +219,7 @@ DoctorController.get("/statusCountMyPatients", (req, res) => {
 });
 
 //Gets the total number of patients
-DoctorController.get("/countAllPatients", (req, res) => {
+DoctorController.get("/countAllPatients", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (count of rows)
     let state = "SELECT count(*) as allPatientCount FROM 390db.patients P"
@@ -229,7 +234,7 @@ DoctorController.get("/countAllPatients", (req, res) => {
 });
 
 //Gets the total number of flagged patients
-DoctorController.get("/countAllFlaggedPatients", (req, res) => {
+DoctorController.get("/countAllFlaggedPatients", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (count of rows)
     let state = "SELECT count(*) as allFlaggedPatientCount FROM 390db.patients P WHERE P.Flagged <> 0"
@@ -243,7 +248,7 @@ DoctorController.get("/countAllFlaggedPatients", (req, res) => {
 });
 
 //Gets the total number of registered doctors
-DoctorController.get("/countAllValidatedDoctors", (req, res) => {
+DoctorController.get("/countAllValidatedDoctors", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (count of rows)
     let state = "SELECT count(*) as allRegisteredDoctorsCount FROM 390db.users U WHERE U.Validated = 1 AND U.Role = 'Doctor'"
@@ -258,7 +263,7 @@ DoctorController.get("/countAllValidatedDoctors", (req, res) => {
 
 
 //Gets top 5 doctors with most to least patients
-DoctorController.get("/doctorsWithMostPatients", (req, res) => {
+DoctorController.get("/doctorsWithMostPatients", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (FName of doctors, LName of doctors, email of doctors, address of doctors, number of patients assigned)
     let state = "(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
@@ -285,7 +290,7 @@ DoctorController.get("/doctorsWithMostPatients", (req, res) => {
 
 
 //Gets top 5 doctors with least to most patients
-DoctorController.get("/doctorsWithLeastPatients", (req, res) => {
+DoctorController.get("/doctorsWithLeastPatients", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (FName of doctors, LName of doctors, email of doctors, address of doctors, number of patients assigned)
     let state = "(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
@@ -311,7 +316,7 @@ DoctorController.get("/doctorsWithLeastPatients", (req, res) => {
 });
 
 //Gets the list of patients that are flagged but whose file has not been viewed
-DoctorController.get("/patientsFlaggedNotViewed", (req, res) => {
+DoctorController.get("/patientsFlaggedNotViewed", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient)
     let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email " +
@@ -331,7 +336,7 @@ DoctorController.get("/patientsFlaggedNotViewed", (req, res) => {
 });
 
 //Gets the list of patients that are flagged and have been viewed from latest to most recent
-DoctorController.get("/patientsFlaggedLeastViewed", (req, res) => {
+DoctorController.get("/patientsFlaggedLeastViewed", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient, ID of patient) ,timestamp
     let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, V.Timestamp as verifiedTime, P.ID " +
@@ -348,7 +353,7 @@ DoctorController.get("/patientsFlaggedLeastViewed", (req, res) => {
 });
 
 //Gets the list of patients that have been flagged and have not submitted their symptom form upion receiving a request from their doctor
-DoctorController.get("/patientsFlaggedNoSymptomFormResponse", (req, res) => {
+DoctorController.get("/patientsFlaggedNoSymptomFormResponse", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient,time of request, ID of patient)
     let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, IR.Timestamp as requestTime, P.ID " +

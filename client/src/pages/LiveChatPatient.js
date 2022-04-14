@@ -10,7 +10,7 @@ const socket = io.connect("http://localhost:8080");
 
 
 function LiveChat() {
-     
+
     //declaring the variables
     let stopEffect = 1;
     const ENTERCODE = 13;
@@ -18,9 +18,9 @@ function LiveChat() {
 
    //declaring all the use states
    const [patient, setPatient] = useState("") //the name
-   const [doctor, setDoctor] = useState("")//the name 
-   const [doctorId, setDoctorId] = useState("")//the id 
-   const [message, setMessage] = useState("") 
+   const [doctor, setDoctor] = useState("")//the name
+   const [doctorId, setDoctorId] = useState("")//the id
+   const [message, setMessage] = useState("")
    const [allMessages, setAllMessages] = useState([]);
 
 
@@ -34,7 +34,7 @@ function LiveChat() {
     //gets the name of doctor and patient
     useEffect(() => {
         Axios.get('http://localhost:8080/patientDoctorName', { withCredentials: true,
-        params: { id: localStorage.getItem('id') } 
+        params: { id: localStorage.getItem('id') }
     }).then((response) => {
             setPatient(response.data[0].patientName);
             setDoctor(response.data[0].doctorName);
@@ -44,8 +44,8 @@ function LiveChat() {
 
     //Gets the messages to display
     useEffect(() => {
-        Axios.get('http://localhost:8080/liveChatMessages', { withCredentials: true, 
-        params: { id: localStorage.getItem('id') } 
+        Axios.get('http://localhost:8080/liveChatMessages', { withCredentials: true,
+        params: { id: localStorage.getItem('id') }
     }).then((response) => {
             setAllMessages(response.data);
         })
@@ -54,7 +54,7 @@ function LiveChat() {
     //joind the room based on patient id on render
     useEffect(() => {
         if(localStorage.getItem("id") !== ""){
-            socket.emit("join_room", localStorage.getItem('id')); 
+            socket.emit("join_room", localStorage.getItem('id'));
         }
     }, [stopEffect]);
 
@@ -76,8 +76,8 @@ function LiveChat() {
         //Message sent by the patient is inserted into the database
         Axios.post("http://localhost:8080/createPatientLiveChatMessage", {
             id: localStorage.getItem('id'), //Pass the patient's id and message to the backend
-            message: message 
-        });
+            message: message
+        }, {withCredentials:true});
          //create a message and send it to doctor
         const messageData = {
             roomId: localStorage.getItem('id'),
@@ -97,7 +97,7 @@ function LiveChat() {
     const handleMessgaeChange = (event) => {
         setMessage(event.target.value)
     }
-    
+
     //allows for us to press enter key and send message
     const handleEnterKey = (event) => {
         if(event.keyCode === ENTERCODE){
@@ -123,7 +123,7 @@ function LiveChat() {
          //shows the actaul text bubble with appropriate message
          (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} label={`${item.Message}`} color="primary" onClick={showMessage}/>):
          (<Chip sx={{ maxWidth: 1/1, height: 'auto'+4}} variant="outlined" label={`${item.Message}`} onClick={showMessage} color="primary"/>)}
-     </ListItem> 
+     </ListItem>
         )
     })
 
@@ -150,8 +150,8 @@ function LiveChat() {
                             </Grid>
                             <Grid xs={2} item>
                                 <Typography variant='subtitle1'>
-                                    {patient}   
-                                </Typography>  
+                                    {patient}
+                                </Typography>
                             </Grid>
                             <Grid xs={9} item>
                                 <FormControl fullWidth>

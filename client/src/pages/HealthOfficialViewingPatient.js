@@ -21,7 +21,7 @@ function HealthOfficialViewingPatient() {
     let stopeffect = 1;
     
     useEffect(()=>{ //When page is loaded, get requests will get patient data as well as a list of patients whose profiles have been viewed
-        Axios.get("http://localhost:8080/doctorViewingPatientData", { params: {id: location.state.ID}}).then((response) => {
+        Axios.get("http://localhost:8080/doctorViewingPatientData", { params: {id: location.state.ID}, withCredentials:true}).then((response) => {
             setPatientData(response.data);
         });   
     }, [stopeffect]); 
@@ -29,7 +29,7 @@ function HealthOfficialViewingPatient() {
 
 
     let previousSymptoms = () => { //This function gets the list of all the patients previous symptom forms (to be rendered on a page in later sprint)
-        Axios.get("http://localhost:8080/doctorViewingPreviousSymptoms", { params: {id: location.state.ID}}).then((response) => {
+        Axios.get("http://localhost:8080/doctorViewingPreviousSymptoms", { params: {id: location.state.ID}, withCredentials:true}).then((response) => {
             console.log("success");
         });  
     }
@@ -38,7 +38,7 @@ function HealthOfficialViewingPatient() {
         Axios.post("http://localhost:8080/flagPatient", {
             PatientID: location.state.ID,
             FlagPriority: 3
-        }).then(()=>{
+        },{withCredentials: true}).then(()=>{
             console.log("success")
         });
     }

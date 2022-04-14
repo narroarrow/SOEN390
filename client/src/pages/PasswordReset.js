@@ -24,7 +24,8 @@ function PasswordReset() {
             setMsg('Your Password has been reset.')
             Axios.put("http://localhost:8080/ResettingPassword", {
                 password: password,
-                id : searchParams.get("id")
+                id : searchParams.get("id"),
+                ResetToken: searchParams.get("token")
             }).catch((err) => {
                 if (err.response.status === 405){
                     setMsg("The link has expired!")

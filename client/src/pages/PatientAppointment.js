@@ -18,7 +18,7 @@ function PatientAppointment() {
     Axios.get("http://localhost:8080/seeCurrentPatientAppointment", {
       params: {
         id: localStorage.getItem('id')
-      }
+      }, withCredentials: true
     }).then((response) => {
       bookedAppointments(response.data);
       console.log(response.data);
@@ -30,7 +30,7 @@ function PatientAppointment() {
     Axios.get("http://localhost:8080/seeOpenAppointments", {
       params: {
         id: localStorage.getItem('id')
-      }
+      }, withCredentials:true
     }).then((response) => {
       setAppointments(response.data);
     });
