@@ -124,7 +124,7 @@ ChatController.post("/createPatientLiveChatMessage", [patient, auth], (req, res)
                         if (err) {
                             console.log(err);
                         } else {
-                            console.log("Message inserted!");
+                            //console.log("Message inserted!");
                         }
                     }
                 );

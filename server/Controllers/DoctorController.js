@@ -27,12 +27,12 @@ DoctorController.use(function (req, res, next) {
 });
 
 //Gets all relevant patient information to the doctor logged in
-DoctorController.get("/doctorViewingTheirPatientData", [auth, doctor],(req, res) => {
-    let did = 6;
+DoctorController.get("/doctorViewingTheirPatientData", [auth, doctor], (req, res) => {
+    let did = req.query.id;
     //parameters: ID
     //returns: ID, FName, LName, Email, Password, Validated, Phone, Birthday, Address, Role, Token
-    let state = "SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P, 390db.doctors D WHERE D.ID = 6 AND P.DoctorID = 6 AND P.ID = Upatient.ID;"
-    db.query(state, [did], (err, result) => {
+    let state = "SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P, 390db.doctors D WHERE D.ID = ? AND P.DoctorID = ? AND P.ID = Upatient.ID;"
+    db.query(state, [did,did], (err, result) => {
         //hardcoded to doctor ID 6
         if (err) {
             console.log("Error!");
