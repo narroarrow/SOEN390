@@ -11,11 +11,11 @@ const DoctorController = express.Router()
 
 DoctorController.use(express.json());
 DoctorController.use(cookieParser());
-DoctorController.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+DoctorController.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 DoctorController.use(express.static(path.join(__dirname, "../client/build")));
 DoctorController.use(express.static(__dirname + "../client/public/"));
-DoctorController.use(bodyParser.urlencoded({extended: true}));
-DoctorController.use(bodyParser.json())
+DoctorController.use(bodyParser.urlencoded({ extended: true }));
+DoctorController.use(bodyParser.json());
 DoctorController.use(express.static('dist'));
 
 
@@ -49,7 +49,7 @@ flagged or not. The returned list is a list of all patients in the database. */
 DoctorController.get("/DoctorPatientProfile",[auth,manager], (req, res) => {
     //parameters:
     //returns: FName,LName, Status, Flagged, DoctorID, ChatRequested
-    let state = "SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID, P.ChatRequested, P.NewPatient FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;"
+    let state = "SELECT U.Fname, U.Lname, P.Status, P.Flagged, P.ID, P.DoctorID, P.ChatRequested, P.NewPatient FROM 390db.users U, 390db.patients P WHERE U.ID = P.ID;";
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);
@@ -65,7 +65,7 @@ DoctorController.get("/DoctorPatientProfile",[auth,manager], (req, res) => {
 DoctorController.get("/doctorViewingAllDoctors", [auth,doctor], (req, res) => {
     //parameters:
     //returns: ID, License, patientCount
-    let state = "SELECT Udoctor.* FROM 390db.users Udoctor, 390db.doctors D WHERE D.ID =  Udoctor.ID;"
+    let state = "SELECT Udoctor.* FROM 390db.users Udoctor, 390db.doctors D WHERE D.ID =  Udoctor.ID;";
     db.query(state, (err, result) => {
         if (err) {
             console.log("Error!");
@@ -81,7 +81,7 @@ DoctorController.get("/doctorViewingAllDoctors", [auth,doctor], (req, res) => {
 DoctorController.get("/doctorViewingDoctorPatients", [auth,doctor], (req, res) => {
     //parameters:
     //returns: FName,LName, ID, FName, LName, Email, Password, Validated, Phone, Birthday, Address, Role, Token
-    let state = "SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.users Upatient, 390db.users Udoctor, 390db.patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;"
+    let state = "SELECT Udoctor.Fname, Udoctor.Lname, Upatient.* FROM 390db.users Upatient, 390db.users Udoctor, 390db.patients P WHERE P.ID = Upatient.ID AND Udoctor.ID = P.DoctorID;";
     db.query(state, (err, result) => {
         if (err) {
             console.log("Error!");
@@ -97,7 +97,7 @@ DoctorController.get("/doctorViewingDoctorPatients", [auth,doctor], (req, res) =
 DoctorController.get("/doctorViewingAllPatientData", [auth,doctor], (req, res) => {
     //parameters:
     //returns: FName,LName, ID, FName, LName, Email, Password, Validated, Phone, Birthday, Address, Role, Token
-    let state = "SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P WHERE P.ID = Upatient.ID;"
+    let state = "SELECT Upatient.* FROM 390db.users Upatient, 390db.patients P WHERE P.ID = Upatient.ID;";
     db.query(state, (err, result) => {
         if (err) {
             console.log("Error!");
@@ -111,9 +111,9 @@ DoctorController.get("/doctorViewingAllPatientData", [auth,doctor], (req, res) =
 /* This get method will return all the previously filled in HealthInformation for a specific patient and dispay it in the UI. */
 DoctorController.get("/doctorViewingPreviousSymptoms",[auth,doctor], (req, res) => {
     let pid = req.query.id;
-     //parameters: PatientID
+    //parameters: PatientID
     //returns: PatientID, Timestamp, InfoTimestamp, Weight, Temperature, Breathing, Chest_Pain, Fatigue, Fever, Cough, Smell, Taste, Other
-    let state = "SELECT * FROM healthinformation HI WHERE PatientID=?"
+    let state = "SELECT * FROM healthinformation HI WHERE PatientID=?";
     db.query(state, [pid], (err, result) => {
         if (err) {
             console.log(err);
@@ -132,7 +132,7 @@ DoctorController.post("/markViewed", [auth,doctor], (req, res) => {
     let datetime = req.body.datetime;
     //parameters:PatientID,DoctorID,Timestamp
     //returns:
-    let state = "INSERT INTO 390db.viewed VALUES (?,?,?)"
+    let state = "INSERT INTO 390db.viewed VALUES (?,?,?)";
     db.query(state, [PatientID, DoctorID, datetime], (err, result) => {
         if (err) {
             console.log(err);
@@ -142,7 +142,7 @@ DoctorController.post("/markViewed", [auth,doctor], (req, res) => {
     if (PatientDocID === DoctorID) {
         //parameters:PatientID
         //returns:
-        let state2 = "UPDATE 390db.patients SET NewPatient=0 WHERE ID=?"
+        let state2 = "UPDATE 390db.patients SET NewPatient=0 WHERE ID=?";
         db.query(state2, [PatientID], (err, result) => {
             if (err) {
                 console.log(err);
@@ -161,7 +161,7 @@ DoctorController.post("/requestForm",[auth,doctor], (req, res) => {
     let PatientID = req.body.PatientID;
     //parameters: PatientID
     //returns:
-    let state = "UPDATE 390db.patients SET SymptomRequested=true where ID=?"
+    let state = "UPDATE 390db.patients SET SymptomRequested=true where ID=?";
     db.query(state, [PatientID], (err, result) => {
         if (err) {
             console.log(err);
@@ -178,51 +178,51 @@ DoctorController.get("/statusCountAllPatients", [auth,doctor],(req, res) => {
     //parameters: 
     //returns: (healthyCount, isolatingCount, infectedCount)
     let state = "  SELECT healthyCount, isolatingCount, infectedCount " +
-    "FROM (  SELECT count(*) as healthyCount " +
-    "FROM 390db.patients P " +
-    "WHERE P.Status = 'Healthy') as healthyCount, " +
-    "(  SELECT count(*) as isolatingCount " +
-    "FROM 390db.patients P " +
-    "WHERE P.Status = 'Isolated') as isolatingCount, " +
-    "(  SELECT count(*) as infectedCount " +
-    "FROM 390db.patients P " +
-    "WHERE P.Status = 'Infected') as infectedCount;"
+        "FROM (  SELECT count(*) as healthyCount " +
+        "FROM 390db.patients P " +
+        "WHERE P.Status = 'Healthy') as healthyCount, " +
+        "(  SELECT count(*) as isolatingCount " +
+        "FROM 390db.patients P " +
+        "WHERE P.Status = 'Isolated') as isolatingCount, " +
+        "(  SELECT count(*) as infectedCount " +
+        "FROM 390db.patients P " +
+        "WHERE P.Status = 'Infected') as infectedCount;";
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result);
         }
-    })
+    });
 });
 DoctorController.get("/statusCountMyPatients", [auth,doctor],(req, res) => {
     let doctorID = req.query["id"];
     //parameters: the ID of the doctor doctorID
     //returns: (healthyCount, isolatingCount, infectedCount)
     let state = "  SELECT healthyCount, isolatingCount, infectedCount " +
-    "FROM (  SELECT count(*) as healthyCount " +
-    "FROM 390db.patients P " +
-    "WHERE P.Status = 'Healthy' AND P.doctorID = ?) as healthyCount, " +
-    "(  SELECT count(*) as isolatingCount " +
-    "FROM 390db.patients P " +
-    "WHERE P.Status = 'Isolated' AND P.doctorID = ?) as isolatingCount, " +
-    "(  SELECT count(*) as infectedCount " +
-    "FROM 390db.patients P " +
-    "WHERE P.Status = 'Infected' AND P.doctorID = ?) as infectedCount;"
-    db.query(state, [doctorID, doctorID, doctorID ] ,(err, result) => {
+        "FROM (  SELECT count(*) as healthyCount " +
+        "FROM 390db.patients P " +
+        "WHERE P.Status = 'Healthy' AND P.doctorID = ?) as healthyCount, " +
+        "(  SELECT count(*) as isolatingCount " +
+        "FROM 390db.patients P " +
+        "WHERE P.Status = 'Isolated' AND P.doctorID = ?) as isolatingCount, " +
+        "(  SELECT count(*) as infectedCount " +
+        "FROM 390db.patients P " +
+        "WHERE P.Status = 'Infected' AND P.doctorID = ?) as infectedCount;";
+    db.query(state, [doctorID, doctorID, doctorID], (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result);
         }
-    })
+    });
 });
 
 //Gets the total number of patients
 DoctorController.get("/countAllPatients", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (count of rows)
-    let state = "SELECT count(*) as allPatientCount FROM 390db.patients P"
+    let state = "SELECT count(*) as allPatientCount FROM 390db.patients P";
     db.query(state, (err, result) => {
         if (err) {
 
@@ -230,89 +230,87 @@ DoctorController.get("/countAllPatients", [auth,doctor],(req, res) => {
         } else {
             res.send(result);
         }
-    })
+    });
 });
 
 //Gets the total number of flagged patients
 DoctorController.get("/countAllFlaggedPatients", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (count of rows)
-    let state = "SELECT count(*) as allFlaggedPatientCount FROM 390db.patients P WHERE P.Flagged <> 0"
+    let state = "SELECT count(*) as allFlaggedPatientCount FROM 390db.patients P WHERE P.Flagged <> 0";
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result);
         }
-    })
+    });
 });
 
 //Gets the total number of registered doctors
 DoctorController.get("/countAllValidatedDoctors", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (count of rows)
-    let state = "SELECT count(*) as allRegisteredDoctorsCount FROM 390db.users U WHERE U.Validated = 1 AND U.Role = 'Doctor'"
+    let state = "SELECT count(*) as allRegisteredDoctorsCount FROM 390db.users U WHERE U.Validated = 1 AND U.Role = 'Doctor'";
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result);
         }
-    })
+    });
 });
-
 
 //Gets top 5 doctors with most to least patients
 DoctorController.get("/doctorsWithMostPatients", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (FName of doctors, LName of doctors, email of doctors, address of doctors, number of patients assigned)
     let state = "(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
-    "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
-    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
-    "GROUP BY D.ID " +
-    "ORDER BY countPatients DESC " + //Ordered by most to least
-    "LIMIT 5) " +
-    "UNION " +
-    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-    "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
-    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-    "FROM 390db.patients P1) AND D.ID = U.ID " +
-    "ORDER BY countPatients DESC " +
-    "LIMIT 5;"
+        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
+        "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
+        "GROUP BY D.ID " +
+        "ORDER BY countPatients DESC " + //Ordered by most to least
+        "LIMIT 5) " +
+        "UNION " +
+        "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
+        "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+        "FROM 390db.patients P1) AND D.ID = U.ID " +
+        "ORDER BY countPatients DESC " +
+        "LIMIT 5;";
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result);
         }
-    })
+    });
 });
-
 
 //Gets top 5 doctors with least to most patients
 DoctorController.get("/doctorsWithLeastPatients", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (FName of doctors, LName of doctors, email of doctors, address of doctors, number of patients assigned)
     let state = "(SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, count(*) as countPatients " +
-    "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
-    "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
-    "GROUP BY D.ID " +
-    "ORDER BY countPatients ASC " + //Ordered by least to most
-    "LIMIT 5) " +
-    "UNION " +
-    "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
-    "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
-    "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
-    "FROM 390db.patients P1) AND D.ID = U.ID " +
-    "ORDER BY countPatients ASC " +
-    "LIMIT 5;"
+        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
+        "WHERE D.ID = P.DoctorID AND D.ID = U.ID " +
+        "GROUP BY D.ID " +
+        "ORDER BY countPatients ASC " + //Ordered by least to most
+        "LIMIT 5) " +
+        "UNION " +
+        "SELECT DISTINCT U.Fname, U.LName, U.Email, U.Phone, U.Address, 0 AS countPatients " +
+        "FROM 390db.doctors D, 390db.patients P, 390db.users U " +
+        "WHERE D.ID NOT IN (SELECT DISTINCT P1.DoctorID " +
+        "FROM 390db.patients P1) AND D.ID = U.ID " +
+        "ORDER BY countPatients ASC " +
+        "LIMIT 5;";
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result);
         }
-    })
+    });
 });
 
 //Gets the list of patients that are flagged but whose file has not been viewed
@@ -320,19 +318,19 @@ DoctorController.get("/patientsFlaggedNotViewed", [auth,doctor],(req, res) => {
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient)
     let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email " +
-    "FROM 390db.users Upatient, 390db.patients P, 390db.inforequest IR, 390db.healthinformation HI, 390db.viewed V " +
-    "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.InfoTimestamp AND ((P.ID IN " +
-    "(SELECT P1.ID " +
-    "FROM 390db.patients P1, 390db. healthinformation H1, 390db.viewed V1 " +
-    "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.InfoTimestamp > V1.Timestamp)) " +
-    "OR (P.ID NOT IN (SELECT V1.PatientID FROM 390db.viewed V1)));"
+        "FROM 390db.users Upatient, 390db.patients P, 390db.inforequest IR, 390db.healthinformation HI, 390db.viewed V " +
+        "WHERE Upatient.ID = P.ID AND IR.PatientID = P.ID AND P.Flagged=1 AND HI.PatientID = P.ID AND IR.Timestamp < HI.InfoTimestamp AND ((P.ID IN " +
+        "(SELECT P1.ID " +
+        "FROM 390db.patients P1, 390db. healthinformation H1, 390db.viewed V1 " +
+        "WHERE P1.ID = H1.PatientID AND P1.Flagged = 1 AND V1.PatientID = H1.PatientID AND H1.InfoTimestamp > V1.Timestamp)) " +
+        "OR (P.ID NOT IN (SELECT V1.PatientID FROM 390db.viewed V1)));";
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result);
         }
-    })
+    });
 });
 
 //Gets the list of patients that are flagged and have been viewed from latest to most recent
@@ -340,16 +338,16 @@ DoctorController.get("/patientsFlaggedLeastViewed", [auth,doctor],(req, res) => 
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient, ID of patient) ,timestamp
     let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, V.Timestamp as verifiedTime, P.ID " +
-    "FROM 390db.patients P, 390db.users Upatient, 390db.viewed V " +
-    "WHERE Upatient.ID = P.ID AND P.Flagged = 1 AND P.ID = V.PatientID AND V.Timestamp = (SELECT MAX(V1.Timestamp) FROM 390db.viewed V1 WHERE V1.PatientID = P.ID) " +
-    "ORDER BY V.Timestamp ASC;"
+        "FROM 390db.patients P, 390db.users Upatient, 390db.viewed V " +
+        "WHERE Upatient.ID = P.ID AND P.Flagged = 1 AND P.ID = V.PatientID AND V.Timestamp = (SELECT MAX(V1.Timestamp) FROM 390db.viewed V1 WHERE V1.PatientID = P.ID) " +
+        "ORDER BY V.Timestamp ASC;";
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result);
         }
-    })
+    });
 });
 
 //Gets the list of patients that have been flagged and have not submitted their symptom form upion receiving a request from their doctor
@@ -357,19 +355,18 @@ DoctorController.get("/patientsFlaggedNoSymptomFormResponse", [auth,doctor],(req
     //parameters:
     //returns: (FName of patient, LName of patient, phone of patient, email of patient,time of request, ID of patient)
     let state = "SELECT DISTINCT Upatient.Fname, Upatient.Lname, Upatient.Phone, Upatient.Email, IR.Timestamp as requestTime, P.ID " +
-    "FROM 390db.patients P, 390db.users Upatient, 390db.inforequest IR, 390db.healthinformation IH " +
-    "WHERE P.Flagged = 1 AND P.ID = Upatient.ID AND IR.PatientID = P.ID  AND ((IR.PatientID = IH.PatientID AND IR.Timestamp > IH.InfoTimestamp) " +
-    "OR (P.ID NOT IN (SELECT HI1.PatientID " +
-    "FROM 390db.healthinformation HI1))) " +
-    "ORDER BY requestTime ASC;"
+        "FROM 390db.patients P, 390db.users Upatient, 390db.inforequest IR, 390db.healthinformation IH " +
+        "WHERE P.Flagged = 1 AND P.ID = Upatient.ID AND IR.PatientID = P.ID  AND ((IR.PatientID = IH.PatientID AND IR.Timestamp > IH.InfoTimestamp) " +
+        "OR (P.ID NOT IN (SELECT HI1.PatientID " +
+        "FROM 390db.healthinformation HI1))) " +
+        "ORDER BY requestTime ASC;";
     db.query(state, (err, result) => {
         if (err) {
             console.log(err);
         } else {
             res.send(result);
         }
-    })
+    });
 });
-
 
 module.exports = DoctorController;

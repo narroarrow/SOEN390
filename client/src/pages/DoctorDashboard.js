@@ -2,7 +2,7 @@ import {Avatar, Box, Grid, CardHeader, Paper, List, ListItem, CardActions, IconB
 import {styled} from '@mui/material/styles';
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
-import {Navigate} from "react-router-dom";
+import {Navigate} from 'react-router-dom';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import FlagIcon from '@mui/icons-material/Flag';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
@@ -10,10 +10,7 @@ import MedicationIcon from '@mui/icons-material/Medication';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import EmailIcon from '@mui/icons-material/Email';
 import ClearIcon from '@mui/icons-material/Clear';
-
-
 import {ArgumentAxis, ValueAxis, Chart, BarSeries} from '@devexpress/dx-react-chart-material-ui';
-
 
 function DoctorDashboard() {
     
