@@ -1,9 +1,9 @@
 import * as React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Container, Box, Button, AppBar, Toolbar, IconButton, Typography, Menu, Avatar, Tooltip, Badge, Link, } from '@mui/material';
-import { useEffect } from 'react';
-import Axios from 'axios';
-import Common from './Common';
+ import { useEffect } from 'react';
+ import Axios from 'axios';
+ import Common from './Common';
 
 let pages = [];
 
@@ -70,13 +70,14 @@ const ResponsiveAppBar = () => {
         //Clears the local storage which contains all the user's information
         Axios.post('http://localhost:8080/Logout', {}, { withCredentials: true }).then(() => {
             localStorage.clear();
-            return new Promise((resolve, reject) => {
-              Axios.get("http://localhost:8080/checkAuth", {
-                withCredentials: true,
-              }).catch((err) => {
-                window.location.reload();
-              });
-            });
+            return new Promise(((resolve, reject) => {
+                Axios.get(
+                    'http://localhost:8080/checkAuth', { withCredentials: true }).catch(err => {
+                        window.location.reload();
+                    })
+            }))
+
+
         });
     }
 
@@ -107,7 +108,7 @@ const ResponsiveAppBar = () => {
         <AppBar position='sticky'>
             <Container maxWidth='xl'>
                 <Toolbar disableGutters>
-                    <Button variant='h6' noWrap component='div' href='/' sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }} >
+                    <Button variant='h6' component='div' href='/' sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }} >
                         <Link href='/' sx={{ color: 'white', textDecoration: 'none' }}>
                             <Typography component='h1' variant='h5'>
                                 COVID-19 App
