@@ -8,8 +8,9 @@ Another important aspect of the backend is setting up the database. Our project 
 
 The last step of setting up the backend is done in the app.js file. There are some variables that use our default http://localhost:3000, if you are using a different port for your front end, use your port name instead of 3000.
   
- Once all of this is done, the server can be started by entering the ../server directory in the terminal and using the command 'npm start'.
+Once all of this is done, the server can be started by entering the ../server directory in the terminal and using the command 'npm start'.
 
+## Backend Coed Explanation :notebook: 
 As for where the backend code can actually be found, we have separated all of the backend code into the Controllers folder. This folder contains files for different functionalities/users. For example, the ScheduleController.js file contains the code that will be used for implementing the doctor’s schedule as well as how the patient will see the schedule information. User specific classes such as DoctorController contains backend code that will only apply to unique doctor functionalities. At the end of each file, a line can be found that exports the file. This can then be used within the app.js file found within the server folder. 
 
 The app.js folder imports all of the Controller files by writing lines that look like the following:
