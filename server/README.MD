@@ -22,4 +22,6 @@ All of the backend files use a tool called Axios to fulfill http requests. Axios
 
 Our queries have been written with a prioritization on cleanliness and being uniform. Instead of writing the query directly in the db.query function, we write it in a string above and then use the string within the function. This is because if the query gets long, it will be harder to read the parameters that db.query is taking in. A minimum of two lines of comments accompany each query to improve our understandability of the queries. The first line lists what we have dubbed the ‘parameters’ of the query. The parameters are simply the data that will be taken from the front end to be used in the query. The second line is called ‘returns’ and simply indicates the different data that will be sent back to the user (ex. DoctorID, Status, etc.).
 
+## Testing Explanation :notebook: 
+  
 The testing of the backend functions can be found in ../client/src/__tests__/API_methods.test.js. The tests that we have written test our API_methods. This is done by calling the API method and asserting that a status code of 200 is received. This indicates that the method ran successfully and a response has been received. To run these tests, open the terminal, go to the directory  ../client/src/__tests__ and execute the command 'npm test API_methods.test.js'.
