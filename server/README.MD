@@ -1,5 +1,5 @@
 
-## Steps to set up the project locally :notebook: 
+## Steps to Set Up the Project Locally :notebook: 
 
 
 The backend components of our project can be found in the server folder. The server.js file is used to make a connection between the frontend and backend. To run this project on your machine, the first thing that needs to be done is make sure that you have installed all of our node_modules. To do this, go into the terminal and enter the ../server directory. Then run the command 'npm install'. This will install all of the backend tools that are mentioned in our package and package-lock files. Next, modify the value of origin to http://localhost:<your-frontend-port>. This file is also used for the messaging aspect of the app as well as setting up the backend to listen on a port. The port can be set up within the .env file, if it is not, a default port of 8080 is used. 
@@ -10,7 +10,7 @@ The last step of setting up the backend is done in the app.js file. There are so
   
 Once all of this is done, the server can be started by entering the ../server directory in the terminal and using the command 'npm start'.
 
-## Backend Coed Explanation :notebook: 
+## Backend Code Explanation :notebook: 
 As for where the backend code can actually be found, we have separated all of the backend code into the Controllers folder. This folder contains files for different functionalities/users. For example, the ScheduleController.js file contains the code that will be used for implementing the doctor’s schedule as well as how the patient will see the schedule information. User specific classes such as DoctorController contains backend code that will only apply to unique doctor functionalities. At the end of each file, a line can be found that exports the file. This can then be used within the app.js file found within the server folder. 
 
 The app.js folder imports all of the Controller files by writing lines that look like the following:
