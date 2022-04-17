@@ -15,8 +15,8 @@ The application provides a platform for doctors, health officials, and immigrati
 - [X]  Sprint 1
 - [X]  Sprint 2
 - [X]  Sprint 3
-- [x]  Sprint 4
-- [ ]  Sprint 5
+- [X]  Sprint 4
+- [X]  Sprint 5
 
 ## Project Architecture and Info :gear:
 
@@ -24,19 +24,17 @@ The project was built using the "Client - Server" architecture style, which esse
 
 ## Team Members :technologist:
 
-| #   | Name                 | ID        | Github Username     | Role               |
-| --- | :------------------- | :-------- | :------------------ |:-------------------|
-| 1   | Maira Malhi          | 40128269  |  malhimaira         | Team Lead / Front  |
-| 2   | Eric Hanna           | 40113678  |  leoenix            | Database Management|
-| 3   | Michael Warner       | 40124302  |  narroarrow         | UI Lead / Frontend |
-| 4   | Alexandru Bara       | 40132235  |  alexbara2000       | Frontend Lead      |
-| 5   | Jeffrey Chan         | 40152579  |  JeffreyCHChan      | Backend Lead       |
-| 6   | Maxime Giroux        | 40157483  |  giroux2000         | Fullstack          |
-| 7   | Joeseph Mezzacappa   | 40134799  |  JosephMezza        | Scrum Master / B   |
-| 8   | James Gambino        | 40131946  |  JGambino00         | Fullstack          |
-| 9   | Jonathan Jong        | 40133041  |  jongjonathan       | Documentation / F  |
-
-F = Frontend B = Backend
+| #   | Name                 | ID        | Github Username     | Role                     |
+| --- | :------------------- | :-------- | :------------------ |:------------------------ |
+| 1   | Maira Malhi          | 40128269  |  malhimaira         | Team Lead / FrontEnd     |
+| 2   | Eric Hanna           | 40113678  |  leoenix            | Database Management      |
+| 3   | Michael Warner       | 40124302  |  narroarrow         | FrontEnd UI              |
+| 4   | Alexandru Bara       | 40132235  |  alexbara2000       | FrontEnd Lead            |
+| 5   | Jeffrey Chan         | 40152579  |  JeffreyCHChan      | BackEnd Lead             |
+| 6   | Maxime Giroux        | 40157483  |  giroux2000         | FullStack                |
+| 7   | Joeseph Mezzacappa   | 40134799  |  JosephMezza        | Scrum Master / BackEnd   |
+| 8   | James Gambino        | 40131946  |  JGambino00         | FullStack                |
+| 9   | Jonathan Jong        | 40133041  |  jongjonathan       | Documentation / FrontEnd |
 
 ## Technology Stack :gear:
 
